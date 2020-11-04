@@ -1,0 +1,218 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body, #root, .App {
+    height: 100%;
+}
+
+.loginrood {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.loginblauw {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.login {
+    width: 50%;
+    margin: 0 auto;
+    .logo {
+        width: 40%;
+        display: block;
+        margin: 0 auto 50px auto;
+        padding-top: 100px;
+    }
+    input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px 5px;
+        margin: 0 0 12px 0;
+    
+    }
+    button {
+        background: none;
+        border: 1px solid lightgray;
+        padding: 8px 0;
+        width: 25%;
+        cursor: pointer;
+        display: block;
+        margin: 15px auto 0 auto;
+    }
+    .register {
+        display: block;
+        width: 35%;
+        margin: 20px auto 0 auto;
+        background: #DF1365;
+        border-radius: 10px;
+        cursor: pointer;
+        img {
+            width: 100%;
+            display: block;
+            padding: 8px 0;
+        }
+    }
+}
+
+.nav {
+    display: flex;
+    height: 12%;
+    
+    div {
+        width: 33%;
+        text-align: center;
+        a {
+            width: 100%;
+            height: 100%;
+            display: block;
+            img {
+                margin-top: 2.5vh;
+                height: 55%;
+            }
+        }
+    }
+}
+
+.project {
+    width: 80%;
+    margin: 25px auto 0 auto;
+    border: 3px solid #00A6DD;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 15px;
+
+    .event {
+        display: flex;
+        p {
+            width: 20%;
+            padding: 10px 0 0 0;
+            box-sizing: border-box;
+        }
+    }
+    .users {
+        display: flex;
+        width: 90%;
+        margin-top: 20px;
+        div {
+            height: 50px; 
+            p {
+                text-align: center;
+                padding-top: 12px;
+                font-size: 15px;
+                color: white;
+                font-weight: bold;
+                span {
+                    background: white;
+                    border-radius: 100%;
+                    padding: 0 6px;
+                    color: black;
+                    margin-right: 5px;
+                }
+            }
+        }
+        div:nth-child(odd) {
+            background: #DF1A64;
+        }
+        div:nth-child(even) {
+            background: #00A6DD;
+        }
+        .free {
+            background: #008500!important;
+        }
+    }
+    .total {
+        width: 10%;
+        height: 50px; 
+        background: #C91F1F;
+        margin-top: 20px;
+        p {
+            text-align: center;
+            padding-top: 12px;
+            font-size: 15px;
+            color: white;
+            font-weight: bold;
+        }
+    }
+    .subscribe {
+        margin-top: 15px;
+        display: flex;
+        input {
+            width: 50%;
+            padding: 10px;
+            border: 1px solid black;
+            border-right: 0;
+        }
+        button {
+            width: 50%;
+            padding: 10px;
+            background: #00A6DD;
+            color: white;
+            font-weight: bold;
+            border: 0;
+        }
+    }
+    .line {
+        width: 100%;
+        border: 1px solid #00A6DD;
+        margin: 15px 0 5px 0;
+
+    }
+    
+}
+
+.profiel {
+    width: 80%;
+    margin: 0 auto;
+    .title {
+        font-size: 3em;
+        color: #00A6DD;
+        margin: 100px 0 0 0;
+        
+    }
+}
+.map-container {
+    height: 100%;
+    .map {
+        width: 80%;
+        margin: 5vh auto;
+        height: 78%;
+    }
+}
+
+
+.bold {
+    font-weight: bold;
+}
+
+.project > p {
+    margin-bottom: 5px;
+}
+
+.white {
+    background: white;
+}
+
+.grey {
+    background: #FBFBFB;
+}
+
+.red {
+    background: #DF1A64;
+}
+.blue {
+    background: #00A6DD;
+}
+
+.flex {
+    display: flex;
+}
+
+.full-width {
+    width: 100%!important;
+}
+
