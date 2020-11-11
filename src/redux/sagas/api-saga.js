@@ -44,7 +44,7 @@ function* activitiesWorkerSaga() {
 }
 
 function getProjects() {
-  return fetch('142.93.239.42/api/projects', {
+  return fetch('http://142.93.239.42/api/projects', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -55,7 +55,7 @@ function getProjects() {
 }
 
 function getBusinesses() {
-  return fetch('142.93.239.42/api/businesses', {
+  return fetch('http://142.93.239.42/api/businesses', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -66,7 +66,7 @@ function getBusinesses() {
 }
 
 function getEvents() {
-  return fetch('142.93.239.42/api/users/' + JSON.parse(localStorage.getItem("user")).id + '/events', {
+  return fetch('http://142.93.239.42/api/users/' + JSON.parse(localStorage.getItem("user")).id + '/events', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -77,7 +77,7 @@ function getEvents() {
 }
 
 function getActivities() {
-  return fetch('142.93.239.42/api/activities', {
+  return fetch('http://142.93.239.42/api/activities', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
