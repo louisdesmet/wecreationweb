@@ -5,7 +5,7 @@ import loginblauw from './img/loginblauw.PNG';
 
 import axios from 'axios';
 import { Redirect } from "react-router-dom";
-axios.defaults.baseURL = 'http://ianapi.test/api';
+axios.defaults.baseURL = '142.93.239.42/api';
 axios.defaults.headers.common['Accept'] = 'application/json';
 
 function Register(props) {
