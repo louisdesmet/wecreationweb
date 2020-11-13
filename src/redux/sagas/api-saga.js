@@ -44,7 +44,7 @@ function* activitiesWorkerSaga() {
 }
 
 function getProjects() {
-  return fetch('http://api.wecreation.be/api/projects', {
+  return fetch('https://api.wecreation.be/api/projects', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -55,7 +55,7 @@ function getProjects() {
 }
 
 function getBusinesses() {
-  return fetch('http://api.wecreation.be/api/businesses', {
+  return fetch('https://api.wecreation.be/api/businesses', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -66,7 +66,7 @@ function getBusinesses() {
 }
 
 function getEvents() {
-  return fetch('http://api.wecreation.be/api/users/' + JSON.parse(localStorage.getItem("user")).id + '/events', {
+  return fetch('https://api.wecreation.be/api/users/' + JSON.parse(localStorage.getItem("user")).id + '/events', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -77,7 +77,7 @@ function getEvents() {
 }
 
 function getActivities() {
-  return fetch('http://api.wecreation.be/api/activities', {
+  return fetch('https://api.wecreation.be/api/activities', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
