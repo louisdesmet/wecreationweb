@@ -32,7 +32,7 @@ const PrivateRoute = ({component: Component, ...rest}) => {
 
 function App() {
   return (
-      <Router>                                  
+      <Router>                             
           <Switch>
               <Route path="/login" component={Login}/>  
               <Route path="/register" component={Register}/>                   
@@ -45,7 +45,7 @@ function App() {
               <PrivateRoute path="/netwerk" component={Netwerk}/>
               <PrivateRoute path="/" component={Home}/>
           </Switch>
-      </Router> 
+      </Router>
   );
 }
 

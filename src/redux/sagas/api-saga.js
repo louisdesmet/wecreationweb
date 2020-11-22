@@ -54,7 +54,7 @@ function* usersWorkerSaga() {
 }
 
 function getProjects() {
-  return fetch('http://ianapi.test/api/projects', {
+  return fetch('https://api.wecreation.be/api/projects', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -65,7 +65,7 @@ function getProjects() {
 }
 
 function getBusinesses() {
-  return fetch('http://ianapi.test/api/businesses', {
+  return fetch('https://api.wecreation.be/api/businesses', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -76,7 +76,7 @@ function getBusinesses() {
 }
 
 function getEvents() {
-  return fetch('http://ianapi.test/api/users/' + JSON.parse(localStorage.getItem("user")).id + '/events', {
+  return fetch('https://api.wecreation.be/api/users/' + JSON.parse(localStorage.getItem("user")).id + '/events', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -87,7 +87,7 @@ function getEvents() {
 }
 
 function getActivities() {
-  return fetch('http://ianapi.test/api/activities', {
+  return fetch('https://api.wecreation.be/api/activities', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -98,7 +98,7 @@ function getActivities() {
 }
 
 function getUsers() {
-  return fetch('http://ianapi.test/api/users', {
+  return fetch('https://api.wecreation.be/api/users', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
