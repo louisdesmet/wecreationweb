@@ -23,9 +23,7 @@ import Register from "./Register";
 const PrivateRoute = ({component: Component, ...rest}) => {
   return (
       <Route {...rest} render={props => (
-          localStorage.getItem('token') ?
-              <Component {...props} />
-          : <Redirect to="/login" />
+        localStorage.getItem('token') !== 'null' && typeof localStorage.getItem('token') !== 'undefined' ? <Component {...props} /> : <Redirect to="/login" />
       )} />
   );
 };

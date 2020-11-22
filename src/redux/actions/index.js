@@ -20,3 +20,7 @@ export function getEvents() {
 export function getActivities() {
   return { type: "ACTIVITIES_REQUESTED" };
 }
+
+export function getUsers() {
+  return { type: "USERS_REQUESTED" };
+}

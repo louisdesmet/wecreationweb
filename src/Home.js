@@ -9,10 +9,12 @@ function List({ event }) {
 
   function Free({free}) {
     if (free == 0) {
-      return null;
+      return (
+        <div className="free"><p>Project volzet</p></div>
+      );
     }
     return (
-      <div className="free" style={{"width" : event.free / event.credits * 100 + "%"}}><p>{event.free} vrije uren</p></div>
+      <div className="free"><p>{event.free} vrije uren</p></div>
     );
   }
 
@@ -21,18 +23,21 @@ function List({ event }) {
   }
  
   return (
-    <div className="flex">
-      <div className="users">
-      {                       
-        event.users.map((user, index) =>
-          <div key={String(user.id) + String(index)} style={{"width" : user.hours / event.credits * 100 + "%"}}>
-            <p><span>{user.name.charAt(0)}</span>{user.hours}</p>
-          </div>
-        )
-      }
-      <Free free={event.free}/>
+    <div className="event-details">
+      <div>
+        <h3>Participanten</h3>
+        {                       
+          event.users.map((user, index) =>
+            <div key={String(user.id) + String(index)}>
+              <p>{user.name}</p>
+            </div>
+          )
+        }
       </div>
-      <div className="total"><p>{event.credits}</p></div>                     
+      <div>
+        <Free free={event.free}/>
+        <div><p>Dit werk event heeft {event.credits} werkuren in totaal.</p></div>
+      </div>                     
     </div>
   );
 }
@@ -51,7 +56,7 @@ function Subscribe({ event }) {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + localStorage.getItem("token")
     }
-    if(event.free > hours) {
+    if(event.free >= hours) {
       axios.post('/subscribe', {
         'event_id': event.id,
         'user_id': JSON.parse(localStorage.getItem("user")).id,
@@ -122,7 +127,7 @@ export const Home = ({getProjects}) => {
                   <p className="bold">{project.name}</p>
                   <p>{project.description}</p>
                   <p>Projectleider: {project.leader.name}</p>
-                  <div className="event bold">
+                  <div className="event-headers">
                     <p>Naam</p>
                     <p>Locatie</p>
                     <p>Datum</p>
@@ -133,7 +138,7 @@ export const Home = ({getProjects}) => {
                     project.events.map(event =>
                       <div key={event.id}>
                         <div className="event">
-                            <p>{event.name}</p>
+                            <h2>{event.name}</h2>
                             <p>{event.location}</p>
                             <p>{date(event.date)}</p>
                             <p>{new Date(event.date).toLocaleTimeString()}</p>
@@ -141,7 +146,7 @@ export const Home = ({getProjects}) => {
                         </div>
                         <List event={event} />
                         <Subscribe event={event} />
-                        <div className="line"></div>                      
+                        <div className="line"></div>                    
                       </div>
                     )
                   }

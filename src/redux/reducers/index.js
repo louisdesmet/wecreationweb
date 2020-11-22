@@ -7,7 +7,9 @@ const initialState = {
   events: [],
   remoteEvents: [],
   activities: [],
-  remoteActivities: []
+  remoteActivities: [],
+  users: [],
+  remoteUsers: []
 };
 function rootReducer(state = initialState, action) {
   if (action.type === ADD_PROJECT) {
@@ -31,6 +33,11 @@ function rootReducer(state = initialState, action) {
   if (action.type === "ACTIVITIES_LOADED") {
     return Object.assign({}, state, {
       remoteActivities: action.payload
+    });
+  }
+  if (action.type === "USERS_LOADED") {
+    return Object.assign({}, state, {
+      remoteUsers: action.payload
     });
   }
   return state;
