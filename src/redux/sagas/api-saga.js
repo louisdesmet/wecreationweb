@@ -11,7 +11,11 @@ export default function* watcherSaga() {
 function* projectsWorkerSaga() {
   try {
     const payload = yield call(getProjects);
-    yield put({ type: "PROJECTS_LOADED", payload });
+    if(payload.message !== "Unauthenticated.") {
+      yield put({ type: "PROJECTS_LOADED", payload });
+    } else {
+      yield put({ type: "API_ERRORED", payload });
+    } 
   } catch (e) {
     yield put({ type: "API_ERRORED", payload: e });
   }
@@ -20,7 +24,11 @@ function* projectsWorkerSaga() {
 function* businessesWorkerSaga() {
   try {
     const payload = yield call(getBusinesses);
-    yield put({ type: "BUSINESSES_LOADED", payload });
+    if(payload.message !== "Unauthenticated.") {
+      yield put({ type: "BUSINESSES_LOADED", payload });
+    } else {
+      yield put({ type: "API_ERRORED", payload });
+    } 
   } catch (e) {
     yield put({ type: "API_ERRORED", payload: e });
   }
@@ -29,7 +37,11 @@ function* businessesWorkerSaga() {
 function* eventsWorkerSaga() {
   try {
     const payload = yield call(getEvents);
-    yield put({ type: "EVENTS_LOADED", payload });
+    if(payload.message !== "Unauthenticated.") {
+      yield put({ type: "EVENTS_LOADED", payload });
+    } else {
+      yield put({ type: "API_ERRORED", payload });
+    } 
   } catch (e) {
     yield put({ type: "API_ERRORED", payload: e });
   }
@@ -38,7 +50,11 @@ function* eventsWorkerSaga() {
 function* activitiesWorkerSaga() {
   try {
     const payload = yield call(getActivities);
-    yield put({ type: "ACTIVITIES_LOADED", payload });
+    if(payload.message !== "Unauthenticated.") {
+      yield put({ type: "ACTIVITIES_LOADED", payload });
+    } else {
+      yield put({ type: "API_ERRORED", payload });
+    }  
   } catch (e) {
     yield put({ type: "API_ERRORED", payload: e });
   }
@@ -47,7 +63,11 @@ function* activitiesWorkerSaga() {
 function* usersWorkerSaga() {
   try {
     const payload = yield call(getUsers);
-    yield put({ type: "USERS_LOADED", payload });
+    if(payload.message !== "Unauthenticated.") {
+      yield put({ type: "USERS_LOADED", payload });
+    } else {
+      yield put({ type: "API_ERRORED", payload });
+    } 
   } catch (e) {
     yield put({ type: "API_ERRORED", payload: e });
   }

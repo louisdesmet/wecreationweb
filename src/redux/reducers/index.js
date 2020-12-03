@@ -40,6 +40,12 @@ function rootReducer(state = initialState, action) {
       remoteUsers: action.payload
     });
   }
+  if (action.type === "API_ERRORED") {
+    console.log('of hier');
+    localStorage.setItem('token', null);
+    localStorage.setItem('user', null);
+    window.location.reload();
+  }
   return state;
 }
 export default rootReducer;
