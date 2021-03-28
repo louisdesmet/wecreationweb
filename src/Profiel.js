@@ -1,9 +1,56 @@
-import React from "react";
+import React, {useEffect} from 'react';
+import {connect} from "react-redux";
+import {getProjects} from "./redux/actions";
 import credit from './img/credit.PNG';
 import Nav from "./Nav";
-function Profiel(props) {
+import {useSelector} from "react-redux";
+export const Profiel = ({props,getProjects}) => {
 
-    const user = JSON.parse(localStorage.getItem("user"));
+    const loggedUser = JSON.parse(localStorage.getItem("user"));
+
+    useEffect(() => {
+        getProjects();
+    }, []);
+
+    const projects = useSelector(state => state.remoteProjects);
+
+    /*const projectList = projects.data ? (
+        <div>
+          {
+            projects.data.map(project =>
+                {
+                    project.events.map(event =>
+                        {
+                            event.users.map(user =>
+                                (user.id === loggedUser.id ? 
+                                    <div></div>
+                                )
+                            )
+                        }
+                    )
+                }
+            )
+          }
+        </div>
+    ) : null;*/
+  
+
+
+    let clonedEvents = [];
+
+    if(projects.data) {
+       
+        Object.values(projects.data).forEach(project => {
+            project.events.forEach(event => {
+                event.users.forEach(user => {
+                    if(user.id === loggedUser.id) {
+                        clonedEvents.push(user);
+                    }
+                })
+            })
+        });
+    }
+
 
     function logout() {
         localStorage.setItem('token', null);
@@ -15,12 +62,17 @@ function Profiel(props) {
         <div>
            <Nav/>
            <div className="profiel">
-            <p className="title">{user.name}</p>
-            <p>Huidig saldo: <img src={credit} alt=""/>{user.credits}</p>
+            <p className="title">{loggedUser.name}</p>
+            <p>Huidig saldo: <img src={credit} alt=""/>{loggedUser.credits}</p>
             <p onClick={() => logout()}>logout</p>
            </div>
+        
         </div>
     );
 }
 
-export default Profiel;
+
+export default connect(
+    null,
+    {getProjects}
+)(Profiel);
