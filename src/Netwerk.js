@@ -5,7 +5,6 @@ import {getUsers} from "./redux/actions";
 export const Network = ({getUsers}) => {
 
     const users = useSelector(state => state.remoteUsers);
-    console.log(users.data);
 
     useEffect(() => {
         getUsers();

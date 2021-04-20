@@ -7,9 +7,10 @@ import {useSelector} from "react-redux";
 
 import profileTitle from './img/profiel-title.png';
 import profileDefault from './img/profile-default.jpg';
+import { useHistory } from "react-router-dom";
 
 export const Profiel = ({props,getProjects}) => {
-
+    const history = useHistory();
     const loggedUser = JSON.parse(localStorage.getItem("user"));
 
     function date(date) {
@@ -89,13 +90,12 @@ export const Profiel = ({props,getProjects}) => {
     function logout() {
         localStorage.setItem('token', null);
         localStorage.setItem('user', null);
-        props.history.push("/login");
+        history.push("/login");
     }
 
     return (
         <div>
             <Nav/>
-            <img className="profile-title" src={profileTitle} alt=""/>
             <div className="profile-section-1">
                 <div className="profile-default">
                     <img src={profileDefault} alt=""/>
@@ -105,7 +105,7 @@ export const Profiel = ({props,getProjects}) => {
                     <p className="profile-name">{loggedUser.name}</p>
                     <p>7. Collectief verteller</p>
                     <p className="profile-credits"><span>{loggedUser.credits}</span><img src={credit} alt=""/></p>
-                    <p className="profile-hours"><span>{hoursSum}</span><p>uur</p></p>
+                    <p className="profile-hours"><span>{hoursSum}</span> uur</p>
                     <p className="logout" onClick={() => logout()}>Afmelden</p>
                 </div>
             </div>

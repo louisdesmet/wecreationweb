@@ -80,8 +80,6 @@ function Middle(props) {
         return item.type === 'service';
     })) : null;
 
-    console.log(props.current);
-
     if(props.current === "business" && businessFiltered !== null) {
         return (
         <table className="businesses-container">

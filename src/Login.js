@@ -6,7 +6,7 @@ import registreren from './img/registreren.PNG';
 
 import axios from 'axios';
 import { Link, Redirect } from "react-router-dom";
-axios.defaults.baseURL = 'https://api.wecreation.be/api';
+axios.defaults.baseURL = (process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/api' : 'http://api.test/api');
 axios.defaults.headers.common['Accept'] = 'application/json';
 
 function Login(props) {
@@ -14,7 +14,8 @@ function Login(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    function login() {
+    const onFormSubmit = e => {
+      e.preventDefault();
       axios.post("/login", {
         email,
         password
@@ -35,10 +36,12 @@ function Login(props) {
             <img className="loginblauw" src={loginblauw} alt=""/>
             <div className="login">
                 <img className="logo" src={loginlogo} alt=""/>
-                <input onChange={e => { setEmail(e.target.value); }} placeholder="Email"/>
-                <input onChange={e => { setPassword(e.target.value); }} placeholder="Password" type="password"/>
-                {error}
-                <button onClick={() => login()}>Aanmelden</button>
+                <form onSubmit={onFormSubmit}>
+                  <input onChange={e => { setEmail(e.target.value); }} placeholder="Email"/>
+                  <input onChange={e => { setPassword(e.target.value); }} placeholder="Password" type="password"/>
+                  {error}
+                  <button type="submit">Aanmelden</button>
+                </form>            
                 <Link to="/register" className="register"><img src={registreren} alt=""/></Link>
             </div>  
         </div>

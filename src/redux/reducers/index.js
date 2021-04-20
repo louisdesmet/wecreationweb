@@ -6,6 +6,8 @@ const initialState = {
   remoteBusinesses: [],
   events: [],
   remoteEvents: [],
+  allEvents: [],
+  remoteAllEvents: [],
   activities: [],
   remoteActivities: [],
   users: [],
@@ -30,6 +32,11 @@ function rootReducer(state = initialState, action) {
       remoteEvents: action.payload
     });
   }
+  if (action.type === "ALL_EVENTS_LOADED") {
+    return Object.assign({}, state, {
+      remoteAllEvents: action.payload
+    });
+  }
   if (action.type === "ACTIVITIES_LOADED") {
     return Object.assign({}, state, {
       remoteActivities: action.payload
@@ -41,7 +48,6 @@ function rootReducer(state = initialState, action) {
     });
   }
   if (action.type === "API_ERRORED") {
-    console.log('of hier');
     localStorage.setItem('token', null);
     localStorage.setItem('user', null);
     window.location.reload();

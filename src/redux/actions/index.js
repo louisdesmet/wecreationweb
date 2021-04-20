@@ -17,6 +17,10 @@ export function getEvents() {
   return { type: "EVENTS_REQUESTED" };
 }
 
+export function getAllEvents() {
+  return { type: "ALL_EVENTS_REQUESTED" };
+}
+
 export function getActivities() {
   return { type: "ACTIVITIES_REQUESTED" };
 }

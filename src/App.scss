@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+@import '~@fullcalendar/common/main.css';
+@import '~@fullcalendar/daygrid/main.css';
+@import '~@fullcalendar/timegrid/main.css';
 
 * {
     margin: 0;
@@ -8,6 +11,7 @@
 
 html, body, #root, .App {
     height: 100%;
+    background: #FBFBFB;
 }
 
 .height100 {
@@ -68,83 +72,103 @@ html, body, #root, .App {
 
 .nav {
     display: flex;
-    height: 12%;
+  
     
     div {
         width: 33%;
+        height: 150px;
         text-align: center;
         a {
             width: 100%;
             height: 100%;
             display: block;
             img {
-                margin-top: 2.5vh;
-                height: 55%;
+              
+                height: 80%;
+                padding: 10% 0 0 0;
+                box-sizing: border-box;
             }
         }
     }
 }
 
-.project {
-    width: 80%;
-    margin: 25px auto 0 auto;
-    border: 3px solid #00A6DD;
-    padding: 20px;
-    box-sizing: border-box;
-    border-radius: 15px;
-
-    .event {
-        display: flex;
-        p, h2 {
-            width: 20%;
-            padding: 10px 0 0 0;
-            box-sizing: border-box;
-        }
-    }
-
-    .event-headers {
-        display: flex;
-        margin: 20px 0;
-        p, h2 {
-            width: 20%;
-            padding: 10px 0 0 0;
-            box-sizing: border-box;
-        }
-    }
-    .event-details {
-        display: flex;
-        margin: 25px auto;
-        div {
-            width: 50%;
-        }
-        .free {
-            font-size: 20px;
-        }
-    }
-    .subscribe {
-        margin-top: 15px;
-        display: flex;
-        input {
-            width: 50%;
-            padding: 10px;
-            border: 1px solid black;
-            border-right: 0;
-        }
-        button {
-            width: 50%;
-            padding: 10px;
-            background: #00A6DD;
+.projects {
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    
+    .project {
+      
+        flex: 1 0 50%;
+        border-bottom: 1px solid #DFDDDE;
+        
+        padding: 20px;
+        box-sizing: border-box;
+        .project-leader-btn {
+            background: black;
             color: white;
-            font-weight: bold;
-            border: 0;
+            margin-left: 40px;
+            border-radius: 10px;
+            padding: 5px;
         }
+        .event {
+            display: flex;
+            p, h2 {
+                width: 20%;
+                padding: 10px 0 0 0;
+                box-sizing: border-box;
+            }
+         
+        }
+    
+        .event-headers {
+            display: flex;
+            margin: 0 0 20px 0;
+            p, h2 {
+                width: 20%;           
+                box-sizing: border-box;
+            }
+        }
+        .event-details {
+            display: flex;
+            margin: 25px auto;
+            div {
+                width: 50%;
+            }
+            .free {
+                font-size: 20px;
+            }
+        }
+        .subscribe {
+            margin-top: 15px;
+            display: flex;
+            input {
+                width: 50%;
+                padding: 10px;
+                border: 1px solid #DFDDDE;
+                border-right: 0;
+            }
+            button {
+                width: 50%;
+                padding: 10px;
+                background: #00A6DD;
+                color: white;
+                font-weight: bold;
+                border: 0;
+            }
+        }
+        .line {
+            width: 100%;
+            border-bottom: 1px solid #DFDDDE;
+            margin: 40px 0 30px 0;
+        }  
     }
-    .line {
-        width: 100%;
-        border: 1px solid #00A6DD;
-        margin: 40px 0 30px 0;
-    }  
+    .project:nth-child(odd) {
+        border-right: 1px solid #DFDDDE;
+    }
 }
+
 
 .profile-history-headers {
     width: 80%;
@@ -388,6 +412,148 @@ html, body, #root, .App {
         }
     }
 }
+
+.admin {
+    height: 100%;
+    .admin-container {
+        display: flex;
+        height: 100%;
+        .admin-container-left {
+            border-right: 1px solid black;
+            width: 20%;
+            height: 100%;
+            display: block;
+            h1 {
+                border-bottom: 1px solid black;
+                padding: 7px 0 10px 15px;
+            }
+            ul {
+                li {
+                    border-bottom: 1px solid black;
+                    padding: 15px 0 15px 15px;
+                    a {
+                        text-decoration: none;
+                        color: black;
+                    }
+                }
+            }
+        }
+        .admin-container-right {
+            width: 80%;
+            .admin-container-right-title {
+                display: flex;
+                justify-content: space-between;
+                h2 {
+                    font-size: 1.7em;
+                    margin: 8px 0 0 15px;
+                }
+                .new {
+                    background: black;
+                    padding: 8px;
+                    border-radius: 10px;
+                    width: 150px;
+                    text-align: center;
+                    margin: 15px 50px 15px 0;
+                    a {
+                        text-decoration: none;
+                        color: white;
+                    }
+                }
+            }
+            .admin-projects {
+                div {
+                    display: flex;
+                    p {
+                        flex: 1;
+                        border-bottom: 1px solid black;
+                        padding: 15px;
+                        .edit {
+                            background: black;
+                            color: white;
+                            padding: 8px;
+                            border-radius: 10px;
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.event-panel {
+    padding: 15px;
+    
+}
+
+.create {
+    width: 80%;
+    margin: 0 auto;
+    h2 {
+        text-align: center;
+        margin: 45px 0;
+        font-size: 1.7em;
+    }
+    input {
+        width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+        margin: 0 0 15px 0;
+    }
+    select {
+        width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+        margin: 0 0 15px 0;
+    }
+}
+
+.project-leader-titles {
+    padding: 15px 0;
+}
+
+.leader-events {
+    //display: flex;
+    .leader-event {
+        padding: 15px 0;
+        h2 {
+            font-size: 1em;
+        }
+        div {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            border-bottom: 1px solid black;
+            padding: 15px;
+            box-sizing: border-box;
+            p {
+                flex-grow: 1;
+                flex-basis: 0;
+            }
+        }
+    }
+}
+
+.popup {
+    width: 300px;
+    height: 400px;
+    top: 50%;
+    left: 50%;
+    margin: -200px 0 0 -150px;
+    background: white;
+    position: absolute;
+    z-index: 9999;
+    .close {
+        font-size: 2em;
+        text-align: right;
+        display: block;
+        position: relative;
+        top: 0;
+        right: 10px;
+    }
+}
+
+
 
 .bold {
     font-weight: bold;

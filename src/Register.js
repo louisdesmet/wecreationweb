@@ -6,7 +6,7 @@ import loginblauw from './img/loginblauw.PNG';
 import axios from 'axios';
 import { Redirect } from "react-router-dom";
 
-axios.defaults.baseURL = 'https://api.wecreation.be/api';
+axios.defaults.baseURL = (process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/api' : 'http://api.test/api');
 axios.defaults.headers.common['Accept'] = 'application/json';
 
 function Register(props) {
