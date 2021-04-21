@@ -2,10 +2,10 @@ import React from "react";
 import work from './img/nav-work.png';
 import see from './img/nav-see.png';
 import get from './img/nav-get.png';
-import logo from './img/logo.PNG';
+import logo from './img/nav-random.png';
 import profiel from './img/nav-profiel.png';
-import agenda from './img/agenda.PNG';
-import netwerk from './img/netwerk.PNG';
+import agenda from './img/nav-agenda.png';
+import netwerk from './img/nav-netwerk.png';
 import {
   Link
 } from "react-router-dom";

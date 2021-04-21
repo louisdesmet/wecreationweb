@@ -16,29 +16,34 @@ export const Agenda = ({getEvents}) => {
   }, []);
 
   const events = useSelector(state => state.remoteEvents);
-  const fcEvents = events.map((event) => {
-    return {id: event.id, title: event.name, date: event.date}
+  const fcEvents = events.map((event, index) => {
+    return {id: index, title: event.name, date: event.date}
   })
 
   function Popup(props) {
 
     function findEvent(id) {
-      return events.find(ev => ev.id === parseInt(id))
+      console.log(events[parseInt(id)]);
+      return events[parseInt(id)];
     }
 
     return (
       <div className="popup">
         <span className="close" onClick={e => setEnabled(0)}>x</span>
-      {event ? 
-        <div>
-          <p>{event.title }</p>
-          <p>{new Date(event.startStr).toJSON().slice(0, 19).replace('T', ' ')}</p>
-          {events ? 
-            <p>{findEvent(event.id).location}</p>
-          : null}
-
-        </div>
-      : null}
+        {event ? 
+          <div>
+            <p>Titel: {event.title }</p>
+            <p>Datum: {new Date(event.startStr).toJSON().slice(0, 19).replace('T', ' ')}</p>
+            {events ? 
+              <div>
+                <p>Locatie: {findEvent(event.id).location}</p>
+                <p>Je hebt je ingeschreven voor {findEvent(event.id).pivot.hours} uur.</p>
+                <p>{findEvent(event.id).pivot.accepted ? 'Je bent geaccepteerd door de project leider.' : null}</p>
+                <p>{findEvent(event.id).pivot.present ? 'De project leider gaf aan dat je aanwezig was.' : null}</p>
+              </div>
+            : null}
+          </div>
+        : null}
       </div>
     );
   }
@@ -51,13 +56,14 @@ export const Agenda = ({getEvents}) => {
   };
 
   return (
-    <div>
+    <div className="agenda">
       <Nav/>
       <FullCalendar
       plugins={[ dayGridPlugin ]}
       initialView="dayGridMonth"
       events={fcEvents}
       eventClick={handleEventClick}
+      height="parent"
       />
       {enabled ? <Popup event={event}/> : null}
     </div>
