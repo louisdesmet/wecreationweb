@@ -36,9 +36,10 @@ import ProjectShow from "./ProjectShow";
 import BusinessShow from "./BusinessShow";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
+  console.log(JSON.parse(localStorage.getItem("user")).email_verified_at);
   return (
       <Route {...rest} render={props => (
-        localStorage.getItem('token') !== 'null' && localStorage.getItem('token') !== null && typeof localStorage.getItem('token') !== 'undefined' ? <Component {...props} /> : <Redirect to="/login" />
+        localStorage.getItem('token') !== 'null' && localStorage.getItem('token') !== null && typeof localStorage.getItem('token') !== 'undefined' && JSON.parse(localStorage.getItem("user")).email_verified_at !== null ? <Component {...props} /> : <Redirect to="/login" />
       )} />
   );
 };
