@@ -1,18 +1,19 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
-import {getProjects} from "./redux/actions";
+import {getProjects, getUsers} from "./redux/actions";
 import credit from './img/profile-credit.png';
 import Nav from "./Nav";
 import {useSelector} from "react-redux";
 
-import profileTitle from './img/profiel-title.png';
 import profileDefault from './img/profile-default.jpg';
 import { useHistory } from "react-router-dom";
+import Axios from 'axios';
 
-export const Profiel = ({props,getProjects}) => {
+export const Profiel = ({getUsers,getProjects}) => {
     const history = useHistory();
     const loggedUser = JSON.parse(localStorage.getItem("user"));
-
+    const [user, setUser] = useState("");
+    const [amount, setAmount] = useState("");
     function date(date) {
         const jsDate = new Date(date);
         return jsDate.getDate()+'/'+(jsDate.getMonth()+1)+'/'+jsDate.getFullYear();
@@ -20,15 +21,17 @@ export const Profiel = ({props,getProjects}) => {
 
     useEffect(() => {
         getProjects();
+        getUsers();
     }, []);
 
     const projects = useSelector(state => state.remoteProjects);
+    const users = useSelector(state => state.remoteUsers);
 
     let hoursSum = 0;
     function totalHours(hours) {
         hoursSum += parseInt(hours);
         return hours;
-    } 
+    }
 
     const projectList = projects.data ? (
         <div>
@@ -93,6 +96,28 @@ export const Profiel = ({props,getProjects}) => {
         history.push("/login");
     }
 
+    function trade() {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        }
+        Axios.post('/trade', {
+            'loggedUser': loggedUser.id,
+            'user_id': user,
+            'amount': amount
+        }, {
+            headers: headers
+        })
+        .then((response) => {
+            window.location.href = "/profiel";
+        
+        })
+        .catch((error) => {
+    
+        })
+    }
+
+    const userList =  users.data ? users.data.map(user => <option key={user.id} value={user.id}>{user.name}</option>) : null;
     return (
         <div>
             <Nav/>
@@ -108,7 +133,16 @@ export const Profiel = ({props,getProjects}) => {
                     <p className="profile-hours"><span>{hoursSum}</span> uur</p>
                     <p className="logout" onClick={() => logout()}>Afmelden</p>
                 </div>
+                <div className="trade">
+                    <h2>Trade met andere gebruiker</h2>
+                    <input type="text" placeholder="Hoeveel wil je versturen?" onChange={e => setAmount(e.target.value)}/>
+                    <select onChange={e => setUser(e.target.value)}>
+                        {userList}
+                    </select>
+                    <button onClick={() => trade()}>Trade</button>
+                </div>
             </div>
+            
             {projectList}
         
         </div>
@@ -118,5 +152,5 @@ export const Profiel = ({props,getProjects}) => {
 
 export default connect(
     null,
-    {getProjects}
+    {getProjects, getUsers}
 )(Profiel);

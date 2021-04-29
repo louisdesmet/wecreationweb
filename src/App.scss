@@ -112,57 +112,7 @@ html, body, #root, .App {
             border-radius: 10px;
             padding: 5px;
         }
-        .event {
-            display: flex;
-            p, h2 {
-                width: 20%;
-                padding: 10px 0 0 0;
-                box-sizing: border-box;
-            }
-         
-        }
-    
-        .event-headers {
-            display: flex;
-            margin: 0 0 20px 0;
-            p, h2 {
-                width: 20%;           
-                box-sizing: border-box;
-            }
-        }
-        .event-details {
-            display: flex;
-            margin: 25px auto;
-            div {
-                width: 50%;
-            }
-            .free {
-                font-size: 20px;
-            }
-        }
-        .subscribe {
-            margin-top: 15px;
-            display: flex;
-            input {
-                width: 50%;
-                padding: 10px;
-                border: 1px solid #DFDDDE;
-                border-right: 0;
-            }
-            button {
-                width: 50%;
-                padding: 10px;
-                background: #00A6DD;
-                color: white;
-                font-weight: bold;
-                border: 0;
-            }
-        }
-        .line {
-            width: 100%;
-            border-bottom: 1px solid #DFDDDE;
-            margin: 40px 0 30px 0;
-        }  
+        
     }
     .project:nth-child(odd) {
         border-right: 1px solid #DFDDDE;
@@ -189,10 +139,12 @@ html, body, #root, .App {
 
 .profile-section-1 {
     display: flex;
+    justify-content: space-between;
     width: 80%;
-    margin: 0 auto;
+    margin: 100px auto 0 auto;
+
     .profile-default {
-        width: 50%;
+        width: 30%;
         img {
             margin: 0 auto;
             display: block;
@@ -257,6 +209,33 @@ html, body, #root, .App {
             width: 16.66%;
             padding: 15px 0;
         }
+    }
+}
+
+.trade {
+    padding: 0 15px;
+    box-sizing: border-box;
+    input {
+        margin-top: 10px;
+        width: 100%;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+    select {
+        margin-top: 10px;
+        width: 100%;
+        padding: 5px;
+
+    }
+    button {
+        width: 50%;
+        margin: 0 auto;
+        display: block;
+        background: none;
+        border: 1px solid black;
+        padding: 5px;
+        box-sizing: border-box;
+        margin-top: 10px;
     }
 }
 
@@ -383,19 +362,8 @@ html, body, #root, .App {
 .network {
     display: flex;
     height: 88%;
-    .network-users {
-        width: 20%;
-        height: 100%;
-        border-right: 1px solid #C7C7C7;
-        p {
-            box-sizing: border-box;
-            width: 100%;
-            padding: 15px 15px;
-            border-bottom: 1px solid #C7C7C7;
-        }
-    }
     .chat {
-        width: 80%;
+        width: 100%;
         height: 100%;
         input {
             width: 100%;
@@ -483,7 +451,58 @@ html, body, #root, .App {
 
 .event-panel {
     padding: 15px;
-    
+    .event {
+        display: flex;
+        p, h2 {
+            width: 20%;
+            padding: 10px 0 0 0;
+            box-sizing: border-box;
+        }
+     
+    }
+
+    .event-headers {
+        display: flex;
+        margin: 0 0 20px 0;
+        p, h2 {
+            width: 20%;           
+            box-sizing: border-box;
+        }
+    }
+    .event-details {
+        display: flex;
+        margin: 25px auto;
+        div {
+            width: 50%;
+        }
+        .free {
+            font-size: 20px;
+        }
+       
+    }
+    .subscribe {
+        margin-top: 15px;
+        display: flex;
+        input {
+            width: 50%;
+            padding: 10px;
+            border: 1px solid #DFDDDE;
+            border-right: 0;
+        }
+        button {
+            width: 50%;
+            padding: 10px;
+            background: #00A6DD;
+            color: white;
+            font-weight: bold;
+            border: 0;
+        }
+    }
+    .line {
+        width: 100%;
+        border-bottom: 1px solid #DFDDDE;
+        margin: 40px 0 30px 0;
+    }
 }
 
 .create {
@@ -568,6 +587,13 @@ html, body, #root, .App {
     }
 }
 
+.event-details {
+    h2 {
+        text-align: center;
+        margin: 50px 0;
+    }
+}
+
 
 
 .bold {
@@ -597,7 +623,18 @@ html, body, #root, .App {
     display: flex;
 }
 
+.flex-space-between {
+    display: flex;
+    justify-content: space-between;
+}
+
 .full-width {
     width: 100%!important;
 }
 
+.mt-70 {
+    margin-top: 70px!important;
+}
+.mb-70 {
+    margin-bottom: 70px!important;
+}

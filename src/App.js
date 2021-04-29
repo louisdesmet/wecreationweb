@@ -31,11 +31,14 @@ import AdminActivitiesCreate from "./AdminActivitiesCreate";
 import AdminActivitiesEdit from "./AdminActivitiesEdit";
 import AdminUserVerification from "./AdminUserVerification";
 import WorkLeaderBoard from "./WorkLeaderBoard";
+import EventShow from "./EventShow";
+import ProjectShow from "./ProjectShow";
+import BusinessShow from "./BusinessShow";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   return (
       <Route {...rest} render={props => (
-        localStorage.getItem('token') !== 'null' && typeof localStorage.getItem('token') !== 'undefined' ? <Component {...props} /> : <Redirect to="/login" />
+        localStorage.getItem('token') !== 'null' && localStorage.getItem('token') !== null && typeof localStorage.getItem('token') !== 'undefined' ? <Component {...props} /> : <Redirect to="/login" />
       )} />
   );
 };
@@ -54,6 +57,11 @@ function App() {
               <PrivateRoute path="/profiel" component={Profiel}/>
               <PrivateRoute path="/agenda" component={Agenda}/>
               <PrivateRoute path="/netwerk" component={Netwerk}/>
+
+              <PrivateRoute path="/events/:id" component={EventShow}/>
+              <PrivateRoute path="/projects/:id" component={ProjectShow}/>
+              <PrivateRoute path="/businesses/:id" component={BusinessShow}/>
+
               <PrivateRoute path="/admin" component={AdminProjects}/>
               <PrivateRoute path="/admin-projects/create" component={AdminProjectsCreate}/>
               <PrivateRoute path="/admin-projects/edit/:id" component={AdminProjectsEdit}/>
@@ -68,7 +76,6 @@ function App() {
               <PrivateRoute path="/admin-activities/edit/:id" component={AdminActivitiesEdit}/>
               <PrivateRoute path="/admin-activities" component={AdminActivities}/>
               <PrivateRoute path="/admin-user-verification" component={AdminUserVerification}/>
-
 
               <PrivateRoute path="/" component={Home}/>
           </Switch>

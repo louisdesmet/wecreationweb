@@ -14,13 +14,7 @@ export const Network = ({getUsers}) => {
         <div className="height100">
             <Nav/>
             <div className="network">
-                <div className="network-users">
-                {
-                    users.data ? users.data.map(user =>
-                        <p key={user.id}>{ user.name }</p>
-                    ) : null
-                }
-                </div>
+               
                 <div className="chat">
                     <div className="messages">
                         
