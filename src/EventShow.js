@@ -24,9 +24,6 @@ export const EventShow = ({getAllEvents}) => {
         event.free = event.credits - hours;
     }
 
-    console.log(event);
-
-
     function date(date) {
       const jsDate = new Date(date);
       return jsDate.getDate()+'-'+(jsDate.getMonth()+1)+'-'+jsDate.getFullYear();

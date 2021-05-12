@@ -11,7 +11,9 @@ const initialState = {
   activities: [],
   remoteActivities: [],
   users: [],
-  remoteUsers: []
+  remoteUsers: [],
+  skills: [],
+  remoteSkills: []
 };
 function rootReducer(state = initialState, action) {
   if (action.type === ADD_PROJECT) {
@@ -45,6 +47,11 @@ function rootReducer(state = initialState, action) {
   if (action.type === "USERS_LOADED") {
     return Object.assign({}, state, {
       remoteUsers: action.payload
+    });
+  }
+  if (action.type === "SKILLS_LOADED") {
+    return Object.assign({}, state, {
+      remoteSkills: action.payload
     });
   }
   if (action.type === "API_ERRORED") {

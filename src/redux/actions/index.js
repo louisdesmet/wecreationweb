@@ -28,3 +28,7 @@ export function getActivities() {
 export function getUsers() {
   return { type: "USERS_REQUESTED" };
 }
+
+export function getSkills() {
+  return { type: "SKILLS_REQUESTED" };
+}

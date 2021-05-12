@@ -36,6 +36,7 @@ import ProjectShow from "./ProjectShow";
 import BusinessShow from "./BusinessShow";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
+  
   let user = null;
   if(JSON.parse(localStorage.getItem("user"))) {
     user = JSON.parse(localStorage.getItem("user")).email_verified_at;

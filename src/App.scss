@@ -97,22 +97,18 @@ html, body, #root, .App {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    
-    .project {
-      
+    .project { 
         flex: 1 0 50%;
         border-bottom: 1px solid #DFDDDE;
-        
         padding: 20px;
         box-sizing: border-box;
         .project-leader-btn {
-            background: black;
-            color: white;
-            margin-left: 40px;
-            border-radius: 10px;
-            padding: 5px;
-        }
-        
+            img {
+                width: 40px;
+                position: relative;
+                top: 13px;
+            }
+        } 
     }
     .project:nth-child(odd) {
         border-right: 1px solid #DFDDDE;
@@ -142,7 +138,6 @@ html, body, #root, .App {
     justify-content: space-between;
     width: 80%;
     margin: 100px auto 0 auto;
-
     .profile-default {
         width: 30%;
         img {
@@ -225,7 +220,6 @@ html, body, #root, .App {
         margin-top: 10px;
         width: 100%;
         padding: 5px;
-
     }
     button {
         width: 50%;
@@ -240,11 +234,10 @@ html, body, #root, .App {
 }
 
 .get-table {
-    
     display: flex;
-   align-items: center;
-   justify-content: center;
-   flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    flex-flow: row wrap;
     .get {
         width: 44%;
         box-sizing: border-box;
@@ -458,6 +451,9 @@ html, body, #root, .App {
             padding: 10px 0 0 0;
             box-sizing: border-box;
         }
+        span {
+            display: block;
+        }
      
     }
 
@@ -635,6 +631,38 @@ html, body, #root, .App {
 .mt-70 {
     margin-top: 70px!important;
 }
+.mt-15 {
+    margin-top: 15px!important;
+}
 .mb-70 {
     margin-bottom: 70px!important;
+}
+
+
+@media only screen and (max-width: 1200px) {
+    .nav div {
+        height: 70px;
+    }
+    
+}
+
+@media only screen and (max-width: 800px) {
+    .nav div {
+        height: 50px;
+    }
+    
+}
+
+@media only screen and (max-width: 600px) {
+    .nav div {
+        height: 40px;
+    }
+    
+}
+
+@media only screen and (max-width: 400px) {
+    .nav div {
+        height: 30px;
+    }
+    
 }

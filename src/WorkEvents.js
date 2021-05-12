@@ -13,6 +13,24 @@ function WorkEvents(props) {
       e.stopPropagation();
     }
 
+    function findSkill(list) {
+
+      let newSkills = [];
+      if(props.skills.data && list) {
+        props.skills.data.forEach(skill => {
+          JSON.parse(list).forEach(item => {
+            if(skill.id === item.id) {
+              newSkills.push(skill);
+            }
+          })
+        });
+      }
+
+      return newSkills.map(skill =>
+        <span key={skill.id}>{skill.name}</span>
+      );
+    }
+
     if(props.project.events && Object.keys(props.project.events).length) {
       return (
         <div className='event-panel' key={props.enabled} onClick={e => click(e)}>
@@ -25,18 +43,18 @@ function WorkEvents(props) {
             </div>
             {
                 props.project.events.map(event =>
-                    <div key={event.id}>
+                  <div key={event.id}>
                     <div className="event">
                         <h2>{event.name}</h2>
                         <p>{event.location}</p>
                         <p>{date(event.date)}</p>
                         <p>{new Date(event.date).toLocaleTimeString()}</p>
-                        <p>{event.skill}</p>
+                        <p>{event.skill ? findSkill(event.skill) : ''}</p>
                     </div>
                     <List event={event}/>
-                    <Subscribe event={event}/>
-                    <div className="line"></div>                    
-                    </div>
+                    <Subscribe event={event} skills={props.skills} list={event.skill}/>
+                    <div className="line"></div>
+                  </div>
                 )
             }
         </div>
@@ -44,9 +62,6 @@ function WorkEvents(props) {
     } else {
       return 'Dit project heeft nog geen events';
     }
-
-    
-  
 }
 
 function List({ event }) {
@@ -70,27 +85,27 @@ function List({ event }) {
       <div className="event-details">
         <div>
           <h3>Participanten</h3>
-          {                             
+          {
             event.users.map((user, index) =>
               (user.accepted ? <div key={String(user.id) + String(index)}>
               <p>{user.name}</p>
-            </div> : null)            
+            </div> : null)
             )
           }
         </div>
         <div>
           <Free free={event.free}/>
           <div><p>Dit werk event heeft {event.credits} werkuren in totaal.</p></div>
-        </div>                     
+        </div>
       </div>
     );
 }
 
-function Subscribe({ event }) {
+function Subscribe({ event, skills, list }) {
   
     const [hours, setHours] = useState(0);
   
-    if (event.free == 0 && event.credits != 0) {
+    if (event.generalFree == 0 && event.credits != 0) {
       return null;
     }
   
@@ -100,7 +115,7 @@ function Subscribe({ event }) {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem("token")
       }
-      if(event.free >= hours) {
+      if(event.generalFree >= hours) {
         axios.post('/subscribe', {
           'event_id': event.id,
           'user_id': JSON.parse(localStorage.getItem("user")).id,
@@ -117,7 +132,95 @@ function Subscribe({ event }) {
       }
       
     }
+
+    function joinSkill(skill) {
   
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem("token")
+      }
+
+      console.log(skills);
+      let skillHours = 0;
+      skills.data.forEach(skill => {
+        skill.events.forEach(eventItem => {
+      
+          
+          if(event.id === eventItem.id && skill.id === JSON.parse(eventItem.skill).id) {
+            skillHours += parseInt(eventItem.hours);
+          }
+        });
+      });
+
+console.log(skillHours);
+      console.log('nog ' + JSON.parse(list).find(item => item.id === skill.id).hours + ' vrij en zoveel ' + hours);
+      if(JSON.parse(list).find(item => item.id === skill.id).hours - skillHours >= hours) {
+        axios.post('/subscribe-skill', {
+          'event_id': event.id,
+          'user_id': JSON.parse(localStorage.getItem("user")).id,
+          'skill_id': skill.id,
+          'hours': hours
+        }, {
+          headers: headers
+        })
+        .then((response) => {
+          window.location.href = '/work';
+        })
+        .catch((error) => {
+      
+        })
+      }
+      
+    }
+
+    let newSkills = [];
+    if(skills.data && list) {
+      let hoursCounter = 0;
+      skills.data.forEach(skill => {
+        skill.events.forEach(eventItem => {
+          if(event.id === eventItem.id) {
+            hoursCounter += parseInt(eventItem.hours);
+          }
+
+        });
+        JSON.parse(list).forEach(item => {
+          if(skill.id === item.id) {
+            skill.hours = item.hours;
+            skill.free =  item.hours - hoursCounter;
+            newSkills.push(skill);
+          }
+        });
+
+        hoursCounter = 0;
+      });
+    }
+
+    function Free({free, skill}) {
+      if (free == 0) {
+        return (
+          <div className="free"><p>Project volzet</p></div>
+        );
+      }
+      return (
+        <div className="free"><p>Nog {free} vrije uren beschikbaar voor de skill {skill.name.toLowerCase()}</p></div>
+      );
+    }
+    
+    const skillList = (newSkills ? newSkills.map(skill =>
+      <div key={skill.id}>
+        <h2>{skill.name}</h2>
+
+        <Free skill={skill} free={skill.free}/>
+        <div><p>Dit werk event heeft voor de skill {skill.name.toLowerCase()} {skill.hours} werkuren in totaal.</p></div>
+
+        <div className="subscribe">
+          <input type="number" onChange={(e) => {setHours(parseInt(e.target.value))}} placeholder="Hoeveel uren wil je werken?"/>
+          <button onClick={() => joinSkill(skill)}>Schrijf je in</button>
+        </div>
+
+      </div>
+    ) : null);
+
     if (event.credits == 0) {
       return (
         <div className="subscribe">
@@ -127,9 +230,13 @@ function Subscribe({ event }) {
     }
   
     return (
-      <div className="subscribe">
-        <input type="number" onChange={(e) => {setHours(parseInt(e.target.value))}} placeholder="Hoeveel uren wil je werken?"/>
-        <button onClick={() => join()}>Schrijf je in</button>
+      <div>
+        <h2>Algemeen inschrijven</h2>
+        <div className="subscribe">
+          <input type="number" onChange={(e) => {setHours(parseInt(e.target.value))}} placeholder="Hoeveel uren wil je werken?"/>
+          <button onClick={() => join()}>Schrijf je in</button>
+        </div>
+        {skillList}    
       </div>
     )
 }

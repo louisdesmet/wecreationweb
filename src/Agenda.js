@@ -23,7 +23,6 @@ export const Agenda = ({getEvents}) => {
   function Popup(props) {
 
     function findEvent(id) {
-      console.log(events[parseInt(id)]);
       return events[parseInt(id)];
     }
 
