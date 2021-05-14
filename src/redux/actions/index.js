@@ -32,3 +32,7 @@ export function getUsers() {
 export function getSkills() {
   return { type: "SKILLS_REQUESTED" };
 }
+
+export function getMessages() {
+  return { type: "MESSAGES_REQUESTED" };
+}

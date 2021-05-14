@@ -10,6 +10,7 @@ export default function* watcherSaga() {
   yield takeEvery("ACTIVITIES_REQUESTED", activitiesWorkerSaga);
   yield takeEvery("USERS_REQUESTED", usersWorkerSaga);
   yield takeEvery("SKILLS_REQUESTED", skillsWorkerSaga);
+  yield takeEvery("MESSAGES_REQUESTED", messagesWorkerSaga);
 }
 
 function* projectsWorkerSaga() {
@@ -103,6 +104,19 @@ function* skillsWorkerSaga() {
   }
 }
 
+function* messagesWorkerSaga() {
+  try {
+    const payload = yield call(getMessages);
+    if(payload.message !== "Unauthenticated.") {
+      yield put({ type: "MESSAGES_LOADED", payload });
+    } else {
+      yield put({ type: "API_ERRORED", payload });
+    } 
+  } catch (e) {
+    yield put({ type: "API_ERRORED", payload: e });
+  }
+}
+
 function getProjects() {
   return fetch(url + '/projects', {
     headers: new Headers({
@@ -171,6 +185,17 @@ function getUsers() {
 
 function getSkills() {
   return fetch(url + '/skills', {
+    headers: new Headers({
+      'Authorization': 'Bearer ' + localStorage.getItem("token"),
+      'Accept': 'application/json'
+    })
+  }).then(function(response) {
+    return response.json();
+  });
+}
+
+function getMessages() {
+  return fetch(url + '/messages', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
