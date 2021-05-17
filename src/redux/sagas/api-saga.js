@@ -194,7 +194,7 @@ function getSkills() {
 }
 
 function getMessages() {
-  return fetch(url + '/messages', {
+  return fetch(locprod + '/messages', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
