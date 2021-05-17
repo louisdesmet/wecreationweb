@@ -4,6 +4,8 @@ import {getActivities} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Link, useParams } from 'react-router-dom';
 
+import locprod from './Global';
+
 export const AdminActivitiesEdit = ({getActivities}) => {
 
     useEffect(() => {
@@ -23,7 +25,6 @@ export const AdminActivitiesEdit = ({getActivities}) => {
     const [lat, setLat] = useState(activity.lat);
     const [lng, setLng] = useState(activity.lng);
     
-    const locprod = (process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/api' : 'http://api.test/api');
     
     function submit() {
         fetch(locprod + '/activities/' + activity.id, {

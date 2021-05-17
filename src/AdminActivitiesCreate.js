@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {getActivities} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Link } from 'react-router-dom';
+import locprod from './Global';
 
 export const AdminActivitiesCreate = ({getUsers}) => {
 
@@ -17,8 +18,6 @@ export const AdminActivitiesCreate = ({getUsers}) => {
     const [date, setDate] = useState("");
     const [lat, setLat] = useState("");
     const [lng, setLng] = useState("");
-    
-    const locprod = (process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/api' : 'http://api.test/api');
     
     function submit() {
         fetch(locprod + '/activities', {

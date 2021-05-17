@@ -1,6 +1,5 @@
 import { takeEvery, call, put } from "redux-saga/effects";
-
-const url = (process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/api' : 'http://api.test/api');
+import locprod from '../../Global';
 
 export default function* watcherSaga() {
   yield takeEvery("PROJECTS_REQUESTED", projectsWorkerSaga);
@@ -118,7 +117,7 @@ function* messagesWorkerSaga() {
 }
 
 function getProjects() {
-  return fetch(url + '/projects', {
+  return fetch(locprod + '/projects', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -129,7 +128,7 @@ function getProjects() {
 }
 
 function getBusinesses() {
-  return fetch(url + '/businesses', {
+  return fetch(locprod + '/businesses', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -140,7 +139,7 @@ function getBusinesses() {
 }
 
 function getEvents() {
-  return fetch(url + '/users/' + JSON.parse(localStorage.getItem("user")).id + '/events', {
+  return fetch(locprod + '/users/' + JSON.parse(localStorage.getItem("user")).id + '/events', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -151,7 +150,7 @@ function getEvents() {
 }
 
 function getAllEvents() {
-  return fetch(url + '/events', {
+  return fetch(locprod + '/events', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -162,7 +161,7 @@ function getAllEvents() {
 }
 
 function getActivities() {
-  return fetch(url + '/activities', {
+  return fetch(locprod + '/activities', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -173,7 +172,7 @@ function getActivities() {
 }
 
 function getUsers() {
-  return fetch(url + '/users', {
+  return fetch(locprod + '/users', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'
@@ -184,7 +183,7 @@ function getUsers() {
 }
 
 function getSkills() {
-  return fetch(url + '/skills', {
+  return fetch(locprod + '/skills', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'

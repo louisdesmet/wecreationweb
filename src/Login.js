@@ -6,7 +6,8 @@ import registreren from './img/registreren.PNG';
 
 import axios from 'axios';
 import { Link, Redirect } from "react-router-dom";
-axios.defaults.baseURL = (process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/api' : 'http://api.test/api');
+import locprod from './Global';
+axios.defaults.baseURL = locprod;
 axios.defaults.headers.common['Accept'] = 'application/json';
 
 function Login(props) {

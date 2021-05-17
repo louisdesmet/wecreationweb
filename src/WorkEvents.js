@@ -34,22 +34,16 @@ function WorkEvents(props) {
     if(props.project.events && Object.keys(props.project.events).length) {
       return (
         <div className='event-panel' key={props.enabled} onClick={e => click(e)}>
-            <div className="event-headers">
-              <p>Naam</p>
-              <p>Locatie</p>
-              <p>Datum</p>
-              <p>Tijdstip</p>
-              <p>Skill</p>
-            </div>
+           
             {
                 props.project.events.map(event =>
                   <div key={event.id}>
                     <div className="event">
-                        <h2>{event.name}</h2>
-                        <p>{event.location}</p>
-                        <p>{date(event.date)}</p>
-                        <p>{new Date(event.date).toLocaleTimeString()}</p>
-                        <p>{event.skill ? findSkill(event.skill) : ''}</p>
+                        <p>Naam: {event.name}</p>
+                        <p>Locatie: {event.location}</p>
+                        <p>Datum: {date(event.date)}</p>
+                        <p>Tijdstip: {new Date(event.date).toLocaleTimeString()}</p>
+                        <p>Skill: {event.skill ? findSkill(event.skill) : ''}</p>
                     </div>
                     <List event={event}/>
                     <Subscribe event={event} skills={props.skills} list={event.skill}/>

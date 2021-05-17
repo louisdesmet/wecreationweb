@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {getBusinesses} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Link, useParams } from 'react-router-dom';
+import locprod from './Global';
 
 export const AdminBusinessesEdit = ({getBusinesses}) => {
 
@@ -24,8 +25,6 @@ export const AdminBusinessesEdit = ({getBusinesses}) => {
     const [lat, setLat] = useState(business.lat);
     const [lng, setLng] = useState(business.lng);
     const [credits, setCredits] = useState(business.credits);
-    
-    const locprod = (process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/api' : 'http://api.test/api');
     
     function submit() {
         fetch(locprod + '/businesses/' + business.id, {

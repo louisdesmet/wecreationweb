@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {getUsers, getProjects} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Link, useParams } from 'react-router-dom';
+import locprod from './Global';
 
 export const AdminProjectsEdit = ({getUsers, getProjects}) => {
 
@@ -22,8 +23,6 @@ export const AdminProjectsEdit = ({getUsers, getProjects}) => {
     const [description, setDescription] = useState(project.description);
     const [credits, setCredits] = useState(project.credits);
     const [leader, setLeader] = useState(project.leader_id);
-    
-    const locprod = (process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/api' : 'http://api.test/api');
     
     function submit() {
         fetch(locprod + '/projects/' + project.id, {

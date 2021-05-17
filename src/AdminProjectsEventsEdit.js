@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
 import {useSelector} from "react-redux";
 import { Link, useParams } from 'react-router-dom';
+import locprod from './Global';
 
 export const AdminProjectsEventsEdit = ({}) => {
 
@@ -16,8 +17,6 @@ export const AdminProjectsEventsEdit = ({}) => {
     const [date, setDate] = useState(event.date);
     const [credits, setCredits] = useState(event.credits);
     const [project, setProject] = useState(event.project.id);
-    
-    const locprod = (process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/api' : 'http://api.test/api');
     
     function submit() {
         fetch(locprod + '/events/' + event.id, {

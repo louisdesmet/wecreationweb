@@ -471,8 +471,10 @@ html, body, #root, .App {
     padding: 15px;
     .event {
         display: flex;
-        p, h2 {
-            width: 20%;
+        flex-wrap: wrap;
+       
+        p {
+            flex: 1 0 50%;
             padding: 10px 0 0 0;
             box-sizing: border-box;
         }
@@ -480,15 +482,6 @@ html, body, #root, .App {
             display: block;
         }
      
-    }
-
-    .event-headers {
-        display: flex;
-        margin: 0 0 20px 0;
-        p, h2 {
-            width: 20%;           
-            box-sizing: border-box;
-        }
     }
     .event-details {
         display: flex;

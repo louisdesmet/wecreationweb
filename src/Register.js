@@ -5,8 +5,9 @@ import loginblauw from './img/loginblauw.PNG';
 
 import axios from 'axios';
 import { Redirect } from "react-router-dom";
+import locprod from './Global';
 
-axios.defaults.baseURL = (process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/api' : 'http://api.test/api');
+axios.defaults.baseURL = locprod;
 axios.defaults.headers.common['Accept'] = 'application/json';
 
 function Register(props) {
