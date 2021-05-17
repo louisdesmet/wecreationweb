@@ -140,10 +140,15 @@ html, body, #root, .App {
     margin: 100px auto 0 auto;
     .profile-default {
         width: 30%;
-        img {
-            margin: 0 auto;
+        .profile-icon {
+            margin: 0 auto 50px auto;
             display: block;
+            background: black;
+            padding: 37px;
             border-radius: 100%;
+
+
+            font-size: 120px;
         }
         p {
             text-align: center;
@@ -473,14 +478,23 @@ html, body, #root, .App {
         display: flex;
         flex-wrap: wrap;
        
-        p {
+        .event-detail {
             flex: 1 0 50%;
             padding: 10px 0 0 0;
             box-sizing: border-box;
+            display: flex;
+            p {
+                margin: 6px 0 0 10px;
+            }
+            img {
+                width: 40px;
+            }
+
         }
         span {
             display: block;
         }
+        
      
     }
     .event-details {

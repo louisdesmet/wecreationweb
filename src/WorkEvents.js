@@ -1,6 +1,10 @@
 import React, {useState} from "react";
 import Nav from "./Nav";
 import axios from 'axios';
+import location from './img/nav-see.png';
+import datum from './img/nav-agenda.png';
+import skillImg from './img/Skill.png';
+
 
 function WorkEvents(props) {
 
@@ -39,11 +43,24 @@ function WorkEvents(props) {
                 props.project.events.map(event =>
                   <div key={event.id}>
                     <div className="event">
-                        <p>Naam: {event.name}</p>
-                        <p>Locatie: {event.location}</p>
-                        <p>Datum: {date(event.date)}</p>
-                        <p>Tijdstip: {new Date(event.date).toLocaleTimeString()}</p>
-                        <p>Skill: {event.skill ? findSkill(event.skill) : ''}</p>
+                        <div className="event-detail bold">{event.name}</div>
+                        <div className="event-detail">
+                          
+                          <img src={location}/>
+                          <p>{event.location}</p>
+                        </div>
+                        <div className="event-detail">
+                          <img src={datum}/>
+                          <p>{date(event.date)}</p>
+                        </div>
+                        <div className="event-detail">
+                          <img src={datum}/>
+                          <p>{new Date(event.date).toLocaleTimeString()}</p>
+                        </div>
+                        <div className="event-detail">
+                          <img src={skillImg}/>
+                          <p>{event.skill ? findSkill(event.skill) : ''}</p>
+                        </div>
                     </div>
                     <List event={event}/>
                     <Subscribe event={event} skills={props.skills} list={event.skill}/>

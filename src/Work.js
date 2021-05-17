@@ -46,7 +46,7 @@ export const Work = ({getProjects, getSkills}) => {
           hours += parseInt(user.hours);
         })
         let totalSkillHours = 0; 
-
+console.log(skills);
         skills.data.forEach(skill => {
           skill.events.forEach(newEvent => {
             if(newEvent.id === event.id) {

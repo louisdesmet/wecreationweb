@@ -4,6 +4,8 @@ import {getProjects, getUsers} from "./redux/actions";
 import credit from './img/profile-credit.png';
 import Nav from "./Nav";
 import {useSelector} from "react-redux";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGlobe } from '@fortawesome/free-solid-svg-icons'
 
 import profileDefault from './img/profile-default.jpg';
 import { useHistory } from "react-router-dom";
@@ -123,7 +125,8 @@ export const Profiel = ({getUsers,getProjects}) => {
             <Nav/>
             <div className="profile-section-1">
                 <div className="profile-default">
-                    <img src={profileDefault} alt=""/>
+                  
+                    <FontAwesomeIcon icon={faGlobe} className="profile-icon" color="white"/> 
                     <p>Actief Sinds {date(loggedUser.created_at)}</p>
                 </div>         
                 <div>
