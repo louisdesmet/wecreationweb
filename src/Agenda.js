@@ -27,7 +27,7 @@ export const Agenda = ({getEvents}) => {
     }
 
     return (
-      <div className="popup">
+      <div className="agenda-popup">
         <span className="close" onClick={e => setEnabled(0)}>x</span>
         {event ? 
           <div>

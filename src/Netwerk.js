@@ -45,13 +45,14 @@ export const Network = ({getMessages}) => {
         <div className="height100">
             <Nav/>
             <div className="network">
-               
                 <div className="chat">
                     <div className="messages">
                         {messageList}
                     </div>
-                    <input onChange={(e) => setMessage(e.target.value)} type="text" placeholder="What's on your mind?"/>
-                    <input onClick={send} type="submit" value="verzenden"/>
+                    <div className="network-inputs">
+                        <input onChange={(e) => setMessage(e.target.value)} type="text" placeholder="What's on your mind?"/>
+                        <input className="network-submit" onClick={send} type="submit" value="Verzenden"/>
+                    </div>
                 </div>
             </div>
            

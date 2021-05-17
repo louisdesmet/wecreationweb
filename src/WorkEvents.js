@@ -105,17 +105,13 @@ function Subscribe({ event, skills, list }) {
   
     const [hours, setHours] = useState(0);
   
-    if (event.generalFree == 0 && event.credits != 0) {
-      return null;
-    }
-  
     function join() {
   
       const headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem("token")
       }
-      if(event.generalFree >= hours) {
+      if(event.generalFree >= hours && hours != 0) {
         axios.post('/subscribe', {
           'event_id': event.id,
           'user_id': JSON.parse(localStorage.getItem("user")).id,
@@ -125,10 +121,7 @@ function Subscribe({ event, skills, list }) {
         })
         .then((response) => {
           window.location.href = '/work';
-        })
-        .catch((error) => {
-      
-        })
+        }).catch((error) => {})
       }
       
     }
@@ -154,7 +147,7 @@ function Subscribe({ event, skills, list }) {
 
       console.log(skillHours);
       console.log('nog ' + JSON.parse(list).find(item => item.id === skill.id).hours + ' vrij en zoveel ' + hours);
-      if(JSON.parse(list).find(item => item.id === skill.id).hours - skillHours >= hours) {
+      if(skill.free >= hours && hours != 0) {
         axios.post('/subscribe-skill', {
           'event_id': event.id,
           'user_id': JSON.parse(localStorage.getItem("user")).id,
