@@ -82,30 +82,42 @@ function Middle(props) {
 
     if(props.current === "business" && businessFiltered !== null) {
         return (
-        <table className="businesses-container">
-            <thead>
-                <tr className="headers">
-                    <th>Bedrijf</th>
-                    <th>Omschrijving</th>
-                    <th>Locatie</th>
-                    <th>Credits</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
+        <div className="businesses-container">
+          
+                <div className="headers">
+                    <p>Bedrijf</p>
+                    <p>Omschrijving</p>
+                    <p>Locatie</p>
+                </div>
+           
+       
                 {
                     businessFiltered.map(business =>
-                        <tr key={business.id}>
-                            <td>{ business.name }</td>
-                            <td>{ business.description }</td>
-                            <td>{ business.location }</td>
-                            <td>{ business.credits }</td>
-                            <td className="buy">Koop</td>
-                        </tr>
+                        <div>
+                            <div key={business.id}>
+                                <p>{ business.name }</p>
+                                <p>{ business.description }</p>
+                                <p>{ business.location }</p>              
+                            </div>
+                            <div className="headers">
+                                <p>Product</p>
+                                <p>Op voorraad</p>
+                                <p>Prijs</p>
+                            </div>
+                            {
+                                business.products.map(product =>
+                                    <div key={product.id}>
+                                        <p>{ product.name }</p>
+                                        <p>{ product.amount }</p>
+                                        <p>{ product.price }</p>
+                                    </div>
+                                )
+                            }
+                        </div>
                     )
                 }
-            </tbody>          
-        </table>
+             
+        </div>
         );
     } else if(props.current === "service" && serviceFiltered !== null) {
         return (
@@ -115,8 +127,6 @@ function Middle(props) {
                     <th>Bedrijf</th>
                     <th>Omschrijving</th>
                     <th>Locatie</th>
-                    <th>Credits</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -126,8 +136,6 @@ function Middle(props) {
                             <td>{ business.name }</td>
                             <td>{ business.description }</td>
                             <td>{ business.location }</td>
-                            <td>{ business.credits }</td>
-                            <td className="buy">Koop</td>
                         </tr>
                     )
                 }

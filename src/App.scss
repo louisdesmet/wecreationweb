@@ -340,18 +340,17 @@ html, body, #root, .App {
 
 .businesses-container {
     width: 94%;
-    
     margin: 20px 3%;
-    border-collapse: collapse;
     .headers {
         border-bottom: 1px solid black;      
     }
-    th {
-        padding: 3px 0;
+    div {
+        display: flex;
+        p {
+
+        }
     }
-    td {
-        padding: 7px 3px;
-    }
+
 }
 
 .map-container {
@@ -393,16 +392,35 @@ html, body, #root, .App {
         .messages {
             width: 100%;
             height: 95%;
-            div {
+            .message {
                 background: #0084FF;
                 color: white;
-                padding: 15px;
-                margin: 15px;
+                margin: 8px;
                 width: fit-content;
                 border-radius: 18px;
-                span {
-                    margin-left: 30px;
-                    font-size: 1;
+                display: flex;
+                div {
+                    padding: 8px 0;
+
+                }
+                .message-name {
+                    font-size: 0.8em;
+                }
+                .message-date {
+                    margin: 7px 15px 0 50px;
+                    font-size: 0.8em;
+                }
+                .netwerk-profile-icon {
+                    margin: 0 5px 0 15px;
+                   
+                    svg {
+                        background: white;
+                        padding: 5px;
+                        border-radius: 100%;
+                        margin: 7px 0 0 0;
+                    }
+                    
+                    
                 }
             }
         }

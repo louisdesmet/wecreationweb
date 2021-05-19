@@ -5,7 +5,8 @@ import credit from './img/profile-credit.png';
 import Nav from "./Nav";
 import {useSelector} from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGlobe } from '@fortawesome/free-solid-svg-icons'
+import { faChess, faAddressCard, faBeer, faBalanceScale, faMugHot, faBurn, faAnchor, faBlind, faBowlingBall, 
+    faRadiation, faBandAid, faBath, faBed, faBible, faBlender, faBong, faBox } from '@fortawesome/free-solid-svg-icons'
 
 import profileDefault from './img/profile-default.jpg';
 import { useHistory } from "react-router-dom";
@@ -79,7 +80,6 @@ export const Profiel = ({getUsers,getProjects}) => {
     let clonedEvents = [];
 
     if(projects.data) {
-       
         Object.values(projects.data).forEach(project => {
             project.events.forEach(event => {
                 event.users.forEach(user => {
@@ -119,16 +119,54 @@ export const Profiel = ({getUsers,getProjects}) => {
         })
     }
 
+    function findIcon() {
+        switch(JSON.parse(localStorage.getItem("user")).icon) {
+            case "faChess": return faChess;
+            break;
+            case "faAddressCard": return faAddressCard;
+            break;
+            case "faBeer": return faBeer;
+            break;
+            case "faBalanceScale": return faBalanceScale;
+            break;
+            case "faMugHot": return faMugHot;
+            break;
+            case "faBurn": return faBurn;
+            break;
+            case "faAnchor": return faAnchor;
+            break;
+            case "faBlind": return faBlind;
+            break;
+            case "faBowlingBall": return faBowlingBall;
+            break;
+            case "faRadiation": return faRadiation;
+            break;
+            case "faBandAid": return faBandAid;
+            break;
+            case "faBath": return faBath;
+            break;
+            case "faBed": return faBed;
+            break;
+            case "faBible": return faBible;
+            break;
+            case "faBlender": return faBlender;
+            break;
+            case "faBong": return faBong;
+            break;
+            case "faBox": return faBox;
+            break;
+          }
+    }
+
     const userList =  users.data ? users.data.map(user => <option key={user.id} value={user.id}>{user.name}</option>) : null;
     return (
         <div>
             <Nav/>
             <div className="profile-section-1">
                 <div className="profile-default">
-                  
-                    <FontAwesomeIcon icon={faGlobe} className="profile-icon" color="white"/> 
+                    <FontAwesomeIcon icon={findIcon()} className="profile-icon" color="white"/>
                     <p>Actief Sinds {date(loggedUser.created_at)}</p>
-                </div>         
+                </div>
                 <div>
                     <p className="profile-name">{loggedUser.name}</p>
                     <p>7. Collectief verteller</p>
