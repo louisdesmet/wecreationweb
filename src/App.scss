@@ -102,6 +102,11 @@ html, body, #root, .App {
         border-bottom: 1px solid #DFDDDE;
         padding: 20px;
         box-sizing: border-box;
+        .project-leader-img {
+            width: 40px;
+            position: relative;
+                top: 12px;
+        }
         .project-leader-btn {
             img {
                 width: 40px;
@@ -500,6 +505,9 @@ html, body, #root, .App {
     .event-details {
         display: flex;
         margin: 25px auto;
+        img {
+            width: 40px;
+        }
         div {
             width: 50%;
         }
@@ -507,6 +515,10 @@ html, body, #root, .App {
             font-size: 20px;
         }
        
+    }
+    .skillImg {
+        width: 80px;
+        padding: 5px 0;
     }
     .subscribe {
         margin-top: 15px;

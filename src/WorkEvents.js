@@ -4,7 +4,13 @@ import axios from 'axios';
 import location from './img/nav-see.png';
 import datum from './img/nav-agenda.png';
 import skillImg from './img/Skill.png';
+import navNetwork from './img/nav-netwerk.png';
 
+import regie from './img/Regie.png';
+import montage from './img/Montage.png';
+import mode from './img/Mode.png';
+import dans from './img/Dans.png';
+import camera from './img/Camera.png';
 
 function WorkEvents(props) {
 
@@ -57,10 +63,12 @@ function WorkEvents(props) {
                           <img src={datum}/>
                           <p>{new Date(event.date).toLocaleTimeString()}</p>
                         </div>
-                        <div className="event-detail">
-                          <img src={skillImg}/>
-                          <p>{event.skill ? findSkill(event.skill) : ''}</p>
-                        </div>
+                        {event.skill ? 
+                          <div className="event-detail">
+                            <img src={skillImg}/>
+                            <p>{findSkill(event.skill)}</p>
+                          </div> 
+                        : ''}
                     </div>
                     <List event={event}/>
                     <Subscribe event={event} skills={props.skills} list={event.skill}/>
@@ -95,7 +103,7 @@ function List({ event }) {
     return (
       <div className="event-details">
         <div>
-          <h3>Participanten</h3>
+          <img src={navNetwork}/>
           {
             event.users.map((user, index) =>
               (user.accepted ? <div key={String(user.id) + String(index)}>
@@ -209,10 +217,27 @@ function Subscribe({ event, skills, list }) {
         <div className="free"><p>Nog {free} vrije uren beschikbaar voor de skill {skill.name.toLowerCase()}</p></div>
       );
     }
+
+    function findIcon(name) {
+      switch(name) {
+        case "regie": return regie;
+        break;
+        case "montage": return montage;
+        break;
+        case "mode": return mode;
+        break;
+        case "dans": return dans;
+        break;
+        case "camera": return camera;
+        break;
+      
+
+      }
+    }
     
     const skillList = (newSkills ? newSkills.map(skill =>
       <div key={skill.id}>
-        <h2>{skill.name}</h2>
+        <img className="skillImg" src={findIcon(skill.name)}/>
 
         <Free skill={skill} free={skill.free}/>
         <div><p>Dit werk event heeft voor de skill {skill.name.toLowerCase()} {skill.hours} werkuren in totaal.</p></div>

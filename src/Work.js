@@ -6,6 +6,7 @@ import Nav from "./Nav";
 import WorkEvents from "./WorkEvents";
 import { useHistory } from "react-router-dom";
 import leaderImg from './img/nav-profiel.png';
+import navProfile from './img/nav-profiel.png';
 
 export const Work = ({getProjects, getSkills}) => {
 
@@ -89,7 +90,7 @@ console.log(skills);
           }}>
               <p className="bold">{project.name}{JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <span className="project-leader-btn" onClick={e => projectLeaderBoard(e, project.id)}><img src={leaderImg} alt=""/></span> : null}</p>
               <p className="mt-15">{project.description}</p>
-              <p>Projectleider: {project.leader.name}</p>
+              <p><img className="project-leader-img" src={navProfile}/>{project.leader.name}</p>
               {project.enabled == 1 ? <WorkEvents project={project} skills={skills}/> : null}
           </div>
         )
