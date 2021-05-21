@@ -21,7 +21,7 @@ export const Get = ({getBusinesses}) => {
     }
 
     return (
-        <div>
+        <div className="height100">
             <Nav/>
             <div className="get-table">              
                 <div className="services get">
@@ -93,7 +93,7 @@ function Middle(props) {
             headers: headers
           })
           .then((response) => {
-            window.location.href = '/get';
+            window.location.href = '/orders/' + response.data.id;
           })
           .catch((error) => {
             
@@ -119,7 +119,6 @@ function Middle(props) {
                                     <p>{ business.description }</p>
                                     <p>{ business.location }</p>              
                                 </div>
-                                {console.log(business.products)}
                                 {
                                     Object.keys(business.products).length !== 0 ? <div className="headers prod-head">
                                         <p>Product</p>
@@ -149,7 +148,7 @@ function Middle(props) {
              
         </div>
         );
-    } else if(props.current === "service" && serviceFiltered !== null) {
+    } /*else if(props.current === "service" && serviceFiltered !== null) {
         return (
         <table className="businesses-container">
             <thead>
@@ -172,7 +171,7 @@ function Middle(props) {
             </tbody>          
         </table>
         );
-    }
+    }*/
     return null;
 }
 

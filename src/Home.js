@@ -4,7 +4,7 @@ import Nav from "./Nav";
 function Home(props) {
 
     return (
-        <div>
+        <div className="height100">
           <Nav/>
           home
         </div>

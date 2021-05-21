@@ -160,7 +160,7 @@ export const Profiel = ({getUsers,getProjects}) => {
 
     const userList =  users.data ? users.data.map(user => <option key={user.id} value={user.id}>{user.name}</option>) : null;
     return (
-        <div>
+        <div className="height100">
             <Nav/>
             <div className="profile-section-1">
                 <div className="profile-default">

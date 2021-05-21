@@ -152,20 +152,15 @@ function Subscribe({ event, skills, list }) {
         'Authorization': 'Bearer ' + localStorage.getItem("token")
       }
 
-      console.log(skills);
       let skillHours = 0;
       skills.data.forEach(skill => {
         skill.events.forEach(eventItem => {
-      
-          console.log(event.id + '' + eventItem.id + '' + skill.id + '' + JSON.parse(eventItem.skill).id);
           if(event.id === eventItem.id && skill.id === JSON.parse(eventItem.skill).id) {
             skillHours += parseInt(eventItem.hours);
           }
         });
       });
 
-      console.log(skillHours);
-      console.log('nog ' + JSON.parse(list).find(item => item.id === skill.id).hours + ' vrij en zoveel ' + hours);
       if(skill.free >= hours && hours != 0) {
         axios.post('/subscribe-skill', {
           'event_id': event.id,

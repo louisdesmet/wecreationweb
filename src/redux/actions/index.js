@@ -36,3 +36,7 @@ export function getSkills() {
 export function getMessages() {
   return { type: "MESSAGES_REQUESTED" };
 }
+
+export function getOrders() {
+  return { type: "ORDERS_REQUESTED" };
+}

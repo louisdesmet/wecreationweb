@@ -34,6 +34,7 @@ import WorkLeaderBoard from "./WorkLeaderBoard";
 import EventShow from "./EventShow";
 import ProjectShow from "./ProjectShow";
 import BusinessShow from "./BusinessShow";
+import OrderShow from "./OrderShow";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   
@@ -66,6 +67,7 @@ function App() {
               <PrivateRoute path="/events/:id" component={EventShow}/>
               <PrivateRoute path="/projects/:id" component={ProjectShow}/>
               <PrivateRoute path="/businesses/:id" component={BusinessShow}/>
+              <PrivateRoute path="/orders/:id" component={OrderShow}/>
 
               <PrivateRoute path="/admin" component={AdminProjects}/>
               <PrivateRoute path="/admin-projects/create" component={AdminProjectsCreate}/>

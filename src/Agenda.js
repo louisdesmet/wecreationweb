@@ -57,13 +57,15 @@ export const Agenda = ({getEvents}) => {
   return (
     <div className="agenda">
       <Nav/>
-      <FullCalendar
-      plugins={[ dayGridPlugin ]}
-      initialView="dayGridMonth"
-      events={fcEvents}
-      eventClick={handleEventClick}
-      height="parent"
-      />
+      <div className="agenda-container">
+        <FullCalendar
+        plugins={[ dayGridPlugin ]}
+        initialView="dayGridMonth"
+        events={fcEvents}
+        eventClick={handleEventClick}
+        height="parent"
+        />
+      </div>
       {enabled ? <Popup event={event}/> : null}
     </div>
   );

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {getActivities, getBusinesses} from "./redux/actions";
 import {useSelector} from "react-redux";
@@ -14,6 +14,10 @@ let myIcon = L.icon({
 
 export const See = ({getBusinesses, getActivities}) => {
 
+  const [a, setA] = useState(true);
+  const [b, setB] = useState(false);
+  const [c, setC] = useState(false);
+
   useEffect(() => {
     getBusinesses();
     getActivities();
@@ -24,8 +28,10 @@ export const See = ({getBusinesses, getActivities}) => {
   const businesses = useSelector(state => state.remoteBusinesses);
   const activities = useSelector(state => state.remoteActivities);
 
-  const businessMarkers = businesses.data ? (businesses.data.map(business =>
-    <Marker key={business.id} position={[business.lat, business.lng]} icon={myIcon}>
+  const businessMarkers = businesses.data ? businesses.data.filter((business) => {
+      return business.type === 'business';
+  }).map(business => {
+    return <Marker key={business.id} position={[business.lat, business.lng]} icon={myIcon}>
       <Popup className="popup">
         <h2>{business.name}</h2>
         <p>{business.description}</p>
@@ -33,7 +39,20 @@ export const See = ({getBusinesses, getActivities}) => {
         <p>kost je: {business.credits} credits</p>
       </Popup>
     </Marker>
-  )) : null;
+  }) : null;
+
+  const serviceMarkers = businesses.data ? businesses.data.filter((business) => {
+      return business.type === 'service';
+  }).map(business => {
+    return <Marker key={business.id} position={[business.lat, business.lng]} icon={myIcon}>
+      <Popup className="popup">
+        <h2>{business.name}</h2>
+        <p>{business.description}</p>
+        <p>{business.location}</p>
+        <p>kost je: {business.credits} credits</p>
+      </Popup>
+    </Marker>
+  }) : null;
 
   const activityMarkers = activities.data ? (activities.data.map(activity =>
     <Marker key={activity.id} position={[activity.lat, activity.lng]} icon={myIcon}>
@@ -45,16 +64,37 @@ export const See = ({getBusinesses, getActivities}) => {
     </Marker>
   )) : null;
 
+
+  function business() {
+    a ? setA(false) : setA(true);
+
+  
+  }
+  
+  function service() {
+    b ? setB(false) : setB(true);
+  }
+
+  function event() {
+    c ? setC(false) : setC(true);
+  }
+
   return (
     <div className="map-container">
       <Nav/>
+      <div className="filters">
+        <div onClick={() => {business()}}><p>Handelaars</p></div>
+        <div onClick={() => {service()}}><p>Diensten</p></div>
+        <div onClick={() => {event()}}><p>Evenementen</p></div>
+      </div>
       <Map className="map" center={position} zoom={13}>
         <TileLayer
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {businessMarkers}
-        {activityMarkers}
+        { a ? businessMarkers : null}
+        { b ? serviceMarkers : null}
+        { c ? activityMarkers : null}
     </Map>
     </div>
   );

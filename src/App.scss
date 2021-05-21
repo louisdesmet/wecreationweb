@@ -1,4 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+@font-face {
+    font-family: perMar;
+    src: url('./font/PermanentMarker-Regular.ttf');
+  }
 @import '~@fullcalendar/common/main.css';
 @import '~@fullcalendar/daygrid/main.css';
 @import '~@fullcalendar/timegrid/main.css';
@@ -72,11 +76,11 @@ html, body, #root, .App {
 
 .nav {
     display: flex;
-  
+    height: 14%;
     
     div {
         width: 33%;
-        height: 150px;
+        height: 100%;
         text-align: center;
         a {
             width: 100%;
@@ -384,10 +388,27 @@ html, body, #root, .App {
 
 .map-container {
     height: 100%;
+    .filters {
+        width: 30%;
+        height: 5%;
+        display: flex;
+        justify-content: space-between;
+        margin: 0 auto;
+        div {
+           p {
+            color: #E01465;
+            padding: 5px;
+            font-family: perMar;
+           }
+       
+            
+        }
+    }
     .map {
         width: 80%;
-        margin: 5vh auto;
-        height: 78%;
+        margin: 0 auto;
+        height: 76%;
+        box-sizing: border-box;
     }
 }
 .network {
@@ -521,6 +542,23 @@ html, body, #root, .App {
                 }
             }
         }
+    }
+}
+
+.order-details {
+    width: 80%;
+    margin: 0 auto;
+    h1 {
+        text-align: center;
+        margin: 100px 0 0 0;
+    }
+    h2 {
+        margin: 5px 0 0 0;
+        text-align: center;
+    }
+    p {
+        margin: 5px 0 0 0;
+        text-align: center;
     }
 }
 
@@ -664,10 +702,14 @@ html, body, #root, .App {
 }
 
 .agenda {
-    width: 96%;
+    width: 100%;
     margin: 0 auto;
-    height: 80%;
-
+    height: 100%;
+    .agenda-container {
+        width: 96%;
+        margin: 0 auto;
+         height: 100%;
+    }
     .fc-media-screen {
         width: 100%;
         height: 100%;
@@ -681,6 +723,9 @@ html, body, #root, .App {
     }
 }
 
+.height100 {
+    height: 100%;
+}
 
 
 .bold {
