@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
+import Axios from 'axios';
 
 export const Get = ({getBusinesses}) => {
 
@@ -73,12 +74,31 @@ function Middle(props) {
 
     const businesses = useSelector(state => state.remoteBusinesses);
  
-    const businessFiltered = businesses.data ? ( Object.values(businesses.data).filter(function(item){
+    const businessFiltered = businesses.data ? ( Object.values(businesses.data).filter(function(item) {
         return item.type === 'business';
     })) : null;
-    const serviceFiltered = businesses.data ? ( Object.values(businesses.data).filter(function(item){
+    const serviceFiltered = businesses.data ? ( Object.values(businesses.data).filter(function(item) {
         return item.type === 'service';
     })) : null;
+
+    function buy(product) {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        }
+        Axios.post('/orders', {
+            product: product.id,
+            user: JSON.parse(localStorage.getItem("user")).id
+          }, {
+            headers: headers
+          })
+          .then((response) => {
+            window.location.href = '/get';
+          })
+          .catch((error) => {
+            
+          })
+    }
 
     if(props.current === "business" && businessFiltered !== null) {
         return (
@@ -90,32 +110,42 @@ function Middle(props) {
                     <p>Locatie</p>
                 </div>
            
-       
-                {
-                    businessFiltered.map(business =>
-                        <div>
-                            <div key={business.id}>
-                                <p>{ business.name }</p>
-                                <p>{ business.description }</p>
-                                <p>{ business.location }</p>              
+                <div className="business-body">
+                    {
+                        businessFiltered.map(business =>
+                            <div className="business-data">
+                                <div className="business-data-inner" key={business.id}>
+                                    <p>{ business.name }</p>
+                                    <p>{ business.description }</p>
+                                    <p>{ business.location }</p>              
+                                </div>
+                                {console.log(business.products)}
+                                {
+                                    Object.keys(business.products).length !== 0 ? <div className="headers prod-head">
+                                        <p>Product</p>
+                                        <p>Op voorraad</p>
+                                        <p>Prijs</p>
+                                        <p></p>
+                                    </div> : null
+                                }
+                                
+                                <div className="products">
+                                    {
+                                        business.products.map(product =>
+                                            <div className="product" key={product.id}>
+                                                <p>{ product.name }</p>
+                                                <p>{ product.amount }</p>
+                                                <p>{ product.price }</p>
+                                                <p onClick={() => buy(product)}><span className="product-buy">Aankopen</span></p>
+                                            </div>
+                                        )
+                                    }
+                                </div>
                             </div>
-                            <div className="headers">
-                                <p>Product</p>
-                                <p>Op voorraad</p>
-                                <p>Prijs</p>
-                            </div>
-                            {
-                                business.products.map(product =>
-                                    <div key={product.id}>
-                                        <p>{ product.name }</p>
-                                        <p>{ product.amount }</p>
-                                        <p>{ product.price }</p>
-                                    </div>
-                                )
-                            }
-                        </div>
-                    )
-                }
+                        )
+                    }
+                </div>
+                
              
         </div>
         );
