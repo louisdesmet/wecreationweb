@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
-import {getBusinesses} from "./redux/actions";
+import {getBusinesses, getOrders} from "./redux/actions";
 import {useSelector} from "react-redux";
 import Nav from "./Nav";
 import ReactDOM from 'react-dom'
@@ -9,11 +9,13 @@ import { faAngleDown, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
 
-export const Get = ({getBusinesses}) => {
+export const Get = ({getBusinesses, getOrders}) => {
 
     const [current, setCurrent] = useState();
     useEffect(() => {
         getBusinesses();
+        getOrders();
+
     }, []);
 
     function show(type) {
@@ -60,7 +62,7 @@ export const Get = ({getBusinesses}) => {
                 <div className="history get">
                     <h2>Historiek</h2>
                     <p>Kies voor deze optie als je een overzicht wil van al jouw voorgaande transacties.</p>
-                    <div className="list-button">
+                    <div className="list-button" onClick={() => show("history")}>
                         <FontAwesomeIcon icon={faAngleDown}  size="lg" color="white"/>
                     </div>                       
                 </div>
@@ -73,6 +75,7 @@ export const Get = ({getBusinesses}) => {
 function Middle(props) {
 
     const businesses = useSelector(state => state.remoteBusinesses);
+    const orders = useSelector(state => state.remoteOrders);
  
     const businessFiltered = businesses.data ? ( Object.values(businesses.data).filter(function(item) {
         return item.type === 'business';
@@ -80,6 +83,10 @@ function Middle(props) {
     const serviceFiltered = businesses.data ? ( Object.values(businesses.data).filter(function(item) {
         return item.type === 'service';
     })) : null;
+
+    const userOrders = orders.data ? orders.data.filter(order => {
+        return order.user.id === JSON.parse(localStorage.getItem("user")).id
+    }) : null;
 
     function buy(product) {
         const headers = {
@@ -148,11 +155,11 @@ function Middle(props) {
              
         </div>
         );
-    } /*else if(props.current === "service" && serviceFiltered !== null) {
+    } else if(props.current === "service" && serviceFiltered !== null) {
         return (
         <table className="businesses-container">
             <thead>
-                <tr className="headers">
+                <tr>
                     <th>Bedrijf</th>
                     <th>Omschrijving</th>
                     <th>Locatie</th>
@@ -171,12 +178,36 @@ function Middle(props) {
             </tbody>          
         </table>
         );
-    }*/
+    } else if(props.current === "history" && userOrders !== null) {
+        console.log(userOrders);
+        return (
+            <table className="businesses-container">
+                <thead>
+                    <tr>
+                        <th>Product naam</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        userOrders.map(order =>
+                         
+                            (order.accepted === 1 ? <tr key={order.id}>
+                                <td>{ order.product.name }</td>
+                                <td>{ order.product.price }</td>
+                            </tr> : null)
+                           
+                        )
+                    }
+                </tbody>          
+            </table>
+        );
+    }
     return null;
 }
 
 
 export default connect(
     null,
-    {getBusinesses}
+    {getBusinesses, getOrders}
   )(Get);

@@ -3,8 +3,10 @@ import {connect} from "react-redux";
 import {getActivities} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Link, useParams } from 'react-router-dom';
-
 import locprod from './Global';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 export const AdminActivitiesEdit = ({getActivities}) => {
 
@@ -21,10 +23,14 @@ export const AdminActivitiesEdit = ({getActivities}) => {
 
     const [name, setName] = useState(activity.name);
     const [location, setLocation] = useState(activity.location);
-    const [date, setDate] = useState(activity.date);
+    const [date, setDate] = useState(new Date());
     const [lat, setLat] = useState(activity.lat);
     const [lng, setLng] = useState(activity.lng);
-    
+
+    function format(date) {
+        const jsDate = new Date(date);
+        return jsDate.getFullYear()+'-'+(jsDate.getMonth()+1)+'-'+jsDate.getDate()+' '+jsDate.getHours()+':'+jsDate.getMinutes()+':'+jsDate.getSeconds();
+    }
     
     function submit() {
         fetch(locprod + '/activities/' + activity.id, {
@@ -37,7 +43,7 @@ export const AdminActivitiesEdit = ({getActivities}) => {
           body: JSON.stringify({
             name: name,
             location: location,
-            date: date,
+            date: format(date),
             lat: lat,
             lng: lng
           })
@@ -51,7 +57,7 @@ export const AdminActivitiesEdit = ({getActivities}) => {
           <h2>Activiteit aanmaken</h2>
           <input onChange={e => setName(e.target.value)} defaultValue={activity.name} placeholder='Naam'/>
           <input onChange={e => setLocation(e.target.value)} defaultValue={activity.location} placeholder='Location'/>
-          <input onChange={e => setDate(e.target.value)} defaultValue={activity.date} placeholder='Date'/>
+          <DatePicker selected={date} onChange={(date) => setDate(date)} />
           <input onChange={e => setLat(e.target.value)} defaultValue={activity.lat} placeholder='Latitude'/>
           <input onChange={e => setLng(e.target.value)} defaultValue={activity.lng} placeholder='Longitude'/>
           <input onClick={submit} type='submit' value='Toevoegen'/>

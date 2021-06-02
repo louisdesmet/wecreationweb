@@ -35,6 +35,7 @@ import EventShow from "./EventShow";
 import ProjectShow from "./ProjectShow";
 import BusinessShow from "./BusinessShow";
 import OrderShow from "./OrderShow";
+import BusinessDashboard from "./BusinessDashboard";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   
@@ -44,10 +45,58 @@ const PrivateRoute = ({component: Component, ...rest}) => {
   }
   return (
       <Route {...rest} render={props => (
-        localStorage.getItem('token') !== 'null' && localStorage.getItem('token') !== null && typeof localStorage.getItem('token') !== 'undefined' && user !== null ? <Component {...props} /> : <Redirect to="/login" />
+        localStorage.getItem('token') !== 'null' && 
+        localStorage.getItem('token') !== null && 
+        typeof localStorage.getItem('token') !== 'undefined' && 
+        user !== null ? 
+        <Component {...props} /> : 
+        <Redirect to="/login" />
       )} />
   );
 };
+
+const AdminRoute = ({component: Component, ...rest}) => {
+  
+  let user = null;
+  if(JSON.parse(localStorage.getItem("user"))) {
+    user = JSON.parse(localStorage.getItem("user"));
+    return (
+      <Route {...rest} render={props => (
+        localStorage.getItem('token') !== 'null' &&
+        localStorage.getItem('token') !== null &&
+        typeof localStorage.getItem('token') !== 'undefined' &&
+        user.email_verified_at !== null &&
+        user.roles.find(role => role.name === 'admin') ?
+        <Component {...props} /> :
+        <Redirect to="/login" />
+      )} />
+    );
+  }
+  return <Redirect to="/login" />;
+  
+};
+
+const BusinessRoute = ({component: Component, ...rest}) => {
+  
+  let user = null;
+  if(JSON.parse(localStorage.getItem("user"))) {
+    user = JSON.parse(localStorage.getItem("user"));
+    return (
+      <Route {...rest} render={props => (
+        localStorage.getItem('token') !== 'null' &&
+        localStorage.getItem('token') !== null &&
+        typeof localStorage.getItem('token') !== 'undefined' &&
+        user.email_verified_at !== null &&
+        user.roles.find(role => role.name === 'business') ?
+        <Component {...props} /> :
+        <Redirect to="/login" />
+      )} />
+    );
+  }
+  return <Redirect to="/login" />;
+  
+};
+
 
 function App() {
   return (
@@ -64,25 +113,27 @@ function App() {
               <PrivateRoute path="/agenda" component={Agenda}/>
               <PrivateRoute path="/netwerk" component={Netwerk}/>
 
+              <BusinessRoute path="/handelaar-dashboard" component={BusinessDashboard}/>
+
               <PrivateRoute path="/events/:id" component={EventShow}/>
               <PrivateRoute path="/projects/:id" component={ProjectShow}/>
               <PrivateRoute path="/businesses/:id" component={BusinessShow}/>
               <PrivateRoute path="/orders/:id" component={OrderShow}/>
 
-              <PrivateRoute path="/admin" component={AdminProjects}/>
-              <PrivateRoute path="/admin-projects/create" component={AdminProjectsCreate}/>
-              <PrivateRoute path="/admin-projects/edit/:id" component={AdminProjectsEdit}/>
-              <PrivateRoute path="/admin-projects" component={AdminProjects}/>
-              <PrivateRoute path="/admin-projects-events/create" component={AdminProjectsEventsCreate}/>
-              <PrivateRoute path="/admin-projects-events/edit/:id" component={AdminProjectsEventsEdit}/>
-              <PrivateRoute path="/admin-projects-events" component={AdminProjectsEvents}/>
-              <PrivateRoute path="/admin-businesses/create" component={AdminBusinessesCreate}/>
-              <PrivateRoute path="/admin-businesses/edit/:id" component={AdminBusinessesEdit}/>
-              <PrivateRoute path="/admin-businesses" component={AdminBusinesses}/>
-              <PrivateRoute path="/admin-activities/create" component={AdminActivitiesCreate}/>
-              <PrivateRoute path="/admin-activities/edit/:id" component={AdminActivitiesEdit}/>
-              <PrivateRoute path="/admin-activities" component={AdminActivities}/>
-              <PrivateRoute path="/admin-user-verification" component={AdminUserVerification}/>
+              <AdminRoute path="/admin" component={AdminProjects}/>
+              <AdminRoute path="/admin-projects/create" component={AdminProjectsCreate}/>
+              <AdminRoute path="/admin-projects/edit/:id" component={AdminProjectsEdit}/>
+              <AdminRoute path="/admin-projects" component={AdminProjects}/>
+              <AdminRoute path="/admin-projects-events/create" component={AdminProjectsEventsCreate}/>
+              <AdminRoute path="/admin-projects-events/edit/:id" component={AdminProjectsEventsEdit}/>
+              <AdminRoute path="/admin-projects-events" component={AdminProjectsEvents}/>
+              <AdminRoute path="/admin-businesses/create" component={AdminBusinessesCreate}/>
+              <AdminRoute path="/admin-businesses/edit/:id" component={AdminBusinessesEdit}/>
+              <AdminRoute path="/admin-businesses" component={AdminBusinesses}/>
+              <AdminRoute path="/admin-activities/create" component={AdminActivitiesCreate}/>
+              <AdminRoute path="/admin-activities/edit/:id" component={AdminActivitiesEdit}/>
+              <AdminRoute path="/admin-activities" component={AdminActivities}/>
+              <AdminRoute path="/admin-user-verification" component={AdminUserVerification}/>
 
               <PrivateRoute path="/" component={Home}/>
           </Switch>

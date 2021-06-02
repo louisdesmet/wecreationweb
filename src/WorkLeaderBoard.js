@@ -119,7 +119,7 @@ export const WorkLeaderBoard = ({getProjects}) => {
     ) : null;
 
     return (
-      <div>
+      <div className="height100">
         <Nav/>
         <h2 className="project-leader-titles">Verifieer de mensen die zich hebben ingeschreven op jouw events.</h2>
         {eventList}

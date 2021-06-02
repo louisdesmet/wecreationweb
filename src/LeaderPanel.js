@@ -35,7 +35,7 @@ export const LeaderPanel = ({getProjects}) => {
 
 
     return (
-        <div className='admin'>
+        <div className='admin height100'>
             <div className='admin-container'>
                 <div className='admin-container-left'>
                 <h1>Admin Paneel</h1>

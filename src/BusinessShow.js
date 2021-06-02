@@ -23,7 +23,7 @@ export const BusinessShow = ({getBusinesses}) => {
 
 
     return (
-      <div className="event-details">
+      <div className="event-details height100">
           <Nav/>
           <h2>Business details</h2>
 

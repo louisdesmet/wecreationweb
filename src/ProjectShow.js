@@ -23,7 +23,7 @@ export const ProjectShow = ({getProjects}) => {
 
 
     return (
-      <div className="event-details">
+      <div className="event-details height100">
           <Nav/>
           <h2>Project details</h2>
 

@@ -4,6 +4,9 @@ import {getProjects} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Link } from 'react-router-dom';
 import locprod from './Global';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 export const AdminProjectsEventsCreate = ({getProjects}) => {
 
@@ -15,9 +18,14 @@ export const AdminProjectsEventsCreate = ({getProjects}) => {
 
     const [name, setName] = useState("");
     const [location, setLocation] = useState("");
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState(new Date());
     const [credits, setCredits] = useState("");
     const [project, setProject] = useState("");
+
+    function format(date) {
+        const jsDate = new Date(date);
+        return jsDate.getFullYear()+'-'+(jsDate.getMonth()+1)+'-'+jsDate.getDate()+' '+jsDate.getHours()+':'+jsDate.getMinutes()+':'+jsDate.getSeconds();
+    }
     
     function submit() {
         fetch(locprod + '/events', {
@@ -30,7 +38,7 @@ export const AdminProjectsEventsCreate = ({getProjects}) => {
           body: JSON.stringify({
             name: name,
             location: location,
-            date: date,
+            date: format(date),
             credits: credits,
             project: project
           })
@@ -46,7 +54,7 @@ export const AdminProjectsEventsCreate = ({getProjects}) => {
           <h2>Event aanmaken</h2>
           <input onChange={e => setName(e.target.value)} placeholder='Naam'/>
           <input onChange={e => setLocation(e.target.value)} placeholder='Location'/>
-          <input onChange={e => setDate(e.target.value)} placeholder='Date'/>
+          <DatePicker selected={date} onChange={(date) => setDate(date)} />
           <input onChange={e => setCredits(e.target.value)} placeholder='Credits'/>
           <select onChange={e => setProject(e.target.value)}>
               {projectList}

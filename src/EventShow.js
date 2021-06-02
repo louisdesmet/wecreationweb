@@ -30,7 +30,7 @@ export const EventShow = ({getAllEvents}) => {
     }
 
     return (
-      <div className="event-details">
+      <div className="event-details height100">
           <Nav/>
           <h2>Event details</h2>
 

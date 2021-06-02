@@ -11,6 +11,7 @@ export default function* watcherSaga() {
   yield takeEvery("SKILLS_REQUESTED", skillsWorkerSaga);
   yield takeEvery("MESSAGES_REQUESTED", messagesWorkerSaga);
   yield takeEvery("ORDERS_REQUESTED", ordersWorkerSaga);
+  
 }
 
 function* projectsWorkerSaga() {

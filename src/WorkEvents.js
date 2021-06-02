@@ -12,6 +12,8 @@ import mode from './img/Mode.png';
 import dans from './img/Dans.png';
 import camera from './img/Camera.png';
 
+import time from './img/tijdstip.png';
+
 function WorkEvents(props) {
 
     function date(date) {
@@ -43,8 +45,7 @@ function WorkEvents(props) {
 
     if(props.project.events && Object.keys(props.project.events).length) {
       return (
-        <div className='event-panel' key={props.enabled} onClick={e => click(e)}>
-           
+        <div className='event-panel' key={props.enabled} onClick={e => click(e)}>  
             {
                 props.project.events.map(event =>
                   <div key={event.id}>
@@ -60,7 +61,7 @@ function WorkEvents(props) {
                           <p>{date(event.date)}</p>
                         </div>
                         <div className="event-detail">
-                          <img src={datum}/>
+                          <img src={time}/>
                           <p>{new Date(event.date).toLocaleTimeString()}</p>
                         </div>
                         {event.skill ? 
@@ -225,8 +226,6 @@ function Subscribe({ event, skills, list }) {
         break;
         case "camera": return camera;
         break;
-      
-
       }
     }
     

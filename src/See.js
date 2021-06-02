@@ -83,9 +83,9 @@ export const See = ({getBusinesses, getActivities}) => {
     <div className="map-container">
       <Nav/>
       <div className="filters">
-        <div onClick={() => {business()}}><p>Handelaars</p></div>
-        <div onClick={() => {service()}}><p>Diensten</p></div>
-        <div onClick={() => {event()}}><p>Evenementen</p></div>
+        <div onClick={() => {business()}}><p className="yellow">Handelaars</p></div>
+        <div onClick={() => {service()}}><p className="blue">Diensten</p></div>
+        <div onClick={() => {event()}}><p className="red">Evenementen</p></div>
       </div>
       <Map className="map" center={position} zoom={13}>
         <TileLayer

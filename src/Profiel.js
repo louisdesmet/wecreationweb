@@ -1,22 +1,30 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
-import {getProjects, getUsers} from "./redux/actions";
+import {getProjects, getSkills, getUsers} from "./redux/actions";
 import credit from './img/profile-credit.png';
 import Nav from "./Nav";
 import {useSelector} from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChess, faAddressCard, faBeer, faBalanceScale, faMugHot, faBurn, faAnchor, faBlind, faBowlingBall, 
     faRadiation, faBandAid, faBath, faBed, faBible, faBlender, faBong, faBox } from '@fortawesome/free-solid-svg-icons'
-
-import profileDefault from './img/profile-default.jpg';
 import { useHistory } from "react-router-dom";
 import Axios from 'axios';
 
-export const Profiel = ({getUsers,getProjects}) => {
+import regie from './img/Regie.png';
+import montage from './img/Montage.png';
+import mode from './img/Mode.png';
+import dans from './img/Dans.png';
+import camera from './img/Camera.png';
+import labour from './img/labour.png';
+
+export const Profiel = ({getUsers,getProjects,getSkills}) => {
+
     const history = useHistory();
     const loggedUser = JSON.parse(localStorage.getItem("user"));
     const [user, setUser] = useState("");
     const [amount, setAmount] = useState("");
+    const [category, setCategory] = useState("");
+
     function date(date) {
         const jsDate = new Date(date);
         return jsDate.getDate()+'/'+(jsDate.getMonth()+1)+'/'+jsDate.getFullYear();
@@ -25,10 +33,12 @@ export const Profiel = ({getUsers,getProjects}) => {
     useEffect(() => {
         getProjects();
         getUsers();
+        getSkills();
     }, []);
 
     const projects = useSelector(state => state.remoteProjects);
     const users = useSelector(state => state.remoteUsers);
+    const skills = useSelector(state => state.remoteSkills);
 
     let hoursSum = 0;
     function totalHours(hours) {
@@ -38,40 +48,100 @@ export const Profiel = ({getUsers,getProjects}) => {
 
     const projectList = projects.data ? (
         <div>
-            <div className="profile-history-headers">
-                <p>Project naam</p>
-                <p>Event naam</p>
-                <p>Datum</p>
-                <p>Locatie</p>
-                <p>Skill</p>
-                <p>Gepresteerde uren</p>
-            </div>
+            <img className="generalSkillImg" src={labour} width="50px" onClick={() => showWork("algemeen")}/>
             {
-                projects.data.map(project =>
-                    <div className="profile-history" key={project.id}>
+                (category === "algemeen" ? 
+                    <div>
+                        <div className="profile-history-headers">
+                            <p>Project naam</p>
+                            <p>Event naam</p>
+                            <p>Datum</p>
+                            <p>Locatie</p>
+                            <p>Gepresteerde uren</p>
+                        </div>
                         {
-                        project.events.map(event =>
-                            <div key={event.id}>
-                                {
-                                event.users.map(user =>
-                                    (user.id === loggedUser.id ?
-                                        <div key={user.id}>
-                                            <p>{project.name}</p>
-                                            <p>{event.name}</p>
-                                            <p>{event.date}</p>
-                                            <p>{event.location}</p>
-                                            <p>{event.skill}</p>
-                                            <p>{totalHours(user.hours)}</p>
+                            projects.data.map(project =>
+                                <div className="profile-history" key={project.id}>
+                                    {
+                                    project.events.map(event =>
+                                        <div key={event.id}>
+                                            {
+                                            event.users.map(user =>
+                                                (user.id === loggedUser.id ?
+                                                    <div key={user.id}>
+                                                        <p>{project.name}</p>
+                                                        <p>{event.name}</p>
+                                                        <p>{event.date}</p>
+                                                        <p>{event.location}</p>
+                                                        <p>{totalHours(user.hours)}</p>
+                                                    </div>
+                                                    :
+                                                    null
+                                                )                              
+                                            )
+                                            }
                                         </div>
-                                        :
-                                        null
-                                    )                              
-                                )
-                                }
-                            </div>
-                        )
+                                    )
+                                    }
+                                </div>
+                            )
                         }
                     </div>
+                : null)
+            } 
+        </div>
+    ) : null;
+
+    function iconFind(name) {
+        switch(name) {
+          case "regie": return regie;
+          break;
+          case "montage": return montage;
+          break;
+          case "mode": return mode;
+          break;
+          case "dans": return dans;
+          break;
+          case "camera": return camera;
+          break;
+        }
+    }
+
+    function showWork(name) {
+        setCategory(name);
+    }
+
+    const skillList = skills.data ? (      
+        <div className="profile-history-skills">
+            {
+                skills.data.map(skill => 
+                    (skill.events.length ? 
+                        <div>
+                            <img className="skillImg" src={iconFind(skill.name)} width="50px" onClick={() => showWork(skill.name)}/>
+                            {
+                                (category === skill.name ? skill.events.map(event => 
+                                    (event.user_id === JSON.parse(localStorage.getItem("user")).id ? 
+                                        <div>
+                                            <div className="bold">
+                                                <p>Project naam</p>
+                                                <p>Event naam</p>
+                                                <p>Datum</p>
+                                                <p>Locatie</p>
+                                                <p>Gepresteerde uren</p>
+                                            </div>
+                                            <div key={event.id}>    
+                                                <p>{event.project.name}</p>
+                                                <p>{event.name}</p>
+                                                <p>{event.date}</p>
+                                                <p>{event.location}</p>
+                                                <p>{event.hours}</p>
+                                            </div>
+                                        </div>
+                                    : null)
+                                ) : null)
+                            }
+                        </div>
+                    : null)        
                 )
             }
         </div>
@@ -185,6 +255,7 @@ export const Profiel = ({getUsers,getProjects}) => {
             </div>
             
             {projectList}
+            {skillList}
         
         </div>
     );
@@ -193,5 +264,5 @@ export const Profiel = ({getUsers,getProjects}) => {
 
 export default connect(
     null,
-    {getProjects, getUsers}
+    {getProjects, getUsers, getSkills}
 )(Profiel);

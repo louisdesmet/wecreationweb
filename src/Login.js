@@ -23,7 +23,7 @@ function Login(props) {
       }).then(result => {
         if(result.data.token.access_token) {
           localStorage.setItem('token', result.data.token.access_token);
-          localStorage.setItem('user', JSON.stringify(result.data.user));
+          localStorage.setItem('user', JSON.stringify(result.data.user[0]));
           props.history.push("/home");
         }
       }).catch(e => {

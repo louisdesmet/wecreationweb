@@ -131,7 +131,7 @@ html, body, #root, .App {
     display: flex;
     flex-wrap: wrap;
     p {
-        width: 16.66%;
+        width: 20%;
         font-weight: bold;
     }
 }
@@ -215,7 +215,20 @@ html, body, #root, .App {
         display: flex;
         flex-wrap: wrap;
         p {
-            width: 16.66%;
+            width: 20%;
+            padding: 15px 0;
+        }
+    }
+}
+
+.profile-history-skills {
+    width: 80%;
+    margin: 0 auto;
+    div div div {
+        display: flex;
+        flex-wrap: wrap;
+        p {
+            width: 20%;
             padding: 15px 0;
         }
     }
@@ -345,6 +358,9 @@ html, body, #root, .App {
 .businesses-container {
     width: 94%;
     margin: 20px 3%;
+    th {
+        text-align: left;
+    }
     .business-body {
         .business-data {
             .business-data-inner {
@@ -390,22 +406,26 @@ html, body, #root, .App {
     height: 100%;
     .filters {
         width: 30%;
-        height: 5%;
+        height: 7%;
         display: flex;
         justify-content: space-between;
         margin: 0 auto;
         div {
-           p {
-            color: #E01465;
-            padding: 5px;
-            font-family: perMar;
-           }
+            margin: 20px 0 0 0;
+            p {
+                color:white;
+                //background: #E01465;
+                padding: 5px 10px;
+                border-radius: 15px;
+                letter-spacing: 1px;
+                font-family: perMar;
+            }
        
             
         }
     }
     .map {
-        width: 80%;
+        width: 96%;
         margin: 0 auto;
         height: 76%;
         box-sizing: border-box;
@@ -678,26 +698,45 @@ html, body, #root, .App {
     }
 }
 
+.react-datepicker-wrapper,
+.react-datepicker__input-container,
+.react-datepicker__input-container input {
+    display: block;
+    width: 100%;
+}
+
 .agenda-popup {
-    width: 300px;
+    width: 350px;
     height: 400px;
     top: 50%;
     left: 50%;
     margin: -200px 0 0 -150px;
-    background: #FBFBFB;
+    background: #00A7DD;
+    color: white;
     position: absolute;
     z-index: 9999;
-    border: 1px solid lightgrey;
+    border-radius: 15px;
+    a {
+        color: black;
+        text-decoration: none;
+        font-size: 1.3em;
+        font-weight: bold;
+    }
+    img {
+        width: 50px;
+ 
+    }
     .close {
         font-size: 2em;
         text-align: right;
         display: block;
         position: relative;
         top: 0;
-        right: 10px;
+        right: 17px;
     }
     p {
         padding: 10px;
+        font-size: 1.1em;
     }
 }
 
@@ -727,7 +766,6 @@ html, body, #root, .App {
     height: 100%;
 }
 
-
 .bold {
     font-weight: bold;
 }
@@ -749,6 +787,10 @@ html, body, #root, .App {
 }
 .blue {
     background: #00A6DD;
+}
+
+.yellow {
+    background: #FDC803;
 }
 
 .flex {

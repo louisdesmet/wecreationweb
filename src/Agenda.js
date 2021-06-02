@@ -5,6 +5,9 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import {useSelector} from "react-redux";
 import Nav from './Nav';
+import { Link } from 'react-router-dom';
+import datum from './img/nav-agenda.png';
+import location from './img/nav-see.png';
 
 export const Agenda = ({getEvents}) => {
 
@@ -31,11 +34,17 @@ export const Agenda = ({getEvents}) => {
         <span className="close" onClick={e => setEnabled(0)}>x</span>
         {event ? 
           <div>
-            <p>Titel: {event.title }</p>
-            <p>Datum: {new Date(event.startStr).toJSON().slice(0, 19).replace('T', ' ')}</p>
+            <p><Link to={"/events/" + event.id}>{event.title}</Link></p>
+            <div className="flex">
+              <img src={datum}/>
+              <p>{new Date(event.startStr).toJSON().slice(0, 19).replace('T', ' ')}</p>
+            </div>
             {events ? 
               <div>
-                <p>Locatie: {findEvent(event.id).location}</p>
+                <div className="flex">
+                  <img src={location}/>
+                  <p>{findEvent(event.id).location}</p>
+                </div>
                 <p>Je hebt je ingeschreven voor {findEvent(event.id).pivot.hours} uur.</p>
                 <p>{findEvent(event.id).pivot.accepted ? 'Je bent geaccepteerd door de project leider.' : null}</p>
                 <p>{findEvent(event.id).pivot.present ? 'De project leider gaf aan dat je aanwezig was.' : null}</p>
