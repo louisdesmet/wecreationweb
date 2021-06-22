@@ -3,6 +3,8 @@ import Nav from "./Nav";
 import axios from 'axios';
 import location from './img/nav-see.png';
 import datum from './img/nav-agenda.png';
+
+import time from './img/tijdstip.png';
 import skillImg from './img/Skill.png';
 import navNetwork from './img/nav-netwerk.png';
 
@@ -11,8 +13,6 @@ import montage from './img/Montage.png';
 import mode from './img/Mode.png';
 import dans from './img/Dans.png';
 import camera from './img/Camera.png';
-
-import time from './img/tijdstip.png';
 
 function WorkEvents(props) {
 

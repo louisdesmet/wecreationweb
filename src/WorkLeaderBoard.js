@@ -7,6 +7,10 @@ import Nav from "./Nav";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
 
+import accept from './img/accept.png';
+import decline from './img/decline.png';
+import './css/WorkLeaderBoard.scss';
+
 export const WorkLeaderBoard = ({getProjects}) => {
   const history = useHistory();
   
@@ -54,11 +58,8 @@ export const WorkLeaderBoard = ({getProjects}) => {
     })
     .then((response) => {
       window.location.href = "/work-project-leader/" + id;
-      
     })
-    .catch((error) => {
-  
-    })
+    .catch((error) => {})
   }
 
   const project = projects.data ? projects.data.find(project => project.id === parseInt(id)) : null;
@@ -82,9 +83,9 @@ export const WorkLeaderBoard = ({getProjects}) => {
                   (!user.accepted ? <div key={user.id}>
                     <p>{user.name}</p>
                     <p>{user.hours}</p>
-                    <p onClick={e => send(event, user)}>Accepteren</p>
-                    <p>Afwijzen</p>
-                  </div> : null) 
+                    <p onClick={e => send(event, user)}><img src={accept}/></p>
+                    <p><img src={decline}/></p>
+                  </div> : null)
                 )
               }
             </div>
@@ -106,8 +107,8 @@ export const WorkLeaderBoard = ({getProjects}) => {
                   (user.accepted && !user.present ? <div key={user.id}>
                     <p>{user.name}</p>
                     <p>{user.hours}</p>
-                    <p onClick={e => verify(event, user)}>Aanwezig</p>
-                    <p>Afwezig</p>
+                    <p onClick={e => verify(event, user)}><img src={accept}/></p>
+                    <p><img src={decline}/></p>
                   </div> : null)
                 )
               }
@@ -121,10 +122,18 @@ export const WorkLeaderBoard = ({getProjects}) => {
     return (
       <div className="height100">
         <Nav/>
-        <h2 className="project-leader-titles">Verifieer de mensen die zich hebben ingeschreven op jouw events.</h2>
-        {eventList}
-        <h2 className="project-leader-titles">Verifieer hier of de mensen die je hebt geaccepteerd ook effectief zijn komen opdagen.</h2>
-        {eventShowupList}
+        <div className="leader-container">
+          <div className="leader-panel">
+            <img className="project-leader-image" src={accept}/>
+            <p className="project-leader-titles">Verifieer de mensen die zich hebben ingeschreven op jouw events.</p>
+            {eventList}
+          </div>
+          <div className="leader-panel">
+            <img className="project-leader-image" src={accept}/>
+            <p className="project-leader-titles">Verifieer hier of de mensen die je hebt geaccepteerd ook effectief zijn komen opdagen.</p>
+            {eventShowupList}
+          </div>
+        </div>
       </div>
     );
   } else {

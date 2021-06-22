@@ -7,6 +7,7 @@ import locprod from './Global';
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import './css/Admin.scss';
 
 export const AdminProjectsEventsCreate = ({getProjects}) => {
 

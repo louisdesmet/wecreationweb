@@ -1,0 +1,65 @@
+.network {
+    display: flex;
+    height: 88%;
+    .chat {
+        width: 100%;
+        height: 100%;
+        .network-inputs {
+            height: 5%;
+            display: flex;
+
+            input {
+                width: 100%;
+                box-sizing: border-box;
+                border:none;
+                border-top: 1px solid #C7C7C7;
+                padding-left: 15px;
+                border: 1px solid lightgrey;
+           
+            }   
+            .network-submit {
+                width: 20%;
+                background: #0084FF;
+                color: white;
+                border: none;
+                font-weight: bold;
+                font-size: large;
+            } 
+        }
+        .messages {
+            width: 100%;
+            height: 95%;
+            .message {
+                background: #0084FF;
+                color: white;
+                margin: 8px;
+                width: fit-content;
+                border-radius: 18px;
+                display: flex;
+                div {
+                    padding: 8px 0;
+
+                }
+                .message-name {
+                    font-size: 0.8em;
+                }
+                .message-date {
+                    margin: 7px 15px 0 50px;
+                    font-size: 0.8em;
+                }
+                .netwerk-profile-icon {
+                    margin: 0 5px 0 15px;
+                   
+                    svg {
+                        background: white;
+                        padding: 5px;
+                        border-radius: 100%;
+                        margin: 7px 0 0 0;
+                    }
+                    
+                    
+                }
+            }
+        }
+    }
+}

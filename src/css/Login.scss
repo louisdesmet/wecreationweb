@@ -1,0 +1,38 @@
+.login {
+    width: 50%;
+    margin: 0 auto;
+    .logo {
+        width: 40%;
+        display: block;
+        margin: 0 auto 50px auto;
+        padding-top: 100px;
+    }
+    input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px 5px;
+        margin: 0 0 12px 0;
+    }
+    button {
+        background: none;
+        border: 1px solid lightgray;
+        padding: 8px 0;
+        width: 25%;
+        cursor: pointer;
+        display: block;
+        margin: 15px auto 0 auto;
+    }
+    .register {
+        display: block;
+        width: 35%;
+        margin: 20px auto 0 auto;
+        background: #DF1365;
+        border-radius: 10px;
+        cursor: pointer;
+        img {
+            width: 100%;
+            display: block;
+            padding: 8px 0;
+        }
+    }
+}

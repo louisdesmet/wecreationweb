@@ -23,13 +23,13 @@ export const BusinessShow = ({getBusinesses}) => {
 
 
     return (
-      <div className="event-details height100">
+      <div className="height100">
           <Nav/>
           <h2>Business details</h2>
 
           {business ? 
             <div className='event-panel'>
-              <div className="event-headers">
+              <div>
                 <p>Naam</p>
                 <p>Type</p>
                 <p>Omschrijving</p>

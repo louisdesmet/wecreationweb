@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
+import './css/Get.scss';
 
 export const Get = ({getBusinesses, getOrders}) => {
 
@@ -179,7 +180,6 @@ function Middle(props) {
         </table>
         );
     } else if(props.current === "history" && userOrders !== null) {
-        console.log(userOrders);
         return (
             <table className="businesses-container">
                 <thead>

@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {getBusinesses} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Link } from 'react-router-dom';
+import './css/Admin.scss';
 
 export const AdminBusinesses = ({getBusinesses}) => {
 

@@ -8,6 +8,7 @@ import Nav from './Nav';
 import { Link } from 'react-router-dom';
 import datum from './img/nav-agenda.png';
 import location from './img/nav-see.png';
+import './css/Agenda.scss';
 
 export const Agenda = ({getEvents}) => {
 

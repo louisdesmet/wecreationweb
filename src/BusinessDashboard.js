@@ -18,8 +18,6 @@ export const BusinessDashboard = ({getOrders, getBusinesses}) => {
   const orders = useSelector(state => state.remoteOrders);
   const businesses = useSelector(state => state.remoteBusinesses);
 
-  console.log(businesses);
-
   const userBusiness = JSON.parse(localStorage.getItem("user")).roles.find(role => role.name === 'business');
 
   const business = businesses.data && userBusiness ? businesses.data.find(business => business.id === userBusiness.business_id) : null;

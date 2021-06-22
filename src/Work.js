@@ -5,8 +5,13 @@ import {getProjects, getSkills} from "./redux/actions";
 import Nav from "./Nav";
 import WorkEvents from "./WorkEvents";
 import { useHistory } from "react-router-dom";
-import leaderImg from './img/nav-profiel.png';
+import admin from './img/admin.png';
+import accept from './img/accept.png';
+import upEvent from './img/up-event.png';
+import downEvent from './img/down-event.png';
 import navProfile from './img/nav-profiel.png';
+import navGet from './img/nav-get.png';
+import './css/Work.scss';
 
 export const Work = ({getProjects, getSkills}) => {
 
@@ -34,7 +39,6 @@ export const Work = ({getProjects, getSkills}) => {
     let hours = 0;
 
     Object.values(projectsApi.data).forEach(project => {
-      project.enabled = 0;
       project.events.forEach(event => {
         let listHours = 0;
         if(event.skill) {
@@ -67,30 +71,54 @@ export const Work = ({getProjects, getSkills}) => {
     history.push("/work-project-leader/" + id);
   }
 
+  function events(id) {
+    history.push("/projects/" + id);
+  }
+
   if(loading) {
     return false;
   }
+
+  projects.forEach(project => {
+    project.upEvents = project.events.filter(event => new Date(event.date) > new Date()).length;
+    project.downEvents = project.events.filter(event => new Date(event.date) < new Date()).length;
+  });
+
   const projectList = projects ? (
     <div className="projects">
       {
         projects.map(project =>
-          <div className="project" key={project.id} onClick={e => {
-            const clone = JSON.parse(JSON.stringify(projects))
-            clone.forEach((element, index) => {
-                if(element.id === project.id) {
-                    if(clone[index].enabled === 0) {
-                      clone[index].enabled = 1;
-                    } else {
-                      clone[index].enabled = 0;
-                    }
-                }
-            });
-            setProjects(Object.values(clone));
-          }}>
-              <p className="bold">{project.name}{JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <span className="project-leader-btn" onClick={e => projectLeaderBoard(e, project.id)}><img src={leaderImg} alt=""/></span> : null}</p>
-              <p className="mt-15">{project.description}</p>
-              <p><img className="project-leader-img" src={navProfile}/>{project.leader.name}</p>
-              {project.enabled == 1 ? <WorkEvents project={project} skills={skills}/> : null}
+          <div className="project" key={project.id} onClick={e => events(project.id)}>
+              {JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <span className="project-leader-btn" onClick={e => projectLeaderBoard(e, project.id)}><img src={admin} alt=""/></span> : null}
+              <img className="project-logo" src={accept}/>
+              <p className="project-title">{project.name}</p>
+              <p className="project-desc">{project.description}</p>
+
+              <div className="project-icons-container">
+                <div className="project-icons">
+                  <div>
+                    <img src={navProfile}/>
+                    <p className="project-leader-name">{project.leader.name}</p>
+                  </div>
+                  <div>
+                    <img src={upEvent}/>
+                    <p>{project.upEvents}</p>
+                  </div>
+                  <div>
+                    <img src={downEvent}/>
+                    <p>{project.downEvents}</p>
+                  </div>
+                  <div>
+                    <img src={navGet}/>
+                    <p>7</p>
+                  </div>
+                </div>
+              </div>
+              
+
+              
+
+              {/*<WorkEvents project={project} skills={skills}/>*/}
           </div>
         )
       }

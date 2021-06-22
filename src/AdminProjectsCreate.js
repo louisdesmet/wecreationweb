@@ -4,6 +4,7 @@ import {getUsers} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Link } from 'react-router-dom';
 import locprod from './Global';
+import './css/Admin.scss';
 
 export const AdminProjectsCreate = ({getUsers}) => {
 

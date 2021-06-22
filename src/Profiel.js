@@ -4,6 +4,7 @@ import {getProjects, getSkills, getUsers} from "./redux/actions";
 import credit from './img/profile-credit.png';
 import Nav from "./Nav";
 import {useSelector} from "react-redux";
+import './css/Profiel.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChess, faAddressCard, faBeer, faBalanceScale, faMugHot, faBurn, faAnchor, faBlind, faBowlingBall, 
     faRadiation, faBandAid, faBath, faBed, faBible, faBlender, faBong, faBox } from '@fortawesome/free-solid-svg-icons'

@@ -4,6 +4,7 @@ import {getOrders} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Link, useParams } from 'react-router-dom';
 import Nav from './Nav';
+import './css/OrderShow.scss';
 
 export const OrderShow = ({getOrders}) => {
 
@@ -15,7 +16,6 @@ export const OrderShow = ({getOrders}) => {
 
     const { id } = useParams();
     const order = orders.data ? orders.data.find(order => order.id === parseInt(id)) : null;
-console.log(order);
 
     return (
       <div className="height100">

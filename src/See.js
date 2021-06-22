@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {getActivities, getBusinesses} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import './css/See.scss';
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
 import Nav from "./Nav";

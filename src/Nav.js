@@ -6,9 +6,8 @@ import logo from './img/nav-random.png';
 import profiel from './img/nav-profiel.png';
 import agenda from './img/nav-agenda.png';
 import netwerk from './img/nav-netwerk.png';
-import {
-  Link
-} from "react-router-dom";
+import {Link} from "react-router-dom";
+import './css/Nav.scss';
 function Nav() {
   
   return (

@@ -3,9 +3,11 @@ import Nav from "./Nav";
 import {connect, useSelector} from "react-redux";
 import {getMessages} from "./redux/actions";
 import axios from "axios";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChess, faAddressCard, faBeer, faBalanceScale, faMugHot, faBurn, faAnchor, faBlind, faBowlingBall, 
-    faRadiation, faBandAid, faBath, faBed, faBible, faBlender, faBong, faBox } from '@fortawesome/free-solid-svg-icons'
+    faRadiation, faBandAid, faBath, faBed, faBible, faBlender, faBong, faBox } from '@fortawesome/free-solid-svg-icons';
+import './css/Netwerk.scss';
+
 
 export const Network = ({getMessages}) => {
 

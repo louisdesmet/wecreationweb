@@ -4,6 +4,13 @@ import {getProjects} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Link, useParams } from 'react-router-dom';
 import Nav from './Nav';
+import accept from './img/accept.png';
+import credit from './img/profile-credit.png';
+import profiel from './img/nav-profiel.png';
+import datum from './img/nav-agenda.png';
+import location from './img/nav-see.png';
+import navGet from './img/nav-get.png';
+import './css/ProjectShow.scss';
 
 export const ProjectShow = ({getProjects}) => {
 
@@ -23,41 +30,51 @@ export const ProjectShow = ({getProjects}) => {
 
 
     return (
-      <div className="event-details height100">
+      <div className="project-details height100">
           <Nav/>
-          <h2>Project details</h2>
+          {project ?
+            <div className='project-panel'>
+              <div className="column-1">
+                <h2>{project.name}</h2>
+                <div className="project-headers">
+                  <img src={accept}/>
+                  <img src={credit}/>
+                  <img src={profiel}/>
+                </div>
+                <div className="project-info">
+                    <p>{project.type}</p>
+                    <p>{project.credits}</p>
+                    <p>{project.leader.name}</p>
+                </div>
+                <p className="mt-70 mb-70">{project.description}</p>
+              </div>
+              <div className="column-2">
+                {
+                  project.events.map(event =>
+                    <Link to={"/events/" + event.id} className="project-panel-event" key={event.id}>
+                        <h2>{event.name}</h2>
+                        <p className="mt-15">{event.description}</p>
+                        <div>
+                          <img src={datum}/>
+                          <img src={location}/>
+                          <img src={navGet}/>
+                          <img src={accept}/>   
+                        </div> 
+                        <div>
+                          <p>{date(event.date)}</p>
+                          <p>{event.location}</p>
+                          <p>6.8</p>
+                          <p>vrije uren</p>
+                        </div>
 
-          {project ? 
-            <div className='event-panel'>
-              <div className="event-headers">
-                <p>Naam</p>
-                <p>Type</p>
-                <p>Omschrijving</p>
-                <p>Credits</p>
-                <p>Project leider</p>
+                    </Link>
+                  )
+                }
               </div>
-              <div className="event mb-70">
-                  <p>{project.name}</p>
-                  <p>{project.type}</p>
-                  <p>{project.description}</p>
-                  <p>{project.credits}</p>
-                  <p>{project.leader.name}</p>
-              </div>
-              <h3>Events</h3>
-              {
-                project.events.map(event =>          
-                  <div className="flex-space-between" key={event.id}>
-                      <p><Link to={"/events/" + event.id}>{event.name}</Link></p>                    
-                      <p>{date(event.date)}</p>
-                  </div>
-                )
-              }
-     
             </div>
             :
             null
           }
-    
       </div>
     );
 }

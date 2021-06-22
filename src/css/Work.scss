@@ -1,0 +1,68 @@
+.projects {
+    margin: 30px auto 0 auto;
+    width: 95%;
+    display: flex;
+    flex-wrap: wrap;
+    .project { 
+        flex: 1 0 29.3%;
+        margin: 0 2%;
+        background: #E9F0FA;
+        position: relative;
+        border-radius: 7px;
+
+        .project-logo {
+            width: 50px;
+            display: block;
+            margin: 0 auto;
+            position: relative;
+            top: -25px;
+        }
+        .project-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: large;
+        }
+        .project-desc {
+            margin-top: 15px;
+            padding: 0 30px 98px 30px;
+            
+        }
+        .project-icons-container {
+            position: absolute;
+            bottom: 10px;
+            display: block;
+            width: 100%;
+            .project-icons {
+              
+                display: block;
+                width: 100%;
+                div {
+                    float: left;
+                    width: 25%;
+                    img {
+                        width: 40px;
+                        margin: 0 auto;
+                        display: block;
+                    }
+                    p {
+                        text-align: center;
+                    }
+                    .project-leader-name {
+                        font-size: 0.7em;
+                        padding-top: 5px;
+                    }
+                }
+            }
+        }
+        .project-leader-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 30px;
+            display: block;
+            img {
+               width: 100%;
+            }
+        } 
+    }
+}

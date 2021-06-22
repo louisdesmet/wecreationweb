@@ -1,0 +1,135 @@
+
+.profile-history-headers {
+    width: 80%;
+    margin: 50px auto 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    p {
+        width: 20%;
+        font-weight: bold;
+    }
+}
+
+.profile-title {
+    width: 30%;
+    display: block;
+    margin: 50px auto 35px auto;
+}
+
+.profile-section-1 {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 100px auto 0 auto;
+    .profile-default {
+        width: 30%;
+        .profile-icon {
+            margin: 0 auto 50px auto;
+            display: block;
+            background: black;
+            padding: 37px;
+            border-radius: 100%;
+
+
+            font-size: 120px;
+        }
+        p {
+            text-align: center;
+        }
+    }
+    .profile-name {
+        font-size: 1.2em;
+        margin: 15px 0 5px 0;
+    }
+    .profile-credits {
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid black;
+        border-radius: 30px;
+        font-size: 2.5em;
+        margin-top: 10px;
+        span {
+            margin-left: 10px;
+        }
+        img {
+            width: 65px;
+        }
+    }
+
+    .profile-hours {
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid black;
+        border-radius: 30px;
+        font-size: 2.5em;
+        margin-top: 10px;
+        p {
+            font-size: 0.8em;
+            margin-right: 10px
+        }
+        span {
+            margin-left: 10px;
+        }
+    }
+
+    .logout {
+        border: 1px solid black;
+        border-radius: 15px;
+        text-align: center;
+        margin-top: 10px;
+        padding: 5px 0;
+        cursor: pointer;
+    }
+}
+
+.profile-history {
+    width: 80%;
+    margin: 0 auto;
+    div div {
+        display: flex;
+        flex-wrap: wrap;
+        p {
+            width: 20%;
+            padding: 15px 0;
+        }
+    }
+}
+
+.profile-history-skills {
+    width: 80%;
+    margin: 0 auto;
+    div div div {
+        display: flex;
+        flex-wrap: wrap;
+        p {
+            width: 20%;
+            padding: 15px 0;
+        }
+    }
+}
+
+.trade {
+    padding: 0 15px;
+    box-sizing: border-box;
+    input {
+        margin-top: 10px;
+        width: 100%;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+    select {
+        margin-top: 10px;
+        width: 100%;
+        padding: 5px;
+    }
+    button {
+        width: 50%;
+        margin: 0 auto;
+        display: block;
+        background: none;
+        border: 1px solid black;
+        padding: 5px;
+        box-sizing: border-box;
+        margin-top: 10px;
+    }
+}

@@ -3,7 +3,7 @@ import loginlogo from './img/loginlogo.PNG';
 import loginrood from './img/loginrood.PNG';
 import loginblauw from './img/loginblauw.PNG';
 import registreren from './img/registreren.PNG';
-
+import './css/Login.scss';
 import axios from 'axios';
 import { Link, Redirect } from "react-router-dom";
 import locprod from './Global';

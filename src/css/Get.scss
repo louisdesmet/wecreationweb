@@ -1,0 +1,141 @@
+.businesses-container {
+    width: 94%;
+    margin: 20px 3%;
+    th {
+        text-align: left;
+    }
+    .business-body {
+        .business-data {
+            .business-data-inner {
+                display: flex;
+                p {
+                    flex: 1;
+                }
+            }
+            .products {
+                margin: 0 20px 10px 20px;
+                .product {
+                    display: flex;
+                    padding: 7px 0;
+                    p {
+                        flex: 1;
+                    }
+                    .product-buy {
+                        background: #0084FF;
+                        color: white;
+                        border-radius: 15px;
+                        padding: 5px 15px;
+                        font-weight: bold;
+
+                    }
+                }
+            }
+        }
+    }
+    .headers {
+        border-bottom: 1px solid black;
+        display: flex;
+        font-weight: bold;
+        p {
+            flex: 1;
+        }
+    }
+    .prod-head {
+        margin: 10px 20px 0 20px;
+    }
+}
+
+.get-table {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: row wrap;
+    .get {
+        width: 44%;
+        box-sizing: border-box;
+        margin: 20px 3%;
+        h2 {
+            margin-top: 15px;
+        }
+        p {
+            margin: 20px 20px 0 20px;
+        }
+    }
+    .flex-buttons {
+        display: flex;
+    }
+    .services {
+        border: 2px solid #00A7DE;
+        border-radius: 15px;
+        h2 {
+            color: #00A7DE;
+            text-align: center;          
+        }
+        .list-button {
+            width: 44%;
+            background: #00A7DE;
+            text-align: center;
+            margin: 15px 2% 15px 4%;
+            padding: 5px;
+        }
+        .globe-button {
+            width: 44%;
+            background: #00A7DE;
+            text-align: center;
+            margin: 15px 4% 15px 2%;
+            padding: 5px;
+        }
+    }
+    .businesses {
+        border: 2px solid #E2A433;
+        border-radius: 15px;
+        h2 {
+            color: #E2A433;
+            text-align: center;
+        }
+        .list-button {
+            width: 44%;
+            background: #E2A433;
+            text-align: center;
+            margin: 15px 2% 15px 4%;
+            padding: 5px;
+        }
+        .globe-button {
+            width: 44%;
+            background: #E2A433;
+            text-align: center;
+            margin: 15px 4% 15px 2%;
+            padding: 5px;
+        }
+    }
+    .payout {
+        border: 2px solid #9F9888;
+        border-radius: 15px;
+        h2 {
+            color: #9F9888;
+            text-align: center;
+        }
+        .list-button {
+            width: 44%;
+            background: #9F9888;
+            text-align: center;
+            margin: 15px 2% 15px 4%;
+            padding: 5px;
+        }
+    }
+    .history {
+        border: 2px solid #DF1C65;
+        border-radius: 15px;
+        h2 {
+            color: #DF1C65;
+            text-align: center;
+        }
+        .list-button {
+            width: 44%;
+            background: #DF1C65;
+            text-align: center;
+            margin: 15px 2% 15px 4%;
+            padding: 5px;
+        }
+    }
+}

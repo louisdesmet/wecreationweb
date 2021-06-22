@@ -1,0 +1,29 @@
+.map-container {
+    height: 100%;
+    .filters {
+        width: 30%;
+        height: 7%;
+        display: flex;
+        justify-content: space-between;
+        margin: 0 auto;
+        div {
+            margin: 20px 0 0 0;
+            p {
+                color:white;
+                //background: #E01465;
+                padding: 5px 10px;
+                border-radius: 15px;
+                letter-spacing: 1px;
+                font-family: perMar;
+            }
+       
+            
+        }
+    }
+    .map {
+        width: 96%;
+        margin: 0 auto;
+        height: 76%;
+        box-sizing: border-box;
+    }
+}

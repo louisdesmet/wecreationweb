@@ -4,6 +4,7 @@ import {getBusinesses} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Link, useParams } from 'react-router-dom';
 import locprod from './Global';
+import './css/Admin.scss';
 
 export const AdminBusinessesEdit = ({getBusinesses}) => {
 
