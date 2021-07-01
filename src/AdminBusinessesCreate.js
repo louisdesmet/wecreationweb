@@ -98,7 +98,6 @@ export const AdminBusinessesCreate = ({getUsers}) => {
     const [location, setLocation] = useState("");
     const [lat, setLat] = useState("");
     const [lng, setLng] = useState("");
-    const [credits, setCredits] = useState("");
 
     
     function submit() {
@@ -115,8 +114,7 @@ export const AdminBusinessesCreate = ({getUsers}) => {
             description: description,
             location: location,
             lat: lat,
-            lng: lng,
-            credits: credits
+            lng: lng
           })
         }).then(response => {
           window.location.href = '/admin-businesses';
@@ -134,7 +132,6 @@ export const AdminBusinessesCreate = ({getUsers}) => {
           <input onChange={e => setLocation(e.target.value)} placeholder='Location'/>
           <input onChange={e => setLat(e.target.value)} placeholder='Latitude'/>
           <input onChange={e => setLng(e.target.value)} placeholder='Longitude'/>
-          <input onChange={e => setCredits(e.target.value)} placeholder='Credits'/>
           <input onClick={submit} type='submit' value='Toevoegen'/>
       </div>
     );

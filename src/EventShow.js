@@ -26,85 +26,84 @@ import './css/EventShow.scss';
 import Axios from 'axios';
 
 
-export const EventShow = ({getAllEvents, getSkills}) => {
-
-    const [hours, setHours] = useState(0);
-    const [oneTime, setOneTime] = useState(0);
+export const EventShow = ({getAllEvents, getSkills, ...otherProps}) => {
 
     useEffect(() => {
       getAllEvents();
       getSkills();
     }, []);
+    
 
     const events = useSelector(state => state.remoteAllEvents);
     const skills = useSelector(state => state.remoteSkills);
 
     const { id } = useParams();
 
-    const event = events.data ? events.data.find(event => event.id === parseInt(id)) : null;
-
+    let event
+    if(otherProps.event) {
+      event = otherProps.event;
+    } else {
+      event = events.data ? events.data.find(event => event.id === parseInt(id)) : null;
+    }
 
     let newSkills = [];
     let skillList = [];
     let worked = [];
+    let hours = 0;
+    
+ 
     if(event) {
+      let hours = 0;
 
-     
-        let hours = 0;
-        
+      event.users.forEach(user => {
+        hours += parseInt(user.hours);
+      })
 
-        event.users.forEach(user => {
-          hours += parseInt(user.hours);
-        })
+      let listHours = 0;
+      if(event.skill) {
+        JSON.parse(event.skill).forEach(item => {
+            listHours += item.hours;
+        });
+      }
 
-        let listHours = 0;
-        if(event.skill) {
+      event.free = (event.credits - listHours) - hours;
+      
+      if(skills.data && event.skill) {
+        let hoursCounter = 0;
+        skills.data.forEach(skill => {
+          skill.events.forEach(eventItem => {
+            if(event.id === eventItem.id) {
+              hoursCounter += parseInt(eventItem.hours);
+            }
+          });
           JSON.parse(event.skill).forEach(item => {
-              listHours += item.hours;
+            if(skill.id === item.id) {
+              skill.hours = item.hours;
+              skill.free =  item.hours - hoursCounter;
+              newSkills.push(skill);
+            }
           });
-        }
+          hoursCounter = 0;
+        });
+      }
 
-        event.free = (event.credits - listHours) - hours;
-        
-        if(skills.data && event.skill) {
-          let hoursCounter = 0;
-          skills.data.forEach(skill => {
-            skill.events.forEach(eventItem => {
-              if(event.id === eventItem.id) {
-                hoursCounter += parseInt(eventItem.hours);
-              }
-            });
-            JSON.parse(event.skill).forEach(item => {
-              if(skill.id === item.id) {
-                skill.hours = item.hours;
-                skill.free =  item.hours - hoursCounter;
-                newSkills.push(skill);
-              }
-            });
-            hoursCounter = 0;
-          });
-        }
-        skillList = (newSkills ? newSkills.map(skill =>
-          <div className="skills-container" key={skill.id}>
-            <div className="skill-title">
-              <img src={findIcon(skill.name)}/>
-              <h3>{skill.name}</h3>
-            </div>
-            <div className="skill-number">
-              <div>
-                <input type="number" placeholder="_"/>
-                <p> / {skill.free}</p>
-              </div>
-            </div>
-            <div className="confirm">
-              <button>Bevestig</button>
+      skillList = (newSkills ? newSkills.map(skill =>
+        <div className="skills-container" key={skill.id}>
+          <div className="skill-title">
+            <img src={findIcon(skill.name)}/>
+            <h3>{skill.name}</h3>
+          </div>
+          <div className="skill-number">
+            <div>
+              <input type="number" placeholder="_" onChange={(e) => {setHours(parseInt(e.target.value))}}/>
+              <p> / {skill.free}</p>
             </div>
           </div>
-        ) : null);
-     
-      
-
-      
+          <div className="confirm">
+            <button onClick={() => joinSkill(skill)}>Bevestig</button>
+          </div>
+        </div>
+      ) : null);
 
       worked = [];
       event.users.forEach(user => {
@@ -195,7 +194,6 @@ export const EventShow = ({getAllEvents, getSkills}) => {
         }
     }
 
-
     function join() {
       const headers = {
         'Content-Type': 'application/json',
@@ -211,18 +209,56 @@ export const EventShow = ({getAllEvents, getSkills}) => {
           headers: headers
         })
         .then((response) => {
-          window.location.href = '/work';
+          window.location.href = '/events/' + event.id;
         }).catch((error) => {})
       }
       
     }
 
+    function joinSkill(skill) {
+  
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem("token")
+      }
+
+      let skillHours = 0;
+      skills.data.forEach(skill => {
+        skill.events.forEach(eventItem => {
+          if(event.id === eventItem.id && skill.id === JSON.parse(eventItem.skill).id) {
+            skillHours += parseInt(eventItem.hours);
+          }
+        });
+      });
+
+      if(skill.free >= hours && hours != 0) {
+        Axios.post('/subscribe-skill', {
+          'event_id': event.id,
+          'user_id': JSON.parse(localStorage.getItem("user")).id,
+          'skill_id': skill.id,
+          'hours': hours
+        }, {
+          headers: headers
+        })
+        .then((response) => {
+          window.location.href = '/events/' + event.id;
+        })
+        .catch((error) => {
+      
+        })
+      }
+      
+    }
+
+    function setHours(num) {
+      hours = num;
+    }
+
     return (
       <div className="height100">
-          <Nav/>
           {event ? 
             <div className='event-panel'>
-              <h2 className="mb-70 mt-70">{event.project.name}</h2>
+              <h2 className="mb-70 mt-70">{event.project.name + ' - ' + event.name}</h2>
               <div className="event-panel-images">
                 <img src={datum}/>
                 <img src={time}/>
@@ -233,7 +269,7 @@ export const EventShow = ({getAllEvents, getSkills}) => {
               <div className="event">
                   <p>{date(event.date)}</p>
                   <p>{new Date(event.date).toLocaleTimeString()}</p>
-                  <p>{event.location}</p>
+                  <p><Link to={"/see"}>{event.location}</Link></p>
                   <p>8.31</p>
                   <p>{event.project.leader.name}</p>
               </div>
@@ -267,7 +303,6 @@ export const EventShow = ({getAllEvents, getSkills}) => {
 
                 <div className="event-panel-skills">
                   <h2><img src={work}/>Vrije uren skills</h2>
-                  {console.log(skillList)}
                   {skillList}
                 </div>
 

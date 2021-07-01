@@ -1,21 +1,21 @@
 import React, {useEffect} from 'react';
 import {connect} from "react-redux";
-import {getProjects, getAllEvents} from "./redux/actions";
+import {getSkills, getAllEvents} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Link } from 'react-router-dom';
 import './css/Admin.scss';
 import AdminNav from "./AdminNav";
-export const AdminProjectsEvents = ({getProjects, getAllEvents}) => {
+export const AdminProjectsEventsSkills = ({getProjects, getAllEvents}) => {
 
     useEffect(() => {
-        getProjects();
+        getSkills();
         getAllEvents();
     }, []);
 
-    const projects = useSelector(state => state.remoteProjects);
+    const skills = useSelector(state => state.remoteSkills);
     const events = useSelector(state => state.remoteAllEvents);
     
-    const eventList = events.data ? (
+    const eventList = events.data && skills.data ? (
         <div className='admin-projects'>
             <div>
                 <p className='bold'>Naam</p>
@@ -25,21 +25,18 @@ export const AdminProjectsEvents = ({getProjects, getAllEvents}) => {
                 <p></p>
             </div>
             {
-                events.data.map(event =>
-                    <div key={event.id}>
+                events.data.map(event =>       
+                    event.skill ? <div key={event.id}>
                         <p>{event.name}</p>
-                        <p>{event.location}</p>
-                        <p>{event.date}</p>
-                        <p>{event.credits}</p> 
-                        <p><Link className='edit' to={"/admin-projects-events/edit/" + event.id}>Aanpassen</Link></p>
-                    </div>
+                        {JSON.parse(event.skill).map(item =>
+                           <p>{skills.data.find(skill => item.id === skill.id).name}{item.hours}</p>
+                        )}
+                        <p><Link className='edit' to={"/admin-projects-events-skills/edit/" + event.id}>Aanpassen</Link></p>
+                    </div> : null
                 )
             }
         </div>
     ) : null;
-
-
-
 
     return (
         <div className='admin'>
@@ -47,8 +44,8 @@ export const AdminProjectsEvents = ({getProjects, getAllEvents}) => {
                 <AdminNav/>
                 <div className='admin-container-right'>
                     <div className='admin-container-right-title'>
-                        <h2>Project Events</h2>
-                        <p className='new'><Link to="/admin-projects-events/create">Nieuw Event</Link></p>
+                        <h2>Project Event Skills</h2>
+                        <p className='new'><Link to="/admin-projects-events/create">Voeg skill aan event</Link></p>
                     </div>
                     {eventList}
                 </div>
@@ -59,5 +56,5 @@ export const AdminProjectsEvents = ({getProjects, getAllEvents}) => {
 
 export default connect(
     null,
-    {getProjects, getAllEvents}
-  )(AdminProjectsEvents);
+    {getSkills, getAllEvents}
+)(AdminProjectsEventsSkills);

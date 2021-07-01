@@ -18,13 +18,23 @@ import dans from './img/Dans.png';
 import camera from './img/Camera.png';
 import labour from './img/labour.png';
 
+
+import accept from './img/accept.png';
+import back from './img/back.png';
+import admin from './img/admin.png';
+import skillImg from './img/Skill.png';
+import datum from './img/nav-agenda.png';
+import location from './img/nav-see.png';
+
 export const Profiel = ({getUsers,getProjects,getSkills}) => {
 
     const history = useHistory();
     const loggedUser = JSON.parse(localStorage.getItem("user"));
     const [user, setUser] = useState("");
     const [amount, setAmount] = useState("");
-    const [category, setCategory] = useState("");
+    const [selectedSkill, setSelectedSkill] = useState(null);
+    const [showPrestaties, setShowPrestaties] = useState(0);
+    const [showSkills, setShowSkills] = useState(0);
 
     function date(date) {
         const jsDate = new Date(date);
@@ -47,50 +57,31 @@ export const Profiel = ({getUsers,getProjects,getSkills}) => {
         return hours;
     }
 
-    const projectList = projects.data ? (
-        <div>
-            <img className="generalSkillImg" src={labour} width="50px" onClick={() => showWork("algemeen")}/>
-            {
-                (category === "algemeen" ? 
-                    <div>
-                        <div className="profile-history-headers">
-                            <p>Project naam</p>
-                            <p>Event naam</p>
-                            <p>Datum</p>
-                            <p>Locatie</p>
-                            <p>Gepresteerde uren</p>
+    const projectList = projects.data ? (       
+        projects.data.map(project => 
+            project.events.map(event =>
+                event.users.map(user =>
+                    (user.id === loggedUser.id ?
+                        <div className="profile-event" key={project.id + '-' + event.id + '-' + user.id + '-' + Math.random()}>
+                            <h2>{project.name}</h2>
+                            <h2>{event.name}</h2>
+                            <div className="profile-headers">
+                                <img src={datum}/>
+                                <img src={location}/>
+                                <p><span>{totalHours(user.hours)}</span></p>
+                            </div>
+                            <div className="profile-info">
+                                <p>{event.date}</p>
+                                <p>{event.location}</p>
+                                <p>Gepresteerde uren</p>
+                            </div>
                         </div>
-                        {
-                            projects.data.map(project =>
-                                <div className="profile-history" key={project.id}>
-                                    {
-                                    project.events.map(event =>
-                                        <div key={event.id}>
-                                            {
-                                            event.users.map(user =>
-                                                (user.id === loggedUser.id ?
-                                                    <div key={user.id}>
-                                                        <p>{project.name}</p>
-                                                        <p>{event.name}</p>
-                                                        <p>{event.date}</p>
-                                                        <p>{event.location}</p>
-                                                        <p>{totalHours(user.hours)}</p>
-                                                    </div>
-                                                    :
-                                                    null
-                                                )                              
-                                            )
-                                            }
-                                        </div>
-                                    )
-                                    }
-                                </div>
-                            )
-                        }
-                    </div>
-                : null)
-            } 
-        </div>
+                        :
+                        null
+                    )                              
+                )
+            )     
+        )
     ) : null;
 
     function iconFind(name) {
@@ -108,44 +99,33 @@ export const Profiel = ({getUsers,getProjects,getSkills}) => {
         }
     }
 
-    function showWork(name) {
-        setCategory(name);
-    }
+    const filteredSkillList = skills.data && selectedSkill ? skills.data.filter(skill => skill.id === selectedSkill) : null;
+    let counter = 0;
+    const skillList = filteredSkillList ? (      
+        filteredSkillList.map(skill => 
 
-    const skillList = skills.data ? (      
-        <div className="profile-history-skills">
-            {
-                skills.data.map(skill => 
-                    (skill.events.length ? 
-                        <div>
-                            <img className="skillImg" src={iconFind(skill.name)} width="50px" onClick={() => showWork(skill.name)}/>
-                            {
-                                (category === skill.name ? skill.events.map(event => 
-                                    (event.user_id === JSON.parse(localStorage.getItem("user")).id ? 
-                                        <div>
-                                            <div className="bold">
-                                                <p>Project naam</p>
-                                                <p>Event naam</p>
-                                                <p>Datum</p>
-                                                <p>Locatie</p>
-                                                <p>Gepresteerde uren</p>
-                                            </div>
-                                            <div key={event.id}>    
-                                                <p>{event.project.name}</p>
-                                                <p>{event.name}</p>
-                                                <p>{event.date}</p>
-                                                <p>{event.location}</p>
-                                                <p>{event.hours}</p>
-                                            </div>
-                                        </div>
-                                    : null)
-                                ) : null)
-                            }
+            (skill.events.length ?
+                skill.events.map(event => 
+                    (event.user_id === JSON.parse(localStorage.getItem("user")).id ?
+
+                        <div className="profile-event" key={event.id + '-' + Math.random()}>
+                            <h2>{event.project.name}</h2>
+                            <h2>{event.name}</h2>
+                            <div className="profile-headers">
+                                <img src={datum}/>
+                                <img src={location}/>
+                                <p><span>{totalHours(event.hours)}</span></p>
+                            </div>
+                            <div className="profile-info">
+                                <p>{event.date}</p>
+                                <p>{event.location}</p>
+                                <p>Gepresteerde uren</p>
+                            </div>
                         </div>
-                    : null)        
+                    : null)
                 )
-            }
-        </div>
+            : null)        
+        )
     ) : null;
   
     let clonedEvents = [];
@@ -229,35 +209,111 @@ export const Profiel = ({getUsers,getProjects,getSkills}) => {
           }
     }
 
+    function change(x) {
+        if(x === 1) {
+            setShowPrestaties(0);
+            setShowSkills(1);
+        } else {
+            setShowSkills(0);
+            setShowPrestaties(1);
+        }
+    }
+
+    function reset() {
+        setShowSkills(0);
+        setShowPrestaties(0);
+    }
+
     const userList =  users.data ? users.data.map(user => <option key={user.id} value={user.id}>{user.name}</option>) : null;
     return (
         <div className="height100">
             <Nav/>
-            <div className="profile-section-1">
-                <div className="profile-default">
-                    <FontAwesomeIcon icon={findIcon()} className="profile-icon" color="white"/>
-                    <p>Actief Sinds {date(loggedUser.created_at)}</p>
+            <div className="profile">
+                <div className="container">
+                    <div className="box">
+                        <div className="profile-info-block">
+                            <div className="flex">
+                                <p className="profile-credits"><span>{loggedUser.credits}</span><img src={credit} alt=""/></p>
+                                <p className="profile-hours"><span>{hoursSum}</span> uur</p>
+                            </div>
+                            <h2>Trade met een andere gebruiker</h2>
+                            <div className="trade">
+                                <select onChange={e => setUser(e.target.value)} placeholder="Wie?">
+                                    <option>Wie?</option>
+                                    {userList}
+                                </select>
+                                <input type="text" placeholder="Hoeveel?" onChange={e => setAmount(e.target.value)}/>
+                                <img onClick={() => trade()} src={accept} alt=""/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="box">
+                        <div className="profile-icon-block">
+                            <FontAwesomeIcon icon={findIcon()} className="profile-icon" color="white"/>
+                            <h2 className="profile-name">{loggedUser.name}</h2>
+                            <p>7. Collectief verteller</p>
+                            <p>Actief Sinds {date(loggedUser.created_at)}</p>
+                        </div>
+                    </div>
+                    <div className="box">
+                        <div className="admin">
+                            <img src={admin} alt=""/>
+                            <p>Privacy</p>
+                            <p className="logout" onClick={() => logout()}>Afmelden</p>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <p className="profile-name">{loggedUser.name}</p>
-                    <p>7. Collectief verteller</p>
-                    <p className="profile-credits"><span>{loggedUser.credits}</span><img src={credit} alt=""/></p>
-                    <p className="profile-hours"><span>{hoursSum}</span> uur</p>
-                    <p className="logout" onClick={() => logout()}>Afmelden</p>
-                </div>
-                <div className="trade">
-                    <h2>Trade met andere gebruiker</h2>
-                    <input type="text" placeholder="Hoeveel wil je versturen?" onChange={e => setAmount(e.target.value)}/>
-                    <select onChange={e => setUser(e.target.value)}>
-                        {userList}
-                    </select>
-                    <button onClick={() => trade()}>Trade</button>
-                </div>
+                {
+                    showSkills === 0 && showPrestaties === 0 ? <div className="icons">
+                        <div>
+                            <img src={skillImg} onClick={() => change(1)}/>
+                            <h2>Skills</h2>
+                        </div>
+                        <div>
+                            <img src={labour} onClick={() => change(2)}/>
+                            <h2>Prestaties</h2>
+                        </div>
+                    </div> : null
+                }
+                
+                
+                {
+                    showPrestaties ? <div className="prestaties">
+                        <div className="icon">
+                            <img className="icon-1" src={back} onClick={() => reset()}/>
+                            <img className="icon-2" src={labour}/>
+                        </div>
+                        <div className="profile-event-container">
+                            {projectList}
+                        </div>
+                        
+                    </div> : null
+                }
+                
+                {
+                    showSkills ? <div className="skills">
+                        <div className="icon">
+                            <img className="icon-1" src={back} onClick={() => reset()}/>
+                            <img className="icon-2" src={skillImg}/>
+                        </div>
+                        <div className="profile-skill-container">
+                            {
+                                skills.data ? skills.data.map(skill =>
+                                    (skill.events.length >= 1 ? <div><img key={skill.id} src={iconFind(skill.name)} onClick={() => setSelectedSkill(skill.id)}/><span>{skill.events.length}</span></div> : null)
+                                ) : null
+                            }
+
+                        </div>
+                    </div> : null
+                }
+                
+                {
+                    showSkills ? <div className="skill-details">
+                        {skillList}
+                    </div> : null
+                }
+                
             </div>
-            
-            {projectList}
-            {skillList}
-        
         </div>
     );
 }

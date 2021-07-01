@@ -25,7 +25,6 @@ export const AdminBusinessesEdit = ({getBusinesses}) => {
     const [location, setLocation] = useState(business.location);
     const [lat, setLat] = useState(business.lat);
     const [lng, setLng] = useState(business.lng);
-    const [credits, setCredits] = useState(business.credits);
     
     function submit() {
         fetch(locprod + '/businesses/' + business.id, {
@@ -41,8 +40,7 @@ export const AdminBusinessesEdit = ({getBusinesses}) => {
             description: description,
             location: location,
             lat: lat,
-            lng: lng,
-            credits: credits
+            lng: lng
           })
         }).then(response => {
           window.location.href = '/admin-businesses';
@@ -51,14 +49,13 @@ export const AdminBusinessesEdit = ({getBusinesses}) => {
 
     return (
       <div className='create'>
-          <h2>Business aanmaken</h2>
+          <h2>Handelaar aanpassen</h2>
           <input onChange={e => setName(e.target.value)} defaultValue={business.name} placeholder='Naam'/>
           <input onChange={e => setType(e.target.value)} defaultValue={business.type} placeholder='Type'/>
           <input onChange={e => setDescription(e.target.value)} defaultValue={business.description} placeholder='Description'/>
           <input onChange={e => setLocation(e.target.value)} defaultValue={business.location} placeholder='Location'/>
           <input onChange={e => setLat(e.target.value)} defaultValue={business.lat} placeholder='Latitude'/>
           <input onChange={e => setLng(e.target.value)} defaultValue={business.lng} placeholder='Longitude'/>
-          <input onChange={e => setCredits(e.target.value)} defaultValue={business.credits} placeholder='Credits'/>
           <input onClick={submit} type='submit' value='Toevoegen'/>
       </div>
     );

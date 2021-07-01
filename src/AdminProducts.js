@@ -5,8 +5,7 @@ import {useSelector} from "react-redux";
 import { Link } from 'react-router-dom';
 import './css/Admin.scss';
 import AdminNav from "./AdminNav";
-
-export const AdminBusinesses = ({getBusinesses}) => {
+export const AdminProducts = ({getBusinesses}) => {
 
     useEffect(() => {
         getBusinesses();
@@ -18,21 +17,26 @@ export const AdminBusinesses = ({getBusinesses}) => {
         <div className='admin-projects'>
             <div>
                 <p className='bold'>Naam</p>
-                <p className='bold'>Type</p>
-                <p className='bold'>Omschrijving</p>
-                <p className='bold'>Locatie</p>
+                <p className='bold'>In stock</p>
+                <p className='bold'>Prijs</p>
                 <p></p>
             </div>
             {
-                businesses.data.map(business =>
-                    <div key={business.id}>
-                        <p>{business.name}</p>
-                        <p>{business.type}</p>
-                        <p>{business.description}</p>
-                        <p>{business.location}</p>
-                        <p><Link className='edit' to={"/admin-businesses/edit/" + business.id}>Aanpassen</Link></p>
-                    </div>
+
+                businesses.data.map(business => 
+                 
+                    business.products.map(product => 
+                        
+                        <div key={product.id}>
+                            {console.log('yo')}
+                            <p>{product.name}</p>
+                            <p>{product.amount}</p>
+                            <p>{product.price}</p>
+                            <p><Link className='edit' to={"/admin-products/edit/" + business.id + "/" + product.id}>Aanpassen</Link></p>
+                        </div>
+                    )
                 )
+                
             }
         </div>
     ) : null;
@@ -44,8 +48,8 @@ export const AdminBusinesses = ({getBusinesses}) => {
                 <AdminNav/>
                 <div className='admin-container-right'>
                     <div className='admin-container-right-title'>
-                        <h2>Handelaars</h2>
-                        <p className='new'><Link to="/admin-businesses/create">Nieuwe handelaar</Link></p>
+                        <h2>Producten</h2>
+                        <p className='new'><Link to="/admin-products/create">Nieuw product</Link></p>
                     </div>
                     {businessList}
                 </div>
@@ -57,4 +61,4 @@ export const AdminBusinesses = ({getBusinesses}) => {
 export default connect(
     null,
     {getBusinesses}
-)(AdminBusinesses);
+)(AdminProducts);

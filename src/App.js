@@ -26,6 +26,9 @@ import AdminProjectsEventsEdit from "./AdminProjectsEventsEdit";
 import AdminBusinesses from "./AdminBusinesses";
 import AdminBusinessesCreate from "./AdminBusinessesCreate";
 import AdminBusinessesEdit from "./AdminBusinessesEdit";
+import AdminProducts from "./AdminProducts";
+import AdminProductsCreate from "./AdminProductsCreate";
+import AdminProductsEdit from "./AdminProductsEdit";
 import AdminActivities from "./AdminActivities";
 import AdminActivitiesCreate from "./AdminActivitiesCreate";
 import AdminActivitiesEdit from "./AdminActivitiesEdit";
@@ -36,6 +39,7 @@ import ProjectShow from "./ProjectShow";
 import BusinessShow from "./BusinessShow";
 import OrderShow from "./OrderShow";
 import BusinessDashboard from "./BusinessDashboard";
+import AdminProjectsEventsSkills from "./AdminProjectsEventsSkills";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   
@@ -127,9 +131,13 @@ function App() {
               <AdminRoute path="/admin-projects-events/create" component={AdminProjectsEventsCreate}/>
               <AdminRoute path="/admin-projects-events/edit/:id" component={AdminProjectsEventsEdit}/>
               <AdminRoute path="/admin-projects-events" component={AdminProjectsEvents}/>
+              <AdminRoute path="/admin-projects-events-skills" component={AdminProjectsEventsSkills}/>
               <AdminRoute path="/admin-businesses/create" component={AdminBusinessesCreate}/>
               <AdminRoute path="/admin-businesses/edit/:id" component={AdminBusinessesEdit}/>
               <AdminRoute path="/admin-businesses" component={AdminBusinesses}/>
+              <AdminRoute path="/admin-products/create" component={AdminProductsCreate}/>
+              <AdminRoute path="/admin-products/edit/:business_id/:product_id" component={AdminProductsEdit}/>
+              <AdminRoute path="/admin-products" component={AdminProducts}/>
               <AdminRoute path="/admin-activities/create" component={AdminActivitiesCreate}/>
               <AdminRoute path="/admin-activities/edit/:id" component={AdminActivitiesEdit}/>
               <AdminRoute path="/admin-activities" component={AdminActivities}/>

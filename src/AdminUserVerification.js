@@ -5,6 +5,7 @@ import {useSelector} from "react-redux";
 import { Link } from 'react-router-dom';
 import locprod from './Global';
 import './css/Admin.scss';
+import AdminNav from "./AdminNav";
 
 export const AdminUserVerification = ({getUsers}) => {
 
@@ -53,16 +54,7 @@ export const AdminUserVerification = ({getUsers}) => {
     return (
         <div className='admin'>
             <div className='admin-container'>
-                <div className='admin-container-left'>
-                <h1>Admin Paneel</h1>
-                    <ul>
-                        <li><Link to={"/admin-projects"}>Projecten</Link></li>
-                        <li><Link to={"/admin-projects-events"}>Project events</Link></li>
-                        <li><Link to={"/admin-businesses"}>Handelaars</Link></li>
-                        <li><Link to={"/admin-activities"}>Activiteiten</Link></li>
-                        <li><Link to={"/admin-user-verification"}>Gebruikers verificatie</Link></li>
-                    </ul>
-                </div>
+                <AdminNav/>
                 <div className='admin-container-right'>
                     {userList}
                 </div>

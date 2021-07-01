@@ -3,7 +3,6 @@ import {useSelector} from "react-redux";
 import {connect} from "react-redux";
 import {getProjects, getSkills} from "./redux/actions";
 import Nav from "./Nav";
-import WorkEvents from "./WorkEvents";
 import { useHistory } from "react-router-dom";
 import admin from './img/admin.png';
 import accept from './img/accept.png';
@@ -114,11 +113,6 @@ export const Work = ({getProjects, getSkills}) => {
                   </div>
                 </div>
               </div>
-              
-
-              
-
-              {/*<WorkEvents project={project} skills={skills}/>*/}
           </div>
         )
       }

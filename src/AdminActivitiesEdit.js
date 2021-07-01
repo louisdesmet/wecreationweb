@@ -55,7 +55,7 @@ export const AdminActivitiesEdit = ({getActivities}) => {
 
     return (
       <div className='create'>
-          <h2>Activiteit aanmaken</h2>
+          <h2>Activiteit aanpassen</h2>
           <input onChange={e => setName(e.target.value)} defaultValue={activity.name} placeholder='Naam'/>
           <input onChange={e => setLocation(e.target.value)} defaultValue={activity.location} placeholder='Location'/>
           <DatePicker selected={date} onChange={(date) => setDate(date)} />
