@@ -26,20 +26,7 @@ export const Get = ({getBusinesses, getOrders}) => {
     return (
         <div className="height100">
             <Nav/>
-            <div className="get-table">              
-                <div className="services get">
-                    <h2>Diensten</h2>
-                    <p>Kies voor deze optie als je jouw Collectieve Credits wil omruilen voor lokale diensten.</p>
-                    <div className="flex-buttons">
-                        <div className="list-button" onClick={() => show("service")}>
-                            <FontAwesomeIcon icon={faAngleDown}  size="lg" color="white"/>
-                        </div>
-                        <Link to="/see" className="globe-button">                                               
-                            <FontAwesomeIcon icon={faGlobe}  size="lg" color="white"/>                                               
-                        </Link>
-                        
-                    </div> 
-                </div>
+            <div className="get-table">  
                 <div className="businesses get">
                     <h2>Handelaars</h2>
                     <p>Kies voor deze optie als je jouw Collectieve Credits wil omruilen voor lokale producten en cadeaus</p>
@@ -47,10 +34,22 @@ export const Get = ({getBusinesses, getOrders}) => {
                         <div className="list-button" onClick={() => show("business")}>
                             <FontAwesomeIcon icon={faAngleDown}  size="lg" color="white"/>
                         </div>
-                        <Link to="/see" className="globe-button">                                               
-                            <FontAwesomeIcon icon={faGlobe}  size="lg" color="white"/>                                               
+                        <Link to="/see" className="globe-button">
+                            <FontAwesomeIcon icon={faGlobe}  size="lg" color="white"/>
                         </Link>
                     </div>
+                </div>          
+                <div className="services get">
+                    <h2>Diensten</h2>
+                    <p>Kies voor deze optie als je jouw Collectieve Credits wil omruilen voor lokale diensten.</p>
+                    <div className="flex-buttons">
+                        <div className="list-button" onClick={() => show("service")}>
+                            <FontAwesomeIcon icon={faAngleDown}  size="lg" color="white"/>
+                        </div>
+                        <Link to="/see" className="globe-button">
+                            <FontAwesomeIcon icon={faGlobe}  size="lg" color="white"/>
+                        </Link>
+                    </div> 
                 </div>
                 <Middle current={current}/>
                 <div className="payout get">

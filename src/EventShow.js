@@ -308,14 +308,13 @@ export const EventShow = ({getAllEvents, getSkills, ...otherProps}) => {
 
                 <div className="event-panel-part">
                   <h2><img src={navNetwork}/>Participanten</h2>
-                  {                         
+                  {                  
                     worked.map((user) =>
                       (user.accepted ? <div className="user" key={user.id}>
                         <p><FontAwesomeIcon icon={findProfileIcon(user.icon)} className="icon"/>{user.name}</p>
                         <p>{user.hours}u. vrijwilleger</p>
                         {
                           user.skills ? user.skills.map(skill =>
-
                             <p key={user.id + '-' + skill.id + '-' + Math.random()}>{skill.hours + 'u. ' + skill.skillName}</p>
                           ) : null
                         }

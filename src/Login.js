@@ -1,7 +1,9 @@
 import React, {useState} from "react";
 import loginlogo from './img/loginlogo.PNG';
-import loginrood from './img/loginrood.PNG';
-import loginblauw from './img/loginblauw.PNG';
+import leftTop from './img/left-top.png';
+import leftBottom from './img/left-bottom.png';
+import rightTop from './img/right-top.png';
+import rightBottom from './img/right-bottom.png';
 import registreren from './img/registreren.PNG';
 import './css/Login.scss';
 import axios from 'axios';
@@ -33,8 +35,10 @@ function Login(props) {
 
     return (
         <div>
-            <img className="loginrood" src={loginrood} alt=""/>
-            <img className="loginblauw" src={loginblauw} alt=""/>
+            <img className="left-top" src={leftTop} alt=""/>
+            <img className="left-bottom" src={leftBottom} alt=""/>
+            <img className="right-bottom" src={rightBottom} alt=""/>
+            <img className="right-top" src={rightTop} alt=""/>
             <div className="login">
                 <img className="logo" src={loginlogo} alt=""/>
                 <form onSubmit={onFormSubmit}>
