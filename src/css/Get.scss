@@ -1,140 +1,130 @@
-.businesses-container {
-    width: 94%;
-    margin: 20px 3%;
-    th {
-        text-align: left;
-    }
-    .business-body {
-        .business-data {
-            .business-data-inner {
-                display: flex;
-                p {
-                    flex: 1;
-                }
-            }
-            .products {
-                margin: 0 20px 10px 20px;
-                .product {
-                    display: flex;
-                    padding: 7px 0;
-                    p {
-                        flex: 1;
-                    }
-                    .product-buy {
-                        background: #0084FF;
-                        color: white;
-                        border-radius: 15px;
-                        padding: 5px 15px;
-                        font-weight: bold;
-
-                    }
-                }
-            }
-        }
-    }
-    .headers {
-        border-bottom: 1px solid black;
-        display: flex;
-        font-weight: bold;
-        p {
-            flex: 1;
-        }
-    }
-    .prod-head {
-        margin: 10px 20px 0 20px;
-    }
-}
-
 .get-table {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-flow: row wrap;
     .get {
+        color: black;
         width: 44%;
+        text-decoration: none;
+        background: #FDF4CF;
         box-sizing: border-box;
         margin: 20px 3%;
         h2 {
             margin-top: 15px;
+            text-align: center;
         }
         p {
-            margin: 20px 20px 0 20px;
+            margin: 20px;
         }
     }
-    .flex-buttons {
+    .buttons {
+        text-align: center;
+        padding-bottom: 20px;
+        img {
+            width: 50px;
+        }
+    }
+
+}
+
+.business-container {
+    .title {
+        text-align: center;
+        font-size: 2.5em;
+        margin: 50px 0 50px 0;
+    }
+    .business-flex {
         display: flex;
-    }
-    .services {
-        border-radius: 15px;
-        h2 {
-            color: #00A7DE;
-            text-align: center;
-        }
-        .list-button {
-            width: 44%;
-            background: #00A7DE;
-            text-align: center;
-            margin: 15px 2% 15px 4%;
-            padding: 5px;
-        }
-        .globe-button {
-            width: 44%;
-            background: #00A7DE;
-            text-align: center;
-            margin: 15px 4% 15px 2%;
-            padding: 5px;
+        flex-wrap: wrap;
+        .business-data {
+            width: 31.3%;
+            margin: 0 1% 15px 1%;
+            padding: 15px;
+            box-sizing: border-box;
+            background: #FDF4CF;
+            border-radius: 20px;
+            text-decoration: none;
+            color: black;
+            h2 {
+                text-align: center;
+                margin: 0 0 10px 0;
+            }
+            p {
+                margin: 0 0 5px 0;
+            }
         }
     }
-    .businesses {
-        border: 2px solid #E2A433;
-        border-radius: 15px;
-        h2 {
-            color: #E2A433;
-            text-align: center;
+}
+
+.products-container {
+    width: 80%;
+    background: #FDF4CF;
+    margin: 100px auto 0 auto;
+    padding: 0 0 70px 0;
+    h2 {
+        text-align: center;
+        font-size: 2em;
+        padding: 50px 0;
+    }
+    .products-data {
+        display: flex;
+        .products {
+            flex: 1;
+            h3 {
+                text-align: center;
+                padding: 0 0 20px 0;
+                font-size: 1.4em;
+            }
+            .products-inner {
+                display: flex;
+                flex-wrap: wrap;
+                .product {
+                    width: 33.3%;
+                    h4 {
+                        text-align: center;
+                        margin: 20px 0 0 0;
+                    }
+                    .product-credits {
+                        width: 75%;
+                        margin: 0 auto 0 auto;
+                        div {
+                            display: inline-block;
+                            width: 50%;
+                            img {
+                                position: relative;
+                                top: 18px;
+                                left: 5px;
+                                width: 50px;
+                                height: 50px;
+                            }
+                        }
+                    }
+                    p {
+                        background: white;
+                        color: #FDF4CF;
+                        font-weight: bold;
+                        text-align: center;
+                        width: 75%;
+                        margin: 20px auto 0 auto;
+                        border-radius: 15px;
+                        padding: 4px 0;
+                        font-size: 1.2em;
+                        cursor: pointer;
+                    }
+                }
+            }
         }
-        .list-button {
-            width: 44%;
-            background: #E2A433;
-            text-align: center;
-            margin: 15px 2% 15px 4%;
-            padding: 5px;
-        }
-        .globe-button {
-            width: 44%;
-            background: #E2A433;
-            text-align: center;
-            margin: 15px 4% 15px 2%;
-            padding: 5px;
+        .description {
+            flex: 1;
+            p {
+                margin: 0 0 50px 0;
+            }
+            .map {
+                width: 80%;
+                height: 300px;
+            }
         }
     }
-    .payout {
-        border: 2px solid #9F9888;
-        border-radius: 15px;
-        h2 {
-            color: #9F9888;
-            text-align: center;
-        }
-        .list-button {
-            width: 44%;
-            background: #9F9888;
-            text-align: center;
-            margin: 15px 2% 15px 4%;
-            padding: 5px;
-        }
-    }
-    .history {
-        border: 2px solid #DF1C65;
-        border-radius: 15px;
-        h2 {
-            color: #DF1C65;
-            text-align: center;
-        }
-        .list-button {
-            width: 44%;
-            background: #DF1C65;
-            text-align: center;
-            margin: 15px 2% 15px 4%;
-            padding: 5px;
-        }
-    }
+    
 }

@@ -58,12 +58,12 @@ export const ProjectShow = ({getProjects}) => {
                           <img src={datum}/>
                           <img src={location}/>
                           <img src={navGet}/>
-                          <img src={accept}/>   
-                        </div> 
+                          <img src={accept}/>
+                        </div>
                         <div>
                           <p>{date(event.date)}</p>
                           <p>{event.location}</p>
-                          <p>6.8</p>
+                          <p>{event.credits}</p>
                           <p>vrije uren</p>
                         </div>
 

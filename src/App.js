@@ -40,6 +40,11 @@ import BusinessShow from "./BusinessShow";
 import OrderShow from "./OrderShow";
 import BusinessDashboard from "./BusinessDashboard";
 import AdminProjectsEventsSkills from "./AdminProjectsEventsSkills";
+import GetHandelaars from "./GetHandelaars";
+import GetDiensten from "./GetDiensten";
+import GetVergoedingen from "./GetVergoedingen";
+import GetHistoriek from "./GetHistoriek";
+import GetProducts from "./GetProducts";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   
@@ -112,7 +117,14 @@ function App() {
               <PrivateRoute path="/work" component={Work}/>
               <PrivateRoute path="/work-project-leader/:id" component={WorkLeaderBoard}/>
               <PrivateRoute path="/see" component={See}/>
+
+              <PrivateRoute path="/get/handelaars/:id/products" component={GetProducts}/>
+              <PrivateRoute path="/get/handelaars" component={GetHandelaars}/>
+              <PrivateRoute path="/get/diensten" component={GetDiensten}/>
+              <PrivateRoute path="/get/vergoedingen" component={GetVergoedingen}/>
+              <PrivateRoute path="/get/historiek" component={GetHistoriek}/>
               <PrivateRoute path="/get" component={Get}/>
+        
               <PrivateRoute path="/profiel" component={Profiel}/>
               <PrivateRoute path="/agenda" component={Agenda}/>
               <PrivateRoute path="/netwerk" component={Netwerk}/>
