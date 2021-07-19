@@ -51,6 +51,8 @@ export const Profiel = ({getUsers,getProjects,getSkills}) => {
     const users = useSelector(state => state.remoteUsers);
     const skills = useSelector(state => state.remoteSkills);
 
+    const updatedLoggedUser = users.data ? users.data.find(item => item.id === loggedUser.id) : null;
+
     let hoursSum = 0;
     function totalHours(hours) {
         hoursSum += parseInt(hours);
@@ -233,7 +235,7 @@ export const Profiel = ({getUsers,getProjects,getSkills}) => {
                     <div className="box">
                         <div className="profile-info-block">
                             <div className="flex">
-                                <p className="profile-credits"><span>{loggedUser.credits}</span><img src={credit} alt=""/></p>
+                                <p className="profile-credits"><span>{updatedLoggedUser ? updatedLoggedUser.credits : null}</span><img src={credit} alt=""/></p>
                                 <p className="profile-hours"><span>{hoursSum}</span> uur</p>
                             </div>
                             <h2>Trade met een andere gebruiker</h2>
