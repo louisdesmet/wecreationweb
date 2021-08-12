@@ -106,16 +106,19 @@ export const EventShow = ({getAllEvents, getSkills, ...otherProps}) => {
       ) : null);
 
       worked = [];
-      event.users.forEach(user => {
-        if(worked[user.id]) {
-
-          const newNum = parseInt(worked[user.id].hours) + parseInt(user.hours);
-          worked[user.id].hours = newNum;
-        } else {
-          worked[user.id] = user;
-
-        }
-      });
+      if(event.users) {
+        event.users.forEach(user => {
+          if(worked[user.id]) {
+  
+            const newNum = parseInt(worked[user.id].hours) + parseInt(user.hours);
+            worked[user.id].hours = newNum;
+          } else {
+            worked[user.id] = user;
+  
+          }
+        });
+      }
+    
 
       skills.data.forEach(skill => {
         skill.events.forEach(skillEvent => {

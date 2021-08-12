@@ -9,6 +9,7 @@
         background: #E9F0FA;
         position: relative;
         border-radius: 7px;
+        min-width: 0;
 
         .project-logo {
             width: 50px;
@@ -25,6 +26,13 @@
         .project-desc {
             margin-top: 15px;
             padding: 0 30px 98px 30px;
+            p {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 2; /* number of lines to show */
+                -webkit-box-orient: vertical;
+            }
             
         }
         .project-icons-container {

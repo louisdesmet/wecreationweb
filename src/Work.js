@@ -91,7 +91,10 @@ export const Work = ({getProjects, getSkills}) => {
               {JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <span className="project-leader-btn" onClick={e => projectLeaderBoard(e, project.id)}><img src={admin} alt=""/></span> : null}
               <img className="project-logo" src={accept}/>
               <p className="project-title">{project.name}</p>
-              <p className="project-desc">{project.description}</p>
+              <div className="project-desc">
+                <p>{project.description}</p>
+              </div>
+              
 
               <div className="project-icons-container">
                 <div className="project-icons">

@@ -5,6 +5,7 @@ import { connect, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {getBusinesses} from "./redux/actions";
 import credit from './img/profile-credit.png';
+import stock from './img/stock.png';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
@@ -16,15 +17,24 @@ let icon = L.icon({
 });
 
 
-export const GetProducts = ({getBusinesses}) => {
+export const GetProducts = ({getBusinesses,  ...otherProps}) => {
 
   useEffect(() => {
     getBusinesses();
   }, []);
 
   const businesses = useSelector(state => state.remoteBusinesses);
+
   const { id } = useParams();
-  const business = businesses.data ? businesses.data.find(business => business.id === parseInt(id)) : null;
+  
+
+  let business
+  if(otherProps.business) {
+    business = otherProps.business;
+  } else {
+    business = businesses.data ? businesses.data.find(business => business.id === parseInt(id)) : null;
+  }
+
   let position = business ? [business.lat, business.lng] : [];
 
   const businessMarkers = business ? <Marker key={business.id} position={[business.lat, business.lng]} icon={icon}></Marker> : null;
@@ -63,7 +73,7 @@ export const GetProducts = ({getBusinesses}) => {
                               <h4>{ product.name }</h4>
                               <div className="product-credits">
                                 <div><span>{product.amount}</span><img src={credit} alt=""/></div>
-                                <div><span>{product.price}</span><img src={credit} alt=""/></div>
+                                <div><span>{product.price}</span><img src={stock} alt=""/></div>
                               </div>
                               <p onClick={() => buy(product)}><span className="product-buy">Aankopen</span></p>
                           </div>

@@ -59,7 +59,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   }).map(business => {
     return <Marker key={business.id} position={[business.lat, business.lng]} icon={getIcon}>
       <Popup className="popup">
-        <h2><Link to={"/businesses/" + business.id}>{business.name}</Link></h2>
+        <h2><Link to={"/get/handelaars/" + business.id + "/products"}>{business.name}</Link></h2>
         <p>{business.description}</p>
         <div className="data-container">
           <img src={location}/>

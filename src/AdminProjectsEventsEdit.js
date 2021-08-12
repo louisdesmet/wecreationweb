@@ -6,6 +6,7 @@ import locprod from './Global';
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+
 import './css/Admin.scss';
 
 export const AdminProjectsEventsEdit = ({}) => {
@@ -53,7 +54,7 @@ export const AdminProjectsEventsEdit = ({}) => {
           <h2>Project Event aanmaken</h2>
           <input onChange={e => setName(e.target.value)} defaultValue={event.name} placeholder='Naam'/>
           <input onChange={e => setLocation(e.target.value)} defaultValue={event.location} placeholder='Location'/>
-          <DatePicker selected={date} onChange={(date) => setDate(date)} />
+          <DatePicker selected={date} onChange={(date) => setDate(date)}/>
           <input onChange={e => setCredits(e.target.value)} defaultValue={event.credits} placeholder='Credits'/>
           <select onChange={e => setProject(e.target.value)}>
               {projectList}

@@ -5,8 +5,8 @@ import {useSelector} from "react-redux";
 import { Link } from 'react-router-dom';
 import locprod from './Global';
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
+import TimePicker from 'react-time-picker';
 import './css/Admin.scss';
 
 export const AdminProjectsEventsCreate = ({getProjects}) => {
@@ -22,6 +22,7 @@ export const AdminProjectsEventsCreate = ({getProjects}) => {
     const [date, setDate] = useState(new Date());
     const [credits, setCredits] = useState("");
     const [project, setProject] = useState("");
+    const [time, setTime] = useState('10:00');
 
     function format(date) {
         const jsDate = new Date(date);
@@ -40,6 +41,7 @@ export const AdminProjectsEventsCreate = ({getProjects}) => {
             name: name,
             location: location,
             date: format(date),
+            time: time,
             credits: credits,
             project: project
           })
@@ -55,7 +57,8 @@ export const AdminProjectsEventsCreate = ({getProjects}) => {
           <h2>Event aanmaken</h2>
           <input onChange={e => setName(e.target.value)} placeholder='Naam'/>
           <input onChange={e => setLocation(e.target.value)} placeholder='Location'/>
-          <DatePicker selected={date} onChange={(date) => setDate(date)} />
+          <DatePicker selected={date} onChange={(date) => setDate(date)}/>
+          <input type="time" onChange={(date) => setTime(date)}/>
           <input onChange={e => setCredits(e.target.value)} placeholder='Credits'/>
           <select onChange={e => setProject(e.target.value)}>
               {projectList}

@@ -14,45 +14,47 @@ import mode from './img/Mode.png';
 import dans from './img/Dans.png';
 import camera from './img/Camera.png';
 
-import {getAllEvents, getSkills} from "./redux/actions";
+import {getAllEvents, getBusinesses, getSkills} from "./redux/actions";
 
 import EventShow from "./EventShow";
-
-export const Home = ({getAllEvents, getSkills}) => {
+import GetProducts from "./GetProducts";
+export const Home = ({getAllEvents, getBusinesses, getSkills}) => {
 
   useEffect(() => {
     getAllEvents();
+    getBusinesses();
     getSkills();
   }, []);
 
   const events = useSelector(state => state.remoteAllEvents);
-  console.log('---------events------');
-  console.log(events);
-  console.log('-----------stop events----------');
+  const businesses = useSelector(state => state.remoteBusinesses);
   const skills = useSelector(state => state.remoteSkills);
+
   const eventsLength = events.data ? events.data.length : 0;
-  const rndInt = Math.floor(Math.random() * eventsLength) + 1;
+  const businessLength = businesses.data ? businesses.data.length : 0;
+
+  const rndIntEvent = Math.floor(Math.random() * eventsLength) + 1;
+  const rndIntBusiness = Math.floor(Math.random() * businessLength) + 1;
+
+  const event = events.data ? events.data.find((event, index) => index + 1 === rndIntEvent) : null;
+  const business = businesses.data ? businesses.data.find((business, index) => index + 1 === rndIntBusiness) : null;
+
+
+  const rndInt = Math.floor(Math.random() * 2) + 1;
+
+
   
-  console.log('---------num------');
-  console.log(rndInt);
-  console.log('-----------stop num----------');
-
-  const event = events.data ? events.data.find((event, index) => index + 1 === rndInt) : null;
-
-  console.log('---------event------');
-  console.log(event);
-  console.log('-----------stop event----------');
 
   return (
       <div className="height100">
         <Nav/>
-
-        { event ? <EventShow event={event}/> : null }
+        { business && rndInt === 1 ? <GetProducts business={business}/> : null }
+        { event && rndInt === 2 ? <EventShow event={event}/> : null }
       </div>
   );
 }
 
 export default connect(
   null,
-  { getAllEvents, getSkills }
+  { getAllEvents, getBusinesses, getSkills }
 )(Home);
