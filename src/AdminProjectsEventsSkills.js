@@ -14,7 +14,7 @@ export const AdminProjectsEventsSkills = ({getProjects, getAllEvents}) => {
 
     const skills = useSelector(state => state.remoteSkills);
     const events = useSelector(state => state.remoteAllEvents);
-    
+    console.log(events.data);
     const eventList = events.data && skills.data ? (
         <div className='admin-projects'>
             <div>
@@ -25,7 +25,7 @@ export const AdminProjectsEventsSkills = ({getProjects, getAllEvents}) => {
                 <p></p>
             </div>
             {
-                events.data.map(event =>       
+                events.data.map(event => 
                     event.skill ? <div key={event.id}>
                         <p>{event.name}</p>
                         {JSON.parse(event.skill).map(item =>

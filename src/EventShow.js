@@ -280,12 +280,12 @@ export const EventShow = ({getAllEvents, getSkills, ...otherProps}) => {
 
                 <div className="event-panel-general">
 
-                  <h2><img src={work}/>Vrije uren vrijwilleger</h2>
+                  <h2><img src={work}/>Vrije uren vrijwilliger</h2>
 
                   <div className="skills-container">
                     <div className="skill-title">
                       <img src={regie}/>
-                      <h3>Vrijwilleger</h3>
+                      <h3>Vrijwilliger</h3>
                     </div>
                     <div className="skill-number">
                       <div>
@@ -315,7 +315,7 @@ export const EventShow = ({getAllEvents, getSkills, ...otherProps}) => {
                     worked.map((user) =>
                       (user.accepted ? <div className="user" key={user.id}>
                         <p><FontAwesomeIcon icon={findProfileIcon(user.icon)} className="icon"/>{user.name}</p>
-                        <p>{user.hours}u. vrijwilleger</p>
+                        <p>{user.hours}u. vrijwilliger</p>
                         {
                           user.skills ? user.skills.map(skill =>
                             <p key={user.id + '-' + skill.id + '-' + Math.random()}>{skill.hours + 'u. ' + skill.skillName}</p>
