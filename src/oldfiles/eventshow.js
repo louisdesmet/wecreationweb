@@ -6,6 +6,7 @@ import { Link, useParams } from 'react-router-dom';
 import Nav from './Nav';
 import datum from './img/nav-agenda.png';
 import location from './img/nav-see.png';
+import time from './img/tijdstip.png';
 import navGet from './img/nav-get.png';
 import profiel from './img/nav-profiel.png';
 import work from './img/nav-work.png';
@@ -16,18 +17,6 @@ import montage from './img/Montage.png';
 import mode from './img/Mode.png';
 import dans from './img/Dans.png';
 import camera from './img/Camera.png';
-
-import agenda from './img/nav/agenda.png';
-import time from './img/eventshow/time.png';
-import see from './img/nav/see.png';
-import get from './img/nav/get.png';
-import team from './img/profile/team.png';
-import leader from './img/profile/leader.png';
-
-import desc from './img/profile/desc.png';
-import free from './img/profile/free.png';
-import skill from './img/profile/skill.png';
-
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChess, faAddressCard, faBeer, faBalanceScale, faMugHot, faBurn, faAnchor, faBlind, faBowlingBall, 
@@ -270,49 +259,79 @@ export const EventShow = ({getAllEvents, getSkills, ...otherProps}) => {
 
     return (
       <div className="height100">
-          <Nav/>
-          {event ?
+          {event ? 
             <div className='event-panel'>
-              <h2 className="event-title"><span>{event.project.name + ' - ' + event.name}</span></h2>
-              <div className="container">
-                <div className="left">
-                  <div>
-                    <img src={agenda}/>
-                    <p>{date(event.date)}</p>
+              <h2 className="mb-70 mt-70">{event.project.name + ' - ' + event.name}</h2>
+              <div className="event-panel-images">
+                <img src={datum}/>
+                <img src={time}/>
+                <img src={location}/>
+                <img src={navGet}/>
+                <img src={profiel}/>
+              </div>
+              <div className="event">
+                  <p>{date(event.date)}</p>
+                  <p>{new Date(event.date).toLocaleTimeString()}</p>
+                  <p><Link to={"/see"}>{event.location}</Link></p>
+                  <p>8.31</p>
+                  <p>{event.project.leader.name}</p>
+              </div>
+              <div className="event-panel-container">
+
+                <div className="event-panel-general">
+
+                  <h2><img src={work}/>Vrije uren vrijwilliger</h2>
+
+                  <div className="skills-container">
+                    <div className="skill-title">
+                      <img src={regie}/>
+                      <h3>Vrijwilliger</h3>
+                    </div>
+                    <div className="skill-number">
+                      <div>
+                        <input type="number" placeholder="_" onChange={(e) => {setHours(parseInt(e.target.value))}}/>
+                        <p> / {event.free}</p>
+                      </div>
+                    </div>
+                    <div className="confirm">
+                      <button onClick={() => join()}>Bevestig</button>
+                    </div>
                   </div>
-                  <div>
-                    <img src={time}/>
-                    <p>{new Date(event.date).toLocaleTimeString()}</p>
-                  </div>
-                  <div>
-                    <img src={see}/>
-                    <p><Link to={"/see"}>{event.location}</Link></p>
-                  </div>
-                  <div>
-                    <img src={get}/>
-                    <h2>Totaal budget</h2>
-                  </div>
-                  <div>
-                    <img src={team}/>
-                    <h2>Team</h2>
-                  </div>
-                  <div>
-                    <img src={leader}/>
-                    <h2>Projectleider</h2>
-                    <p>{event.project.leader.name}</p>
-                  </div>
+
                 </div>
-                <div className="right">
-                  <h2><img src={desc} alt=""/>Projectbeschrijving</h2>
-                  <p>{event.project.description}</p>
-                  <h2><img src={free} alt=""/>Vrijwilliger uren</h2>
-                  <h2><img src={skill} alt=""/>Skill uren</h2>
+
+                <div className="event-panel-desc">
+                  <p>{event.description}</p>
+                </div>
+
+                <div className="event-panel-skills">
+                  <h2><img src={work}/>Vrije uren skills</h2>
+                  {skillList}
+                </div>
+
+                <div className="event-panel-part">
+                  <h2><img src={navNetwork}/>Participanten</h2>
+                  {                  
+                    worked.map((user) =>
+                      (user.accepted ? <div className="user" key={user.id}>
+                        <p><FontAwesomeIcon icon={findProfileIcon(user.icon)} className="icon"/>{user.name}</p>
+                        <p>{user.hours}u. vrijwilliger</p>
+                        {
+                          user.skills ? user.skills.map(skill =>
+                            <p key={user.id + '-' + skill.id + '-' + Math.random()}>{skill.hours + 'u. ' + skill.skillName}</p>
+                          ) : null
+                        }
+                      </div> : null)
+                    )
+                  }
+
                 </div>
               </div>
             </div>
             :
             null
           }
+    
       </div>
     );
 }

@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
-import Nav from "./Nav";
-import location from './img/nav-see.png';
-import datum from './img/nav-agenda.png';
-import skillImg from './img/Skill.png';
-import time from './img/tijdstip.png';
-import navNetwork from './img/nav-netwerk.png';
-
-import axios from 'axios';
-import regie from './img/Regie.png';
-import montage from './img/Montage.png';
-import mode from './img/Mode.png';
-import dans from './img/Dans.png';
-import camera from './img/Camera.png';
-
 import {getAllEvents, getBusinesses, getSkills} from "./redux/actions";
+import { Link } from "react-router-dom";
+import Nav from "./Nav";
 
-import EventShow from "./EventShow";
-import GetProducts from "./GetProducts";
+import agenda from './img/nav/agenda.png';
+import time from './img/eventshow/time.png';
+import see from './img/nav/see.png';
+import get from './img/nav/get.png';
+import team from './img/profile/team.png';
+import leader from './img/profile/leader.png';
+
+import desc from './img/profile/desc.png';
+import free from './img/profile/free.png';
+import skill from './img/profile/skill.png';
+
 export const Home = ({getAllEvents, getBusinesses, getSkills}) => {
 
   useEffect(() => {
@@ -42,14 +39,59 @@ export const Home = ({getAllEvents, getBusinesses, getSkills}) => {
 
   const rndInt = Math.floor(Math.random() * 2) + 1;
 
+  function date(date) {
+    const jsDate = new Date(date);
+    return jsDate.getDate()+'-'+(jsDate.getMonth()+1)+'-'+jsDate.getFullYear();
+  }
 
+  console.log(rndIntEvent);
   
 
   return (
       <div className="height100">
         <Nav/>
-        { business && rndInt === 1 ? <GetProducts business={business}/> : null }
-        { event && rndInt === 2 ? <EventShow event={event}/> : null }
+        {event ?
+            <div className='event-panel'>
+              <h2 className="event-title"><span>{event.project.name + ' - ' + event.name}</span></h2>
+              <div className="container">
+                <div className="left">
+                  <div>
+                    <img src={agenda}/>
+                    <p>{date(event.date)}</p>
+                  </div>
+                  <div>
+                    <img src={time}/>
+                    <p>{new Date(event.date).toLocaleTimeString()}</p>
+                  </div>
+                  <div>
+                    <img src={see}/>
+                    <p><Link to={"/see"}>{event.location}</Link></p>
+                  </div>
+                  <div>
+                    <img src={get}/>
+                    <h2>Totaal budget</h2>
+                  </div>
+                  <div>
+                    <img src={team}/>
+                    <h2>Team</h2>
+                  </div>
+                  <div>
+                    <img src={leader}/>
+                    <h2>Projectleider</h2>
+                    <p>{event.project.leader.name}</p>
+                  </div>
+                </div>
+                <div className="right">
+                  <h2><img src={desc} alt=""/>Projectbeschrijving</h2>
+                  <p>{event.project.description}</p>
+                  <h2><img src={free} alt=""/>Vrijwilliger uren</h2>
+                  <h2><img src={skill} alt=""/>Skill uren</h2>
+                </div>
+              </div>
+            </div>
+            :
+            null
+        }
       </div>
   );
 }

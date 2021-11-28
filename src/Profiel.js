@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
 import {getProjects, getSkills, getUsers} from "./redux/actions";
-import credit from './img/profile-credit.png';
 import Nav from "./Nav";
 import {useSelector} from "react-redux";
 import './css/Profiel.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChess, faAddressCard, faBeer, faBalanceScale, faMugHot, faBurn, faAnchor, faBlind, faBowlingBall, 
     faRadiation, faBandAid, faBath, faBed, faBible, faBlender, faBong, faBox } from '@fortawesome/free-solid-svg-icons'
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Axios from 'axios';
 
 import regie from './img/Regie.png';
@@ -19,12 +18,37 @@ import camera from './img/Camera.png';
 import labour from './img/labour.png';
 
 
-import accept from './img/accept.png';
 import back from './img/back.png';
 import admin from './img/admin.png';
 import skillImg from './img/Skill.png';
 import datum from './img/nav-agenda.png';
-import location from './img/nav-see.png';
+
+
+import work from './img/nav-work.png';
+
+import agenda from './img/profile/agenda.png';
+import handel from './img/profile/handel.png';
+import kassa from './img/profile/kassa.png';
+
+import credits from './img/profile/credits.png';
+import edit from './img/profile/edit.png';
+
+import navAgenda from './img/nav/agenda.png';
+import master from './img/profile/master.png';
+import see from './img/nav/see.png';
+import credit from './img/profile/credit.png';
+import team from './img/profile/team.png';
+import leader from './img/profile/leader.png';
+
+import desc from './img/profile/desc.png';
+import data from './img/profile/data.png';
+import get from './img/nav/get.png';
+
+import free from './img/profile/free.png';
+import skill from './img/profile/skill.png';
+import badges from './img/profile/badges.png';
+
+
 
 export const Profiel = ({getUsers,getProjects,getSkills}) => {
 
@@ -53,83 +77,6 @@ export const Profiel = ({getUsers,getProjects,getSkills}) => {
 
     const updatedLoggedUser = users.data ? users.data.find(item => item.id === loggedUser.id) : null;
 
-    let hoursSum = 0;
-    function totalHours(hours) {
-        hoursSum += parseInt(hours);
-        return hours;
-    }
-
-    const projectList = projects.data ? (       
-        projects.data.map(project => 
-            project.events.map(event =>
-                event.users.map(user =>
-                    (user.id === loggedUser.id ?
-                        <div className="profile-event" key={project.id + '-' + event.id + '-' + user.id + '-' + Math.random()}>
-                            <h2>{project.name}</h2>
-                            <h2>{event.name}</h2>
-                            <div className="profile-headers">
-                                <img src={datum}/>
-                                <img src={location}/>
-                                <p><span>{totalHours(user.hours)}</span></p>
-                            </div>
-                            <div className="profile-info">
-                                <p>{event.date}</p>
-                                <p>{event.location}</p>
-                                <p>Gepresteerde uren</p>
-                            </div>
-                        </div>
-                        :
-                        null
-                    )                              
-                )
-            )     
-        )
-    ) : null;
-
-    function iconFind(name) {
-        switch(name) {
-          case "regie": return regie;
-          break;
-          case "montage": return montage;
-          break;
-          case "mode": return mode;
-          break;
-          case "dans": return dans;
-          break;
-          case "camera": return camera;
-          break;
-        }
-    }
-
-    const filteredSkillList = skills.data && selectedSkill ? skills.data.filter(skill => skill.id === selectedSkill) : null;
-    let counter = 0;
-    const skillList = filteredSkillList ? (      
-        filteredSkillList.map(skill => 
-
-            (skill.events.length ?
-                skill.events.map(event => 
-                    (event.user_id === JSON.parse(localStorage.getItem("user")).id ?
-
-                        <div className="profile-event" key={event.id + '-' + Math.random()}>
-                            <h2>{event.project.name}</h2>
-                            <h2>{event.name}</h2>
-                            <div className="profile-headers">
-                                <img src={datum}/>
-                                <img src={location}/>
-                                <p><span>{totalHours(event.hours)}</span></p>
-                            </div>
-                            <div className="profile-info">
-                                <p>{event.date}</p>
-                                <p>{event.location}</p>
-                                <p>Gepresteerde uren</p>
-                            </div>
-                        </div>
-                    : null)
-                )
-            : null)        
-        )
-    ) : null;
-  
     let clonedEvents = [];
 
     if(projects.data) {
@@ -142,34 +89,6 @@ export const Profiel = ({getUsers,getProjects,getSkills}) => {
                 })
             })
         });
-    }
-
-
-    function logout() {
-        localStorage.setItem('token', null);
-        localStorage.setItem('user', null);
-        history.push("/login");
-    }
-
-    function trade() {
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
-        }
-        Axios.post('/trade', {
-            'loggedUser': loggedUser.id,
-            'user_id': user,
-            'amount': amount
-        }, {
-            headers: headers
-        })
-        .then((response) => {
-            window.location.href = "/profiel";
-        
-        })
-        .catch((error) => {
-    
-        })
     }
 
     function findIcon() {
@@ -208,113 +127,85 @@ export const Profiel = ({getUsers,getProjects,getSkills}) => {
             break;
             case "faBox": return faBox;
             break;
-          }
-    }
-
-    function change(x) {
-        if(x === 1) {
-            setShowPrestaties(0);
-            setShowSkills(1);
-        } else {
-            setShowSkills(0);
-            setShowPrestaties(1);
         }
     }
 
-    function reset() {
-        setShowSkills(0);
-        setShowPrestaties(0);
-    }
-
-    const userList =  users.data ? users.data.map(user => <option key={user.id} value={user.id}>{user.name}</option>) : null;
     return (
         <div className="height100">
             <Nav/>
             <div className="profile">
                 <div className="container">
-                    <div className="box">
-                        <div className="profile-info-block">
-                            <div className="flex">
-                                <p className="profile-credits"><span>{updatedLoggedUser ? updatedLoggedUser.credits : null}</span><img src={credit} alt=""/></p>
-                                <p className="profile-hours"><span>{hoursSum}</span> uur</p>
-                            </div>
-                            <h2>Trade met een andere gebruiker</h2>
-                            <div className="trade">
-                                <select onChange={e => setUser(e.target.value)} placeholder="Wie?">
-                                    <option>Wie?</option>
-                                    {userList}
-                                </select>
-                                <input type="text" placeholder="Hoeveel?" onChange={e => setAmount(e.target.value)}/>
-                                <img onClick={() => trade()} src={accept} alt=""/>
-                            </div>
-                        </div>
+                    <div className="left">
+                        <Link to={"/home"}><img src={handel} alt=""/>Mijn handelszaak</Link>
+                        <Link to={"/home"}><img src={kassa} alt=""/>Mijn kassatickets</Link>
+                        <Link to={"/home"}><img src={agenda} alt=""/>Mijn projecten</Link>
+                        <Link to={"/home"}><img src={agenda} alt=""/>Mijn events</Link>
                     </div>
-                    <div className="box">
-                        <div className="profile-icon-block">
-                            <FontAwesomeIcon icon={findIcon()} className="profile-icon" color="white"/>
-                            <h2 className="profile-name">{loggedUser.name}</h2>
-                            <p>7. Collectief verteller</p>
-                            <p>Actief Sinds {date(loggedUser.created_at)}</p>
-                        </div>
+                    <div className="middle">
+                        <FontAwesomeIcon icon={findIcon()} className="profile-icon" color="white"/>
+                        <h2 className="profile-name">{loggedUser.name}</h2>
+                        
+                        <p className="profile-credits"><img src={credits} alt=""/>{updatedLoggedUser ? updatedLoggedUser.credits : null} cc</p>
+                        <div className="line"></div>
                     </div>
-                    <div className="box">
-                        <div className="admin">
-                            <img src={admin} alt=""/>
-                            <p>Privacy</p>
-                            <p className="logout" onClick={() => logout()}>Afmelden</p>
-                        </div>
+                    <div className="right">
+                        <img className="profile-edit" src={edit} alt=""/>
                     </div>
                 </div>
-                {
-                    showSkills === 0 && showPrestaties === 0 ? <div className="icons">
+                <div className="profile-container">
+                    <div className="left">
                         <div>
-                            <img src={skillImg} onClick={() => change(1)}/>
-                            <h2>Skills</h2>
+                            <img src={navAgenda} alt=""/>
+                            <h2>Lopende projecten</h2>
                         </div>
                         <div>
-                            <img src={labour} onClick={() => change(2)}/>
-                            <h2>Prestaties</h2>
+                            <img src={master} alt=""/>
+                            <h2>Master in</h2>
                         </div>
-                    </div> : null
-                }
-                
-                
-                {
-                    showPrestaties ? <div className="prestaties">
-                        <div className="icon">
-                            <img className="icon-1" src={back} onClick={() => reset()}/>
-                            <img className="icon-2" src={labour}/>
+                        <div>
+                            <img src={see} alt=""/>
+                            <h2>Fix the grid</h2>
                         </div>
-                        <div className="profile-event-container">
-                            {projectList}
+                        <div>
+                            <img src={credit} alt=""/>
+                            <h2>Verdiende credits</h2>
                         </div>
-                        
-                    </div> : null
-                }
-                
-                {
-                    showSkills ? <div className="skills">
-                        <div className="icon">
-                            <img className="icon-1" src={back} onClick={() => reset()}/>
-                            <img className="icon-2" src={skillImg}/>
+                        <div>
+                            <img src={team} alt=""/>
+                            <h2>Bekende teamgenoten</h2>
                         </div>
-                        <div className="profile-skill-container">
-                            {
-                                skills.data ? skills.data.map(skill =>
-                                    (skill.events.length >= 1 ? <div><img key={skill.id} src={iconFind(skill.name)} onClick={() => setSelectedSkill(skill.id)}/><span>{skill.events.length}</span></div> : null)
-                                ) : null
-                            }
+                        <div>
+                            <img src={leader} alt=""/>
+                            <h2>Projectleider van</h2>
+                        </div>
+                    </div>
+                    <div className="right">
+                        <h2><img src={desc} alt=""/>Profielbeschrijving</h2>
+                        <p>wezen. Lorem Ipsum is de standaard proeftekst in deze bedrijfstak sinds de 16e eeuw,
+                        toen een onbekende drukker een zethaak met letters nam en ze door elkaar husselde
+                        om een font-catalogus te maken. Het heeft niet alleen vijf eeuwen overleefd maar 
+                        is ook, vrijwel onveranderd, ove</p>
+                        <h2><img src={data} alt=""/>Profielgegevens</h2>
+                        <p>28 jaar</p>
+                        <p>Actief Sinds {date(loggedUser.created_at)}</p>
+                        <p className="email">{loggedUser.email}</p>
+                        <h2><img src={get} alt=""/>Handelszaak</h2>
+                        <p>Fix the grid</p>
+                        <p>webdesign en grafische vormgeving</p>
+                        <p className="email">www.fixthegrid.be</p>
+                        <p>BE045 1574 215 154</p>
+                    </div>
+                </div>
+                <div className="profile-below-container">
+                    <div className="left">
+                        <h2><img src={free} alt=""/>Vrijwillige uren</h2>
+                        <h2><img src={skill} alt=""/>Skill uren</h2>
+                    </div>
+                    <div className="right">
+                        <h2><img src={badges} alt=""/>Behaalde badges</h2>
+                    </div>
+                </div>
 
-                        </div>
-                    </div> : null
-                }
-                
-                {
-                    showSkills ? <div className="skill-details">
-                        {skillList}
-                    </div> : null
-                }
-                
             </div>
         </div>
     );
