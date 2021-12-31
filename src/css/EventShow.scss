@@ -47,8 +47,31 @@
                     margin: 0 10px 0 0;
                 }
             }
-            p {
+            .desc {
                 margin: 5px 20px 5px 53px;
+            }
+            .skills {
+                display: flex;
+                margin: 5px 0 0 55px;
+                .image {
+                    img {
+                        width: 30px;
+                        margin: 0 10px 0 0;
+                        position: relative;
+                        top: -3px;
+                    }
+                }
+                .button {
+                    margin-left: auto;
+                    button {
+                        color: white;
+                        background: #34AD72;
+                        border: none;
+                        border-radius: 15px;
+                        padding: 3px 25px;
+                    }
+                }
+                
             }
         }
     }

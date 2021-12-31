@@ -74,7 +74,7 @@ export const WorkLeaderBoard = ({getProjects}) => {
     const eventList = project ? (
       <div className="leader-events">
         {
-          /*project.events.map(event =>
+          project.events.map(event =>
            
             <div className="leader-event" key={event.id}>
               <h2>Event naam: {event.name}</h2>
@@ -90,7 +90,7 @@ export const WorkLeaderBoard = ({getProjects}) => {
               }
             </div>
             
-          )*/
+          )
         }
       </div>
     ) : null;
@@ -98,7 +98,7 @@ export const WorkLeaderBoard = ({getProjects}) => {
     const eventShowupList = project ? (
       <div className="leader-events">
         {
-          /*project.events.map(event =>
+          project.events.map(event =>
            
             <div className="leader-event" key={event.id}>
               <h2>Event naam: {event.name}</h2>
@@ -114,7 +114,7 @@ export const WorkLeaderBoard = ({getProjects}) => {
               }
             </div>
             
-          )*/
+          )
         }
       </div>
     ) : null;

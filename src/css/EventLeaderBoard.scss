@@ -1,0 +1,110 @@
+.event-leader-board {
+    width: 80%;
+    margin: 0 auto;
+    background: #ECECEC;
+    box-sizing: border-box;
+    padding: 35px;
+    border-radius: 45px;
+    .event-title {
+        font-size: 1.4em;
+        margin: 0 0 10px 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
+        
+        span {
+            border-bottom: 5px solid black;
+            padding: 0 13px;
+        }
+    }
+    .top {
+        display: flex;
+        width: 80%;
+        margin: 50px auto 0 auto;
+        div {
+            width: 25%;
+            img {
+                width: 37%;
+                margin: 0 auto;
+                display: block;
+            }
+            h2 {
+                text-align: center;
+                margin: 15px 0 0 0;
+                font-size: 1em;
+            }
+        }
+    }
+    .bottom {
+        margin: 50px 0 0 0;
+        display: flex;
+        h2 {
+            img {
+                width: 40px;
+                position: relative;
+                top: 13px;
+                margin: 0 9px 0 0;
+            }
+        }
+        .left {
+            flex: 1;
+            p {
+                margin: 0 50px 0 50px;
+            }
+        }
+        .right {
+            flex: 1;
+            .skills {
+                margin: 15px 0 0 55px;
+                .skills-inner {
+                    display: flex;
+                    .image {
+                        img {
+                            width: 30px;
+                            margin: 0 10px 0 0;
+                            position: relative;
+                            top: -3px;
+                        }
+                    }
+                }
+                .users {
+                    display: flex;
+                    .image {
+                        margin: 0 0 0 30px;
+                        flex: 1;
+                        display: flex;
+                        img {
+                            width: 40px;
+                            margin: 0 10px 0 0;
+                            /*position: relative;
+                            top: -7px;*/
+                        }
+                        p {
+                            padding: 7px 0 0 0;
+                        }
+                    }
+                    .accept {
+                        flex: 1;
+                        img {
+                            width: 30px;
+                        }
+                        p {
+                            display: inline;
+                            background: #34AD72;
+                            color: white;
+                            border-radius: 5px;
+                            padding: 4px 7px;
+                        }
+                        .credits {
+                            position: relative;
+                            top: 5px;
+                            margin: 0 0 0 10px;
+                        }
+                    }
+                }
+                
+                
+            }
+        }
+    }
+}

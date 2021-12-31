@@ -1,0 +1,36 @@
+
+.event-container {
+    width: 90%;
+    margin: 0 auto;
+    h2 {
+        img {
+            width: 50px;
+            position: relative;
+            top: 18px;
+            margin: 0 9px 0 0;
+        }
+    }
+    .event {
+        display: flex;
+        margin: 20px 0 0 50px;
+        p {
+            flex: 1;
+            img {
+                width: 30px;
+                position: relative;
+                top: 8px;
+                margin: 0 8px 0 0;
+            }
+        }
+        div {
+            flex: 1;
+            a {
+                width: 50px;
+                display: block;
+                img {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

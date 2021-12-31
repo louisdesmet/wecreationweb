@@ -80,7 +80,7 @@ export const Profiel = ({getUsers,getProjects,getSkills}) => {
     let clonedEvents = [];
 
     if(projects.data) {
-        Object.values(projects.data).forEach(project => {
+        /*Object.values(projects.data).forEach(project => {
             project.events.forEach(event => {
                 event.users.forEach(user => {
                     if(user.id === loggedUser.id) {
@@ -88,7 +88,7 @@ export const Profiel = ({getUsers,getProjects,getSkills}) => {
                     }
                 })
             })
-        });
+        });*/
     }
 
     function findIcon() {
@@ -139,7 +139,7 @@ export const Profiel = ({getUsers,getProjects,getSkills}) => {
                         <Link to={"/home"}><img src={handel} alt=""/>Mijn handelszaak</Link>
                         <Link to={"/home"}><img src={kassa} alt=""/>Mijn kassatickets</Link>
                         <Link to={"/home"}><img src={agenda} alt=""/>Mijn projecten</Link>
-                        <Link to={"/home"}><img src={agenda} alt=""/>Mijn events</Link>
+                        <Link to={"/my-events"}><img src={agenda} alt=""/>Mijn events</Link>
                     </div>
                     <div className="middle">
                         <FontAwesomeIcon icon={findIcon()} className="profile-icon" color="white"/>

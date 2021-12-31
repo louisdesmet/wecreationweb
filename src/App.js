@@ -45,6 +45,9 @@ import GetDiensten from "./GetDiensten";
 import GetVergoedingen from "./GetVergoedingen";
 import GetHistoriek from "./GetHistoriek";
 import GetProducts from "./GetProducts";
+import MyEvents from "./MyEvents";
+import EventLeaderBoard from "./EventLeaderBoard";
+import EventCreate from "./EventCreate";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   
@@ -126,8 +129,12 @@ function App() {
               <PrivateRoute path="/get" component={Get}/>
         
               <PrivateRoute path="/profiel" component={Profiel}/>
+              <PrivateRoute path="/my-events" component={MyEvents}/>
+              <PrivateRoute path="/event-leader-board/:id" component={EventLeaderBoard}/>
               <PrivateRoute path="/agenda" component={Agenda}/>
               <PrivateRoute path="/netwerk" component={Netwerk}/>
+
+              <PrivateRoute path="/event/create/:id" component={EventCreate}/>
 
               <BusinessRoute path="/handelaar-dashboard" component={BusinessDashboard}/>
 

@@ -1,0 +1,46 @@
+.event-create {
+    width: 80%;
+    margin: 0 auto;
+    .event-title {
+        font-size: 1.4em;
+        margin: 0 0 10px 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
+        
+        span {
+            border-bottom: 5px solid black;
+            padding: 0 13px;
+        }
+    }
+    h2 {
+        img {
+            width: 50px;
+            position: relative;
+            top: 18px;
+            margin: 0 25px 0 0;
+        }
+    }
+    .naam {
+        margin: 15px 0 0 75px;
+        border: 2px solid black;
+        padding: 6px 10px;
+        border-radius: 15px;
+        width: 30%;
+    }
+    .input-image {
+        img {
+            width: 50px;
+            position: relative;
+            top: 18px;
+        }
+        input {
+            margin: 0 0 0 24px;
+            border: 2px solid black;
+            padding: 6px 10px;
+            border-radius: 15px;
+            width: 30%;
+        }
+    }
+    
+}

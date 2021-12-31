@@ -37,7 +37,7 @@ export const Work = ({getProjects, getSkills}) => {
   if(projectsApi.data) {
     let hours = 0;
 
-    Object.values(projectsApi.data).forEach(project => {
+    /*Object.values(projectsApi.data).forEach(project => {
       project.events.forEach(event => {
         let listHours = 0;
         if(event.skill) {
@@ -62,7 +62,7 @@ export const Work = ({getProjects, getSkills}) => {
         event.generalFree = (event.credits - listHours) - hours;
         hours = 0;
       })
-    });
+    });*/
   }
 
   function projectLeaderBoard(e, id) {
