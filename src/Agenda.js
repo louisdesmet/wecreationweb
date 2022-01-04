@@ -16,31 +16,31 @@ export const Agenda = ({getEvents}) => {
   const [event, setEvent] = useState(null);
 
   useEffect(() => {
-    getEvents();
+    /*getEvents();*/
   }, []);
 
-  const events = useSelector(state => state.remoteEvents);
-  const fcEvents = events.map((event, index) => {
+  /*const events = useSelector(state => state.remoteEvents);*/
+  /*const fcEvents = events.map((event, index) => {
     return {id: index, title: event.name, date: event.date}
-  })
+  })*/
 
   function Popup(props) {
 
     function findEvent(id) {
-      return events[parseInt(id)];
+      /*return events[parseInt(id)];*/
     }
 
     return (
       <div className="agenda-popup">
         <span className="close" onClick={e => setEnabled(0)}>x</span>
-        {event ? 
+        {event ?
           <div>
             <p><Link to={"/events/" + event.id}>{event.title}</Link></p>
             <div className="flex">
               <img src={datum}/>
               <p>{new Date(event.startStr).toJSON().slice(0, 19).replace('T', ' ')}</p>
             </div>
-            {events ? 
+            {/*events ? 
               <div>
                 <div className="flex">
                   <img src={location}/>
@@ -50,7 +50,7 @@ export const Agenda = ({getEvents}) => {
                 <p>{findEvent(event.id).pivot.accepted ? 'Je bent geaccepteerd door de project leider.' : null}</p>
                 <p>{findEvent(event.id).pivot.present ? 'De project leider gaf aan dat je aanwezig was.' : null}</p>
               </div>
-            : null}
+            : null*/}
           </div>
         : null}
       </div>
@@ -71,7 +71,7 @@ export const Agenda = ({getEvents}) => {
         <FullCalendar
         plugins={[ dayGridPlugin ]}
         initialView="dayGridMonth"
-        events={fcEvents}
+        /*events={fcEvents}*/
         eventClick={handleEventClick}
         height="parent"
         />
