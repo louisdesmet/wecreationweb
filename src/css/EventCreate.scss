@@ -1,6 +1,7 @@
 .event-create {
     width: 80%;
     margin: 0 auto;
+    padding: 0 0 50px 0;
     .event-title {
         font-size: 1.4em;
         margin: 0 0 10px 0;
@@ -28,6 +29,15 @@
         border-radius: 15px;
         width: 30%;
     }
+    textarea {
+        margin: 15px 0 0 75px;
+        border: 2px solid black;
+        padding: 6px 10px;
+        border-radius: 15px;
+        width: 30%;
+        display: block;
+        height: 120px;
+    }
     .input-image {
         img {
             width: 50px;
@@ -41,6 +51,45 @@
             border-radius: 15px;
             width: 30%;
         }
+    }
+    .hours {
+        margin: 0 0 0 50px;
+    }
+    .input-data {
+        margin: 20px 0 0 100px;
+        display: flex;
+        select {
+            flex: 1;
+            padding: 6px 10px;
+            border-radius: 15px;
+            border: 2px solid black;
+            margin: 0 30px;
+        }
+        input {
+            flex: 1;
+            padding: 6px 10px;
+            border-radius: 15px;
+            border: 2px solid black;
+            margin: 0 30px;
+        }
+    }
+    .new {
+        margin: 10px 0 0 130px;
+        img {
+            width: 35px;
+            position: relative;
+            top: 10px;
+            margin: 0 10px 0 0;
+        }
+    }
+    button {
+        background: #47AD4C;
+        color: white;
+        padding: 15px 0;
+        border: 0;
+        width: 50%;
+        margin: 50px auto;
+        display: block;
     }
     
 }
