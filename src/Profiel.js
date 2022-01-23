@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
-import {getProjects, getSkills, getUsers} from "./redux/actions";
+import {getProjects, getAllEvents, getUsers} from "./redux/actions";
 import Nav from "./Nav";
 import {useSelector} from "react-redux";
 import './css/Profiel.scss';
@@ -8,23 +8,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChess, faAddressCard, faBeer, faBalanceScale, faMugHot, faBurn, faAnchor, faBlind, faBowlingBall, 
     faRadiation, faBandAid, faBath, faBed, faBible, faBlender, faBong, faBox } from '@fortawesome/free-solid-svg-icons'
 import { Link, useHistory } from "react-router-dom";
-import Axios from 'axios';
-
-import regie from './img/Regie.png';
-import montage from './img/Montage.png';
-import mode from './img/Mode.png';
-import dans from './img/Dans.png';
-import camera from './img/Camera.png';
-import labour from './img/labour.png';
-
-
-import back from './img/back.png';
-import admin from './img/admin.png';
-import skillImg from './img/Skill.png';
-import datum from './img/nav-agenda.png';
-
-
-import work from './img/nav-work.png';
 
 import agenda from './img/profile/agenda.png';
 import handel from './img/profile/handel.png';
@@ -50,15 +33,9 @@ import badges from './img/profile/badges.png';
 
 
 
-export const Profiel = ({getUsers,getProjects,getSkills}) => {
+export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
 
-    const history = useHistory();
     const loggedUser = JSON.parse(localStorage.getItem("user"));
-    const [user, setUser] = useState("");
-    const [amount, setAmount] = useState("");
-    const [selectedSkill, setSelectedSkill] = useState(null);
-    const [showPrestaties, setShowPrestaties] = useState(0);
-    const [showSkills, setShowSkills] = useState(0);
 
     function date(date) {
         const jsDate = new Date(date);
@@ -68,28 +45,36 @@ export const Profiel = ({getUsers,getProjects,getSkills}) => {
     useEffect(() => {
         getProjects();
         getUsers();
-        getSkills();
+        getAllEvents();
     }, []);
 
-    const projects = useSelector(state => state.remoteProjects);
     const users = useSelector(state => state.remoteUsers);
-    const skills = useSelector(state => state.remoteSkills);
+    const events = useSelector(state => state.remoteAllEvents);
 
     const updatedLoggedUser = users.data ? users.data.find(item => item.id === loggedUser.id) : null;
 
-    let clonedEvents = [];
+    let userHours = [];
 
-    if(projects.data) {
-        /*Object.values(projects.data).forEach(project => {
-            project.events.forEach(event => {
-                event.users.forEach(user => {
-                    if(user.id === loggedUser.id) {
-                        clonedEvents.push(user);
+    if(events.data) {
+        events.data.forEach(event => {
+            event.skills.forEach(skill => {
+                skill.users.forEach(user => {
+                    if(user.id === loggedUser.id && user.accepted === 1) {
+                        if(userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid)) {
+                            let temp = userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid);
+                            temp.hours = temp.hours + skill.hours;
+                        } else {
+                            userHours.push({id: skill.skill.id, name: skill.skill.name, hours: skill.hours, paid: skill.paid});
+                        }
+                        
                     }
                 })
             })
-        });*/
+        })
     }
+
+    const freeUserHours = userHours ? userHours.filter(userHour => userHour.paid === 0) : null
+    const paidUserHours = userHours ? userHours.filter(userHour => userHour.paid === 1) : null
 
     function findIcon() {
         switch(JSON.parse(localStorage.getItem("user")).icon) {
@@ -199,7 +184,29 @@ export const Profiel = ({getUsers,getProjects,getSkills}) => {
                 <div className="profile-below-container">
                     <div className="left">
                         <h2><img src={free} alt=""/>Vrijwillige uren</h2>
+                        {
+                            freeUserHours ? freeUserHours.map(userHour =>
+                                <div className='skill' key={userHour.id}>
+                                    <div>
+                                        <img src={get}/>
+                                        <p>{userHour.name}</p>
+                                    </div>
+                                    <p>{userHour.hours}u</p>
+                                </div>
+                            ) : null
+                        }
                         <h2><img src={skill} alt=""/>Skill uren</h2>
+                        {
+                            paidUserHours ? paidUserHours.map(userHour =>
+                                <div className='skill' key={userHour.id}>
+                                    <div>
+                                        <img src={get}/>
+                                        <p>{userHour.name}</p>
+                                    </div>
+                                    <p>{userHour.hours}u</p>
+                                </div>
+                            ) : null
+                        }
                     </div>
                     <div className="right">
                         <h2><img src={badges} alt=""/>Behaalde badges</h2>
@@ -214,5 +221,5 @@ export const Profiel = ({getUsers,getProjects,getSkills}) => {
 
 export default connect(
     null,
-    {getProjects, getUsers, getSkills}
+    {getProjects, getUsers, getAllEvents}
 )(Profiel);
