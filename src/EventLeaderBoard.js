@@ -99,10 +99,15 @@ export const EventLeaderBoard = ({getAllEvents}) => {
                   <img src={profile}/>
                   <p>{user.name}</p>
                 </div>
-                <div className="accept">
-                  <img src={accept}/>
-                  <img src={decline}/>
-                </div>
+                {
+                  user.accepted ? <div className="accept">
+                    <p>Geaccepteerd</p>
+                    <img className='credits' src={credits}/>
+                  </div> : <div className="accept">
+                    <img src={accept} onClick={e => acceptUser(skill.id, user.id)}/>
+                    <img src={decline}/>
+                  </div>
+                }
               </div>
             ) : null
           }
