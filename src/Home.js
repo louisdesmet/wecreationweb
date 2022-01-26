@@ -93,16 +93,20 @@ export const Home = ({getAllEvents, getBusinesses, getSkills}) => {
             <div className="container">
               <div className="left">
                 <div>
-                  <img src={agenda}/>
-                  <p>{date(event.date)}</p>
+                  <Link to={"/agenda/" + event.id}>
+                    <img src={agenda}/>
+                    <p>{date(event.date)}</p>
+                  </Link>
                 </div>
                 <div>
                   <img src={time}/>
                   <p>{new Date(event.date).toLocaleTimeString()}</p>
                 </div>
                 <div>
-                  <img src={see}/>
-                  <p><Link to={"/see"}>{event.location}</Link></p>
+                  <Link to={"/see"}>
+                    <img src={see}/>
+                    <p>{event.location}</p>
+                  </Link>
                 </div>
                 <div>
                   <img src={get}/>

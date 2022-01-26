@@ -5,12 +5,14 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import {useSelector} from "react-redux";
 import Nav from './Nav';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import datum from './img/nav-agenda.png';
 import location from './img/nav-see.png';
 import './css/Agenda.scss';
 
 export const Agenda = ({getAllEvents}) => {
+
+  const { id } = useParams();
 
   const [enabled, setEnabled] = useState(0);
   const [event, setEvent] = useState(null);
@@ -23,26 +25,35 @@ export const Agenda = ({getAllEvents}) => {
 
   const events = useSelector(state => state.remoteAllEvents);
   const fcEvents = events.data ? events.data.map((event, index) => {
-    return {id: index, title: event.name, date: event.date}
+    return {id: event.id, title: event.name, date: event.date}
   }) : null
+
+  if(id && events.data && !event) {
+
+    setEnabled(1);
+    let tempEvent = events.data.find(event => event.id === parseInt(id));
+    tempEvent.startStr = tempEvent.date
+    tempEvent.title = tempEvent.name
+    setEvent(tempEvent);
+  }
 
   function Popup(props) {
 
-    function findEvent(id) {
-      return events.data[parseInt(id)];
+    function findEvent(eventId) {
+      return events.data.find(event => event.id === parseInt(eventId));
     }
 
     function attendance(id) {
       let display = [];
       findEvent(id).skills.forEach(skill => {
         skill.users.forEach(user => {
-            console.log(user.id === loggedUser.id)
             if(user.id === loggedUser.id) {
-              display.push(<p>Je hebt je ingeschreven voor {skill.hours} uur.</p>);    
+              display.push(<p key={"zin1"}>Je hebt je ingeschreven voor de functie: {skill.skill.name} voor {skill.hours} uur.</p>);    
+              if(user.accepted === 1) {
+                display.push(<p key={"zin2"}>Je bent goedgekeurd door de project leider.</p>);
+              }
             }
-            if(user.accepted === 1) {
-              display.push(<p>Je bent goedgekeurd door de project leider.</p>);
-            }
+            
         })
       })
       return display;
@@ -86,6 +97,7 @@ export const Agenda = ({getAllEvents}) => {
         events={fcEvents}
         eventClick={handleEventClick}
         height="parent"
+        initialDate={events.data && id ? events.data.find(event => event.id === parseInt(id)).date : null}
         />
       </div>
       {enabled ? <Popup event={event}/> : null}

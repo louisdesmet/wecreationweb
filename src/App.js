@@ -131,7 +131,10 @@ function App() {
               <PrivateRoute path="/profiel" component={Profiel}/>
               <PrivateRoute path="/my-events" component={MyEvents}/>
               <PrivateRoute path="/event-leader-board/:id" component={EventLeaderBoard}/>
+              
+              <PrivateRoute path="/agenda/:id" component={Agenda}/>
               <PrivateRoute path="/agenda" component={Agenda}/>
+              
               <PrivateRoute path="/netwerk" component={Netwerk}/>
 
               <PrivateRoute path="/event/create/:id" component={EventCreate}/>
