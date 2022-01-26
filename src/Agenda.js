@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
-import {getEvents} from "./redux/actions";
+import {getAllEvents} from "./redux/actions";
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import {useSelector} from "react-redux";
@@ -10,24 +10,42 @@ import datum from './img/nav-agenda.png';
 import location from './img/nav-see.png';
 import './css/Agenda.scss';
 
-export const Agenda = ({getEvents}) => {
+export const Agenda = ({getAllEvents}) => {
 
   const [enabled, setEnabled] = useState(0);
   const [event, setEvent] = useState(null);
 
+  const loggedUser = JSON.parse(localStorage.getItem("user"));
+
   useEffect(() => {
-    /*getEvents();*/
+    getAllEvents();
   }, []);
 
-  /*const events = useSelector(state => state.remoteEvents);*/
-  /*const fcEvents = events.map((event, index) => {
+  const events = useSelector(state => state.remoteAllEvents);
+  const fcEvents = events.data ? events.data.map((event, index) => {
     return {id: index, title: event.name, date: event.date}
-  })*/
+  }) : null
 
   function Popup(props) {
 
     function findEvent(id) {
-      /*return events[parseInt(id)];*/
+      return events.data[parseInt(id)];
+    }
+
+    function attendance(id) {
+      let display = [];
+      findEvent(id).skills.forEach(skill => {
+        skill.users.forEach(user => {
+            console.log(user.id === loggedUser.id)
+            if(user.id === loggedUser.id) {
+              display.push(<p>Je hebt je ingeschreven voor {skill.hours} uur.</p>);    
+            }
+            if(user.accepted === 1) {
+              display.push(<p>Je bent goedgekeurd door de project leider.</p>);
+            }
+        })
+      })
+      return display;
     }
 
     return (
@@ -40,24 +58,18 @@ export const Agenda = ({getEvents}) => {
               <img src={datum}/>
               <p>{new Date(event.startStr).toJSON().slice(0, 19).replace('T', ' ')}</p>
             </div>
-            {/*events ? 
-              <div>
-                <div className="flex">
-                  <img src={location}/>
-                  <p>{findEvent(event.id).location}</p>
-                </div>
-                <p>Je hebt je ingeschreven voor {findEvent(event.id).pivot.hours} uur.</p>
-                <p>{findEvent(event.id).pivot.accepted ? 'Je bent geaccepteerd door de project leider.' : null}</p>
-                <p>{findEvent(event.id).pivot.present ? 'De project leider gaf aan dat je aanwezig was.' : null}</p>
-              </div>
-            : null*/}
+            <div className="flex">
+              <img src={location}/>
+              <p>{findEvent(event.id).location}</p>
+            </div>
+            {
+              attendance(event.id)
+            }
           </div>
         : null}
       </div>
     );
   }
-
-  
 
   const handleEventClick = ({ event, el }) => {
     setEnabled(1);
@@ -71,7 +83,7 @@ export const Agenda = ({getEvents}) => {
         <FullCalendar
         plugins={[ dayGridPlugin ]}
         initialView="dayGridMonth"
-        /*events={fcEvents}*/
+        events={fcEvents}
         eventClick={handleEventClick}
         height="parent"
         />
@@ -83,6 +95,6 @@ export const Agenda = ({getEvents}) => {
 
 export default connect(
   null,
-  {getEvents}
+  {getAllEvents}
 )(Agenda);
 
