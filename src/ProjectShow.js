@@ -47,7 +47,7 @@ export const ProjectShow = ({getProjects}) => {
                     <p>{project.leader.name}</p>
                 </div>
                 <p className="mt-70 mb-70">{project.description}</p>
-                <Link to={"/event/create/" + project.id}>Nieuw event</Link>
+                <Link to={"/event/create/" + project.id} className='new-event'>Nieuw event</Link>
               </div>
               <div className="column-2">
                 {

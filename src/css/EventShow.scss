@@ -1,4 +1,34 @@
 .event-panel {
+    .are-you-sure {
+        position: absolute;
+        top: 44%;
+        left: 50%;
+        background: white;
+        width: 36%;
+   
+        border: 3px solid;
+        border-radius: 15px;
+        padding: 35px;
+        box-sizing: border-box;
+        text-align: center;
+        p {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            img {
+                width: 30px;
+                position: relative;
+                top: 8px;
+                margin-right: 8px;
+            }
+        }
+        .accept {
+            width: 70px;
+            margin-right: 50px;
+        }
+
+    }
     padding: 15px;
     background: #DDDDDD;
     border-radius: 70px;

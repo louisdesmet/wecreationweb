@@ -71,7 +71,6 @@ export const EventCreate = ({getProjects, getSkills}) => {
       }
       temp[index][field] = value;
       setFreeData(temp);
-      console.log(freeData);
     }
 
     function AddToPaid(index, field, value) {
@@ -81,7 +80,6 @@ export const EventCreate = ({getProjects, getSkills}) => {
       }
       temp[index][field] = value;
       setPaidData(temp);
-      console.log(paidData);
     }
 
     const skillList =  skills.data ? skills.data.map(skill => <option key={skill.id} value={skill.id}>{skill.name}</option>) : null;

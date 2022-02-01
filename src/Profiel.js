@@ -31,7 +31,32 @@ import free from './img/profile/free.png';
 import skill from './img/profile/skill.png';
 import badges from './img/profile/badges.png';
 
-
+import regie from './img/icons/regie.png';
+import montage from './img/icons/montage.png';
+import mode from './img/icons/mode.png';
+import dans from './img/icons/dans.png';
+import camera from './img/icons/camera.png';
+import administratie from './img/icons/administratie.png';
+import organisatie from './img/icons/organisatie.png';
+import werkkracht from './img/icons/werkkracht.png';
+import decor from './img/icons/decor.png';
+import kostuum from './img/icons/kostuum.png';
+import muzikant from './img/icons/muzikant.png';
+import agendaplanning from './img/icons/agendaplanning.png';
+import dj from './img/icons/dj.png';
+import animatie from './img/icons/animatie.png';
+import tolk from './img/icons/tolk.png';
+import presentatie from './img/icons/presentatie.png';
+import socialmedia from './img/icons/socialmedia.png';
+import acrobatie from './img/icons/acrobatie.png';
+import acteur from './img/icons/acteur.png';
+import vakman from './img/icons/vakman.png';
+import geluidstechnieker from './img/icons/geluidstechnieker.png';
+import conceptbedenker from './img/icons/conceptbedenker.png';
+import yoga from './img/icons/yoga.png';
+import projectleider from './img/icons/projectleider.png';
+import horeca from './img/icons/horeca.png';
+import schilderkunst from './img/icons/schilderkunst.png';
 
 export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
 
@@ -55,6 +80,63 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
 
     let userHours = [];
 
+    function findSkillIcon(name) {
+        switch(name) {
+          case "regie": return regie;
+          break;
+          case "montage": return montage;
+          break;
+          case "mode": return mode;
+          break;
+          case "dans": return dans;
+          break;
+          case "camera": return camera;
+          break;
+          case "administratie": return administratie;
+          break;
+          case "organisatie": return organisatie;
+          break;
+          case "werkkracht": return werkkracht;
+          break;
+          case "decor": return decor;
+          break;
+          case "kostuum": return kostuum;
+          break;
+          case "muzikant": return muzikant;
+          break;
+          case "agendaplanning": return agendaplanning;
+          break;
+          case "dj": return dj;
+          break;
+          case "animatie": return animatie;
+          break;
+          case "tolk": return tolk;
+          break;
+          case "presentatie": return presentatie;
+          break;
+          case "socialmedia": return socialmedia;
+          break;
+          case "schilderkunst": return schilderkunst;
+          break;
+          case "acrobatie": return acrobatie;
+          break;
+          case "acteur": return acteur;
+          break;
+          case "vakman": return vakman;
+          break;
+          case "geluidstechnieker": return geluidstechnieker;
+          break;
+          case "conceptbedenker": return conceptbedenker;
+          break;
+          case "yoga": return yoga;
+          break;
+          case "projectleider": return projectleider;
+          break;
+          case "horeca": return horeca;
+          break;
+        }
+      }
+
     if(events.data) {
         events.data.forEach(event => {
             event.skills.forEach(skill => {
@@ -64,7 +146,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                             let temp = userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid);
                             temp.hours = temp.hours + skill.hours;
                         } else {
-                            userHours.push({id: skill.skill.id, name: skill.skill.name, hours: skill.hours, paid: skill.paid});
+                            userHours.push({id: skill.skill.id, name: skill.skill.name, icon: skill.skill.icon, hours: skill.hours, paid: skill.paid});
                         }
                         
                     }
@@ -123,7 +205,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                     <div className="left">
                         <Link to={"/home"}><img src={handel} alt=""/>Mijn handelszaak</Link>
                         <Link to={"/home"}><img src={kassa} alt=""/>Mijn kassatickets</Link>
-                        <Link to={"/home"}><img src={agenda} alt=""/>Mijn projecten</Link>
+                        <Link to={"/work"}><img src={agenda} alt=""/>Mijn projecten</Link>
                         <Link to={"/my-events"}><img src={agenda} alt=""/>Mijn events</Link>
                     </div>
                     <div className="middle">
@@ -188,7 +270,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                             freeUserHours ? freeUserHours.map(userHour =>
                                 <div className='skill' key={userHour.id}>
                                     <div>
-                                        <img src={get}/>
+                                        <img src={findSkillIcon(userHour.icon)}/>
                                         <p>{userHour.name}</p>
                                     </div>
                                     <p>{userHour.hours}u</p>
@@ -200,7 +282,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                             paidUserHours ? paidUserHours.map(userHour =>
                                 <div className='skill' key={userHour.id}>
                                     <div>
-                                        <img src={get}/>
+                                        <img src={findSkillIcon(userHour.icon)}/>
                                         <p>{userHour.name}</p>
                                     </div>
                                     <p>{userHour.hours}u</p>

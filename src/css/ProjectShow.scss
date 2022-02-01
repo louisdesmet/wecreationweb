@@ -28,6 +28,17 @@
                 text-align: center;
            }
        }
+       .new-event {
+            background: #47AD4C;
+            color: white;
+            padding: 15px 0;
+            border: 0;
+            width: 50%;
+            margin: 50px auto;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+       }
     }
     .column-2 {
         flex: auto;
