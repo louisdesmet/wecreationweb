@@ -22,6 +22,9 @@ import desc from './img/profile/desc.png';
 import free from './img/profile/free.png';
 import skill from './img/profile/skill.png';
 
+import accept from './img/eventshow/accept.png';
+import decline from './img/eventshow/decline.png';
+
 import regie from './img/icons/regie.png';
 import montage from './img/icons/montage.png';
 import mode from './img/icons/mode.png';
@@ -64,7 +67,9 @@ export const EventShow = ({getAllEvents, getSkills}) => {
       getAllEvents();
       getSkills();
     }, []);
-    
+
+    const [areYouSure, setAreYouSure] = useState(1);
+    const [chosenSkill, setChosenSkill] = useState(null);
 
     const events = useSelector(state => state.remoteAllEvents);
     const skills = useSelector(state => state.remoteSkills);
@@ -152,12 +157,17 @@ export const EventShow = ({getAllEvents, getSkills}) => {
       })
     }
 
+    function areYouSureBox(skill) {
+      setAreYouSure(1);
+      setChosenSkill(skill);
+    }
+
     const paidSkill = event && event.skills ? event.skills.map(skill => 
       skill.paid === 1 ? <div className="skills" key={skill.id}>
         <div className="image"><img src={findIcon(skill.skill.icon)}/></div>
         <p>{skill.amount} x {skill.skill.name} - {skill.hours}u</p>
         <div className="button">
-          <button onClick={e => register(skill.id)}>Inschrijven</button>
+          <button onClick={e => areYouSureBox(skill)}>Inschrijven</button>
         </div>
       </div> : null
     ) : null;
@@ -167,7 +177,7 @@ export const EventShow = ({getAllEvents, getSkills}) => {
         <div className="image"><img src={findIcon(skill.skill.icon)}/></div>
         <p>{skill.amount} x {skill.skill.name} - {skill.hours}u</p>
         <div className="button">
-          <button onClick={e => register(skill.id)}>Inschrijven</button>
+          <button onClick={e => areYouSureBox(skill)}>Inschrijven</button>
         </div>
       </div> : null
     ) : null;
@@ -181,16 +191,20 @@ export const EventShow = ({getAllEvents, getSkills}) => {
               <div className="container">
                 <div className="left">
                   <div>
-                    <img src={agenda}/>
-                    <p>{date(event.date)}</p>
+                    <Link to={"/agenda/" + event.id}>
+                      <img src={agenda}/>
+                      <p>{date(event.date)}</p>
+                    </Link>
                   </div>
                   <div>
                     <img src={time}/>
                     <p>{new Date(event.date).toLocaleTimeString()}</p>
                   </div>
                   <div>
-                    <img src={see}/>
-                    <p><Link to={"/see"}>{event.location}</Link></p>
+                    <Link to={"/see"}>
+                      <img src={see}/>
+                      <p>{event.location}</p>
+                    </Link>
                   </div>
                   <div>
                     <img src={get}/>
@@ -215,6 +229,13 @@ export const EventShow = ({getAllEvents, getSkills}) => {
                   {paidSkill}
                 </div>
               </div>
+              {
+              areYouSure && chosenSkill ? <div className="are-you-sure">
+                <p>Weet je zeker dat je je voor {chosenSkill.hours} uur in <img src={findIcon(chosenSkill.skill.icon)}/>{chosenSkill.skill.name} wilt inschrijven?</p>
+                <img className="accept" src={accept} onClick={e => register(chosenSkill.id)}/>
+                <img className="accept" src={decline} onClick={e => setAreYouSure(0)}/>
+              </div> : null
+              }
             </div>
             :
             null

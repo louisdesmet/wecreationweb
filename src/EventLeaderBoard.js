@@ -139,6 +139,26 @@ export const EventLeaderBoard = ({getAllEvents}) => {
       })
     }
 
+    function presentUser(eventSkillId, userId, credits) {
+      Axios.post('/present', {
+        'eventSkillId': eventSkillId,
+        'credits': credits,
+        'userId': userId,
+        'leader': event.project.leader.id
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem("token")
+        }
+      })
+      .then((response) => {
+        window.location.href = '/event-leader-board/' + event.id;
+      })
+      .catch((error) => {
+    
+      })
+    }
+
     const freeSkill = event && event.skills ? event.skills.map(skill => 
       skill.paid === 0 ? <div key={skill.id}>
         <div className="skills" >
@@ -157,7 +177,13 @@ export const EventLeaderBoard = ({getAllEvents}) => {
                   user.accepted ? <div className="accept">
                     <p>Geaccepteerd</p>
                     <img className='credits' src={credits}/>
-                  </div> : <div className="accept">
+                    {
+                      user.present ? <p>Aanwezig</p> : <div className='accept-present'>
+                        <img src={accept} onClick={e => presentUser(skill.id, user.id)}/>
+                        <img src={decline}/>
+                      </div>
+                    }
+                  </div> : <div className="accept-accepted">
                     <img src={accept} onClick={e => acceptUser(skill.id, user.id)}/>
                     <img src={decline}/>
                   </div>
@@ -187,7 +213,13 @@ export const EventLeaderBoard = ({getAllEvents}) => {
                   user.accepted ? <div className="accept">
                     <p>Geaccepteerd</p>
                     <img className='credits' src={credits}/>
-                  </div> : <div className="accept">
+                    {
+                      user.present ? <p>Betaald</p> : <div className='accept-present'>
+                        <img src={accept} onClick={e => presentUser(skill.id, user.id, skill.credits)}/>
+                        <img src={decline}/>
+                      </div>
+                    }
+                  </div> : <div className="accept-accepted">
                     <img src={accept} onClick={e => acceptUser(skill.id, user.id)}/>
                     <img src={decline}/>
                   </div>
