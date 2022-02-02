@@ -13,6 +13,7 @@ import Work from "./Work";
 import See from "./See";
 import Get from "./Get";
 import Profiel from "./Profiel";
+import ProfielEdit from "./ProfielEdit";
 import Netwerk from "./Netwerk";
 import Home from "./Home";
 import Login from "./Login";
@@ -128,7 +129,9 @@ function App() {
               <PrivateRoute path="/get/historiek" component={GetHistoriek}/>
               <PrivateRoute path="/get" component={Get}/>
         
+              <PrivateRoute path="/profiel/edit" component={ProfielEdit}/>
               <PrivateRoute path="/profiel" component={Profiel}/>
+              <PrivateRoute path="/profiel/edit" component={ProfielEdit}/>
               <PrivateRoute path="/my-events" component={MyEvents}/>
               <PrivateRoute path="/event-leader-board/:id" component={EventLeaderBoard}/>
               

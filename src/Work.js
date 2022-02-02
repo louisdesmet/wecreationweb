@@ -67,7 +67,7 @@ export const Work = ({getProjects, getSkills}) => {
 
   function projectLeaderBoard(e, id) {
     e.stopPropagation();
-    history.push("/work-project-leader/" + id);
+    history.push("/event/create/" + id);
   }
 
   function events(id) {

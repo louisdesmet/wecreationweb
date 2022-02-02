@@ -10,7 +10,9 @@ import profiel from './img/nav-profiel.png';
 import datum from './img/nav-agenda.png';
 import location from './img/nav-see.png';
 import navGet from './img/nav-get.png';
+import decline from './img/decline.png';
 import './css/ProjectShow.scss';
+import locprod from './Global';
 
 export const ProjectShow = ({getProjects}) => {
 
@@ -26,6 +28,22 @@ export const ProjectShow = ({getProjects}) => {
     function date(date) {
       const jsDate = new Date(date);
       return jsDate.getDate()+'-'+(jsDate.getMonth()+1)+'-'+jsDate.getFullYear();
+    }
+
+    function deleteEvent(e, id) {
+      
+      e.preventDefault();
+      fetch(locprod + '/events/' + id, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem("token")
+        }
+      }).then(response => {
+        window.location.href = '/projects/' + project.id;
+      })
+      
     }
 
 
@@ -53,6 +71,8 @@ export const ProjectShow = ({getProjects}) => {
                 {
                   project.events.map(event =>
                     <Link to={"/events/" + event.id} className="project-panel-event" key={event.id}>
+                        {JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <span className="delete" onClick={e => deleteEvent(e, event.id)}><img src={decline} alt=""/></span> : null}
+                        
                         <h2>{event.name}</h2>
                         <p className="mt-15">{event.description}</p>
                         <div>
@@ -67,7 +87,6 @@ export const ProjectShow = ({getProjects}) => {
                           <p>{event.credits}</p>
                           <p>vrije uren</p>
                         </div>
-
                     </Link>
                   )
                 }

@@ -77,6 +77,7 @@
         width: 95%;
         margin: 70px auto 0 auto;
         .left {
+            flex: 1;
             display: flex;
             flex-wrap: wrap;
             div {
@@ -155,5 +156,32 @@
                 }
             }
         }
+    }
+}
+
+.profile-edit {
+    width: 70%;
+    margin: 0 auto;
+    textarea {
+        width: 50%;
+        display: block;
+        height: 250px;
+        padding: 15px;
+        box-sizing: border-box;
+        margin: 0 0 30px 0;
+    }
+    input {
+        width: 50%;
+        display: block;
+        padding: 15px;
+        box-sizing: border-box;
+        margin: 0 0 30px 0;
+    }
+    button {
+        width: 50%;
+        background: none;
+        padding: 15px;
+        box-sizing: border-box;
+        border: 2px solid black;
     }
 }

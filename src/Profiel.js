@@ -216,7 +216,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                         <div className="line"></div>
                     </div>
                     <div className="right">
-                        <img className="profile-edit" src={edit} alt=""/>
+                        <Link to={"/profiel/edit"}><img className="profile-edit" src={edit} alt=""/></Link>                
                     </div>
                 </div>
                 <div className="profile-container">
@@ -248,12 +248,9 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                     </div>
                     <div className="right">
                         <h2><img src={desc} alt=""/>Profielbeschrijving</h2>
-                        <p>wezen. Lorem Ipsum is de standaard proeftekst in deze bedrijfstak sinds de 16e eeuw,
-                        toen een onbekende drukker een zethaak met letters nam en ze door elkaar husselde
-                        om een font-catalogus te maken. Het heeft niet alleen vijf eeuwen overleefd maar 
-                        is ook, vrijwel onveranderd, ove</p>
+                        <p>{updatedLoggedUser ? updatedLoggedUser.description : null}</p>
                         <h2><img src={data} alt=""/>Profielgegevens</h2>
-                        <p>28 jaar</p>
+                        <p>{updatedLoggedUser ? updatedLoggedUser.age : null} jaar</p>
                         <p>Actief Sinds {date(loggedUser.created_at)}</p>
                         <p className="email">{loggedUser.email}</p>
                         <h2><img src={get} alt=""/>Handelszaak</h2>

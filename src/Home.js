@@ -189,6 +189,17 @@ export const Home = ({getAllEvents, getBusinesses, getSkills}) => {
     let rndIntEvent = Math.floor(Math.random() * eventsLength) + 1;
     setEvent(events.data.find((event, index) => index + 1 === rndIntEvent));
   }
+
+  const teamList = event && event.skills ? event.skills.map(skill => 
+    <div className="team" key={skill.id}>
+        <p>{skill.skill.name}</p>
+        {
+          skill.users ? skill.users.map(user =>
+            <p>{user.name}</p>
+          ) : null
+        }
+    </div>
+  ) : null;
   
   return (
       <div className="height100">
@@ -230,6 +241,7 @@ export const Home = ({getAllEvents, getBusinesses, getSkills}) => {
                 <div>
                   <img src={team}/>
                   <h2>Team</h2>
+                  {teamList}
                 </div>
                 <div>
                   <img src={leader}/>
@@ -244,6 +256,7 @@ export const Home = ({getAllEvents, getBusinesses, getSkills}) => {
                 {freeSkill}
                 <h2><img src={skill} alt=""/>Skill uren</h2>
                 {paidSkill}
+                
               </div>
             </div>
             {
