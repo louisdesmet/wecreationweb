@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import loginlogo from './img/loginlogo.PNG';
+import loginlogo from './img/nav/loginlogo.PNG';
 import leftTop from './img/left-top.png';
 import leftBottom from './img/left-bottom.png';
 import rightTop from './img/right-top.png';
@@ -35,6 +35,10 @@ function Login(props) {
 
     return (
         <div>
+            {
+              localStorage.getItem("loginMessage") ? <div className="login-message">{localStorage.getItem("loginMessage")}</div> : null
+            }
+            {localStorage.removeItem("loginMessage")}
             <img className="left-top" src={leftTop} alt=""/>
             <img className="left-bottom" src={leftBottom} alt=""/>
             <img className="right-bottom" src={rightBottom} alt=""/>

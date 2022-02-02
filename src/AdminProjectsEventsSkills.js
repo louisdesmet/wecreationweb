@@ -14,7 +14,7 @@ export const AdminProjectsEventsSkills = ({getProjects, getAllEvents}) => {
 
     const skills = useSelector(state => state.remoteSkills);
     const events = useSelector(state => state.remoteAllEvents);
-    console.log(events.data);
+    
     const eventList = events.data && skills.data ? (
         <div className='admin-projects'>
             <div>

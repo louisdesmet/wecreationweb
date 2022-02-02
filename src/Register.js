@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import loginlogo from './img/loginlogo.PNG';
+import loginlogo from './img/nav/loginlogo.PNG';
 import leftTop from './img/left-top.png';
 import leftBottom from './img/left-bottom.png';
 import rightTop from './img/right-top.png';
@@ -25,7 +25,9 @@ function Register(props) {
           email,
           password
         }).then(result => {
+          localStorage.setItem('loginMessage', "Je account werd aangemaakt maar wacht nog op verificatie.");
           props.history.push("/login");
+
         }).catch(e => {
           setError('Registratie mislukt');
         });

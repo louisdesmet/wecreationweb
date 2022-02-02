@@ -1,6 +1,19 @@
+.login-message {
+    position: absolute;
+    top: 25px;
+    background: #cc0000;
+    padding: 15px;
+    color: white;
+    border-radius: 25px;
+    text-align: center;
+    display: block;
+    width: 50%;
+    left: 25%;
+}
 .login {
     width: 50%;
     margin: 0 auto;
+
     .logo {
         width: 40%;
         display: block;

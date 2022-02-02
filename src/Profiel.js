@@ -7,7 +7,7 @@ import './css/Profiel.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChess, faAddressCard, faBeer, faBalanceScale, faMugHot, faBurn, faAnchor, faBlind, faBowlingBall, 
     faRadiation, faBandAid, faBath, faBed, faBible, faBlender, faBong, faBox } from '@fortawesome/free-solid-svg-icons'
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 
 import agenda from './img/profile/agenda.png';
 import handel from './img/profile/handel.png';
@@ -57,8 +57,12 @@ import yoga from './img/icons/yoga.png';
 import projectleider from './img/icons/projectleider.png';
 import horeca from './img/icons/horeca.png';
 import schilderkunst from './img/icons/schilderkunst.png';
+import logoutImg from './img/profile/logout.png';
 
 export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
+
+    const history = useHistory();
+    const { id } = useParams();
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -76,7 +80,15 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
     const users = useSelector(state => state.remoteUsers);
     const events = useSelector(state => state.remoteAllEvents);
 
-    const updatedLoggedUser = users.data ? users.data.find(item => item.id === loggedUser.id) : null;
+
+
+    let updatedLoggedUser = null;
+
+    if(id && users.data) {    
+        updatedLoggedUser = users.data.find(item => item.id === parseInt(id));
+    } else if(users.data) {
+        updatedLoggedUser = users.data.find(item => item.id === loggedUser.id);
+    }
 
     let userHours = [];
 
@@ -141,15 +153,28 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
         events.data.forEach(event => {
             event.skills.forEach(skill => {
                 skill.users.forEach(user => {
-                    if(user.id === loggedUser.id && user.accepted === 1) {
-                        if(userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid)) {
-                            let temp = userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid);
-                            temp.hours = temp.hours + skill.hours;
-                        } else {
-                            userHours.push({id: skill.skill.id, name: skill.skill.name, icon: skill.skill.icon, hours: skill.hours, paid: skill.paid});
+                    if(id) {
+                        if(user.id === parseInt(id) && user.present === 1) {
+                            if(userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid)) {
+                                let temp = userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid);
+                                temp.hours = temp.hours + skill.hours;
+                            } else {
+                                userHours.push({id: skill.skill.id, name: skill.skill.name, icon: skill.skill.icon, hours: skill.hours, paid: skill.paid});
+                            }
+                            
                         }
-                        
+                    } else {
+                        if(user.id === loggedUser.id && user.present === 1) {
+                            if(userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid)) {
+                                let temp = userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid);
+                                temp.hours = temp.hours + skill.hours;
+                            } else {
+                                userHours.push({id: skill.skill.id, name: skill.skill.name, icon: skill.skill.icon, hours: skill.hours, paid: skill.paid});
+                            }
+                            
+                        }
                     }
+                    
                 })
             })
         })
@@ -197,26 +222,41 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
         }
     }
 
+    function logout() {
+        localStorage.setItem('token', null);
+        localStorage.setItem('user', null);
+        history.push("/login");
+    }
+
     return (
         <div className="height100">
             <Nav/>
             <div className="profile">
                 <div className="container">
                     <div className="left">
-                        <Link to={"/home"}><img src={handel} alt=""/>Mijn handelszaak</Link>
-                        <Link to={"/home"}><img src={kassa} alt=""/>Mijn kassatickets</Link>
-                        <Link to={"/work"}><img src={agenda} alt=""/>Mijn projecten</Link>
-                        <Link to={"/my-events"}><img src={agenda} alt=""/>Mijn events</Link>
+                    {
+                        !id ? <div>
+                            <Link to={"/home"}><img src={handel} alt=""/>Mijn handelszaak</Link>
+                            <Link to={"/home"}><img src={kassa} alt=""/>Mijn kassatickets</Link>
+                            <Link to={"/work"}><img src={agenda} alt=""/>Mijn projecten</Link>
+                            <Link to={"/my-events"}><img src={agenda} alt=""/>Mijn events</Link>
+                            <a className="logout" onClick={() => logout()}><img src={logoutImg} alt=""/>Afmelden</a>
+                        </div> : null
+                    }
                     </div>
                     <div className="middle">
                         <FontAwesomeIcon icon={findIcon()} className="profile-icon" color="white"/>
-                        <h2 className="profile-name">{loggedUser.name}</h2>
+                        <h2 className="profile-name">{updatedLoggedUser ? updatedLoggedUser.name : null}</h2>
+                        {
+                            !id ? <p className="profile-credits"><img src={credits} alt=""/>{updatedLoggedUser ? updatedLoggedUser.credits : null} cc</p> : null
+                        }
                         
-                        <p className="profile-credits"><img src={credits} alt=""/>{updatedLoggedUser ? updatedLoggedUser.credits : null} cc</p>
                         <div className="line"></div>
                     </div>
                     <div className="right">
-                        <Link to={"/profiel/edit"}><img className="profile-edit" src={edit} alt=""/></Link>                
+                        {
+                            !id ? <Link to={"/profiel/edit"}><img className="profile-edit" src={edit} alt=""/></Link> : null
+                        }
                     </div>
                 </div>
                 <div className="profile-container">
@@ -251,8 +291,8 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                         <p>{updatedLoggedUser ? updatedLoggedUser.description : null}</p>
                         <h2><img src={data} alt=""/>Profielgegevens</h2>
                         <p>{updatedLoggedUser ? updatedLoggedUser.age : null} jaar</p>
-                        <p>Actief Sinds {date(loggedUser.created_at)}</p>
-                        <p className="email">{loggedUser.email}</p>
+                        <p>Actief Sinds {date(updatedLoggedUser ? updatedLoggedUser.created_at : null)}</p>
+                        <p className="email">{updatedLoggedUser ? updatedLoggedUser.email : null}</p>
                         <h2><img src={get} alt=""/>Handelszaak</h2>
                         <p>Fix the grid</p>
                         <p>webdesign en grafische vormgeving</p>

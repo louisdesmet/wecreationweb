@@ -20,6 +20,8 @@ import accept from './img/eventshow/accept.png';
 import decline from './img/eventshow/decline.png';
 
 import desc from './img/profile/desc.png';
+import geelPuzzel from './img/eventshow/geel-puzzel.png';
+import credit from './img/profile/credit.png';
 import free from './img/profile/free.png';
 import skill from './img/profile/skill.png';
 
@@ -64,7 +66,8 @@ export const Home = ({getAllEvents, getBusinesses, getSkills}) => {
   const [chosenSkill, setChosenSkill] = useState(null);
   const [oneTime, setOneTime] = useState(1);
   const [event, setEvent] = useState(null);
-
+  const [teamClicked, setTeamClicked] = useState(false);
+  const [budgetClicked, setBudgetClicked] = useState(false);
 
   const events = useSelector(state => state.remoteAllEvents);
   const businesses = useSelector(state => state.remoteBusinesses);
@@ -190,16 +193,28 @@ export const Home = ({getAllEvents, getBusinesses, getSkills}) => {
     setEvent(events.data.find((event, index) => index + 1 === rndIntEvent));
   }
 
-  const teamList = event && event.skills ? event.skills.map(skill => 
-    <div className="team" key={skill.id}>
-        <p>{skill.skill.name}</p>
+  const teamList = event && event.skills ? <div className="team">{event.skills.map(skill => 
+    <div key={skill.id}>
         {
-          skill.users ? skill.users.map(user =>
-            <p>{user.name}</p>
-          ) : null
+          skill.users.length > 0  ? <div>
+            <h2>{skill.skill.name}</h2>
+            {
+              skill.users ? skill.users.map(user =>
+                <Link  key={user.id} to={"/profiel/" + user.id}>{user.name}</Link>
+              ) : null
+            }
+          </div> : null
+        }  
+    </div>
+  )}</div> : null;
+
+  const budget = event && event.skills ? <div className="team">{event.skills.map(skill =>
+    <div key={skill.id}>
+        {
+          skill.paid ? <p>{skill.skill.name}: {skill.amount * skill.credits}cc</p> : null
         }
     </div>
-  ) : null;
+  )}</div> : null;
   
   return (
       <div className="height100">
@@ -212,49 +227,51 @@ export const Home = ({getAllEvents, getBusinesses, getSkills}) => {
           <div><Link to="/agenda"><img src={agenda} alt=""/></Link></div>
           <div><Link to="/netwerk"><img src={netwerk} alt=""/></Link></div>
         </div>
-        {console.log(event)}
         {event ?
           <div className='event-panel'>
             <h2 className="event-title"><span>{event.project.name + ' - ' + event.name}</span></h2>
             <div className="container">
               <div className="left">
-                <div>
+                <div className="left-item">
                   <Link to={"/agenda/" + event.id}>
                     <img src={agenda}/>
                     <p>{date(event.date)}</p>
                   </Link>
                 </div>
-                <div>
+                <div className="left-item">
                   <img src={time}/>
-                  <p>{new Date(event.date).toLocaleTimeString()}</p>
+                  <p>{event.time}</p>
                 </div>
-                <div>
+                <div className="left-item">
                   <Link to={"/see"}>
                     <img src={see}/>
                     <p>{event.location}</p>
                   </Link>
                 </div>
-                <div>
+                <div className="left-item" onClick={e => setBudgetClicked(!budgetClicked)}>
                   <img src={get}/>
                   <h2>Totaal budget</h2>
+                  {budgetClicked ? budget : null}
                 </div>
-                <div>
+                <div className="left-item" onClick={e => setTeamClicked(!teamClicked)}>
                   <img src={team}/>
                   <h2>Team</h2>
-                  {teamList}
+                  {teamClicked ? teamList : null}
                 </div>
-                <div>
+                <div className="left-item">
                   <img src={leader}/>
                   <h2>Projectleider</h2>
-                  <p>{event.project.leader.name}</p>
+                  <Link to={"/profiel/" + event.project.leader.id}>{event.project.leader.name}</Link>
                 </div>
               </div>
               <div className="right">
                 <h2><img src={desc} alt=""/>Projectbeschrijving</h2>
                 <p className="desc">{event.project.description}</p>
+                <h2><img src={geelPuzzel} alt=""/>Eventbeschrijving</h2>
+                <p className="desc">{event.description}</p>
                 <h2><img src={free} alt=""/>Vrijwilliger uren</h2>
                 {freeSkill}
-                <h2><img src={skill} alt=""/>Skill uren</h2>
+                <h2><img src={credit} alt=""/>Skill uren</h2>
                 {paidSkill}
                 
               </div>

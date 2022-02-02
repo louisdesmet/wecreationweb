@@ -190,31 +190,31 @@ export const EventShow = ({getAllEvents, getSkills}) => {
               <h2 className="event-title"><span>{event.project.name + ' - ' + event.name}</span></h2>
               <div className="container">
                 <div className="left">
-                  <div>
+                  <div className="left-item">
                     <Link to={"/agenda/" + event.id}>
                       <img src={agenda}/>
                       <p>{date(event.date)}</p>
                     </Link>
                   </div>
-                  <div>
+                  <div className="left-item">
                     <img src={time}/>
-                    <p>{new Date(event.date).toLocaleTimeString()}</p>
+                    <p>{event.time}</p>
                   </div>
-                  <div>
+                  <div className="left-item">
                     <Link to={"/see"}>
                       <img src={see}/>
                       <p>{event.location}</p>
                     </Link>
                   </div>
-                  <div>
+                  <div className="left-item">
                     <img src={get}/>
                     <h2>Totaal budget</h2>
                   </div>
-                  <div>
+                  <div className="left-item">
                     <img src={team}/>
                     <h2>Team</h2>
                   </div>
-                  <div>
+                  <div className="left-item">
                     <img src={leader}/>
                     <h2>Projectleider</h2>
                     <p>{event.project.leader.name}</p>

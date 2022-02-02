@@ -89,7 +89,7 @@ export const Work = ({getProjects, getSkills}) => {
         projects.map(project =>
           <div className="project" key={project.id} onClick={e => events(project.id)}>
               {JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <span className="project-leader-btn" onClick={e => projectLeaderBoard(e, project.id)}><img src={admin} alt=""/></span> : null}
-              <img className="project-logo" src={accept}/>
+              <img className="project-logo" src={ require('./img/project/' + project.picture) }/>
               <p className="project-title">{project.name}</p>
               <div className="project-desc">
                 <p>{project.description}</p>
