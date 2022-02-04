@@ -19,6 +19,8 @@ import team from './img/profile/team.png';
 import leader from './img/profile/leader.png';
 
 import desc from './img/profile/desc.png';
+import geelPuzzel from './img/eventshow/geel-puzzel.png';
+import credit from './img/profile/credit.png';
 import free from './img/profile/free.png';
 import skill from './img/profile/skill.png';
 
@@ -70,6 +72,8 @@ export const EventShow = ({getAllEvents, getSkills}) => {
 
     const [areYouSure, setAreYouSure] = useState(1);
     const [chosenSkill, setChosenSkill] = useState(null);
+    const [teamClicked, setTeamClicked] = useState(false);
+    const [budgetClicked, setBudgetClicked] = useState(false);
 
     const events = useSelector(state => state.remoteAllEvents);
     const skills = useSelector(state => state.remoteSkills);
@@ -182,6 +186,29 @@ export const EventShow = ({getAllEvents, getSkills}) => {
       </div> : null
     ) : null;
 
+    const teamList = event && event.skills ? <div className="team">{event.skills.map(skill => 
+      <div key={skill.id}>
+          {
+            skill.users.length > 0  ? <div>
+              <h2>{skill.skill.name}</h2>
+              {
+                skill.users ? skill.users.map(user =>
+                  <Link  key={user.id} to={"/profiel/" + user.id}>{user.name}</Link>
+                ) : null
+              }
+            </div> : null
+          }  
+      </div>
+    )}</div> : null;
+  
+    const budget = event && event.skills ? <div className="team">{event.skills.map(skill =>
+      <div key={skill.id}>
+          {
+            skill.paid ? <p>{skill.skill.name}: {skill.amount * skill.credits}cc</p> : null
+          }
+      </div>
+    )}</div> : null;
+
     return (
       <div className="height100">
           <Nav/>
@@ -206,26 +233,30 @@ export const EventShow = ({getAllEvents, getSkills}) => {
                       <p>{event.location}</p>
                     </Link>
                   </div>
-                  <div className="left-item">
+                  <div className="left-item" onClick={e => setBudgetClicked(!budgetClicked)}>
                     <img src={get}/>
                     <h2>Totaal budget</h2>
+                    {budgetClicked ? budget : null}
                   </div>
-                  <div className="left-item">
+                  <div className="left-item" onClick={e => setTeamClicked(!teamClicked)}>
                     <img src={team}/>
                     <h2>Team</h2>
+                    {teamClicked ? teamList : null}
                   </div>
                   <div className="left-item">
                     <img src={leader}/>
                     <h2>Projectleider</h2>
-                    <p>{event.project.leader.name}</p>
+                    <Link to={"/profiel/" + event.project.leader.id}>{event.project.leader.name}</Link>
                   </div>
                 </div>
                 <div className="right">
                   <h2><img src={desc} alt=""/>Projectbeschrijving</h2>
                   <p className="desc">{event.project.description}</p>
+                  <h2><img src={geelPuzzel} alt=""/>Eventbeschrijving</h2>
+                  <p className="desc">{event.description}</p>
                   <h2><img src={free} alt=""/>Vrijwilliger uren</h2>
                   {freeSkill}
-                  <h2><img src={skill} alt=""/>Skill uren</h2>
+                  <h2><img src={credit} alt=""/>Skill uren</h2>
                   {paidSkill}
                 </div>
               </div>
