@@ -10,11 +10,13 @@ import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
 import get from './img/nav-get.png';
+import Nav from "./Nav";
 let icon = L.icon({
   iconUrl: get,
   iconSize: [50, 50],
   popupAnchor: [0, -20],
 });
+
 
 
 export const GetProducts = ({getBusinesses,  ...otherProps}) => {
@@ -60,39 +62,42 @@ export const GetProducts = ({getBusinesses,  ...otherProps}) => {
   }
 
   return (
-    <div className="products-container">
-        { business ? <div>
-          <h2>{business.name}</h2>
-          <div className="products-data">
-            <div className="products">
-                <h3>Producten</h3>
-                <div className="products-inner">
-                  {
-                      business ? business.products.map(product =>
-                          <div className="product" key={product.id}>
-                              <h4>{ product.name }</h4>
-                              <div className="product-credits">
-                                <div><span>{product.amount}</span><img src={credit} alt=""/></div>
-                                <div><span>{product.price}</span><img src={stock} alt=""/></div>
-                              </div>
-                              <p onClick={() => buy(product)}><span className="product-buy">Aankopen</span></p>
-                          </div>
-                      ) : null
-                  }
-                </div>
+    <div className="height100">
+      <Nav/>
+      <div className="products-container">
+          { business ? <div>
+            <h2>{business.name}</h2>
+            <div className="products-data">
+              <div className="products">
+                  <h3>Producten</h3>
+                  <div className="products-inner">
+                    {
+                        business ? business.products.map(product =>
+                            <div className="product" key={product.id}>
+                                <h4>{ product.name }</h4>
+                                <div className="product-credits">
+                                  <div><span>{product.amount}</span><img src={credit} alt=""/></div>
+                                  <div><span>{product.price}</span><img src={stock} alt=""/></div>
+                                </div>
+                                <p onClick={() => buy(product)}><span className="product-buy">Aankopen</span></p>
+                            </div>
+                        ) : null
+                    }
+                  </div>
+              </div>
+              <div className="description">
+                  <p>{business.description}</p>   
+                  <Map className="map" center={position} zoom={13}>
+                    <TileLayer
+                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    {businessMarkers}
+                  </Map>   
+              </div>
             </div>
-            <div className="description">
-                <p>{business.description}</p>   
-                <Map className="map" center={position} zoom={13}>
-                  <TileLayer
-                  attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  />
-                  {businessMarkers}
-                </Map>   
-            </div>
-          </div>
-        </div> : null }
+          </div> : null }
+      </div>
     </div>
   );
 }

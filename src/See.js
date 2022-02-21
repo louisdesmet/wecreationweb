@@ -38,9 +38,9 @@ let getIcon = L.icon({
 export const See = ({getBusinesses, getActivities, getAllEvents}) => {
 
   const [a, setA] = useState(true);
-  const [b, setB] = useState(false);
-  const [c, setC] = useState(false);
-  const [d, setD] = useState(false);
+  const [b, setB] = useState(true);
+  const [c, setC] = useState(true);
+  const [d, setD] = useState(true);
 
   useEffect(() => {
     getBusinesses();

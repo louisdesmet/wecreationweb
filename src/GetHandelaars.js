@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { connect, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {getBusinesses} from "./redux/actions";
-
+import Nav from "./Nav";
 export const GetHandelaars = ({getBusinesses}) => {
 
   useEffect(() => {
@@ -36,20 +36,23 @@ export const GetHandelaars = ({getBusinesses}) => {
   }
 
   return (
-    <div className="business-container">
-        <h2 className="title">Handelaars</h2>
-        <div className="business-flex">
-          {
-              businessFiltered ? businessFiltered.map(business =>
-                  <Link to={"/get/handelaars/" + business.id + "/products"} className="business-data" key={business.id}>
-        
-                    <h2>{ business.name }</h2>
-                    <p>{ business.description }</p>
-                    <p>{ business.location }</p>
-                  </Link>
-              ) : null
-          }
-        </div>
+    <div className="height100">
+      <Nav/>
+      <div className="business-container">
+          <h2 className="title">Handelaars</h2>
+          <div className="business-flex">
+            {
+                businessFiltered ? businessFiltered.map(business =>
+                    <Link to={"/get/handelaars/" + business.id + "/products"} className="business-data" key={business.id}>
+          
+                      <h2>{ business.name }</h2>
+                      <p>{ business.description }</p>
+                      <p>{ business.location }</p>
+                    </Link>
+                ) : null
+            }
+          </div>
+      </div>
     </div>
   );
 }

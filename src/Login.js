@@ -26,6 +26,7 @@ function Login(props) {
         if(result.data.token.access_token) {
           localStorage.setItem('token', result.data.token.access_token);
           localStorage.setItem('user', JSON.stringify(result.data.user[0]));
+          localStorage.removeItem("loginMessage");
           props.history.push("/home");
         }
       }).catch(e => {
@@ -38,7 +39,6 @@ function Login(props) {
             {
               localStorage.getItem("loginMessage") ? <div className="login-message">{localStorage.getItem("loginMessage")}</div> : null
             }
-            {localStorage.removeItem("loginMessage")}
             <img className="left-top" src={leftTop} alt=""/>
             <img className="left-bottom" src={leftBottom} alt=""/>
             <img className="right-bottom" src={rightBottom} alt=""/>

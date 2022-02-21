@@ -58,11 +58,11 @@ const PrivateRoute = ({component: Component, ...rest}) => {
   }
   return (
       <Route {...rest} render={props => (
-        localStorage.getItem('token') !== 'null' && 
-        localStorage.getItem('token') !== null && 
-        typeof localStorage.getItem('token') !== 'undefined' && 
-        user !== null ? 
-        <Component {...props} /> : 
+        localStorage.getItem('token') !== 'null' &&
+        localStorage.getItem('token') !== null &&
+        typeof localStorage.getItem('token') !== 'undefined' &&
+        user !== null ?
+        <Component {...props} /> :
         <Redirect to="/login" />
       )} />
   );
@@ -120,7 +120,7 @@ function App() {
               <PrivateRoute path="/home" component={Home}/>
               <PrivateRoute path="/work" component={Work}/>
               <PrivateRoute path="/work-project-leader/:id" component={WorkLeaderBoard}/>
-              <PrivateRoute path="/see" component={See}/>
+              <Route path="/see" component={See}/>
 
               <PrivateRoute path="/get/handelaars/:id/products" component={GetProducts}/>
               <PrivateRoute path="/get/handelaars" component={GetHandelaars}/>
@@ -136,8 +136,8 @@ function App() {
               <PrivateRoute path="/my-events" component={MyEvents}/>
               <PrivateRoute path="/event-leader-board/:id" component={EventLeaderBoard}/>
               
-              <PrivateRoute path="/agenda/:id" component={Agenda}/>
-              <PrivateRoute path="/agenda" component={Agenda}/>
+              <Route path="/agenda/:id" component={Agenda}/>
+              <Route path="/agenda" component={Agenda}/>
               
               <PrivateRoute path="/netwerk" component={Netwerk}/>
 
@@ -168,8 +168,15 @@ function App() {
               <AdminRoute path="/admin-activities/edit/:id" component={AdminActivitiesEdit}/>
               <AdminRoute path="/admin-activities" component={AdminActivities}/>
               <AdminRoute path="/admin-user-verification" component={AdminUserVerification}/>
-
-              <PrivateRoute path="/" component={Home}/>
+              {
+                localStorage.getItem('token') !== 'null' &&
+                localStorage.getItem('token') !== null &&
+                typeof localStorage.getItem('token') !== 'undefined' &&
+                JSON.parse(localStorage.getItem("user")).email_verified_at !== null
+                ? <PrivateRoute path="/" component={Home}/>
+                : <Route path="/" component={See}/>
+              }
+              
           </Switch>
       </Router>
   );
