@@ -45,9 +45,10 @@ export const Agenda = ({getAllEvents}) => {
 
     function attendance(id) {
       let display = [];
+
       findEvent(id).skills.forEach(skill => {
         skill.users.forEach(user => {
-            if(user.id === loggedUser.id) {
+            if(loggedUser && user.id === loggedUser.id) {
               display.push(<p key={"zin1"}>Je hebt je ingeschreven voor de functie: {skill.skill.name} voor {skill.hours} uur.</p>);    
               if(user.accepted === 1) {
                 display.push(<p key={"zin2"}>Je bent goedgekeurd door de project leider.</p>);
