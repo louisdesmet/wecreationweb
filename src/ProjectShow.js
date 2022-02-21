@@ -65,13 +65,13 @@ export const ProjectShow = ({getProjects}) => {
                     <p>{project.leader.name}</p>
                 </div>
                 <p className="mt-70 mb-70">{project.description}</p>
-                <Link to={"/event/create/" + project.id} className='new-event'>Nieuw event</Link>
+                {JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <Link to={"/event/create/" + project.id} className='new-event'>Nieuw event</Link> : null}
               </div>
               <div className="column-2">
                 {
                   project.events.map(event =>
-                    <Link to={"/events/" + event.id} className="project-panel-event" key={event.id}>
-                        {JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <span className="delete" onClick={e => deleteEvent(e, event.id)}><img src={decline} alt=""/></span> : null}
+                    <Link to={"/events/" + event.id} className={"project-panel-event" + (new Date(event.date) < new Date() ? " project-panel-event-past" : "")} key={event.id}>
+                        {JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <img className="delete" onClick={e => deleteEvent(e, event.id)} src={decline} alt=""/> : null}
                         
                         <h2>{event.name}</h2>
                         <p className="mt-15">{event.description}</p>

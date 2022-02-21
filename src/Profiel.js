@@ -64,6 +64,10 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
     const history = useHistory();
     const { id } = useParams();
 
+    const [leaderClicked, setLeaderClicked] = useState(false);
+    const [eventsClicked, setEventsClicked] = useState(false);
+    const [teamClicked, setTeamClicked] = useState(false);
+
     const loggedUser = JSON.parse(localStorage.getItem("user"));
 
     function date(date) {
@@ -72,14 +76,14 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
     }
 
     useEffect(() => {
-        getProjects();
         getUsers();
+        getProjects();
         getAllEvents();
     }, []);
 
     const users = useSelector(state => state.remoteUsers);
     const events = useSelector(state => state.remoteAllEvents);
-
+    const projects = useSelector(state => state.remoteProjects);
 
 
     let updatedLoggedUser = null;
@@ -161,7 +165,6 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                             } else {
                                 userHours.push({id: skill.skill.id, name: skill.skill.name, icon: skill.skill.icon, hours: skill.hours, paid: skill.paid});
                             }
-                            
                         }
                     } else {
                         if(user.id === loggedUser.id && user.present === 1) {
@@ -228,6 +231,40 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
         history.push("/login");
     }
 
+    const leaderList = projects.data ? projects.data.map(project =>
+        updatedLoggedUser.id === project.leader.id ? <Link key={project.id} className="projects" to={"/projects/" + project.id}><img src={ require('./img/project/' + project.picture) }/>{project.name}</Link> : null
+    ) : null
+
+    const eventsList = events.data ? events.data.map(event =>
+        (updatedLoggedUser ? updatedLoggedUser.id : null) === event.project.leader.id ? <Link key={event.id} className="projects" to={"/events/" + event.id}>{event.name}</Link> : null
+    ) : null;
+
+    let teamList = [];
+
+    if(events.data && updatedLoggedUser) {
+        events.data.forEach(event => {
+            event.skills.forEach(skill => {
+                skill.users.forEach(user => {
+                    if(user.id === updatedLoggedUser.id) {
+                        event.team = 1;
+                    }
+                })
+            })
+        })
+
+        events.data.forEach(event => {
+            event.team && event.skills.forEach(skill => {
+                skill.users.forEach(user => {
+                    if(!teamList.find(item => item.id === user.id)) {
+                        if(user.id !== updatedLoggedUser.id) {
+                            teamList.push({id: user.id, name: user.name})
+                        }
+                    }
+                })
+            })
+        })
+    }
+
     return (
         <div className="height100">
             <Nav/>
@@ -261,9 +298,10 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                 </div>
                 <div className="profile-container">
                     <div className="left">
-                        <div>
+                        <div onClick={e => setEventsClicked(!eventsClicked)}>
                             <img src={navAgenda} alt=""/>
-                            <h2>Lopende projecten</h2>
+                            <h2>Lopende events</h2>
+                            {eventsClicked ? eventsList : null}
                         </div>
                         <div>
                             <img src={master} alt=""/>
@@ -277,27 +315,35 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                             <img src={credit} alt=""/>
                             <h2>Verdiende credits</h2>
                         </div>
-                        <div>
-                            <img src={team} alt=""/>
+                        <div onClick={e => setTeamClicked(!teamClicked)}>
+                        <img src={team} alt=""/>
                             <h2>Bekende teamgenoten</h2>
+                            {teamClicked ? teamList.map(user => 
+                                <Link className="projects" to={"/profiel/" + user.id}>{user.name}</Link>                      
+                            ) : null}
                         </div>
-                        <div>
+                        <div onClick={e => setLeaderClicked(!leaderClicked)}>
                             <img src={leader} alt=""/>
                             <h2>Projectleider van</h2>
+                            {leaderClicked ? leaderList : null}
                         </div>
                     </div>
                     <div className="right">
                         <h2><img src={desc} alt=""/>Profielbeschrijving</h2>
                         <p>{updatedLoggedUser ? updatedLoggedUser.description : null}</p>
                         <h2><img src={data} alt=""/>Profielgegevens</h2>
-                        <p>{updatedLoggedUser ? updatedLoggedUser.age : null} jaar</p>
+                        {
+                            updatedLoggedUser && updatedLoggedUser.age ? <p>{updatedLoggedUser.age} jaar</p> : null
+                        }
                         <p>Actief Sinds {date(updatedLoggedUser ? updatedLoggedUser.created_at : null)}</p>
                         <p className="email">{updatedLoggedUser ? updatedLoggedUser.email : null}</p>
-                        <h2><img src={get} alt=""/>Handelszaak</h2>
+                        {
+                        /*<h2><img src={get} alt=""/>Handelszaak</h2>
                         <p>Fix the grid</p>
                         <p>webdesign en grafische vormgeving</p>
                         <p className="email">www.fixthegrid.be</p>
-                        <p>BE045 1574 215 154</p>
+                        <p>BE045 1574 215 154</p>*/
+                        }
                     </div>
                 </div>
                 <div className="profile-below-container">

@@ -75,6 +75,8 @@ export const Home = ({getAllEvents, getBusinesses, getSkills}) => {
 
   
 
+  
+
   if(events.data && oneTime) {
     let eventsLength = events.data ? events.data.length : 0;
     let rndIntEvent = Math.floor(Math.random() * eventsLength) + 1;

@@ -22,6 +22,17 @@
                 margin: 0 8px 0 0;
             }
         }
+        .team {
+            position: relative;
+            span {
+                position: absolute;
+                background: #F6C945;
+                padding: 1px 6px;
+                border-radius: 100%;
+                font-size: 0.8em;
+                left: 20px;
+            }
+        }
         div {
             flex: 1;
             a {
