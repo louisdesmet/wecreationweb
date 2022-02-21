@@ -73,9 +73,13 @@ export const Home = ({getAllEvents, getBusinesses, getSkills}) => {
   const businesses = useSelector(state => state.remoteBusinesses);
   const skills = useSelector(state => state.remoteSkills);
 
+  console.log(events);
   const futureEvents = events.data ? events.data.filter(event => {
     return JSON.parse(localStorage.getItem("user")).id === event.project.leader.id && new Date(event.date) > new Date();
   }) : null;
+
+
+  console.log(futureEvents);
 
   
 
