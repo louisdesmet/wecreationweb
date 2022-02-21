@@ -14,6 +14,10 @@ import decline from './img/decline.png';
 import './css/ProjectShow.scss';
 import locprod from './Global';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChess, faAddressCard, faBeer, faBalanceScale, faMugHot, faBurn, faAnchor, faBlind, faBowlingBall, 
+    faRadiation, faBandAid, faBath, faBed, faBible, faBlender, faBong, faBox } from '@fortawesome/free-solid-svg-icons'
+
 export const ProjectShow = ({getProjects}) => {
 
     useEffect(() => {
@@ -28,6 +32,33 @@ export const ProjectShow = ({getProjects}) => {
     function date(date) {
       const jsDate = new Date(date);
       return jsDate.getDate()+'-'+(jsDate.getMonth()+1)+'-'+jsDate.getFullYear();
+    }
+
+    let totalHoursPaid = 0;
+    let totalHoursFree = 0;
+    let team = [];
+
+    if(project) {
+      
+      project.events.forEach(event => {
+        event.skills.forEach(skill => {
+          skill.users.forEach(user => {
+            if(user.present) {
+              if(skill.paid) {
+                totalHoursPaid += skill.hours
+              } else {
+                totalHoursFree += skill.hours
+              }
+              if(!team.find(item => item.id === user.id)) {
+                
+                  
+                    team.push({id: user.id, name: user.name, icon: user.icon})
+                
+              }
+            }
+          })
+        })
+      })
     }
 
     function deleteEvent(e, id) {
@@ -46,6 +77,45 @@ export const ProjectShow = ({getProjects}) => {
       
     }
 
+    function findIcon(icon) {
+      switch(icon) {
+          case "faChess": return faChess;
+          break;
+          case "faAddressCard": return faAddressCard;
+          break;
+          case "faBeer": return faBeer;
+          break;
+          case "faBalanceScale": return faBalanceScale;
+          break;
+          case "faMugHot": return faMugHot;
+          break;
+          case "faBurn": return faBurn;
+          break;
+          case "faAnchor": return faAnchor;
+          break;
+          case "faBlind": return faBlind;
+          break;
+          case "faBowlingBall": return faBowlingBall;
+          break;
+          case "faRadiation": return faRadiation;
+          break;
+          case "faBandAid": return faBandAid;
+          break;
+          case "faBath": return faBath;
+          break;
+          case "faBed": return faBed;
+          break;
+          case "faBible": return faBible;
+          break;
+          case "faBlender": return faBlender;
+          break;
+          case "faBong": return faBong;
+          break;
+          case "faBox": return faBox;
+          break;
+      }
+  }
+
 
     return (
       <div className="project-details height100">
@@ -53,6 +123,7 @@ export const ProjectShow = ({getProjects}) => {
           {project ?
             <div className='project-panel'>
               <div className="column-1">
+                
                 <h2>{project.name}</h2>
                 <div className="project-headers">
                   <img src={accept}/>
@@ -65,6 +136,11 @@ export const ProjectShow = ({getProjects}) => {
                     <p>{project.leader.name}</p>
                 </div>
                 <p className="mt-70 mb-70">{project.description}</p>
+                {"Er werden al " + (totalHoursPaid + totalHoursFree) + " uren gepresteerd waarvan " + totalHoursPaid + " betaald en " + totalHoursFree + " vrijwillig"}
+                <h2>Team</h2>
+                {team.map(user => 
+                  <Link className="team" to={"/profiel/" + user.id}><FontAwesomeIcon className="teamIcon" icon={findIcon(user.icon)} color="white"/>{user.name}</Link>                      
+                )}
                 {JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <Link to={"/event/create/" + project.id} className='new-event'>Nieuw event</Link> : null}
               </div>
               <div className="column-2">

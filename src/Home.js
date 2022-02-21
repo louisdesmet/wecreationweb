@@ -73,14 +73,15 @@ export const Home = ({getAllEvents, getBusinesses, getSkills}) => {
   const businesses = useSelector(state => state.remoteBusinesses);
   const skills = useSelector(state => state.remoteSkills);
 
-  
+  const futureEvents = events.data ? events.data.filter(event => {
+    return JSON.parse(localStorage.getItem("user")).id === event.project.leader.id && new Date(event.date) > new Date();
+  }) : null;
 
   
 
-  if(events.data && oneTime) {
-    let eventsLength = events.data ? events.data.length : 0;
-    let rndIntEvent = Math.floor(Math.random() * eventsLength) + 1;
-    setEvent(events.data.find((event, index) => index + 1 === rndIntEvent));
+  if(futureEvents && oneTime) {
+    let rndIntEvent = Math.floor(Math.random() * futureEvents.length) + 1;
+    setEvent(futureEvents.find((event, index) => index + 1 === rndIntEvent));
     setOneTime(0);
   }
 
@@ -190,9 +191,9 @@ export const Home = ({getAllEvents, getBusinesses, getSkills}) => {
   ) : null;
 
   function newEvent() {
-    let eventsLength = events.data ? events.data.length : 0;
+    let eventsLength = futureEvents ? futureEvents.length : 0;
     let rndIntEvent = Math.floor(Math.random() * eventsLength) + 1;
-    setEvent(events.data.find((event, index) => index + 1 === rndIntEvent));
+    setEvent(futureEvents.find((event, index) => index + 1 === rndIntEvent));
   }
 
   const teamList = event && event.skills ? <div className="team">{event.skills.map(skill => 

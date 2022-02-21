@@ -46,7 +46,9 @@ export const ProfielEdit = ({getUsers}) => {
             <div className="profile-edit">
                 {
                     updatedLoggedUser ? <div>
+                        <label>Profielbeschrijving</label>
                         <textarea onChange={e => setDesc(e.target.value)} defaultValue={updatedLoggedUser.description} placeholder='Description'></textarea>
+                        <label>Leeftijd</label>
                         <input onChange={e => setAge(e.target.value)} defaultValue={updatedLoggedUser.age} placeholder='Age'/>
                         <button onClick={e => edit()}>Aanpassen</button>
                     </div> : null

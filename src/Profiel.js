@@ -186,8 +186,14 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
     const freeUserHours = userHours ? userHours.filter(userHour => userHour.paid === 0) : null
     const paidUserHours = userHours ? userHours.filter(userHour => userHour.paid === 1) : null
 
-    function findIcon() {
-        switch(JSON.parse(localStorage.getItem("user")).icon) {
+    function findIcon(icon) {
+        let decidedIcon = null;
+        if(icon) {
+            decidedIcon = icon
+        } else {
+            decidedIcon = updatedLoggedUser.icon
+        }
+        switch(decidedIcon) {
             case "faChess": return faChess;
             break;
             case "faAddressCard": return faAddressCard;
@@ -231,12 +237,12 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
         history.push("/login");
     }
 
-    const leaderList = projects.data ? projects.data.map(project =>
+    const leaderList = projects.data && updatedLoggedUser ? projects.data.map(project =>
         updatedLoggedUser.id === project.leader.id ? <Link key={project.id} className="projects" to={"/projects/" + project.id}><img src={ require('./img/project/' + project.picture) }/>{project.name}</Link> : null
     ) : null
 
-    const eventsList = events.data ? events.data.map(event =>
-        (updatedLoggedUser ? updatedLoggedUser.id : null) === event.project.leader.id ? <Link key={event.id} className="projects" to={"/events/" + event.id}>{event.name}</Link> : null
+    const eventsList = events.data && updatedLoggedUser ? events.data.map(event =>
+        updatedLoggedUser.id === event.project.leader.id ? <Link key={event.id} className="projects" to={"/events/" + event.id}><img src={ require('./img/project/' + event.project.picture) }/>{event.name}</Link> : null
     ) : null;
 
     let teamList = [];
@@ -257,7 +263,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                 skill.users.forEach(user => {
                     if(!teamList.find(item => item.id === user.id)) {
                         if(user.id !== updatedLoggedUser.id) {
-                            teamList.push({id: user.id, name: user.name})
+                            teamList.push({id: user.id, name: user.name, icon: user.icon})
                         }
                     }
                 })
@@ -282,7 +288,9 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                     }
                     </div>
                     <div className="middle">
-                        <FontAwesomeIcon icon={findIcon()} className="profile-icon" color="white"/>
+                        {
+                            updatedLoggedUser ? <FontAwesomeIcon icon={findIcon(null)} className="profile-icon" color="white"/> : null
+                        }
                         <h2 className="profile-name">{updatedLoggedUser ? updatedLoggedUser.name : null}</h2>
                         {
                             !id ? <p className="profile-credits"><img src={credits} alt=""/>{updatedLoggedUser ? updatedLoggedUser.credits : null} cc</p> : null
@@ -309,7 +317,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                         </div>
                         <div>
                             <img src={see} alt=""/>
-                            <h2>Fix the grid</h2>
+                            <h2>Geen adres ingesteld</h2>
                         </div>
                         <div>
                             <img src={credit} alt=""/>
@@ -319,7 +327,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                         <img src={team} alt=""/>
                             <h2>Bekende teamgenoten</h2>
                             {teamClicked ? teamList.map(user => 
-                                <Link className="projects" to={"/profiel/" + user.id}>{user.name}</Link>                      
+                                <Link className="projects" to={"/profiel/" + user.id}><FontAwesomeIcon className="teamIcon" icon={findIcon(user.icon)} color="white"/>{user.name}</Link>                      
                             ) : null}
                         </div>
                         <div onClick={e => setLeaderClicked(!leaderClicked)}>

@@ -5,6 +5,19 @@
         flex: 1 0 25%;
         padding: 0 2%;
         background: #E9F0FA;
+        .team {
+            margin: 15px 10px 0 0;
+            color: black;
+            .teamIcon {
+                background: black;
+                border-radius: 100%;
+                font-size: 28px;
+                padding: 6px;
+                margin-right: 8px;
+                position: relative;
+                top: 10px;
+            }
+        }
         h2 {
             text-align: center;
             padding: 15px 0;
@@ -82,7 +95,7 @@
             }
         }
         .project-panel-event-past {
-            background: lightgrey;
+            background: #adadad;
         }
     }
 }
