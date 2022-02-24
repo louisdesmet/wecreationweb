@@ -57,6 +57,7 @@ import yoga from './img/icons/yoga.png';
 import projectleider from './img/icons/projectleider.png';
 import horeca from './img/icons/horeca.png';
 import schilderkunst from './img/icons/schilderkunst.png';
+
 import logoutImg from './img/profile/logout.png';
 
 export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
@@ -151,7 +152,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
           case "horeca": return horeca;
           break;
         }
-      }
+    }
 
     if(events.data) {
         events.data.forEach(event => {
