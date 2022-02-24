@@ -1,9 +1,9 @@
 .agenda-popup {
-    width: 500px;
+    width: 700px;
     height: 400px;
     top: 50%;
     left: 50%;
-    margin: -200px 0 0 -250px;
+    margin: -200px 0 0 -350px;
     background: white;
     color: #666666;
     position: fixed;
@@ -16,6 +16,7 @@
         justify-content: space-between;
         div {
             display: flex;
+            padding: 0 0 10px 0;
             img {
                 width: 50px;
                 position: relative;
