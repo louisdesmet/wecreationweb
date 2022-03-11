@@ -22,6 +22,8 @@ import credit from './img/profile/credit.png';
 
 import active from './img/map/filter-active.png';
 import nonactive from './img/map/filter-nonactive.png';
+import mapFilter from './img/map/map-filter.png';
+import close from './img/map/close.png';
 
 let workIcon = L.icon({
   iconUrl: work,
@@ -224,16 +226,29 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     setWeek(week ? false : true);
   }
 
+  function showFilters() {
+    document.querySelector(".filters").style.display = "block";
+    document.querySelector(".map-filter").style.display = "none";
+    document.querySelector(".map").style.display = "none";
+  }
+
+  function showMap() {
+    document.querySelector(".filters").style.display = "none";
+    document.querySelector(".map-filter").style.display = "block";
+    document.querySelector(".map").style.display = "block";
+  }
+
   return (
     <div className="map-container">
       <Nav/>
       <div className="container">
+        <img onClick={() => {showFilters()}} className="map-filter" src={mapFilter}/>
         <div className="filters">
+          <img onClick={() => {showMap()}} className="close" src={close}/>
           <div className="time">
             <div className={today && "on"} onClick={() => clickDay()}>Vandaag</div>
             <div className={week && "on"} onClick={() => clickWeek()}>Deze week</div>
           </div>
-          
           <h2>Filters</h2>
           <div className="categories">
             <div>

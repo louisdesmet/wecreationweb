@@ -90,32 +90,3 @@ html, body, #root, .App {
 .mb-70 {
     margin-bottom: 70px!important;
 }
-
-
-@media only screen and (max-width: 1200px) {
-    .nav div {
-        height: 70px;
-    }
-    
-}
-
-@media only screen and (max-width: 800px) {
-    .nav div {
-        height: 50px;
-    }
-    
-}
-
-@media only screen and (max-width: 600px) {
-    .nav div {
-        height: 40px;
-    }
-    
-}
-
-@media only screen and (max-width: 400px) {
-    .nav div {
-        height: 30px;
-    }
-    
-}
