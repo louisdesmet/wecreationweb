@@ -1,4 +1,10 @@
 .event-panel {
+    padding: 15px;
+    background: #DDDDDD;
+    border-radius: 70px;
+    margin: 0 auto;
+    padding: 10px;
+    width: 80%;
     .are-you-sure {
         position: fixed;
         top: 44%;
@@ -29,12 +35,6 @@
         }
 
     }
-    padding: 15px;
-    background: #DDDDDD;
-    border-radius: 70px;
-    margin: 0 auto;
-    padding: 10px;
-    width: 80%;
     .event-title {
         text-align: center;
         font-size: 1.9em;
@@ -116,174 +116,123 @@
             }
         }
     }
-    .event-panel-images {
-        display: flex;
-        img {
-            width: 50px;
-            padding: 0 4%;
-            flex: 1;
-        }
-    }
-    .event-panel-container {
-        display: flex;
-        flex-wrap: wrap;
-        margin-top: 70px;
-        .event-panel-general {
-            width: 46%;
+}
+
+@media only screen and (max-width: 700px) {
+    .event-panel {
+        padding: 15px;
+        background: #DDDDDD;
+        border-radius: 70px;
+        margin: 0 auto;
+        padding: 10px;
+        width: 92%;/**/
+        box-sizing: border-box;/**/
+        .are-you-sure {
+            position: fixed;
+            top: 44%;
+            left: 35%;
             background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-sizing: border-box;
-            margin: 20px 2%;
-            h2 {
-                font-size: 1.4em;
-                margin-bottom: 40px;
-                img {
-                    width: 40px;
-                    position: relative;
-                    top: 10px;
-                    right: 3px;
-                }
-            }
-        }
-        .event-panel-desc {
-            width: 46%;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-sizing: border-box;
-            margin: 20px 2%;
-        }
-        .event-panel-skills {
-            width: 46%;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-sizing: border-box;
-            margin: 20px 2%;
-            h2 {
-                font-size: 1.4em;
-                margin-bottom: 40px;
-                img {
-                    width: 40px;
-                    position: relative;
-                    top: 10px;
-                    right: 3px;
-                }
-            }
-            
-        }
-        .event-panel-part {
-            width: 46%;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-sizing: border-box;
-            margin: 20px 2%;
-            h2 {
-                font-size: 1.4em;
-                margin-bottom: 40px;
-                img {
-                    width: 40px;
-                    position: relative;
-                    top: 10px;
-                    right: 3px;
-                }
-            }
-            .user {
-                border-bottom: 1px solid black;
-                display: flex;
-                justify-content: space-between;
-                padding: 6px 0;
-                .icon {
-                    margin: 0 10px 0 10px;
-                }
-            }
-        }
-        .event-panel-skills, .event-panel-general {
-            .skills-container {
-                display: flex;
-                border-bottom: 1px solid black;
-                .skill-title {
-                    flex: 1;
-            
-                    display: flex;
-                    border-right: 1px solid black;
-                    img {
-                        width: 40px;
-                        margin-left: 10px;
-                    }
-                    h3 {
-                        font-size: 1.4em;
-                        padding-top: 2px;
-                        margin-left: 5px;
-                        
-                    }
-                }
-                .skill-number {
-                    flex: 1;  
+            width: 30%;
        
-                    border-right: 1px solid black;
-                    div {
-                        display: flex;
-                        width: 50px;
-                        margin: 0 auto;
-                        input {
-                            background: none;
-                            border: none;
-                            width: 20px;
-                        }
-                        input::-webkit-outer-spin-button,
-                        input::-webkit-inner-spin-button {
-                            display: none;
-                        }
-                        input:focus {
-                            outline: none;
-                        }
-                        p {
-                            width: 30px;
-                            margin-top: 5px;
-                            font-weight: bold;
-                        }
-                    }
-                }
-                .confirm {
-                    flex: 1;
-             
-                    button {
-                        background: #DBDCDB;
-                        color: #A0A1A0;
-                        border: none;
-                        height: 30px;
-                        border-radius: 15px;
-                        margin-top: 7px;
-                        font-weight: bold;
-                        width: 50%;
-                        margin: 0 auto;
-                        display: block;
-                        margin-top: 4px;
-                        font-size: 1em;
-                        letter-spacing: 1px;
-                    }
-                }
-            
-            }
-            .skills-container:last-child {
-                border: none;
-            }
-
-        }
-    }
-    .event {
-        display: flex;
-        /*flex-wrap: wrap;*/
-        p {
-            flex: 1;
+            border: 3px solid;
+            border-radius: 15px;
+            padding: 35px;
+            box-sizing: border-box;
             text-align: center;
-            a {
-                color: black;
+            p {
+                text-align: center;
+                font-weight: bold;
+                font-size: 1.3em;
+                margin-bottom: 30px;
+                img {
+                    width: 30px;
+                    position: relative;
+                    top: 8px;
+                    margin-right: 8px;
+                }
+            }
+            .accept {
+                width: 70px;
+                margin-right: 50px;
+            }
+    
+        }
+        .event-title {
+            font-size: 1.2em;/**/
+            margin: 30px 0 40px 0;/**/
+            span {
+                border-bottom: 3px solid black;/**/
+                padding: 0 15px;
             }
         }
-
+        .container { 
+            .left {
+                width: 95%;/**/      
+                .left-item {
+                    width: 33.3%;
+                    margin: 0 0 30px 0;
+                    img {
+                        width: 42%;
+                        margin: 0 auto 17px auto;
+                        display: block;
+                    }
+                    a {
+                        color: black;
+                        text-align: center;
+                        display: block;
+                    }
+                    p, h2 {
+                        text-align: center;
+                        font-size: 1em;
+                    }
+                }
+                .team {
+                    margin: 15px 0 0 0;
+                    padding: 5px 0;
+                    width: 100%;
+                    background: #eaeaea;
+                    border-radius: 25px;
+                }
+            }
+            .right {
+                width: 95%;/**/
+                margin: 0 auto 100px auto;
+                h2 {
+                    margin: 0 0 17px 0;/**/
+                    img {
+                        width: 43px;
+                        position: relative;
+                        top: 15px;
+                        margin: 0 10px 0 0;
+                    }
+                }
+                .desc {
+                    margin: 5px 20px 5px 53px;
+                }
+                .skills {
+                    display: flex;
+                    margin: 5px 0 0 0;/**/
+                    .image {
+                        img {
+                            width: 30px;
+                            margin: 0 10px 0 0;
+                            position: relative;
+                            top: -3px;
+                        }
+                    }
+                    .button {
+                        margin-left: auto;
+                        button {
+                            color: white;
+                            background: #34AD72;
+                            border: none;
+                            border-radius: 15px;
+                            padding: 3px 25px;
+                        }
+                    }
+                    
+                }
+            }
+        }
     }
 }
