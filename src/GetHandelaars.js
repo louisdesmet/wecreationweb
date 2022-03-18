@@ -4,6 +4,8 @@ import { connect, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {getBusinesses} from "./redux/actions";
 import Nav from "./Nav";
+import get from './img/nav/get.png';
+import location from './img/nav/see.png';
 
 export const GetHandelaars = ({getBusinesses}) => {
 
@@ -40,15 +42,21 @@ export const GetHandelaars = ({getBusinesses}) => {
     <div className="height100">
       <Nav/>
       <div className="business-container">
-          <h2 className="title">Handelaars</h2>
+        <img className="logo" src={get}/>
+        <h2 className="title"><span>Handelaars</span></h2>
           <div className="business-flex">
             {
                 businessFiltered ? businessFiltered.map(business =>
                     <Link to={"/get/handelaars/" + business.id + "/products"} className="business-data" key={business.id}>
-          
+                      <img className="logo" src={get}/>
                       <h2>{ business.name }</h2>
-                      <p>{ business.description }</p>
-                      <p>{ business.location }</p>
+                      <p className="desc-title">Beschrijving</p>
+                      <p className="desc">{ business.description }</p>
+                      <div>
+                        <p><img src={location}/>{ business.location }</p>
+                      </div>
+                      <p className='bekijk'>Bekijk handelaar</p>
+                      
                     </Link>
                 ) : null
             }
