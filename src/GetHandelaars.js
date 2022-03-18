@@ -4,6 +4,7 @@ import { connect, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {getBusinesses} from "./redux/actions";
 import Nav from "./Nav";
+
 export const GetHandelaars = ({getBusinesses}) => {
 
   useEffect(() => {

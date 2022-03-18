@@ -1,31 +1,52 @@
 .get-table {
+    width: 70%;
+    margin: 0 auto;
+    background: #FEFCDD;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-flow: row wrap;
+    padding: 25px;
+    box-sizing: border-box;
+    border-radius: 35px;
     .get {
         color: black;
         width: 44%;
         text-decoration: none;
-        background: #FDF4CF;
+        background: #FBDFA0;
         box-sizing: border-box;
+        border-radius: 25px;
         margin: 20px 3%;
+        height: 300px;
+        position: relative;
+        img {
+            width: 15%;
+            margin: 15px auto 0 auto;
+            display: block;
+
+        }
         h2 {
-            margin-top: 15px;
+            font-size: 1.7em;
+            margin: 15px 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             text-align: center;
         }
         p {
             margin: 20px;
+            font-weight: 600;
+        }
+        .bekijk {
+            text-decoration: underline;
+            font-weight: 700;
+            font-size: 1.2em;
+            text-align: center;
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            margin: 0;
         }
     }
-    .buttons {
-        text-align: center;
-        padding-bottom: 20px;
-        img {
-            width: 50px;
-        }
-    }
-
 }
 
 .business-container {
