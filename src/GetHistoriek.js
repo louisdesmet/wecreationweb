@@ -13,9 +13,9 @@ export const GetHistoriek = ({getOrders}) => {
     return order.user.id === JSON.parse(localStorage.getItem("user")).id
   }) : null;
 
-  return (
-    <table className="businesses-container">
-      <thead>
+
+  /*
+  <thead>
           <tr>
               <th>Product naam</th>
               <th>Price</th>
@@ -32,8 +32,12 @@ export const GetHistoriek = ({getOrders}) => {
                 
               ) : null
           }
-      </tbody>          
-  </table>
+      </tbody>
+  */
+  return (
+    <table className="businesses-container">
+          Kassaticketjes      
+    </table>
   );
 }
 
