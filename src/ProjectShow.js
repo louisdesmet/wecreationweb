@@ -137,7 +137,7 @@ export const ProjectShow = ({getProjects}) => {
                 </div>
                 <div className="project-info">
                     <p>{project.type}</p>
-                    <p>{project.credits}</p>
+                    <p>{project.credits} cc</p>
                     <p>{project.leader.name}</p>
                 </div>
                 <p className="mt-70 mb-70">{project.description}</p>
@@ -160,13 +160,11 @@ export const ProjectShow = ({getProjects}) => {
                           <img src={datum}/>
                           <img src={location}/>
                           <img src={navGet}/>
-                          <img src={accept}/>
                         </div>
                         <div>
                           <p>{date(event.date)}</p>
                           <p>{event.location}</p>
-                          <p>{event.credits}</p>
-                          <p>vrije uren</p>
+                          <p>{event.credits} cc</p>
                         </div>
                     </Link>
                   )

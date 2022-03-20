@@ -110,10 +110,6 @@ export const Work = ({getProjects, getSkills}) => {
                     <img src={downEvent}/>
                     <p>{project.downEvents}</p>
                   </div>
-                  <div>
-                    <img src={navGet}/>
-                    <p>7</p>
-                  </div>
                 </div>
               </div>
           </div>

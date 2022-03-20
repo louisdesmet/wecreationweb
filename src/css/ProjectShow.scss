@@ -59,12 +59,14 @@
         display: flex;
         flex-wrap: wrap;
         .project-panel-event {
-            width: 29.3%;
+            width: 46%;
             padding: 0 1%;
             margin: 0 1% 20px 1%;
             background: #E9F0FA;
             text-decoration: none;
             color: black;
+            padding: 15px;
+            box-sizing: border-box;
             .delete {
                 margin: 10px 0 0 0;
                 width: 30px;
@@ -79,16 +81,17 @@
                     color: black;
                 }
             }
+            
             div {
                 display: flex;
                 width: 100%;
                 img {
-                    width: 9%;
-                    padding: 0 8%;
+                    width: 13%;
+                    padding: 0 10%;
                     margin-top: 30px;
                 }
                 p {
-                    width: 25%;
+                    width: 33.3%;
                     margin-top: 5px;
                     text-align: center;
                 }

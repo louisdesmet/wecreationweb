@@ -274,3 +274,40 @@
     } 
     
 }
+
+.historiek {
+    .profile-icon {
+        margin: 40px auto 15px auto;
+        display: block;
+        background: black;
+        padding: 37px;
+        border-radius: 100%;
+        font-size: 100px;
+    }
+    h2 {
+        font-size: 2em;
+        margin: 0 0 70px 0;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        text-align: center;
+        span {
+            border-bottom: 5px solid black;
+            padding: 0 40px 4px 40px;
+        }
+    }
+    div {
+        width: 70%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        a, p {
+            color: black;
+            img {
+                width: 45px;
+                position: relative;
+                top: 15px;
+                margin: 0 15px;
+            }
+        }
+    }
+}
