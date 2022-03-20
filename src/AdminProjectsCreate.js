@@ -8,16 +8,27 @@ import './css/Admin.scss';
 
 export const AdminProjectsCreate = ({getUsers}) => {
 
-    useEffect(() => {
-      getUsers();
-    }, []);
-
     const users = useSelector(state => state.remoteUsers);
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [credits, setCredits] = useState("");
     const [leader, setLeader] = useState("");
+
+    useEffect(() => {
+      getUsers();
+      
+      /*setLeader(users.data[0].id)*/
+    }, []);
+
+    const callback = function(data) {
+      setLeader(data);
+    }
+
+    /*const callback = (data) => {
+      console.log(data);
+      /*setLeader(data);*/
+    /*}*/
     
     function submit() {
         fetch(locprod + '/projects', {
@@ -46,12 +57,25 @@ export const AdminProjectsCreate = ({getUsers}) => {
           <input onChange={e => setName(e.target.value)} placeholder='Naam'/>
           <input onChange={e => setDescription(e.target.value)} placeholder='Description'/>
           <input onChange={e => setCredits(e.target.value)} placeholder='Credits'/>
-          <select onChange={e => setLeader(e.target.value)}>
-              {userList}
-          </select>
+          <Select users={users.data} userList={userList} parentCallback={callback}/>
           <input onClick={submit} type='submit' value='Toevoegen'/>
       </div>
     );
+}
+
+function Select(props) {
+
+
+  useEffect(() => {
+
+  }, [props.users ? props.parentCallback(props.users[0].id) : null]);
+  
+
+  return (
+    <select onChange={e => props.parentCallback(e.target.value)}>
+      {props.userList}
+    </select>
+  );
 }
 
 export default connect(
