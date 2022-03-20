@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect, useSelector } from "react-redux";
-import { profileIcon } from "./Global";
+import { date, profileIcon } from "./Global";
 import {getOrders} from "./redux/actions";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import kassa from './img/profile/kassa.png';
@@ -29,7 +29,8 @@ export const GetHistoriek = ({getOrders}) => {
         {
           userOrders ? userOrders.map(order =>
             (order.accepted === 1 ? <div key={order.id}>
-              <Link to={"/orders/" + order.id}><img src={kassa}/>{ order.product.name }</Link>
+              <Link to={"/orders/" + order.id}><img src={kassa}/>{ order.product.business.name + ' - ' + order.product.name }</Link>
+              <p className="date">{date(order.created_at)}</p>
               <p>{ order.product.price }<img src={credit}/></p>
             </div> : null)
           ) : null

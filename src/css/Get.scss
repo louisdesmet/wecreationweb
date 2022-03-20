@@ -296,10 +296,17 @@
         }
     }
     div {
-        width: 70%;
+        width: 60%;
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
+        .date {
+            font-weight: 500;
+            font-size: 1em;
+            position: relative;
+            top: 27px;
+
+        }
         a, p {
             color: black;
             img {
