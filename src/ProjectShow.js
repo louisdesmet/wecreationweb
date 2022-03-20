@@ -34,6 +34,11 @@ export const ProjectShow = ({getProjects}) => {
       return jsDate.getDate()+'-'+(jsDate.getMonth()+1)+'-'+jsDate.getFullYear();
     }
 
+    var sorted = project ? project.events.sort((a,b) => {
+      return new Date(a.date).getTime() - new Date(b.date).getTime()
+    }) : null;
+    const reversed = sorted ? sorted.slice().reverse() : null;
+
     let totalHoursPaid = 0;
     let totalHoursFree = 0;
     let team = [];
@@ -145,7 +150,7 @@ export const ProjectShow = ({getProjects}) => {
               </div>
               <div className="column-2">
                 {
-                  project.events.map(event =>
+                  reversed.map(event =>
                     <Link to={"/events/" + event.id} className={"project-panel-event" + (new Date(event.date) < new Date() ? " project-panel-event-past" : "")} key={event.id}>
                         {JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <img className="delete" onClick={e => deleteEvent(e, event.id)} src={decline} alt=""/> : null}
                         

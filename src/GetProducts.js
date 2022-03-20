@@ -1,6 +1,6 @@
 
 import Axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {getBusinesses, getUsers} from "./redux/actions";
@@ -17,6 +17,9 @@ import locprod, { profileIcon } from './Global.js'
 import profile from './img/eventshow/profile-purple.png';
 import team from './img/profile/team.png';
 import location from './img/nav/see.png';
+
+import accept from './img/eventshow/accept.png';
+import decline from './img/eventshow/decline.png';
 
 let icon = L.icon({
   iconUrl: get,
@@ -35,7 +38,9 @@ export const GetProducts = ({getBusinesses, getUsers, ...otherProps}) => {
   const users = useSelector(state => state.remoteUsers);
 
   const { id } = useParams();
-  
+
+  const [product, setProduct] = useState(null);
+  const [areYouSure, setAreYouSure] = useState(1);
 
   let business
   if(otherProps.business) {
@@ -55,14 +60,14 @@ export const GetProducts = ({getBusinesses, getUsers, ...otherProps}) => {
 
   }
 
- 
-
-
-
   let position = business ? [business.lat, business.lng] : [];
 
   const businessMarkers = business ? <Marker key={business.id} position={[business.lat, business.lng]} icon={icon}></Marker> : null;
 
+  function areYouSureBox(product) {
+    setAreYouSure(1);
+    setProduct(product);
+  }
 
   function buy(product) {
     const headers = {
@@ -119,8 +124,8 @@ export const GetProducts = ({getBusinesses, getUsers, ...otherProps}) => {
                     <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "products/" + product.picture}/>
                     <h4>{ product.name }</h4>
                     <p>{product.description}</p>
-                    <p>{product.price}</p>
-                    <button onClick={() => buy(product)}><span className="product-buy">Ik neem er 1</span></button>
+                    <p>{product.price}cc</p>
+                    <button onClick={e => areYouSureBox(product)}><span className="product-buy">Ik neem er 1</span></button>
                   </div>
                 ) : null
               }
@@ -131,7 +136,14 @@ export const GetProducts = ({getBusinesses, getUsers, ...otherProps}) => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               {businessMarkers}
-            </Map>   
+            </Map>
+            {
+              areYouSure && product ? <div className="are-you-sure">
+                <p>Bevestig je aankoop.</p>
+                <img className="accept" src={accept} onClick={e => buy(product)}/>
+                <img className="accept" src={decline} onClick={e => setAreYouSure(0)}/>
+              </div> : null
+            }   
           </div> : null }
       </div>
     </div>
