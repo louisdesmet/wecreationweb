@@ -72,3 +72,31 @@
     top: 0;
     left: 0;
 }
+
+@media only screen and (max-width: 700px) {
+    .login {
+        width: 90%;
+        .logo {
+            margin: 100px auto 50px auto;
+        }
+        button {
+            padding: 8px 45px;
+            width: auto;
+        }
+        .register {
+            width: 80%;
+        }
+    }
+    .left-bottom {
+        width: 100px;
+    }
+    .right-top {
+        width: 100px;
+    }
+    .right-bottom {
+        width: 100px;
+    }
+    .left-top{
+        width: 100px;
+    }
+}
