@@ -38,6 +38,7 @@ import WorkLeaderBoard from "./WorkLeaderBoard";
 import EventShow from "./EventShow";
 import ProjectShow from "./ProjectShow";
 import OrderShow from "./OrderShow";
+import BusinessCreate from "./BusinessCreate";
 import BusinessDashboard from "./BusinessDashboard";
 import AdminProjectsEventsSkills from "./AdminProjectsEventsSkills";
 import GetHandelaars from "./GetHandelaars";
@@ -141,7 +142,7 @@ function App() {
               <PrivateRoute path="/netwerk" component={Netwerk}/>
 
               <PrivateRoute path="/event/create/:id" component={EventCreate}/>
-
+              <PrivateRoute path="/handelaar/create" component={BusinessCreate}/>
               <BusinessRoute path="/handelaar-dashboard" component={BusinessDashboard}/>
 
               <PrivateRoute path="/events/:id" component={EventShow}/>
