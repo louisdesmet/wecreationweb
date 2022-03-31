@@ -120,26 +120,31 @@
 
 @media only screen and (max-width: 700px) {
     .event-panel {
-        width: 92%;/**/
-        box-sizing: border-box;/**/
+        width: 92%;
+        box-sizing: border-box;
+        .are-you-sure {
+            top: 30%;
+            left: 3%;
+            width: 94%;
+        }
         .event-title {
-            font-size: 1.2em;/**/
-            margin: 30px 0 40px 0;/**/
+            font-size: 1.2em;
+            margin: 30px 0 40px 0;
             span {
-                border-bottom: 3px solid black;/**/
+                border-bottom: 3px solid black;
             }
         }
         .container { 
             .left {
-                width: 95%;/**/      
+                width: 95%;   
             }
             .right {
-                width: 95%;/**/
+                width: 95%;
                 h2 {
-                    margin: 0 0 17px 0;/**/
+                    margin: 0 0 17px 0;
                 }
                 .skills {
-                    margin: 5px 0 0 0;/**/    
+                    margin: 5px 0 0 0;
                 }
             }
         }

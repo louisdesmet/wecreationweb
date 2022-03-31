@@ -68,7 +68,7 @@ export const OrderShow = ({getOrders, getUsers}) => {
                 <p>Aankoopprijs</p>
               </div>
               <div className='product-info2'>
-                <p>1 x</p>
+                <p className='first-p'>1 x</p>
                 <div>
                   <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "products/" + order.product.picture}/>
                   <p className='name'>{order.product.name}</p>

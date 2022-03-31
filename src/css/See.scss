@@ -114,7 +114,7 @@
         .container {
             position: relative;
             display: block;
-            padding: 35px;
+            padding: 25px;
             .map-filter {
                 display: block;
                 position: absolute;
@@ -140,6 +140,35 @@
                 border-radius: 55px;
                 border: 4px solid white;
                 box-sizing: border-box;
+                .popup {
+                    width: 230px;
+                    .leaflet-popup-content {
+                        margin: 10px 0 10px 10px;
+                    }
+                    h2 {
+                        a {
+                            color: black;
+                        }
+                    }
+                    p {
+                        margin: 0;
+                        padding: 10px 0 0 0;
+                    }
+                    .data-container {
+                        display: flex;
+                        padding: 10px 0 0 0;
+                        img {
+                            width: 40px;
+                        }
+                        p {
+                            margin: 0 0 0 8px;
+                            padding: 10px 0;
+    
+                          
+                        }
+                    }
+               
+                }
             }
         }
     }

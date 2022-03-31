@@ -390,10 +390,28 @@
         } 
         
     }
-    
+
     .historiek {
+        h2 {
+            font-size: 1.6em;
+            span {
+                padding: 0 20px 4px 20px;
+            }
+        }
         div {
             width: 95%;
+            .date {
+                font-size: 0.8em;
+                top: 17px;
+    
+            }
+            a, p {
+                font-size: 0.8em;
+                img {
+                    width: 30px;
+                    top: 12px;
+                }
+            }
         }
     }
 }

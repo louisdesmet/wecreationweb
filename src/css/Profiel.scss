@@ -240,4 +240,15 @@
             display: block;
         }
     }
+    .profile-edit {
+        textarea {
+            width: 100%;
+        }
+        input {
+            width: 100%;
+        }
+        button {
+            width: 100%;
+        }
+    }
 }

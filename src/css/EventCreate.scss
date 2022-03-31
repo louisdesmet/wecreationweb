@@ -93,3 +93,106 @@
     }
     
 }
+
+
+@media only screen and (max-width: 700px) { 
+    .event-create {
+        width: 90%;/**/
+        margin: 0 auto;
+        padding: 0 0 50px 0;
+        .event-title {
+            font-size: 1em;/**/
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            
+            span {
+                border-bottom: 5px solid black;
+                padding: 0 13px;
+            }
+        }
+        h2 {
+            font-size: 0.8em;/**/
+            img {
+                width: 30px;/**/
+                position: relative;
+                top: 11px;/**/
+                margin: 0 5px 0 0;/**/
+            }
+        }
+        .naam {
+            margin: 15px 0 0 0;/**/
+            border: 2px solid black;
+            padding: 6px 10px;
+            border-radius: 15px;
+            width: 100%;/**/
+            box-sizing: border-box;/**/
+        }
+        textarea {
+            margin: 15px 0 0 0;/**/
+            border: 2px solid black;
+            padding: 6px 10px;
+            border-radius: 15px;
+            width: 100%;/**/
+            box-sizing: border-box;/**/
+            display: block;
+            height: 120px;
+        }
+        .input-image {
+            img {
+                width: 13%;/**/
+                position: relative;
+                top: 11px;/**/
+            }
+            input {
+                margin: 0;/**/
+                border: 2px solid black;
+                padding: 6px 10px;
+                border-radius: 15px;
+                width: 87%;/**/
+                box-sizing: border-box;
+            }
+        }
+        .hours {
+            margin: 0;/**/
+        }
+        .input-data {
+            margin: 20px 0 0 0;/**/
+            display: block;/**/
+            select {
+                flex: 1;
+                padding: 6px 10px;
+                border-radius: 15px;
+                border: 2px solid black;
+                margin: 0 7px 0 0;/**/
+            }
+            input {
+                flex: 1;
+                padding: 6px 10px;
+                border-radius: 15px;
+                border: 2px solid black;
+                margin: 0 7px 0 0;/**/
+            }
+        }
+        .new {
+            margin: 10px 0 0 0;/**/
+            img {
+                width: 35px;
+                position: relative;
+                top: 10px;
+                margin: 0 10px 0 0;
+            }
+        }
+        button {
+            background: #47AD4C;
+            color: white;
+            padding: 15px 0;
+            border: 0;
+            width: 50%;
+            margin: 50px auto;
+            display: block;
+        }
+        
+    }
+}

@@ -113,3 +113,65 @@
         }
     } 
 }
+
+
+@media only screen and (max-width: 700px) {
+    .order-details {
+        width: 95%;
+        padding: 15px;
+
+        h2 {
+            font-size: 1em;
+            span {
+                padding: 0 20px 4px 20px;
+            }
+        }
+        .business-info {
+            display: block;
+            .left {
+                div {
+                    width: 50%;
+                    margin: 0;
+                    img {
+                        width: 50%;
+                        margin: 0 auto 10px auto;
+                        display: block;
+                    }
+                }
+            }
+            .right {
+                width: 85%;
+                margin: 40px auto 0 auto;
+            }
+        }
+        .product-container {
+            width: 100%;
+            .product-info {
+                p {
+                    font-size: 1em;
+                }
+            }
+            .product-info2 {
+                p {
+                    font-size: 1.3em;
+                }
+                .first-p {
+                    margin: 75px 0 0 0;
+                }
+                div {
+                    width: 50%;
+                    img {
+                        width: 80%;
+                        margin: 0 auto;
+                        display: block;
+                    }
+                }
+            }
+            .user-info {
+                p {
+                    font-size: 1.1em;
+                }
+            }
+        } 
+    }
+}

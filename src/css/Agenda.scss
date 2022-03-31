@@ -186,91 +186,26 @@
 
 @media only screen and (max-width: 700px) {
     .agenda-popup {
-        width: 700px;
-        height: 400px;
-        top: 50%;
-        left: 50%;
-        margin: -200px 0 0 -350px;
-        background: white;
-        color: #666666;
-        position: fixed;
-        z-index: 9999;
-        border-radius: 15px;
-        padding: 20px;
-        box-sizing: border-box;
+        width: 90%;
+        height: auto;
+        top: 30%;
+        left: 5%;
+        margin: 0;
         .events-list {
-            display: flex;
-            justify-content: space-between;
             div {
-                display: flex;
-                padding: 0 0 10px 0;
+                flex: 1;
+                p {
+                    font-size: 0.8em;
+                }
                 img {
-                    width: 50px;
-                    position: relative;
-                    top: -8px;
+                    width: 40px;
                 }
             }
             a {
-                text-decoration: none;
-                color: black;
                 span {
-                    border: 2px solid black;
-                    border-radius: 25px;
-                    padding: 2px 5px;
-                    font-size: 0.8em;
-                    font-weight: bold;
+                    font-size: 0.7em;
                 }
-                
             } 
-        }
-        .top-agenda-popup {
-            display: flex;
-            justify-content: space-between;
-            margin: 0 0 15px 0;
-            div {
-                display: flex;
-                img {
-                    width: 50px;
-                }
-                a {
-                    color: #666666;
-                    text-decoration: none;
-                    font-size: 1.3em;
-                    font-weight: 500;
-                    padding: 8px 0 0 0;
-                    
-                }
-            }
-            p {
-                font-size: 1.3em;
-                padding: 7px 0 0 0;
-            }
-            
-            .close {
-                font-size: 2em;
-                display: block;
-                position: relative;
-                top: -5px;
-            }
-        }
-        .flex-popup {
-            display: flex;
-            margin: 0 0 12px 0;
-            img {
-                width: 50px;
-            }
-            p {
-                padding: 10px;
-                font-size: 1.1em;
-            }
-        } 
-        .attendance {
-            padding: 0 0 15px 0;
-            img {
-                width: 30px;
-                position: relative;
-                top: 9px;
-            }
         }
     }
     
