@@ -84,7 +84,7 @@
                 width: 33.3%;
                 margin: 0 0 30px 0;
                 img {
-                    width: 37%;
+                    width: 25%;
                     margin: 0 auto;
                     display: block;
                     cursor: pointer;
@@ -97,12 +97,14 @@
                 .projects {
                     margin: 15px 0 0 0;
                     color: black;
+                    display: block;
                     .teamIcon {
                         background: black;
-                        
                         border-radius: 100%;
                         font-size: 28px;
                         margin-right: 8px;
+                        position: relative;
+                        top: 7px;
                     }
                     img {
                         width: 40px;
@@ -110,8 +112,9 @@
                         margin: 0;
                         border-radius: 100%;
                         position: relative;
-                        top: -8px;
+                        top: 15px;
                         margin: 0 10px 0 0;
+                        display: inline;
                     }
                 }
             }
