@@ -119,3 +119,55 @@
         }
     }
 }
+
+@media only screen and (max-width: 700px) {
+    .event-leader-board {
+        width: 90%;
+        padding: 15px;
+        .event-title {
+            font-size: 0.8em;
+            
+            span {
+                border-bottom: 3px solid black;
+                padding: 0 5px;
+            }
+        }
+        .top {
+            flex-wrap: wrap;
+            width: 100%;
+            div {
+                width: 50%;
+                margin: 0 0 30px 0;
+                h2 {
+                    font-size: 0.8em;
+                }
+            }
+        }
+        .bottom {
+            margin: 30px 0 0 0;
+            display: block;
+            .left {
+                p {
+                    margin: 30px 0 30px 0;
+                }
+            }
+            .right {
+                .skills {
+                    margin: 15px 0 0 0;
+                    .skills-inner {
+                        margin: 30px 0 30px 0;
+                    }
+                    .users {
+                        display: block;
+                        margin: 0 0 30px 0;
+                        .image {
+                            margin: 0;
+                        }
+                    }
+                    
+                    
+                }
+            }
+        }
+    }
+}

@@ -156,7 +156,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                     <div className="left">
                     {
                         !id ? <div>
-                            <Link to={"/home"}><img src={handel} alt=""/>Mijn handelszaak</Link>
+                            <Link to={"/handelaar/create"}><img src={handel} alt=""/>Mijn handelszaak</Link>
                             <Link to={"/get/historiek"}><img src={kassa} alt=""/>Mijn kassatickets</Link>
                             <Link to={"/work"}><img src={agenda} alt=""/>Mijn projecten</Link>
                             <Link to={"/my-events"}><img src={agenda} alt=""/>Mijn events</Link>
