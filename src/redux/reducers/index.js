@@ -17,7 +17,9 @@ const initialState = {
   messages: [],
   remoteMessages: [],
   orders: [],
-  remoteOrders: []
+  remoteOrders: [],
+  groups: [],
+  remoteGroups: []
 };
 function rootReducer(state = initialState, action) {
   if (action.type === ADD_PROJECT) {
@@ -66,6 +68,11 @@ function rootReducer(state = initialState, action) {
   if (action.type === "ORDERS_LOADED") {
     return Object.assign({}, state, {
       remoteOrders: action.payload
+    });
+  }
+  if (action.type === "GROUPS_LOADED") {
+    return Object.assign({}, state, {
+      remoteGroups: action.payload
     });
   }
   if (action.type === "API_ERRORED") {

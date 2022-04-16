@@ -49,15 +49,17 @@ export const Work = ({getProjects}) => {
                 <div className="project-icons">
                   <div>
                     <img src={navProfile}/>
-                    <p className="project-leader-name">{project.leader.name}</p>
-                    <p className="createdat">Aangemaakt op {date(project.created_at)}</p>
+                    <h2>{project.leader.name}</h2>
+                    <p className="createdat">sinds {date(project.created_at)}</p>
                   </div>
                   <div>
                     <img src={upEvent}/>
+                    <h2>Lopende events</h2>
                     <p>{project.upEvents}</p>
                   </div>
                   <div>
                     <img src={downEvent}/>
+                    <h2>Afgelopen events</h2>
                     <p>{project.downEvents}</p>
                   </div>
                 </div>

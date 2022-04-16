@@ -129,7 +129,9 @@ export const ProjectShow = ({getProjects}) => {
             <div className='project-panel'>
               <div className="column-1">
                 
-                <h2>{project.name}</h2>
+                <h2 className='title'>{project.name}</h2>
+                <div className='line'></div>
+                <p className="desc">{project.description}</p>
                 <div className="project-headers">
                   <img src={accept}/>
                   <img src={credit}/>
@@ -140,9 +142,9 @@ export const ProjectShow = ({getProjects}) => {
                     <p>{project.credits} cc</p>
                     <p>{project.leader.name}</p>
                 </div>
-                <p className="mt-70 mb-70">{project.description}</p>
-                {"Er werden al " + (totalHoursPaid + totalHoursFree) + " uren gepresteerd waarvan " + totalHoursPaid + " betaald en " + totalHoursFree + " vrijwillig"}
-                <h2>Team</h2>
+                
+                <p>{"Er werden al " + (totalHoursPaid + totalHoursFree) + " uren gepresteerd waarvan " + totalHoursPaid + " betaald en " + totalHoursFree + " vrijwillig"}</p>
+                <h2 className='teamtitle'>Team</h2>
                 {team.map(user => 
                   <Link key={user.id} className="team" to={"/profiel/" + user.id}><FontAwesomeIcon className="teamIcon" icon={findIcon(user.icon)} color="white"/>{user.name}</Link>                      
                 )}

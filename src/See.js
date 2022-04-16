@@ -7,6 +7,14 @@ import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import './css/See.scss';
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
+
+import Geocode from "react-geocode";
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+import axios from "axios";
+
 import Nav from "./Nav";
 import location from './img/nav-see.png';
 import datum from './img/nav-agenda.png';
@@ -24,7 +32,8 @@ import active from './img/map/filter-active.png';
 import nonactive from './img/map/filter-nonactive.png';
 import mapFilter from './img/map/map-filter.png';
 import close from './img/map/close.png';
-
+import add from './img/eventshow/add.png';
+import decline from './img/eventshow/decline.png';
 let workIcon = L.icon({
   iconUrl: work,
   iconSize: [30, 30],
@@ -48,14 +57,33 @@ let getIcon = L.icon({
 
 export const See = ({getBusinesses, getActivities, getAllEvents}) => {
 
+  // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
+  Geocode.setApiKey("AIzaSyB3hu-a1Gnzog5zG63fnQ8ZaMLghPGUPwI");
+
+  // set response language. Defaults to english.
+  Geocode.setLanguage("en");
+
+  // set response region. Its optional.
+  // A Geocoding request with region=es (Spain) will return the Spanish city.
+  Geocode.setRegion("es");
+
   const [a, setA] = useState(true);
   const [b, setB] = useState(true);
   const [c, setC] = useState(true);
   const [d, setD] = useState(true);
   const [e, setE] = useState(true);
 
+  const [displayMap, setDisplayMap] = useState(true);
+  const [displayAddActivity, setDisplayAddActivity] = useState(false);
+
+  const [activityLocation, setActivityLocation] = useState("");
+  const [name, setName] = useState("");
+  const [lat, setLat] = useState("");
+  const [lng, setLng] = useState("");
+
   const [today, setToday] = useState(false);
   const [week, setWeek] = useState(false);
+  const [date, setDate] = useState(new Date());
 
   useEffect(() => {
     getBusinesses();
@@ -238,67 +266,133 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     document.querySelector(".map").style.display = "block";
   }
 
+  function switchToActivity() {
+    setDisplayMap(false);
+    setDisplayAddActivity(true);
+  }
+
+  function switchToMap() {
+    setDisplayMap(true);
+    setDisplayAddActivity(false);
+  }
+
+  function searchAddress(address) {
+    Geocode.fromAddress(address).then(
+      (response) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        setLat(lat);
+        setLng(lng);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
+  function sendActivity() {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem("token")
+    }
+    axios.post('/activities', {
+        date: date,
+        name: name,
+        location: activityLocation,
+        lat: lat,
+        lng: lng
+    }, { headers: headers }).then((response) => {
+      getActivities();
+      setDisplayMap(true);
+      setDisplayAddActivity(false);
+    }).catch((error) => {})
+  }
+
   return (
     <div className="map-container">
       <Nav/>
       <div className="container">
+        <div className="add-activity" onClick={e => displayMap ? switchToActivity() : switchToMap()}>{displayMap ? "Activiteit toevoegen" : "Annuleren" }<img src={displayMap ? add : decline}/></div>
         <img onClick={() => {showFilters()}} className="map-filter" src={mapFilter}/>
-        <div className="filters">
-          <img onClick={() => {showMap()}} className="close" src={close}/>
-          <div className="time">
-            <div className={today && "on"} onClick={() => clickDay()}>Vandaag</div>
-            <div className={week && "on"} onClick={() => clickWeek()}>Deze week</div>
-          </div>
-          <h2>Filters</h2>
-          <div className="categories">
-            <div>
-              <img src={evenementen}/>
-              <p>Evenementen</p>
+        {
+          displayMap ? <div className="filters">
+            <img onClick={() => {showMap()}} className="close" src={close}/>
+            <div className="time">
+              <div className={today ? "on" : ""} onClick={() => clickDay()}>Vandaag</div>
+              <div className={week ? "on" : ""} onClick={() => clickWeek()}>Deze week</div>
             </div>
-            <img onClick={() => {event()}} className="switch" src={c ? active : nonactive}/>
-          </div>
-          <div className="categories">
-            <div>
-              <img src={get}/>
-              <p>Handelaars</p>
+            <h2>Filters</h2>
+            <div className="categories">
+              <div>
+                <img src={evenementen}/>
+                <p>Evenementen</p>
+              </div>
+              <img onClick={() => {event()}} className="switch" src={c ? active : nonactive}/>
             </div>
-            <img onClick={() => {business()}} className="switch" src={a ? active: nonactive}/>
-          </div>
-          <div className="categories">
-            <div>
-              <img src={diensten}/>
-              <p>Diensten</p>
+            <div className="categories">
+              <div>
+                <img src={get}/>
+                <p>Handelaars</p>
+              </div>
+              <img onClick={() => {business()}} className="switch" src={a ? active: nonactive}/>
             </div>
-            <img onClick={() => {service()}} className="switch" src={b ? active : nonactive}/>
-          </div>
-          <div className="categories">
-            <div>
-              <img src={free}/>
-              <p>Vrijwillig werk</p>
+            <div className="categories">
+              <div>
+                <img src={diensten}/>
+                <p>Diensten</p>
+              </div>
+              <img onClick={() => {service()}} className="switch" src={b ? active : nonactive}/>
             </div>
-            <img onClick={() => {work()}} className="switch" src={d ? active : nonactive}/>
-          </div>
-          <div className="categories">
-            <div>
-              <img src={credit}/>
-              <p>Credit werk</p>
+            <div className="categories">
+              <div>
+                <img src={free}/>
+                <p>Vrijwillig werk</p>
+              </div>
+              <img onClick={() => {work()}} className="switch" src={d ? active : nonactive}/>
             </div>
-            <img onClick={() => {workPaid()}} className="switch" src={e ? active : nonactive}/>
-          </div>
+            <div className="categories">
+              <div>
+                <img src={credit}/>
+                <p>Credit werk</p>
+              </div>
+              <img onClick={() => {workPaid()}} className="switch" src={e ? active : nonactive}/>
+            </div>
+          </div> : null
+        }
+        {
+          displayMap ? <Map className="map" center={position} zoom={13}>
+            <TileLayer
+              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            { a ? businessMarkers : null}
+            { b ? serviceMarkers : null}
+            { c ? activityMarkers : null}
+            { d ? eventMarkersFree : null}
+            { e ? eventMarkersPaid : null}
+          </Map> : null
+        }
+        {
+          displayAddActivity ? <div className="add-activity-panel">
+            <div>
+              <label>Locatie:</label>
+              <input onChange={e => setActivityLocation(e.target.value)} placeholder='Locatie'/>
+              <button onClick={e => searchAddress(activityLocation)}>Zoeken</button>
+              <Map className="map-activity" center={[lat, lng]} zoom={18}>
+                <TileLayer
+                  attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+              </Map>
+              <label>Naam:</label>
+              <input onChange={e => setName(e.target.value)} placeholder='Naam'/>
+              <label>Datum:</label>
+              <input className="date" type="date" onChange={e => setDate(e.target.value)}/>
+              <div className="submit" onClick={e => sendActivity()}>Activiteit toevoegen<img src={add}/></div>
+            </div>
+          </div> : null
+        }
         
-
-        </div>
-        <Map className="map" center={position} zoom={13}>
-          <TileLayer
-            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          { a ? businessMarkers : null}
-          { b ? serviceMarkers : null}
-          { c ? activityMarkers : null}
-          { d ? eventMarkersFree : null}
-          { e ? eventMarkersPaid : null}
-        </Map>
+        
       </div>
     </div>
   );

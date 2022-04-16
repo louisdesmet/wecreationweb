@@ -1,69 +1,252 @@
 .network {
+    width: 90%;
+    margin: 0 auto;
     display: flex;
-    height: 88%;
-    .chat {
-        width: 100%;
-        height: 100%;
-        .network-inputs {
-            height: 5%;
-            display: flex;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+    justify-content: space-between;
+    background: black;
+    border-radius: 35px;
+    padding: 32px;
+    box-sizing: border-box;
+    height: 86%;
+    position: relative;
 
+    .threads-button, .notifications-button {
+        position: absolute;
+        right: -30px;
+        background: black;
+        color: white;
+        font-weight: bold;
+        width: 30px;
+        font-size: 1.3em;
+        text-align: center;
+        padding: 4px 0;
+        border-top-right-radius: 7px;
+        border-bottom-right-radius: 7px;
+    }
+    .active {
+        background: #F7931E;
+        color: black;
+        width: 62px;
+    }
+    .notifications-button {
+        top: 100px;
+        font-size: 1.1em;
+    }
+    .threads-button {
+        top: 150px;
+    }
+    .dms {
+        width: 25%;
+        background: #F7931E;
+        border-top-left-radius: 35px;
+        border-bottom-left-radius: 35px;
+        .search {
+            width: 80%;
+            margin: 30px auto 15px auto;
+        }
+        .messageSwitch {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            margin: 0 auto;
+            div {
+                width: 46%;
+                background: white;
+                text-align: center;
+                font-family: 'Roboto', sans-serif;
+                font-weight: 500;
+                font-style: normal;
+                padding: 5px 0;
+                border-radius: 7px;
+                box-sizing: border-box;
+            }
+            .active {
+                background: black;
+                color: white;
+                border: 2px solid white;
+                
+            }
+        }
+        .message {
+            color: white;
+            margin: 8px;
+            border-radius: 18px;
+            display: flex;
+            .netwerk-profile-icon {
+                margin: 0 15px 0 5px;
+                svg {
+                    background: white;
+                    padding: 12px;
+                    border-radius: 100%;
+                    margin: 0 0 0 0;
+                    width: 40px;
+                    height: 40px;
+                    box-sizing: border-box;
+                }
+                img {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 100%;
+                }
+            }
+            div {
+                padding: 8px 0;
+                .message-name {
+                    font-size: 1em;
+                    font-weight: 500;
+                }
+                p {
+                    font-size: 0.8em;
+                }
+            } 
+        }
+    }
+    .chat {
+        width: 46%;
+        background: #FFFFFF;
+        position: relative;
+        .person {
+            font-weight: 500;
+            text-transform: uppercase;
+            margin: 10px 0 20px 15px;  
+            svg {
+                position: relative;
+                top: 10px;
+                background: black;
+                padding: 10px;
+                border-radius: 100%;
+                margin: 0 15px 0 0;
+                width: 44px;
+                height: 44px;
+                box-sizing: border-box;
+            }
+            img {
+                position: relative;
+                top: 10px;
+                margin: 0 15px 0 0;
+                width: 40px;
+                height: 40px;
+                border-radius: 100%;
+            }
+        }
+        .network-inputs {
+            position: absolute;
+            bottom: 12px;
+            display: flex;
+            width: 90%;
+            left: 5%;
+            justify-content: space-between;
             input {
-                width: 100%;
+                width: 90%;
                 box-sizing: border-box;
                 border:none;
                 border-top: 1px solid #C7C7C7;
-                padding-left: 15px;
+                padding: 10px 0 10px 8px;
                 border: 1px solid lightgrey;
-           
-            }   
-            .network-submit {
-                width: 20%;
+                background: black;
+                color: white;
+                border-radius: 12px;
+            }
+            img {
+                width: 6%;
                 background: #0084FF;
                 color: white;
                 border: none;
                 font-weight: bold;
                 font-size: large;
                 padding: 0;
-            } 
+            }
         }
         .messages {
             width: 100%;
-            height: 95%;
+            max-height: 80%;
+            overflow: scroll;
+            display: flex;
+            flex-direction: column-reverse;
             .message {
-                background: #0084FF;
                 color: white;
                 margin: 8px;
                 width: fit-content;
                 border-radius: 18px;
                 display: flex;
-                div {
-                    padding: 8px 0;
-
-                }
-                .message-name {
-                    font-size: 0.8em;
-                }
-                .message-date {
-                    margin: 7px 15px 0 50px;
-                    font-size: 0.8em;
-                }
                 .netwerk-profile-icon {
-                    margin: 0 5px 0 15px;
-                   
+                    margin: 0 10px 0 5px;
+                    padding: 0;
                     svg {
-                        background: white;
+                        background: #F7931E;
                         padding: 5px;
                         border-radius: 100%;
                         margin: 7px 0 0 0;
+                        width: 26px;
+                        height: 26px;
+                        box-sizing: border-box;
                     }
-                    
-                    
+                }
+                div {
+                    padding: 8px 0;
+                    p {
+                        font-size: 1em;
+                        color: #F7931E;
+                        font-weight: 500;
+                    }
+                    .message-name {
+                        color: black;
+                        font-size: 0.7em;
+                    }
                 }
             }
+            .message-right {
+                margin-left: auto;
+                margin-right: 20px;
+            }
+        }
+    }
+    .threads {
+        width: 25%;
+        background: #F7931E;
+        border-top-right-radius: 35px;
+        border-bottom-right-radius: 35px;
+        h2 {
+            width: 80%;
+            margin: 0 auto;
+            color: white;
+            border-bottom: 2px solid black;
+            padding: 15px 0 7px 0;
+        }
+        .message {
+            color: black;
+            width: 80%;
+            margin: 8px auto;
+            border-radius: 18px;
+            display: flex;
+            .netwerk-profile-icon {
+                margin: 0 15px 0 5px;
+                svg {
+                    background: white;
+                    padding: 12px;
+                    border-radius: 100%;
+                    margin: 0 0 0 0;
+                    width: 40px;
+                    height: 40px;
+                    box-sizing: border-box;
+                }
+                img {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 100%;
+                }
+            }
+            div {
+                padding: 8px 0;
+                .message-name {
+                    font-size: 1em;
+                    font-weight: 700;
+
+                }
+                p {
+                    font-size: 0.8em;
+                }
+            } 
         }
     }
 }

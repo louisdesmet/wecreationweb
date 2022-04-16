@@ -133,6 +133,11 @@ export const date = (date) => {
     return jsDate.getDate()+'/'+(jsDate.getMonth()+1)+'/'+jsDate.getFullYear();
 }
 
+export const datetime = (date) => {
+    const jsDate = new Date(date);
+    return jsDate.getDate()+'/'+(jsDate.getMonth()+1)+'/'+jsDate.getFullYear()+' '+jsDate.getHours ()+':'+jsDate.getMinutes();
+}
+
 export const productImage = (image) => {
     
 }

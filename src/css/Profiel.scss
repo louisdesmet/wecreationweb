@@ -36,12 +36,15 @@
                 font-size: 100px;
             }
             .profile-name {
-                font-size: 2.5em;
+                font-size: 2.8em;
                 margin: 0 0 10px 0;
                 text-transform: uppercase;
                 color: #464644;
                 letter-spacing: 2px;
                 text-align: center;
+                font-family: balboa-plus-fill,sans-serif;
+                font-weight: 400;
+                font-style: normal;
             }
             .line {
                 width: 80%;
@@ -74,17 +77,19 @@
     }
     .profile-container {
         display: flex;
-        width: 95%;
+        width: 80%;
         margin: 70px auto 0 auto;
         .left {
-            flex: 1;
             display: flex;
             flex-wrap: wrap;
+            flex: 1;
+            margin: 15px 0 0 0;
             div {
                 width: 33.3%;
                 margin: 0 0 30px 0;
+                
                 img {
-                    width: 25%;
+                    width: 34%;
                     margin: 0 auto;
                     display: block;
                     cursor: pointer;
@@ -120,6 +125,7 @@
             }
         }
         .right {
+            width: 400px;
             h2 {
                 img {
                     width: 50px;
@@ -139,7 +145,7 @@
     }
     .profile-below-container {
         display: flex;
-        width: 95%;
+        width: 75%;
         margin: 70px auto 0 auto;
         .left {
             flex: 1;
@@ -171,7 +177,7 @@
             }
         }
         .right {
-            flex: 1;
+            width: 365px;
             h2 {
                 img {
                     width: 50px;

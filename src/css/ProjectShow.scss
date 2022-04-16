@@ -10,23 +10,41 @@
         flex: 1 0 25%;
         padding: 0 2%;
         background: #F6DCE5;
+        .title {
+            font-family: balboa-plus-fill,sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            text-align: center;
+            font-size: 2.1em;
+        }
+        .teamtitle {
+            padding: 15px 0 0 0;
+            font-size: 1.8em;
+        }
+
         .team {
-            margin: 15px 10px 0 0;
+            margin: 7px 10px 0 0;
             color: black;
+            display: block;
             .teamIcon {
                 background: black;
                 border-radius: 100%;
-                font-size: 28px;
+                font-size: 23px;
                 padding: 6px;
                 margin-right: 8px;
                 position: relative;
                 top: 10px;
             }
         }
-        h2 {
-            text-align: center;
-            padding: 15px 0;
-            font-size: 2.1em;
+        .line {
+            width: 98%;
+            height: 8px;
+            background: black;
+            margin: 0 auto;
+            border-radius: 8px;
+        }
+        .desc {
+            margin: 30px 0;
         }
        .project-headers {
            display: flex;
@@ -40,6 +58,7 @@
        }
        .project-info {
            display: flex;
+           margin-bottom: 30px;
           
            p {
                 width: 33.3%;
@@ -73,6 +92,9 @@
             padding: 15px;
             box-sizing: border-box;
             border-radius: 35px;
+            p {
+                text-align: center;
+            }
             .delete {
                 margin: 10px 0 0 0;
                 width: 30px;

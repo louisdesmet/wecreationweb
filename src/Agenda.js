@@ -132,7 +132,7 @@ export const Agenda = ({getAllEvents}) => {
 
   function date(date) {
     const jsDate = new Date(date);
-    return jsDate.getDate()+'-'+(jsDate.getMonth()+1)+'-'+jsDate.getFullYear();
+    return '<span class="dategreen">'+jsDate.toLocaleString('nl-be', {  weekday: 'long' })+'</span>'+' '+jsDate.toLocaleString('nl-be', { month: 'short' })+' '+jsDate.getDate()+', '+jsDate.getFullYear();
   }
 
   function Popup(props) {
@@ -172,7 +172,7 @@ export const Agenda = ({getAllEvents}) => {
             
             <div className="flex-popup">
               <img src={datum}/>
-              <p>{date(event.startStr)}</p>
+              <p dangerouslySetInnerHTML={{__html: date(event.startStr)}}></p>
             </div>
             <div className="flex-popup">
               <img src={location}/>
@@ -191,15 +191,18 @@ export const Agenda = ({getAllEvents}) => {
     return (
       <div className="agenda-popup">
         <div className='top-agenda-popup'>
-          <p>{date(dateClicked)}</p>
+          <p dangerouslySetInnerHTML={{__html: date(dateClicked)}}></p>
           <span className="close" onClick={e => setEnabledEvents(0)}>x</span>
         </div>
         
         {dateEvents.map(event =>
           <div className='events-list' key={event.id}>
-            <div>
+            <div className='events-list-flex'>
               <img src={ require('./img/project/' + event.project.picture) }/>
-              <p>{event.project.name} - {event.name}</p>
+              <div>
+                <p>{event.project.name} - {event.name}</p>
+                <p>{event.time}</p>
+              </div>
             </div>
 
             <Link to={"/events/" + event.id}><span>Naar event</span></Link>

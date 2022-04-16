@@ -28,7 +28,6 @@ export const AdminProducts = ({getBusinesses}) => {
                     business.products.map(product => 
                         
                         <div key={product.id}>
-                            {console.log('yo')}
                             <p>{product.name}</p>
                             <p>{product.amount}</p>
                             <p>{product.price}</p>

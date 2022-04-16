@@ -2,6 +2,7 @@
     background: #F6DCE5;
     border-radius: 35px;
     margin: 30px auto 0 auto;
+    padding-bottom: 30px;
     width: 90%;
     .logo {
         width: 13%;
@@ -25,22 +26,25 @@
         flex-wrap: wrap;
         .project {
             flex: 1 0 29.3%;
-            margin: 70px 2% 0 2%;
+            margin: 110px 2% 0 2%;
             background: #EBB1C4;
             border-radius: 35px;
+            position: relative;
             .project-logo {
-                width: 90px;
-                height: 90px;
+                width: 130px;
+                height: 130px;
                 display: block;
-                margin: 0 auto;
-                position: relative;
-                top: -45px;
+                position: absolute;
+                left: 50%;
+                margin-left: -65px;
+                top: -65px;
                 border-radius: 100%;
             }
             .project-title {
                 text-align: center;
                 font-weight: bold;
                 font-size: large;
+                padding-top: 90px;
             }
             .project-desc {
                 margin-top: 15px;
@@ -74,16 +78,18 @@
                             margin: 0 auto;
                             display: block;
                         }
-                        p {
-                            text-align: center;
-                        }
-                        .project-leader-name {
+                        h2 {
                             font-size: 0.9em;
                             padding-top: 5px;
-                            font-weight: bold;
+                            text-align: center;
+                        }
+                        p {
+                            text-align: center;
+                            font-size: 0.9em;
                         }
                         .createdat {
-                            font-size: 0.7em;
+                            font-size: 0.75em;
+                            padding-top: 3px;
                         }
                     }
                 }

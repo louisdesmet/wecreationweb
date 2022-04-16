@@ -26,7 +26,6 @@ export const OrderShow = ({getOrders, getUsers}) => {
     const order = orders.data ? orders.data.find(order => order.id === parseInt(id)) : null;
 
     if(users.data && order) {
-      console.log('go');
       users.data.forEach(user => {
         user.roles.forEach(role => {
           if(role.business_id === order.product.business.id) {

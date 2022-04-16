@@ -19,7 +19,6 @@ export const GetHistoriek = ({getOrders}) => {
     return order.user.id === JSON.parse(localStorage.getItem("user")).id
   }) : null;
 
-  console.log(JSON.parse(localStorage.getItem("user")).icon);
   return (
     <div className="height100">
       <Nav/>

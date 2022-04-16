@@ -40,3 +40,7 @@ export function getMessages() {
 export function getOrders() {
   return { type: "ORDERS_REQUESTED" };
 }
+
+export function getGroups() {
+  return { type: "GROUPS_REQUESTED" };
+}

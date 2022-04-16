@@ -220,14 +220,16 @@ export const Home = ({getAllEvents, getBusinesses, getSkills}) => {
   return (
       <div className="height100">
         <div className='nav'>
-          <div><Link to="/work"><img src={work} alt=""/></Link></div>
-          <div><Link to="/see"><img src={see} alt=""/></Link></div>
-          <div><Link to="/get"><img src={get} alt=""/></Link></div>
-          <div><a onClick={e => newEvent()}><img src={random} alt=""/></a></div>
-          <div><Link to="/profiel"><img src={profiel} alt=""/></Link></div>
-          <div><Link to="/agenda"><img src={agenda} alt=""/></Link></div>
-          <div><Link to="/netwerk"><img src={netwerk} alt=""/></Link></div>
-        </div>
+          <div className="innernav">
+              <div><Link to="/work"><img src={work} alt=""/></Link></div>
+              <div><Link to="/see"><img src={see} alt=""/></Link></div>
+              <div><Link to="/get"><img src={get} alt=""/></Link></div>
+              <div><Link to="/home"><img src={random} alt=""/></Link></div>
+              <div><Link to="/profiel"><img src={profiel} alt=""/></Link></div>
+              <div><Link to="/agenda"><img src={agenda} alt=""/></Link></div>
+              <div><Link to="/netwerk"><img src={netwerk} alt=""/></Link></div>
+          </div>
+      </div>
         {event ?
           <div className='event-panel'>
             <h2 className="event-title"><span>{event.project.name + ' - ' + event.name}</span></h2>
