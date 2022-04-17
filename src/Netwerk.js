@@ -40,6 +40,9 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
 
     const [latestGroupId, setLatestGroupId] = useState(null);
     const [latestThreadId, setLatestThreadId] = useState(null);
+    
+    const [latestThreadMessagesAmount, setLatestThreadMessagesAmount] = useState(null);
+    const [latestGroupMessagesAmount, setLatestGroupMessagesAmount] = useState(null);
 
     const [threadMessageList, setThreadMessageList] = useState(null);
 
@@ -57,8 +60,6 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
 
     let notifications = messages.data && messages.data.length ? messages.data.filter(message => message.notification && message.recipient.id === loggedUser.id) : null;
 
-    console.log(notifications);
-
     let threadGroups = groups.data ? groups.data.filter(group => !group.event) : null;
     let eventGroups = groups.data ? groups.data.filter(group => group.event) : null;
 
@@ -69,6 +70,10 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         threadGroups.forEach(group => {
             if(group.messages.length) {
                 latestMessagesThreadGroup.push(group.messages.reduce((a, b) => (a.created_at > b.created_at ? a : b)));
+            } else {
+                latestMessagesThreadGroup.push({
+                    group: group
+                })
             }
         })
         latestMessagesThreadGroup.sort((a,b) => { return new Date(b.created_at) - new Date(a.created_at) });
@@ -87,6 +92,10 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         eventGroups.forEach(group => {
             if(allowedEventGroups.includes(group.id) && group.messages.length) {
                 latestMessagesEventGroup.push(group.messages.reduce((a, b) => (a.created_at > b.created_at ? a : b)));
+            } else {
+                latestMessagesEventGroup.push({
+                    group: group
+                })
             }
         })
         latestMessagesEventGroup.sort((a,b) => { return new Date(b.created_at) - new Date(a.created_at) });
@@ -165,8 +174,8 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
     
     }
 
-    if(messages.data && messages.data.length !== messagesAmount && latestGroupId) {
-        setGroupMessageList(eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.reverse().map(message =>
+    if(messages.data && latestGroupId && latestGroupMessagesAmount && messages.data.length !== messagesAmount && eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.length !== latestGroupMessagesAmount) {
+        setGroupMessageList(eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.slice().reverse().map(message =>
             <div className={loggedUser.id === message.user.id ? "message message-right" : "message"} key={message.id}>
                 <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
                 <div>
@@ -176,19 +185,21 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
             </div>
         ));
         setMessagesAmount(messages.data.length);
+        setLatestGroupMessagesAmount(eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.length);
     }
 
-    if(messages.data && messages.data.length !== messagesAmount && latestThreadId) {
-        setThreadMessageList(threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.reverse().map(message =>
+    if(messages.data && latestThreadId && (latestThreadMessagesAmount || latestThreadMessagesAmount === 0) && messages.data.length !== messagesAmount && threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.length !== latestThreadMessagesAmount) {
+        setThreadMessageList(threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.slice().reverse().map(message =>
             <div className={loggedUser.id === message.user.id ? "message message-right" : "message"} key={message.id}>
                 <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
                 <div>
-                <p className="message-name">{message.user.name}</p>
+                    <p className="message-name">{message.user.name}</p>
                     <p title={ datetime(message.created_at) }>{message.message}</p>
                 </div>
             </div>
         ));
         setMessagesAmount(messages.data.length);
+        setLatestThreadMessagesAmount(threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.length);
     }
 
 
@@ -205,7 +216,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         setGroupchatsActive(true);
         setThreadsActive(false);
         setGroupMessageEventGroup(groupchat.group);
-        setGroupMessageList(eventGroups.find(group => group.id === groupchat.group.id).messages.reverse().map(message =>
+        setGroupMessageList(eventGroups.find(group => group.id === groupchat.group.id).messages.slice().reverse().map(message =>
             <div className={loggedUser.id === message.user.id ? "message message-right" : "message"} key={message.id}>
                 <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
                 <div>
@@ -221,7 +232,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         setGroupchatsActive(false);
         setThreadsActive(true);
         setGroupMessageEventGroup(groupchat.group);
-        setThreadMessageList(threadGroups.find(group => group.id === groupchat.group.id).messages.reverse().map(message =>
+        setThreadMessageList(threadGroups.find(group => group.id === groupchat.group.id).messages.slice().reverse().map(message =>
             <div className={loggedUser.id === message.user.id ? "message message-right" : "message"} key={message.id}>
                 <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
                 <div>
@@ -280,8 +291,9 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 group: recipient
             }, { headers: headers }).then((response) => {
                 setLatestGroupId(recipient);
-                getMessages();
+                setLatestGroupMessagesAmount(eventGroups.find(group => group.id === recipient).messages.length);
                 getGroups();
+                getMessages();
             }).catch((error) => {})
         } else {
             axios.post('/messages', {
@@ -290,8 +302,9 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 group: recipient
             }, { headers: headers }).then((response) => {
                 setLatestThreadId(recipient);
-                getMessages();
+                setLatestThreadMessagesAmount(threadGroups.find(group => group.id === recipient).messages.length);
                 getGroups();
+                getMessages();
             }).catch((error) => {})
         }
     }
@@ -314,7 +327,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                     </div>
                     {
                         showLatestGroupchats && latestMessagesEventGroup.map(groupchat =>
-                            <div className="message" key={groupchat.id} onClick={e => switchViewGroupchat(groupchat)}>
+                            <div className="message" key={groupchat.group.id} onClick={e => switchViewGroupchat(groupchat)}>
                                 <div className="netwerk-profile-icon"><img src={ require('./img/project/' + groupchat.group.event.project.picture) }/></div>
                                 <div>
                                     <p className="message-name">{groupchat.group.event.name}</p>
@@ -367,7 +380,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                             <h2>Threads</h2>
                             {
                                 latestMessagesThreadGroup.map(message =>
-                                    <div className="message" key={message.id} onClick={e => switchViewThread(message)}>
+                                    <div className="message" key={message.group.id} onClick={e => switchViewThread(message)}>
                                         <div>
                                             <p className="message-name">#{message.group.name}</p>
                                             {
