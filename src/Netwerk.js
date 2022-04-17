@@ -196,7 +196,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
     console.log(groups.data);
     console.log(latestThreadId);
     console.log((latestThreadMessagesAmount || latestThreadMessagesAmount === 0));
-    console.log(messages.data.length !== messagesAmount);
+    console.log(messages.data ? messages.data.length !== messagesAmount : null);
 
     console.log("------------end-------------");
 
