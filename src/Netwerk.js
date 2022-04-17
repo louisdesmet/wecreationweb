@@ -90,16 +90,19 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
 
     if(eventGroups && allowedEventGroups.length) {
         eventGroups.forEach(group => {
-            if(allowedEventGroups.includes(group.id) && group.messages.length) {
-                latestMessagesEventGroup.push(group.messages.reduce((a, b) => (a.created_at > b.created_at ? a : b)));
-            } else {
-                latestMessagesEventGroup.push({
-                    group: group
-                })
+            if(allowedEventGroups.includes(group.id)) {
+                if(group.messages.length) {
+                    latestMessagesEventGroup.push(group.messages.reduce((a, b) => (a.created_at > b.created_at ? a : b)));
+                } else {
+                    latestMessagesEventGroup.push({
+                        group: group
+                    })
+                }
             }
         })
         latestMessagesEventGroup.sort((a,b) => { return new Date(b.created_at) - new Date(a.created_at) });
     }
+    console.log(latestMessagesEventGroup);
 
     let dmsFrom = [];
     let dmsTo = [];
