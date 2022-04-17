@@ -35,11 +35,20 @@
     .threads-button {
         top: 150px;
     }
+    .dms::-webkit-scrollbar { 
+        display: none;  /* Safari and Chrome */
+    }
     .dms {
         width: 25%;
         background: #F7931E;
         border-top-left-radius: 35px;
         border-bottom-left-radius: 35px;
+        max-height: 100%;
+        overflow: scroll;
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        scrollbar-width: none;  /* Firefox */
+  
+       
         .search {
             width: 80%;
             margin: 30px auto 15px auto;
@@ -201,11 +210,18 @@
             }
         }
     }
+    .threads::-webkit-scrollbar { 
+        display: none;  /* Safari and Chrome */
+    }
     .threads {
         width: 25%;
         background: #F7931E;
         border-top-right-radius: 35px;
         border-bottom-right-radius: 35px;
+        max-height: 100%;
+        overflow: scroll;
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        scrollbar-width: none;  /* Firefox */
         h2 {
             width: 80%;
             margin: 0 auto;
