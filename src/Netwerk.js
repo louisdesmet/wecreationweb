@@ -191,9 +191,18 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
 
     console.log("db amount: " + (threadGroups && latestThreadId ? threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.length : null));
     console.log("variable amount: " + latestThreadMessagesAmount);
-    
+    console.log("------------begin------------");
+    console.log(messages.data);
+    console.log(groups.data);
+    console.log(latestThreadId);
+    console.log((latestThreadMessagesAmount || latestThreadMessagesAmount === 0));
+    console.log(messages.data.length !== messagesAmount);
+
+    console.log("------------end-------------");
+
 
     if(messages.data && groups.data && latestThreadId && (latestThreadMessagesAmount || latestThreadMessagesAmount === 0) && messages.data.length !== messagesAmount && threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.length !== latestThreadMessagesAmount) {
+        console.log('you passed');
         setThreadMessageList(threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.slice().reverse().map(message =>
             <div className={loggedUser.id === message.user.id ? "message message-right" : "message"} key={message.id}>
                 <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
