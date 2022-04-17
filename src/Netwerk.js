@@ -175,7 +175,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         }
     
     }
-    if(messages.data && groups.data && latestGroupId && (latestGroupMessagesAmount || latestGroupMessagesAmount === 0) && messages.data.length !== messagesAmount && eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.length !== latestGroupMessagesAmount) {
+    if(groups.data && latestGroupId && (latestGroupMessagesAmount || latestGroupMessagesAmount === 0) && eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.length !== latestGroupMessagesAmount) {
         setGroupMessageList(eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.slice().reverse().map(message =>
             <div className={loggedUser.id === message.user.id ? "message message-right" : "message"} key={message.id}>
                 <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
@@ -185,23 +185,18 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 </div>
             </div>
         ));
-        setMessagesAmount(messages.data.length);
         setLatestGroupMessagesAmount(eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.length);
     }
 
     console.log("db amount: " + (threadGroups && latestThreadId ? threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.length : null));
     console.log("variable amount: " + latestThreadMessagesAmount);
     console.log("------------begin------------");
-    console.log(messages.data);
-    console.log(groups.data);
     console.log(latestThreadId);
     console.log((latestThreadMessagesAmount || latestThreadMessagesAmount === 0));
-    console.log(messages.data ? messages.data.length !== messagesAmount : null);
-
     console.log("------------end-------------");
 
 
-    if(messages.data && groups.data && latestThreadId && (latestThreadMessagesAmount || latestThreadMessagesAmount === 0) && messages.data.length !== messagesAmount && threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.length !== latestThreadMessagesAmount) {
+    if(groups.data && latestThreadId && (latestThreadMessagesAmount || latestThreadMessagesAmount === 0) && threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.length !== latestThreadMessagesAmount) {
         console.log('you passed');
         setThreadMessageList(threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.slice().reverse().map(message =>
             <div className={loggedUser.id === message.user.id ? "message message-right" : "message"} key={message.id}>
@@ -212,7 +207,6 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 </div>
             </div>
         ));
-        setMessagesAmount(messages.data.length);
         setLatestThreadMessagesAmount(threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.length);
     }
 
