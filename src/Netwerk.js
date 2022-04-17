@@ -102,7 +102,6 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         })
         latestMessagesEventGroup.sort((a,b) => { return new Date(b.created_at) - new Date(a.created_at) });
     }
-    console.log(latestMessagesEventGroup);
 
     let dmsFrom = [];
     let dmsTo = [];
@@ -177,7 +176,8 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
     
     }
 
-    if(messages.data && latestGroupId && latestGroupMessagesAmount && messages.data.length !== messagesAmount && eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.length !== latestGroupMessagesAmount) {
+    if(messages.data && groups.data && latestGroupId && latestGroupMessagesAmount && messages.data.length !== messagesAmount && eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.length !== latestGroupMessagesAmount) {
+        console.log('i should refresh');
         setGroupMessageList(eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.slice().reverse().map(message =>
             <div className={loggedUser.id === message.user.id ? "message message-right" : "message"} key={message.id}>
                 <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
@@ -191,7 +191,8 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         setLatestGroupMessagesAmount(eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.length);
     }
 
-    if(messages.data && latestThreadId && (latestThreadMessagesAmount || latestThreadMessagesAmount === 0) && messages.data.length !== messagesAmount && threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.length !== latestThreadMessagesAmount) {
+    if(messages.data && groups.data && latestThreadId && (latestThreadMessagesAmount || latestThreadMessagesAmount === 0) && messages.data.length !== messagesAmount && threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.length !== latestThreadMessagesAmount) {
+        console.log('i should refresh');
         setThreadMessageList(threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.slice().reverse().map(message =>
             <div className={loggedUser.id === message.user.id ? "message message-right" : "message"} key={message.id}>
                 <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
