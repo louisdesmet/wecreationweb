@@ -51,7 +51,11 @@ export const Agenda = ({getAllEvents}) => {
   }
 
   const fcEvents = events.data ? events.data.map((event, index) => {
-    return {id: event.id, title: event.name, date: event.date, extendedProps: {worked: event.worked}}
+    return {id: event.id, title: event.name, date: event.date, extendedProps: {
+      worked: event.worked,
+      time: event.time
+
+    }}
   }) : null
 
   if(id && events.data && !event) {
@@ -110,10 +114,10 @@ export const Agenda = ({getAllEvents}) => {
               <img src={location}/>
               <p>{findEvent(event.id).location}</p>
             </div>
-            <Link to={"/events/" + event.id}><span>Naar event</span></Link>
             {
               attendance(event.id)
             }
+            <Link to={"/events/" + event.id}><span>Naar event</span></Link>
           </div>
         : null}
       </div>
@@ -164,7 +168,7 @@ export const Agenda = ({getAllEvents}) => {
     return (
       <>
         <span className={eventInfo.event.extendedProps.worked ? "worked" : ""}></span>
-        <b>{eventInfo.timeText} </b>
+        <b>{eventInfo.event.extendedProps.time} </b>
         <i> {eventInfo.event.title}</i>
       </>
     )

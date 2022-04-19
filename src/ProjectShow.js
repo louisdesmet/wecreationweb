@@ -118,7 +118,7 @@ export const ProjectShow = ({getProjects}) => {
                         JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <div className='leader-buttons'>
                         <img className="delete" onClick={e => deleteEvent(e, event.id)} src={decline} alt=""/>
                         <img className="edit" onClick={e => editEvent(e, event)} src={update} alt=""/>
-                        </div> : null
+                        </div> : <div className='placebox'></div>
                       }
                       <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image}/>
                       <h2>{event.name}</h2>
