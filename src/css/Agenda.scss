@@ -12,6 +12,18 @@
     padding: 35px;
     box-sizing: border-box;
     border: 3px solid lightgray;
+    a {
+        text-decoration: none;
+        color: black;
+        span {
+            border: 2px solid black;
+            border-radius: 25px;
+            padding: 2px 5px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+    } 
     .events-list {
         display: flex;
         justify-content: space-between;
@@ -21,6 +33,14 @@
             img {
                 width: 50px;
           
+            }
+            div {
+                .title {
+                    color: #4BC566;
+                }
+                .worked {
+                    color: #5FB7E7;
+                }
             }
         }
         a {
@@ -61,7 +81,6 @@
             font-size: 1em;
             padding: 7px 0 0 0;
         }
-        
         .close {
             font-size: 2em;
             display: block;
@@ -90,7 +109,25 @@
         }
     }
 }
+.legend {
+    height: 3%;
+    width: 100%;
+    .default, .worked {
+        width: 10px;
+        height: 10px;
+        border-radius: 100%;
+        margin: 0 5px 0 15px;
+        display: inline-block;
 
+    }
+    .default {
+        background: #4BC566;
+  
+    }
+    .worked {
+        background: #5FB7E7;
+    }
+}
 .agenda {
     width: 100%;
     margin: 0 auto;
@@ -98,7 +135,7 @@
     .agenda-container {
         width: 96%;
         margin: 0 auto;
-        height: 86%;
+        height: 83%;
         .fc-media-screen {
             width: 100%;
             height: 100%;
@@ -174,7 +211,21 @@
             .fc-daygrid-event {
                 background: none;
                 border: none;
+                span {
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 100%;
+                    background: #4BC566;
+                    margin: 0 3px 0 0;
+                }
+                .worked {
+                    background: #5FB7E7;
+                }
 
+                b {
+                    font-weight: 500;
+                    margin: 0 5px 0 0;
+                }
             }
             .fc-event-title {
                 color: #666666;

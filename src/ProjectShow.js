@@ -4,19 +4,18 @@ import {getProjects} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Link, useParams } from 'react-router-dom';
 import Nav from './Nav';
-import accept from './img/accept.png';
-import credit from './img/profile-credit.png';
-import profiel from './img/nav-profiel.png';
-import datum from './img/nav-agenda.png';
-import location from './img/nav-see.png';
-import navGet from './img/nav-get.png';
-import decline from './img/decline.png';
+import accept from './img/eventshow/accept.png';
+import credit from './img/profile/credit.png';
+import profiel from './img/eventshow/profile-purple.png';
+import datum from './img/nav/agenda.png';
+import location from './img/nav/see.png';
+import navGet from './img/nav/get.png';
+import decline from './img/eventshow/decline.png';
+import update from './img/eventshow/update.png';
 import './css/ProjectShow.scss';
-import locprod from './Global';
+import locprod, { profileIcon } from './Global';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChess, faAddressCard, faBeer, faBalanceScale, faMugHot, faBurn, faAnchor, faBlind, faBowlingBall, 
-    faRadiation, faBandAid, faBath, faBed, faBible, faBlender, faBong, faBox } from '@fortawesome/free-solid-svg-icons'
 
 export const ProjectShow = ({getProjects}) => {
 
@@ -43,8 +42,7 @@ export const ProjectShow = ({getProjects}) => {
     let totalHoursFree = 0;
     let team = [];
 
-    if(project) {
-      
+    if(project) { 
       project.events.forEach(event => {
         event.skills.forEach(skill => {
           skill.users.forEach(user => {
@@ -55,10 +53,7 @@ export const ProjectShow = ({getProjects}) => {
                 totalHoursFree += skill.hours
               }
               if(!team.find(item => item.id === user.id)) {
-                
-                  
-                    team.push({id: user.id, name: user.name, icon: user.icon})
-                
+                team.push({id: user.id, name: user.name, icon: user.icon})
               }
             }
           })
@@ -66,8 +61,7 @@ export const ProjectShow = ({getProjects}) => {
       })
     }
 
-    function deleteEvent(e, id) {
-      
+    function deleteEvent(e, id) { 
       e.preventDefault();
       fetch(locprod + '/events/' + id, {
         method: 'DELETE',
@@ -79,48 +73,14 @@ export const ProjectShow = ({getProjects}) => {
       }).then(response => {
         window.location.href = '/projects/' + project.id;
       })
-      
     }
 
-    function findIcon(icon) {
-      switch(icon) {
-          case "faChess": return faChess;
-          break;
-          case "faAddressCard": return faAddressCard;
-          break;
-          case "faBeer": return faBeer;
-          break;
-          case "faBalanceScale": return faBalanceScale;
-          break;
-          case "faMugHot": return faMugHot;
-          break;
-          case "faBurn": return faBurn;
-          break;
-          case "faAnchor": return faAnchor;
-          break;
-          case "faBlind": return faBlind;
-          break;
-          case "faBowlingBall": return faBowlingBall;
-          break;
-          case "faRadiation": return faRadiation;
-          break;
-          case "faBandAid": return faBandAid;
-          break;
-          case "faBath": return faBath;
-          break;
-          case "faBed": return faBed;
-          break;
-          case "faBible": return faBible;
-          break;
-          case "faBlender": return faBlender;
-          break;
-          case "faBong": return faBong;
-          break;
-          case "faBox": return faBox;
-          break;
-      }
-  }
+    function editEvent(e, event) {
+      e.preventDefault();
+      window.location.href = "/event/create/" + project.id + "/" + event.id;
+    }
 
+  
 
     return (
       <div className="project-details height100">
@@ -146,7 +106,7 @@ export const ProjectShow = ({getProjects}) => {
                 <p>{"Er werden al " + (totalHoursPaid + totalHoursFree) + " uren gepresteerd waarvan " + totalHoursPaid + " betaald en " + totalHoursFree + " vrijwillig"}</p>
                 <h2 className='teamtitle'>Team</h2>
                 {team.map(user => 
-                  <Link key={user.id} className="team" to={"/profiel/" + user.id}><FontAwesomeIcon className="teamIcon" icon={findIcon(user.icon)} color="white"/>{user.name}</Link>                      
+                  <Link key={user.id} className="team" to={"/profiel/" + user.id}><FontAwesomeIcon className="teamIcon" icon={profileIcon(user.icon)} color="white"/>{user.name}</Link>                      
                 )}
                 {JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <Link to={"/event/create/" + project.id} className='new-event'>Nieuw event</Link> : null}
               </div>
@@ -154,20 +114,25 @@ export const ProjectShow = ({getProjects}) => {
                 {
                   reversed.map(event =>
                     <Link to={"/events/" + event.id} className={"project-panel-event" + (new Date(event.date) < new Date() ? " project-panel-event-past" : "")} key={event.id}>
-                        {JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <img className="delete" onClick={e => deleteEvent(e, event.id)} src={decline} alt=""/> : null}
-                        
-                        <h2>{event.name}</h2>
-                        <p className="mt-15">{event.description}</p>
-                        <div>
-                          <img src={datum}/>
-                          <img src={location}/>
-                          <img src={navGet}/>
-                        </div>
-                        <div>
-                          <p>{date(event.date)}</p>
-                          <p>{event.location}</p>
-                          <p>{event.credits} cc</p>
-                        </div>
+                      {
+                        JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <div className='leader-buttons'>
+                        <img className="delete" onClick={e => deleteEvent(e, event.id)} src={decline} alt=""/>
+                        <img className="edit" onClick={e => editEvent(e, event)} src={update} alt=""/>
+                        </div> : null
+                      }
+                      <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image}/>
+                      <h2>{event.name}</h2>
+                      <p className="mt-15">{event.description}</p>
+                      <div className='flex-container'>
+                        <img src={datum}/>
+                        <img src={location}/>
+                        <img src={navGet}/>
+                      </div>
+                      <div className='flex-container'>
+                        <p>{date(event.date)}</p>
+                        <p>{event.location}</p>
+                        <p>{event.credits} cc</p>
+                      </div>
                     </Link>
                   )
                 }

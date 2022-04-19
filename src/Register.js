@@ -1,13 +1,13 @@
 import React, {useState} from "react";
-import loginlogo from './img/nav/loginlogo.PNG';
-import leftTop from './img/left-top.png';
-import leftBottom from './img/left-bottom.png';
-import rightTop from './img/right-top.png';
-import rightBottom from './img/right-bottom.png';
-
 import axios from 'axios';
 import { Redirect } from "react-router-dom";
 import locprod from './Global';
+
+import loginlogo from './img/nav/loginlogo.PNG';
+import leftTop from './img/nav/left-top.png';
+import leftBottom from './img/nav/left-bottom.png';
+import rightTop from './img/nav/right-top.png';
+import rightBottom from './img/nav/right-bottom.png';
 
 axios.defaults.baseURL = locprod;
 axios.defaults.headers.common['Accept'] = 'application/json';

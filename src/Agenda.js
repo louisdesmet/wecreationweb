@@ -1,47 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
 import {getAllEvents} from "./redux/actions";
+import {useSelector} from "react-redux";
+import { Link, useParams } from 'react-router-dom';
+import { skillIcon } from './Global';
 
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from '@fullcalendar/interaction';
-
 import nlLocale from '@fullcalendar/core/locales/nl';
-import {useSelector} from "react-redux";
+
 import Nav from './Nav';
-import { Link, useParams } from 'react-router-dom';
 import datum from './img/nav/agenda.png';
 import location from './img/nav/see.png';
 
-import regie from './img/icons/regie.png';
-import montage from './img/icons/montage.png';
-import mode from './img/icons/mode.png';
-import dans from './img/icons/dans.png';
-import camera from './img/icons/camera.png';
-import administratie from './img/icons/administratie.png';
-import organisatie from './img/icons/organisatie.png';
-import werkkracht from './img/icons/werkkracht.png';
-import decor from './img/icons/decor.png';
-import kostuum from './img/icons/kostuum.png';
-import muzikant from './img/icons/muzikant.png';
-import agendaplanning from './img/icons/agendaplanning.png';
-import dj from './img/icons/dj.png';
-import animatie from './img/icons/animatie.png';
-import tolk from './img/icons/tolk.png';
-import presentatie from './img/icons/presentatie.png';
-import socialmedia from './img/icons/socialmedia.png';
-import acrobatie from './img/icons/acrobatie.png';
-import acteur from './img/icons/acteur.png';
-import vakman from './img/icons/vakman.png';
-import geluidstechnieker from './img/icons/geluidstechnieker.png';
-import conceptbedenker from './img/icons/conceptbedenker.png';
-import yoga from './img/icons/yoga.png';
-import projectleider from './img/icons/projectleider.png';
-import horeca from './img/icons/horeca.png';
-import schilderkunst from './img/icons/schilderkunst.png';
-
 import './css/Agenda.scss';
+
 
 export const Agenda = ({getAllEvents}) => {
 
@@ -61,8 +36,22 @@ export const Agenda = ({getAllEvents}) => {
   }, []);
 
   const events = useSelector(state => state.remoteAllEvents);
+
+
+  if(events.data) {
+    events.data.forEach(event => {
+      event.skills.forEach(skill => {
+        skill.users.forEach(user => {
+          if(user.id === loggedUser.id) {
+            event.worked = true
+          }
+        })
+      })
+    })
+  }
+
   const fcEvents = events.data ? events.data.map((event, index) => {
-    return {id: event.id, title: event.name, date: event.date}
+    return {id: event.id, title: event.name, date: event.date, extendedProps: {worked: event.worked}}
   }) : null
 
   if(id && events.data && !event) {
@@ -71,63 +60,6 @@ export const Agenda = ({getAllEvents}) => {
     tempEvent.startStr = tempEvent.date
     tempEvent.title = tempEvent.name
     setEvent(tempEvent);
-  }
-
-  function findSkillIcon(name) {
-    switch(name) {
-      case "regie": return regie;
-      break;
-      case "montage": return montage;
-      break;
-      case "mode": return mode;
-      break;
-      case "dans": return dans;
-      break;
-      case "camera": return camera;
-      break;
-      case "administratie": return administratie;
-      break;
-      case "organisatie": return organisatie;
-      break;
-      case "werkkracht": return werkkracht;
-      break;
-      case "decor": return decor;
-      break;
-      case "kostuum": return kostuum;
-      break;
-      case "muzikant": return muzikant;
-      break;
-      case "agendaplanning": return agendaplanning;
-      break;
-      case "dj": return dj;
-      break;
-      case "animatie": return animatie;
-      break;
-      case "tolk": return tolk;
-      break;
-      case "presentatie": return presentatie;
-      break;
-      case "socialmedia": return socialmedia;
-      break;
-      case "schilderkunst": return schilderkunst;
-      break;
-      case "acrobatie": return acrobatie;
-      break;
-      case "acteur": return acteur;
-      break;
-      case "vakman": return vakman;
-      break;
-      case "geluidstechnieker": return geluidstechnieker;
-      break;
-      case "conceptbedenker": return conceptbedenker;
-      break;
-      case "yoga": return yoga;
-      break;
-      case "projectleider": return projectleider;
-      break;
-      case "horeca": return horeca;
-      break;
-    }
   }
 
   function date(date) {
@@ -147,9 +79,9 @@ export const Agenda = ({getAllEvents}) => {
       findEvent(id).skills.forEach(skill => {
         skill.users.forEach(user => {
             if(loggedUser && user.id === loggedUser.id) {
-              display.push(<p className='attendance' key={skill.skill.name + "zin1"}>Je hebt je ingeschreven voor <img src={findSkillIcon(skill.skill.icon)}/> {skill.skill.name} voor {skill.hours} uur.</p>);    
+              display.push(<p className='attendance' key={skill.skill.name + "zin1"}>Je hebt je ingeschreven voor <img src={skillIcon(skill.skill.icon)}/> {skill.skill.name} voor {skill.hours} uur.</p>);    
               if(user.accepted === 1) {
-                display.push(<p className='attendance' key={skill.skill.name + "zin2"}>Je bent goedgekeurd voor <img src={findSkillIcon(skill.skill.icon)}/> {skill.skill.name} door de project leider.</p>);
+                display.push(<p className='attendance' key={skill.skill.name + "zin2"}>Je bent goedgekeurd voor <img src={skillIcon(skill.skill.icon)}/> {skill.skill.name} door de project leider.</p>);
               }
             }
             
@@ -178,6 +110,7 @@ export const Agenda = ({getAllEvents}) => {
               <img src={location}/>
               <p>{findEvent(event.id).location}</p>
             </div>
+            <Link to={"/events/" + event.id}><span>Naar event</span></Link>
             {
               attendance(event.id)
             }
@@ -200,7 +133,7 @@ export const Agenda = ({getAllEvents}) => {
             <div className='events-list-flex'>
               <img src={ require('./img/project/' + event.project.picture) }/>
               <div>
-                <p>{event.project.name} - {event.name}</p>
+                <p className={event.worked ? "title worked" : "title"}>{event.project.name + " - " + event.name}</p>
                 <p>{event.time}</p>
               </div>
             </div>
@@ -224,19 +157,34 @@ export const Agenda = ({getAllEvents}) => {
       setDateClicked(args.dateStr);
       setEnabledEvents(1);
     }
-    
   };
+
+  function renderEventContent(eventInfo) {
+
+    return (
+      <>
+        <span className={eventInfo.event.extendedProps.worked ? "worked" : ""}></span>
+        <b>{eventInfo.timeText} </b>
+        <i> {eventInfo.event.title}</i>
+      </>
+    )
+  }
+
+  
+ 
 
   return (
     <div className="agenda">
       <Nav/>
       <div className="agenda-container">
         <FullCalendar
+          className="calendar"
           plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
           initialView="dayGridMonth"
           events={fcEvents}
           eventClick={handleEventClick}
           dateClick={handleDateClick}
+          eventContent={renderEventContent}
           height="parent"
           initialDate={events.data && id ? events.data.find(event => event.id === parseInt(id)).date : null}
           locale={nlLocale}
@@ -246,6 +194,9 @@ export const Agenda = ({getAllEvents}) => {
             right: 'today dayGridMonth,timeGridWeek,timeGridDay'
           }}
         />
+      </div>
+      <div className='legend'>
+        <span className="default"></span><b>Default</b><span className="worked"></span><b>Ingeschreven als werkkracht</b>
       </div>
       {enabled ? <Popup event={event}/> : null}
       {enabledEvents ? <EventsPopup event={dateEvents}/> : null}

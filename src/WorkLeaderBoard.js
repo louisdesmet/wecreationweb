@@ -7,8 +7,7 @@ import Nav from "./Nav";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
 
-import accept from './img/accept.png';
-import decline from './img/decline.png';
+import accept from './img/eventshow/accept.png';
 import './css/WorkLeaderBoard.scss';
 
 export const WorkLeaderBoard = ({getProjects}) => {

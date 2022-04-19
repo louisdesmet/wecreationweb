@@ -82,7 +82,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
     let allowedEventGroups = [];
     if(events.data) {
         events.data.forEach(event => { event.skills.forEach(skill => { skill.users.forEach(user => {
-            if(user.id === loggedUser.id && !allowedEventGroups.includes(event.group.id)) {
+            if(user.id === loggedUser.id && user.accepted && !allowedEventGroups.includes(event.group.id)) {
                 allowedEventGroups.push(event.group.id);
             }
         })})})
@@ -187,14 +187,6 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         ));
         setLatestGroupMessagesAmount(eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.length);
     }
-
-    console.log("db amount: " + (threadGroups && latestThreadId ? threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.length : null));
-    console.log("variable amount: " + latestThreadMessagesAmount);
-    console.log("------------begin------------");
-    console.log(latestThreadId);
-    console.log((latestThreadMessagesAmount || latestThreadMessagesAmount === 0));
-    console.log("------------end-------------");
-
 
     if(groups.data && latestThreadId && (latestThreadMessagesAmount || latestThreadMessagesAmount === 0) && threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.length !== latestThreadMessagesAmount) {
         console.log('you passed');

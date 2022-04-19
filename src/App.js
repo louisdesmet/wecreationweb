@@ -132,7 +132,6 @@ function App() {
               <PrivateRoute path="/profiel/edit" component={ProfielEdit}/>
               <PrivateRoute path="/profiel/:id" component={Profiel}/>
               <PrivateRoute path="/profiel" component={Profiel}/>
-              <PrivateRoute path="/profiel/edit" component={ProfielEdit}/>
               <PrivateRoute path="/my-events" component={MyEvents}/>
               <PrivateRoute path="/event-leader-board/:id" component={EventLeaderBoard}/>
               
@@ -141,6 +140,7 @@ function App() {
               
               <PrivateRoute path="/netwerk" component={Netwerk}/>
 
+              <PrivateRoute path="/event/create/:id/:eventId" component={EventCreate}/>
               <PrivateRoute path="/event/create/:id" component={EventCreate}/>
               <PrivateRoute path="/handelaar/create" component={BusinessCreate}/>
               <BusinessRoute path="/handelaar-dashboard" component={BusinessDashboard}/>

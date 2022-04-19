@@ -4,22 +4,19 @@ import React, { useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {getBusinesses, getUsers} from "./redux/actions";
-import credit from './img/profile-credit.png';
-import stock from './img/stock.png';
+import { profileIcon } from './Global.js'
 import { Map, Marker, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
-import get from './img/nav/get.png';
 import Nav from "./Nav";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import locprod, { profileIcon } from './Global.js'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import profile from './img/eventshow/profile-purple.png';
 import team from './img/profile/team.png';
 import location from './img/nav/see.png';
-
 import accept from './img/eventshow/accept.png';
 import decline from './img/eventshow/decline.png';
+import get from './img/nav/get.png';
 
 let icon = L.icon({
   iconUrl: get,

@@ -3,37 +3,29 @@ import {connect} from "react-redux";
 import {getActivities, getBusinesses, getAllEvents} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Link } from 'react-router-dom';
+import Geocode from "react-geocode";
+import axios from "axios";
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
-import './css/See.scss';
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
-
-import Geocode from "react-geocode";
-
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-
-import axios from "axios";
-
 import Nav from "./Nav";
-import location from './img/nav-see.png';
-import datum from './img/nav-agenda.png';
 
-
+import './css/See.scss';
 import see from './img/nav/see.png';
+import datum from './img/nav/agenda.png';
 import evenementen from './img/profile/badges.png';
 import get from './img/nav/get.png';
 import diensten from './img/map/diensten.png';
 import work from './img/nav/work.png';
 import free from './img/profile/free.png';
 import credit from './img/profile/credit.png';
-
 import active from './img/map/filter-active.png';
 import nonactive from './img/map/filter-nonactive.png';
 import mapFilter from './img/map/map-filter.png';
 import close from './img/map/close.png';
 import add from './img/eventshow/add.png';
 import decline from './img/eventshow/decline.png';
+
 let workIcon = L.icon({
   iconUrl: work,
   iconSize: [30, 30],
@@ -105,7 +97,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
         <h2><Link to={"/get/handelaars/" + business.id + "/products"}>{business.name}</Link></h2>
         <p>{business.description}</p>
         <div className="data-container">
-          <img src={location}/>
+          <img src={see}/>
           <p>{business.location}</p>
         </div>
       </Popup>
@@ -120,7 +112,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
         <h2><Link to={"/businesses/" + business.id}>{business.name}</Link></h2>
         <p>{business.description}</p>
         <div className="data-container">
-          <img src={location}/>
+          <img src={see}/>
           <p>{business.location}</p>
         </div>
       </Popup>
@@ -154,7 +146,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
         <p>{activity.date}</p>
       </div>
       <div className="data-container">
-        <img src={location}/>
+        <img src={see}/>
         <p>{activity.location}</p>
       </div>
     </Popup>
@@ -190,7 +182,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
           <p>{event.date}</p>
         </div>
         <div className="data-container">
-          <img src={location}/>
+          <img src={see}/>
           <p>{event.location}</p>
         </div>
     
@@ -207,7 +199,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
           <p>{event.date}</p>
         </div>
         <div className="data-container">
-          <img src={location}/>
+          <img src={see}/>
           <p>{event.location}</p>
         </div>
     

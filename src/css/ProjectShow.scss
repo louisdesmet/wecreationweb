@@ -85,20 +85,40 @@
         .project-panel-event {
             width: 48%;
             padding: 0 1%;
-            margin: 0 1% 20px 1%;
+            margin: 70px 1% 20px 1%;
             background: #EBB1C4;
             text-decoration: none;
             color: black;
             padding: 15px;
             box-sizing: border-box;
             border-radius: 35px;
+            position: relative;
+            .event-logo {
+                width: 100px;
+                height: 100px;
+                display: block;
+                position: absolute;
+                left: 50%;
+                margin-left: -50px;
+                top: -50px;
+                border-radius: 100%;
+            }
             p {
                 text-align: center;
             }
-            .delete {
-                margin: 10px 0 0 0;
-                width: 30px;
+            .leader-buttons {
+                display: flex;
+                justify-content: space-between;
+                .delete {
+                    width: 30px;
+                }
+                .edit {
+                    width: 30px;
+                    height: 30px;
+                    display: block;
+                }
             }
+         
          
             h2 {
                 text-align: center;
@@ -110,12 +130,12 @@
                 }
             }
             
-            div {
+            .flex-container {
                 display: flex;
                 width: 100%;
                 img {
-                    width: 13%;
-                    padding: 0 10%;
+                    width: 9%;
+                    padding: 0 12%;
                     margin-top: 30px;
                 }
                 p {
