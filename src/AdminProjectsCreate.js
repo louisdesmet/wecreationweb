@@ -17,18 +17,11 @@ export const AdminProjectsCreate = ({getUsers}) => {
 
     useEffect(() => {
       getUsers();
-      
-      /*setLeader(users.data[0].id)*/
     }, []);
 
     const callback = function(data) {
       setLeader(data);
     }
-
-    /*const callback = (data) => {
-      console.log(data);
-      /*setLeader(data);*/
-    /*}*/
     
     function submit() {
         fetch(locprod + '/projects', {

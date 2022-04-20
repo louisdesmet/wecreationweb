@@ -33,7 +33,6 @@ export const OrderShow = ({getOrders, getUsers}) => {
           }
         })
       })
-  
     }
 
     return (
@@ -41,7 +40,10 @@ export const OrderShow = ({getOrders, getUsers}) => {
         <Nav/>
         {
           order ? <div className="order-details">
-
+            <div className='back' onClick={e => window.location.href = "/history"}>
+              <span>&#10508;</span>
+              <b>BACK</b>
+            </div>
             {order.leader ? <FontAwesomeIcon icon={profileIcon(order.leader.icon)} className="profile-icon" color="white"/> : null}
             <h2><span>{order.product.name} - Kassaticket</span></h2>
             <div className="business-info">

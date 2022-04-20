@@ -97,7 +97,6 @@ export const EventCreate = ({getProjects, getSkills}) => {
           tempPaid[index]["credits"] = skill.credits
           tempPaid[index]["eventSkill"] = skill.id;
         })
-        console.log(tempPaid);
         setPaidData(tempPaid);
 
       } else {
@@ -229,11 +228,11 @@ export const EventCreate = ({getProjects, getSkills}) => {
           <span onClick={e => searchAddress(location)}>Zoeken</span>
         </div>
         <Map className="map" center={[lat, lng]} zoom={18}>
-            <TileLayer
-              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-          </Map>
+          <TileLayer
+            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+        </Map>
         <h2><img src={work} alt=""/>Team</h2>
         <h2 className='hours'><img src={free} alt=""/>Vrijwilliger uren</h2>
         {

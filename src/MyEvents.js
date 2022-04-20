@@ -76,7 +76,7 @@ export const MyEvents = ({getAllEvents}) => {
                         <p><img src={agenda} alt=""/>{date(event.date)}</p>
                         <p><img src={time} alt=""/>{new Date(event.date).toLocaleTimeString()}</p>
                         <p><img src={see} alt=""/>{event.location}</p>
-                        <p className='team'><img src={team} alt=""/><span>{event.totalRequests ? event.totalRequests : 0}</span>{ (event.totalFilled ? event.totalFilled : 0) + " / " + (event.totalPostions ? event.totalPostions : 0)}</p>
+                        <p className='team'><img src={team} alt=""/>{event.totalRequests ? <span>{event.totalRequests}</span> : null}{ (event.totalFilled ? event.totalFilled : 0) + " / " + (event.totalPostions ? event.totalPostions : 0)}</p>
                         <div><Link to={"/event-leader-board/" + event.id}><img src={edit} alt=""/></Link></div>
                     </div>
                 ) : null
@@ -90,7 +90,7 @@ export const MyEvents = ({getAllEvents}) => {
                         <p><img src={agenda} alt=""/>{date(event.date)}</p>
                         <p><img src={time} alt=""/>{new Date(event.date).toLocaleTimeString()}</p>
                         <p><img src={see} alt=""/>{event.location}</p>
-                        <p className='team'><img src={team} alt=""/><span>{event.totalRequests ? event.totalRequests : 0}</span>{ (event.totalFilled ? event.totalFilled : 0) + " / " + (event.totalPostions ? event.totalPostions : 0)}</p>
+                        <p className='team'><img src={team} alt=""/>{event.totalRequests ? <span>{event.totalRequests}</span> : null}{ (event.totalFilled ? event.totalFilled : 0) + " / " + (event.totalPostions ? event.totalPostions : 0)}</p>
                         <div><Link to={"/event-leader-board/" + event.id}><img src={edit} alt=""/></Link></div>
                     </div>
                 ) : null

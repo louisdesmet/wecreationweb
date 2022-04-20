@@ -27,11 +27,11 @@ export const GetHistoriek = ({getOrders}) => {
         <h2><span>Kassaticketjes</span></h2>
         {
           userOrders ? userOrders.map(order =>
-            (order.accepted === 1 ? <div key={order.id}>
+            <div key={order.id}>
               <Link to={"/orders/" + order.id}><img src={kassa}/>{ order.product.business.name + ' - ' + order.product.name }</Link>
               <p className="date">{date(order.created_at)}</p>
               <p>{ order.product.price }<img src={credit}/></p>
-            </div> : null)
+            </div>
           ) : null
         }
       </div>

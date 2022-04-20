@@ -54,7 +54,6 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
     const events = useSelector(state => state.remoteAllEvents);
     const projects = useSelector(state => state.remoteProjects);
 
-
     let updatedLoggedUser = null;
 
     if(id && users.data) {    
@@ -86,10 +85,8 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                             } else {
                                 userHours.push({id: skill.skill.id, name: skill.skill.name, icon: skill.skill.icon, hours: skill.hours, paid: skill.paid});
                             }
-                            
                         }
                     }
-                    
                 })
             })
         })
@@ -156,7 +153,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                     <div className="left">
                     {
                         !id ? <div>
-                            <Link to={"/handelaar/create"}><img src={handel} alt=""/>Mijn handelszaak</Link>
+                            <Link to={updatedLoggedUser && updatedLoggedUser.roles.find(role => role.id === 3) ? "/handelaar/create/" +  updatedLoggedUser.roles.find(role => role.id === 3).business_id : "/handelaar/create"}><img src={handel} alt=""/>Mijn handelszaak</Link>
                             <Link to={"/get/historiek"}><img src={kassa} alt=""/>Mijn kassatickets</Link>
                             <Link to={"/work"}><img src={agenda} alt=""/>Mijn projecten</Link>
                             <Link to={"/my-events"}><img src={agenda} alt=""/>Mijn events</Link>

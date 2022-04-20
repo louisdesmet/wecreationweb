@@ -189,7 +189,6 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
     }
 
     if(groups.data && latestThreadId && (latestThreadMessagesAmount || latestThreadMessagesAmount === 0) && threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.length !== latestThreadMessagesAmount) {
-        console.log('you passed');
         setThreadMessageList(threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.slice().reverse().map(message =>
             <div className={loggedUser.id === message.user.id ? "message message-right" : "message"} key={message.id}>
                 <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>

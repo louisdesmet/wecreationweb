@@ -140,9 +140,10 @@
 .products-container {
     width: 80%;
     background: #FDF4CF;
-    margin: 100px auto 0 auto;
+    margin: 0 auto;
     padding: 25px;
     border-radius: 35px;
+    box-sizing: border-box;
     .profile-icon {
         margin: 40px auto 15px auto;
         display: block;

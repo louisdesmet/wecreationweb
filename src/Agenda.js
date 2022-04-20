@@ -182,7 +182,6 @@ export const Agenda = ({getAllEvents}) => {
       <Nav/>
       <div className="agenda-container">
         <FullCalendar
-          className="calendar"
           plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
           initialView="dayGridMonth"
           events={fcEvents}
