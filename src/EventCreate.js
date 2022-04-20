@@ -124,7 +124,7 @@ export const EventCreate = ({getProjects, getSkills}) => {
       formData.append('project', project.id);
       formData.append('freeData', JSON.stringify(freeData));
       formData.append('paidData', JSON.stringify(paidData));
-      /*formData.append('image', file);*/
+      formData.append('image', file);
 
       if(event) {
         fetch(locprod + '/events/' + event.id, {

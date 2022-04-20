@@ -6,25 +6,39 @@
     padding: 10px;
     width: 80%;
     box-sizing: border-box;
-
-    .like {
+    .top-items {
         display: flex;
-        justify-content: right;
-        margin: 20px 30px 0 0;
-        opacity: 0.3;
-        cursor: pointer;
-        img {
-            width: 32px;
-            margin: 0 7px 0 0;
-        }
-        p {
-            padding: 5px 0;
-            text-decoration: underline;
+        justify-content: space-between;
+        .groupchat {
+            background: black;
+            color: white;
             font-weight: bold;
+            font-size: 1.5em;
+            padding: 0 5px;
+            height: 38px;
+            border-radius: 5px;
+            margin: 20px 0 0 30px;
+            opacity: 0.8;
         }
-    }
-    .liked {
-        opacity: 1;
+        .like {
+            display: flex;
+            justify-content: right;
+            margin: 20px 30px 0 0;
+            opacity: 0.3;
+            cursor: pointer;
+            img {
+                width: 32px;
+                margin: 0 7px 0 0;
+            }
+            p {
+                padding: 5px 0;
+                text-decoration: underline;
+                font-weight: bold;
+            }
+        }
+        .liked {
+            opacity: 1;
+        }
     }
     .are-you-sure {
         position: fixed;

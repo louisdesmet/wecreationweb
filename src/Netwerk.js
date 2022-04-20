@@ -12,10 +12,15 @@ import './css/Netwerk.scss';
 
 import profiel from './img/nav/profile.png';
 import sendImg from './img/get/send.png';
+import { useParams } from "react-router-dom";
 
 export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
+
+    const { groupchatId } = useParams();
+
+    const [oneTime, setOneTime] = useState(false);
 
     const [message, setMessage] = useState("");
     const [firstMessagesUser, setFirstMessagesUser] = useState(null);
@@ -65,6 +70,27 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
 
     let latestMessagesThreadGroup = [];
     let latestMessagesEventGroup = [];
+
+    if(eventGroups && groupchatId && !oneTime) {
+        setDmsActive(false);
+        setGroupchatsActive(true);
+        setThreadsActive(false);
+        setShowLatestGroupchats(true);
+        setShowLatestDms(false);
+
+        let event = eventGroups.find(group => group.event.id === parseInt(groupchatId));
+        setGroupMessageEventGroup(event);
+        setGroupMessageList(event.messages.slice().reverse().map(message =>
+            <div className={loggedUser.id === message.user.id ? "message message-right" : "message"} key={message.id}>
+                <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
+                <div>
+                    <p className="message-name">{message.user.name}</p>
+                    <p title={ datetime(message.created_at) }>{message.message}</p>
+                </div>
+            </div>
+        ));
+        setOneTime(true);
+    }
 
     if(threadGroups) {
         threadGroups.forEach(group => {

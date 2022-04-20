@@ -110,9 +110,13 @@ function EventShow(props) {
     <div>    
       {
         <div className='event-panel'>
-          <div className={props.event.users && props.event.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.event.users && props.event.users.find(user => user.id === loggedUser.id) ? null : props.likeEvent(props.event.id)}>
-          <img src={like}/>
-          <p>Ik ben geinteresseerd</p>
+          <div className="top-items">
+            <div className="groupchat" onClick={e => window.location.href = "/netwerk/" + props.event.id}>Groupchat</div>
+            
+            <div className={props.event.users && props.event.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.event.users && props.event.users.find(user => user.id === loggedUser.id) ? null : props.likeEvent(props.event.id)}>
+              <img src={like}/>
+              <p>Ik ben geinteresseerd</p>
+            </div>
           </div>
           <h2 className="event-title"><span>{props.event.project.name + ' - ' + props.event.name}</span></h2>
           <div className="container">
