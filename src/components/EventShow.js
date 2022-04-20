@@ -30,6 +30,14 @@ function EventShow(props) {
   const [teamClicked, setTeamClicked] = useState(false);
   const [budgetClicked, setBudgetClicked] = useState(false);
 
+  props.event.skills.forEach(skill => {
+    skill.users.forEach(user => {
+      if(user.id === loggedUser.id) {
+        props.event.allowedInGroupchat = true;
+      }
+    })
+  })
+
   const paidSkill = props.event && props.event.skills ? props.event.skills.map(skill => 
     skill.paid === 1 ? <div className="skills" key={skill.id}>
       <div className="image"><img src={skillIcon(skill.skill.icon)}/></div>
@@ -111,50 +119,57 @@ function EventShow(props) {
       {
         <div className='event-panel'>
           <div className="top-items">
-            <div className="groupchat" onClick={e => window.location.href = "/netwerk/" + props.event.id}>Groupchat</div>
-            
+            <div className="groupchat">
+              {
+                props.event.allowedInGroupchat ? <p onClick={e => window.location.href = "/netwerk/" + props.event.id}>Groupchat</p> : null
+              }
+            </div>
+            <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + props.event.image}/>
             <div className={props.event.users && props.event.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.event.users && props.event.users.find(user => user.id === loggedUser.id) ? null : props.likeEvent(props.event.id)}>
-              <img src={like}/>
-              <p>Ik ben geinteresseerd</p>
+             
+                  <span>{props.liked ? props.event.users.length + 1 : props.event.users.length}</span>
+                  <img src={like}/>
+                  <p>Interesse!</p>
+         
             </div>
           </div>
-          <h2 className="event-title"><span>{props.event.project.name + ' - ' + props.event.name}</span></h2>
+          <h2 className="event-title"><span>{props.event.name}</span></h2>
           <div className="container">
           <div className="left">
             <div className="left-item">
-            <Link to={"/agenda/" + props.event.id}>
-                <img src={agenda}/>
-                <p>{date(props.event.date)}</p>
-            </Link>
+              <Link to={"/agenda/" + props.event.id}>
+                  <img src={agenda}/>
+                  <p>{date(props.event.date)}</p>
+              </Link>
             </div>
             <div className="left-item">
-            <img src={time}/>
-            <p>{props.event.time}</p>
+              <img src={time}/>
+              <p>{props.event.time}</p>
             </div>
             <div className="left-item">
-            <Link to={"/see"}>
-                <img src={see}/>
-                <p>{props.event.location}</p>
-            </Link>
+              <Link to={"/see"}>
+                  <img src={see}/>
+                  <p>{props.event.location}</p>
+              </Link>
             </div>
             <div className="left-item" onClick={e => setBudgetClicked(!budgetClicked)}>
-            <img src={get}/>
-            <h2>Totaal budget</h2>
-            {budgetClicked ? budget : null}
+              <img src={get}/>
+              <h2>Totaal budget</h2>
+              {budgetClicked ? budget : null}
             </div>
             <div className="left-item" onClick={e => setTeamClicked(!teamClicked)}>
-            <img src={team}/>
-            <h2>Team</h2>
-            {teamClicked ? teamList : null}
+              <img src={team}/>
+              <h2>Team</h2>
+              {teamClicked ? teamList : null}
             </div>
             <div className="left-item">
-            <img src={leader}/>
-            <h2>Projectleider</h2>
-            <Link to={"/profiel/" + props.event.project.leader.id}>{props.event.project.leader.name}</Link>
+              <img src={leader}/>
+              <h2>Projectleider</h2>
+              <Link to={"/profiel/" + props.event.project.leader.id}>{props.event.project.leader.name}</Link>
             </div>
           </div>
           <div className="right">
-            <h2><img src={desc} alt=""/>Projectbeschrijving</h2>
+            <h2><img src={desc} alt=""/>{props.event.project.name}</h2>
             <p className="desc">{props.event.project.description}</p>
             <h2><img src={geelPuzzel} alt=""/>Eventbeschrijving</h2>
             <p className="desc">{props.event.description}</p>

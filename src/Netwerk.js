@@ -273,6 +273,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         setMessageList(null);
         setDmsActive(true);
         setGroupchatsActive(false);
+        setThreadsActive(false);
     }
 
     function switchToDm() {
