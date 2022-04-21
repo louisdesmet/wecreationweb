@@ -9,7 +9,61 @@
     box-sizing: border-box;
     height: 86%;
     position: relative;
-
+    .add-thread  {
+        position: absolute;
+        right: -26px;
+        top: 50%;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        background: black;
+        color: white;
+        padding: 10px 2px 10px 5px;
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+        cursor: pointer;
+        img {
+            width: 19px;
+            margin-top: 10px;
+            position: relative;
+            right: 2px;
+        }
+    }
+    .add-thread-panel {
+        background: black;
+        width: 100%;
+        height: 100%;
+        border-top-right-radius: 35px;
+        border-bottom-right-radius: 35px;
+        padding: 25px;
+        box-sizing: border-box;
+        label {
+            display: block;
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin: 15px 0 5px 0;
+        }
+        input {
+            padding: 9px;
+            border-radius: 15px;
+            border: none;
+        }
+        .submit {
+            color: white;
+            border: 2px solid white;
+            width: 200px;
+            text-align: center;
+            padding: 0 0 8px 0;
+            margin: 30px 0 0 0;
+            border-radius: 15px;
+            img {
+                width: 20px;
+                position: relative;
+                top: 6px;
+                left: 10px;
+            }
+        }
+    }
     .threads-button, .notifications-button {
         position: absolute;
         right: -30px;

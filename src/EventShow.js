@@ -34,7 +34,7 @@ export const EventShow = ({getAllEvents}) => {
     })
     .then((response) => {
       getAllEvents();
-      setLiked(true);
+ 
     })
     .catch((error) => {
   

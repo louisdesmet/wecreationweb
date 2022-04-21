@@ -5,20 +5,21 @@ import {getMessages, getUsers, getAllEvents, getGroups} from "./redux/actions";
 import Select from 'react-select';
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChess, faAddressCard, faBeer, faBalanceScale, faMugHot, faBurn, faAnchor, faBlind, faBowlingBall, 
-    faRadiation, faBandAid, faBath, faBed, faBible, faBlender, faBong, faBox } from '@fortawesome/free-solid-svg-icons';
 import { datetime, profileIcon } from './Global';
 import './css/Netwerk.scss';
 
-import profiel from './img/nav/profile.png';
 import sendImg from './img/get/send.png';
 import { useParams } from "react-router-dom";
+import add from './img/eventshow/accept.png';
+import decline from './img/eventshow/decline.png';
 
 export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
 
     const { groupchatId } = useParams();
+
+    const [name, setName] = useState(null);
 
     const [oneTime, setOneTime] = useState(false);
 
@@ -42,6 +43,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
 
     const [showThreads, setShowThreads] = useState(true);
     const [showNotifications, setShowNotifications] = useState(false);
+    const [showAddThread, setShowAddThread] = useState(false);
 
     const [latestGroupId, setLatestGroupId] = useState(null);
     const [latestThreadId, setLatestThreadId] = useState(null);
@@ -289,11 +291,19 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
     function switchToThreads() {
         setShowThreads(true);
         setShowNotifications(false);
+        setShowAddThread(false);
     }
 
     function switchToNotifications() {
         setShowThreads(false);
         setShowNotifications(true);
+        setShowAddThread(false);
+    }
+
+    function switchToAddThread() {
+        setShowThreads(false);
+        setShowNotifications(false);
+        setShowAddThread(true);
     }
 
     function send(recipient) {
@@ -334,11 +344,26 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
             }).catch((error) => {})
         }
     }
+
+    function sendThread() {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        }
+        axios.post('/groups', {
+            name: name,
+        }, { headers: headers }).then((response) => {
+            setShowAddThread(false);
+            setShowThreads(true);
+            getGroups();
+        }).catch((error) => {})
+    }
     
     return (
         <div className="height100">
             <Nav/>
             <div className="network">
+                <div className="add-thread" onClick={e => !showAddThread ?  switchToAddThread() : switchToThreads()}>{!showAddThread ? "Thread aanmaken" : "Annuleren" }<img src={!showAddThread ? add : decline}/></div>
                 <div className={showThreads ? "threads-button active" : "threads-button"} onClick={e => switchToThreads()}>#</div>
                 <div className={showNotifications ? "notifications-button active" : "notifications-button"} onClick={e => switchToNotifications()} dangerouslySetInnerHTML={{__html: '<3'}}></div>
                 <div className="dms">
@@ -433,6 +458,15 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                                     </div>
                                 ) : null
                             }
+                        </div> : null
+                    }
+                    {
+                        showAddThread ? <div className="add-thread-panel">
+                            <div>
+                            <label>Naam:</label>
+                            <input onChange={e => setName(e.target.value)} placeholder='Naam'/>
+                            <div className="submit" onClick={e => sendThread()}>Thread toevoegen<img src={add}/></div>
+                            </div>
                         </div> : null
                     }
                     
