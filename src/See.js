@@ -49,6 +49,8 @@ let getIcon = L.icon({
 
 export const See = ({getBusinesses, getActivities, getAllEvents}) => {
 
+  const loggedUser = JSON.parse(localStorage.getItem("user"));
+
   // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
   Geocode.setApiKey("AIzaSyB3hu-a1Gnzog5zG63fnQ8ZaMLghPGUPwI");
 
@@ -70,12 +72,14 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
 
   const [activityLocation, setActivityLocation] = useState("");
   const [name, setName] = useState("");
+  const [desc, setDesc] = useState("");
   const [lat, setLat] = useState("");
   const [lng, setLng] = useState("");
 
   const [today, setToday] = useState(false);
   const [week, setWeek] = useState(false);
   const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState();
 
   useEffect(() => {
     getBusinesses();
@@ -288,14 +292,17 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     }
     axios.post('/activities', {
         date: date,
+        time: time,
         name: name,
+        desc: desc,
         location: activityLocation,
         lat: lat,
-        lng: lng
+        lng: lng,
+        user: loggedUser.id
     }, { headers: headers }).then((response) => {
       getActivities();
-      setDisplayMap(true);
       setDisplayAddActivity(false);
+      setDisplayMap(true);
     }).catch((error) => {})
   }
 
@@ -366,6 +373,17 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
         {
           displayAddActivity ? <div className="add-activity-panel">
             <div>
+              <label>Naam:</label>
+              <input onChange={e => setName(e.target.value)} placeholder='Naam'/>
+              <label>Beschrijving: (optioneel)</label>
+              <textarea onChange={e => setDesc(e.target.value)} placeholder='Beschrijving'></textarea>
+              <label>Datum:</label>
+              <input className="date" type="date" onChange={e => setDate(e.target.value)}/>
+              <label>Tijdstip: (optioneel)</label>
+              <input type='time' onChange={e => setTime(e.target.value)} placeholder='Tijdstip'/>
+              <div className="submit" onClick={e => sendActivity()}>Activiteit toevoegen<img src={add}/></div>
+            </div>
+            <div>
               <label>Locatie:</label>
               <input onChange={e => setActivityLocation(e.target.value)} placeholder='Locatie'/>
               <button onClick={e => searchAddress(activityLocation)}>Zoeken</button>
@@ -375,11 +393,6 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
               </Map>
-              <label>Naam:</label>
-              <input onChange={e => setName(e.target.value)} placeholder='Naam'/>
-              <label>Datum:</label>
-              <input className="date" type="date" onChange={e => setDate(e.target.value)}/>
-              <div className="submit" onClick={e => sendActivity()}>Activiteit toevoegen<img src={add}/></div>
             </div>
           </div> : null
         }

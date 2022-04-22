@@ -36,45 +36,58 @@
             border-radius: 35px;
             padding: 25px;
             box-sizing: border-box;
-            label {
-                display: block;
-                color: white;
-                font-size: 1.1em;
-                font-weight: bold;
-                margin: 15px 0 5px 0;
-            }
-            input {
-                padding: 9px;
-                border-radius: 15px;
-                border: none;
-            }
-            button {
-                padding: 9px;
-                border-radius: 15px;
-                border: none;
-                background: white;
-                font-weight: bold;
-                margin: 0 0 15px 15px;
-            }
-            .map-activity {
-                height: 300px;
-            }
-            .date {
-                width: 400px;
-            }
-            .submit {
-                color: white;
-                border: 2px solid white;
-                width: 200px;
-                text-align: center;
-                padding: 0 0 8px 0;
-                margin: 30px 0 0 0;
-                border-radius: 15px;
-                img {
-                    width: 20px;
-                    position: relative;
-                    top: 6px;
-                    left: 10px;
+            display: flex;
+            div {
+                flex: 1;
+                label {
+                    display: block;
+                    color: white;
+                    font-size: 1.1em;
+                    font-weight: bold;
+                    margin: 15px 0 5px 0;
+                }
+                input {
+                    padding: 9px;
+                    border-radius: 15px;
+                    border: none;
+                }
+                textarea {
+                    padding: 9px;
+                    border-radius: 15px;
+                    border: none;
+                    width: 90%;
+                    box-sizing: border-box;
+                    height: 100px;
+
+                }
+                button {
+                    padding: 9px;
+                    border-radius: 15px;
+                    border: none;
+                    background: white;
+                    font-weight: bold;
+                    margin: 0 0 15px 15px;
+                }
+                .map-activity {
+                    height: 300px;
+                }
+                .date {
+                    width: 400px;
+                }
+                .submit {
+                    color: white;
+                    border: 2px solid white;
+                    width: 200px;
+                    text-align: center;
+                    padding: 0 0 8px 0;
+                    margin: 30px 0 0 0;
+                    border-radius: 15px;
+                    img {
+                        width: 20px;
+                        position: relative;
+                        top: 6px;
+                        left: 10px;
+                    }
                 }
             }
         }

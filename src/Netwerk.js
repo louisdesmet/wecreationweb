@@ -317,7 +317,8 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         setShowAddThread(true);
     }
 
-    function send(recipient) {
+    function send(e, recipient) {
+        e.preventDefault();
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + localStorage.getItem("token")
@@ -354,6 +355,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 getMessages();
             }).catch((error) => {})
         }
+        setMessage("");
     }
 
     function sendThread() {
@@ -431,10 +433,10 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                             dmsActive ? messageList : groupchatsActive ? groupMessageList : threadMessageList
                         }
                     </div>
-                    <div className="network-inputs">
-                        <input onChange={(e) => setMessage(e.target.value)} type="text" placeholder="What's on your mind?"/>
-                        <img src={sendImg} onClick={e => send(dmsActive ? firstMessagesUser.id : groupMessageEventGroup.id)}/>
-                    </div>
+                    <form className="network-inputs">
+                        <input value={message} onChange={(e) => setMessage(e.target.value)} type="text" placeholder="What's on your mind?"/>
+                        <button type="submit" onClick={e => send(e, dmsActive ? firstMessagesUser.id : groupMessageEventGroup.id)}><img src={sendImg}/></button>
+                    </form>
                 </div>
                 <div className="threads">
                     {

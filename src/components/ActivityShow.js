@@ -19,6 +19,8 @@ let evenementenIcon = L.icon({
 
 function ActivityShow(props) {
 
+  const loggedUser = JSON.parse(localStorage.getItem("user"));
+
   /*props.event.skills.forEach(skill => {
     skill.users.forEach(user => {
       if(user.id === loggedUser.id) {
@@ -39,20 +41,19 @@ function ActivityShow(props) {
             }
           </div>
           {/*<img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + props.activity.image}/>*/}
-          {/*<div className={props.activity.users && props.activity.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.activity.users && props.activity.users.find(user => user.id === loggedUser.id) ? null : props.likeActivity(props.activity.id)}>
+          <div className={props.activity.users && props.activity.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.activity.users && props.activity.users.find(user => user.id === loggedUser.id) ? null : props.likeActivity(props.activity.id)}>
             <span>{props.liked ? props.activity.users.length + 1 : props.activity.users.length}</span>
             <img src={like}/>
             <p>Interesse!</p>
-          </div>*/}
+          </div>
         </div>
         <h2 className="event-title"><span>{props.activity.name}</span></h2>
+        <p className="desc">{props.activity.description}</p>
         <div className="container">
           <div className="left">
             <div className="left-item">
-              <Link to={"/agenda/" + props.activity.id}>
-                  <img src={agenda}/>
-                  <p>{date(props.activity.date)}</p>
-              </Link>
+              <img src={agenda}/>
+              <p>{date(props.activity.date)}</p>
             </div>
             <div className="left-item">
               <img src={time}/>
@@ -66,7 +67,7 @@ function ActivityShow(props) {
             </div>
           </div>
         </div>
-        <Map className="map" center={position} zoom={13}>
+        <Map className="map" center={position} zoom={15}>
           <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -164,7 +164,6 @@ export const Agenda = ({getAllEvents}) => {
   };
 
   function renderEventContent(eventInfo) {
-
     return (
       <>
         <span className={eventInfo.event.extendedProps.worked ? "worked" : ""}></span>

@@ -210,14 +210,15 @@
                 color: white;
                 border-radius: 12px;
             }
-            img {
-                width: 6%;
-                background: #0084FF;
-                color: white;
+         
+            button {
+                background: none;
+                width: 7%;
+                height: auto;
                 border: none;
-                font-weight: bold;
-                font-size: large;
-                padding: 0;
+                img {
+                    width: 100%;
+                }
             }
         }
         .messages {
