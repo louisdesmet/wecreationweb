@@ -49,6 +49,7 @@ import GetProducts from "./GetProducts";
 import MyEvents from "./MyEvents";
 import EventLeaderBoard from "./EventLeaderBoard";
 import EventCreate from "./EventCreate";
+import ActivityShow from "./ActivityShow";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   
@@ -150,6 +151,7 @@ function App() {
               <PrivateRoute path="/events/:id" component={EventShow}/>
               <PrivateRoute path="/projects/:id" component={ProjectShow}/>
               <PrivateRoute path="/orders/:id" component={OrderShow}/>
+              <PrivateRoute path="/activities/:id" component={ActivityShow}/>
 
               <AdminRoute path="/admin" component={AdminProjects}/>
               <AdminRoute path="/admin-projects/create" component={AdminProjectsCreate}/>

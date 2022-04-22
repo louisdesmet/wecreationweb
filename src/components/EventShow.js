@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Axios from 'axios';
-import { skillIcon } from "../Global";
+import { date, skillIcon } from "../Global";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -90,11 +90,6 @@ function EventShow(props) {
     setChosenSkill(skill);
   }
 
-  function date(date) {
-    const jsDate = new Date(date);
-    return jsDate.getDate()+'-'+(jsDate.getMonth()+1)+'-'+jsDate.getFullYear();
-  }
-
   function register(eventSkillId) {
     Axios.post('/subscribe-skill', {
       'eventSkillId': eventSkillId,
@@ -116,25 +111,22 @@ function EventShow(props) {
   
   return (
     <div>    
-      {
-        <div className='event-panel'>
-          <div className="top-items">
-            <div className="groupchat">
-              {
-                props.event.allowedInGroupchat || props.event.project.leader.id === loggedUser.id ? <p onClick={e => window.location.href = "/netwerk/" + props.event.id}>Groupchat</p> : null
-              }
-            </div>
-            <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + props.event.image}/>
-            <div className={props.event.users && props.event.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.event.users && props.event.users.find(user => user.id === loggedUser.id) ? null : props.likeEvent(props.event.id)}>
-             
-                  <span>{props.liked ? props.event.users.length + 1 : props.event.users.length}</span>
-                  <img src={like}/>
-                  <p>Interesse!</p>
-         
-            </div>
+      <div className='event-panel'>
+        <div className="top-items">
+          <div className="groupchat">
+            {
+              props.event.allowedInGroupchat || props.event.project.leader.id === loggedUser.id ? <p onClick={e => window.location.href = "/netwerk/" + props.event.id}>Groupchat</p> : null
+            }
           </div>
-          <h2 className="event-title"><span>{props.event.name}</span></h2>
-          <div className="container">
+          <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + props.event.image}/>
+          <div className={props.event.users && props.event.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.event.users && props.event.users.find(user => user.id === loggedUser.id) ? null : props.likeEvent(props.event.id)}>
+            <span>{props.liked ? props.event.users.length + 1 : props.event.users.length}</span>
+            <img src={like}/>
+            <p>Interesse!</p>
+          </div>
+        </div>
+        <h2 className="event-title"><span>{props.event.name}</span></h2>
+        <div className="container">
           <div className="left">
             <div className="left-item">
               <Link to={"/agenda/" + props.event.id}>
@@ -178,16 +170,15 @@ function EventShow(props) {
             <h2><img src={credit} alt=""/>Skill uren</h2>
             {paidSkill} 
           </div>
-          </div>
-          {
-            areYouSure && chosenSkill ? <div className="are-you-sure">
-              <p>Weet je zeker dat je je voor {chosenSkill.hours} uur in <img src={skillIcon(chosenSkill.skill.icon)}/>{chosenSkill.skill.name} wilt inschrijven?</p>
-              <img className="accept" src={accept} onClick={e => register(chosenSkill.id)}/>
-              <img className="accept" src={decline} onClick={e => setAreYouSure(0)}/>
-            </div> : null
-          }
         </div>
-      }
+        {
+          areYouSure && chosenSkill ? <div className="are-you-sure">
+            <p>Weet je zeker dat je je voor {chosenSkill.hours} uur in <img src={skillIcon(chosenSkill.skill.icon)}/>{chosenSkill.skill.name} wilt inschrijven?</p>
+            <img className="accept" src={accept} onClick={e => register(chosenSkill.id)}/>
+            <img className="accept" src={decline} onClick={e => setAreYouSure(0)}/>
+          </div> : null
+        }
+      </div>
       <ToastContainer />
     </div>
   );

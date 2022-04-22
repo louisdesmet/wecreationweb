@@ -190,8 +190,10 @@
             .badges {
                 display: flex;
                 div {
+                    margin: 20px 20px 0 0;
                     img {
                         width: 50px;
+                        border-radius: 100%;
                     }
                     .starter {
                         opacity: 0.4;

@@ -186,6 +186,15 @@
         }
     }
 }
+.activity-panel {
+    background: #bee5f6;
+    padding: 25px;
+    .map {
+        height: 300px;
+        border-bottom-left-radius: 35px;
+        border-bottom-right-radius: 35px;
+    }
+}
 
 @media only screen and (max-width: 700px) {
     .event-panel {

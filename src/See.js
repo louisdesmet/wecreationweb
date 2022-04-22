@@ -140,7 +140,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
 
   const activityMarker = (activity) => <Marker key={activity.id} position={[activity.lat, activity.lng]} icon={evenementenIcon}>
     <Popup className="popup">
-      <h2>{activity.name}</h2>
+      <h2><Link to={"/activities/" + activity.id}>{activity.name}</Link></h2>
       <div className="data-container">
         <img src={datum}/>
         <p>{activity.date}</p>
