@@ -17,8 +17,6 @@ export const EventShow = ({getAllEvents}) => {
 
   const events = useSelector(state => state.remoteAllEvents);
 
-  const [liked, setLiked] = useState(false);
-
   const { id } = useParams();
   const event = events.data ? events.data.find(event => event.id === parseInt(id)) : null;
 
@@ -44,7 +42,7 @@ export const EventShow = ({getAllEvents}) => {
   return (
     <div className="height100">
         <Nav/>
-        {event ? <EventShowComp event={event} likeEvent={likeEvent} liked={liked}/> : null}
+        {event ? <EventShowComp event={event} likeEvent={likeEvent}/> : null}
     </div>
   );
 }

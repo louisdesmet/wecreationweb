@@ -100,6 +100,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 latestMessagesThreadGroup.push(group.messages.reduce((a, b) => (a.created_at > b.created_at ? a : b)));
             } else {
                 latestMessagesThreadGroup.push({
+                    created_at: "2000-01-01T12:00:00.000000Z",
                     group: group
                 })
             }
@@ -109,12 +110,21 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
 
     let allowedEventGroups = [];
     if(events.data) {
-        events.data.forEach(event => { event.skills.forEach(skill => { skill.users.forEach(user => {
-            if(user.id === loggedUser.id && user.accepted && !allowedEventGroups.includes(event.group.id)) {
+        events.data.forEach(event => {
+            if(event.project.leader.id === loggedUser.id && !allowedEventGroups.includes(event.group.id)) {
                 allowedEventGroups.push(event.group.id);
             }
-        })})})
+            event.skills.forEach(skill => { 
+                skill.users.forEach(user => {
+                    console.log(user)
+                    if(user.id === loggedUser.id && user.accepted && !allowedEventGroups.includes(event.group.id)) {
+                        allowedEventGroups.push(event.group.id);
+                    }
+                })
+            })
+        })
     }
+    /*console.log(allowedEventGroups);*/
 
     if(eventGroups && allowedEventGroups.length) {
         eventGroups.forEach(group => {
@@ -123,6 +133,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                     latestMessagesEventGroup.push(group.messages.reduce((a, b) => (a.created_at > b.created_at ? a : b)));
                 } else {
                     latestMessagesEventGroup.push({
+                        created_at: "2000-01-01T12:00:00.000000Z",
                         group: group
                     })
                 }

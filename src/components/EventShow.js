@@ -121,7 +121,7 @@ function EventShow(props) {
           <div className="top-items">
             <div className="groupchat">
               {
-                props.event.allowedInGroupchat ? <p onClick={e => window.location.href = "/netwerk/" + props.event.id}>Groupchat</p> : null
+                props.event.allowedInGroupchat || props.event.project.leader.id === loggedUser.id ? <p onClick={e => window.location.href = "/netwerk/" + props.event.id}>Groupchat</p> : null
               }
             </div>
             <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + props.event.image}/>

@@ -31,7 +31,7 @@ import badges from './img/profile/badges.png';
 
 import logoutImg from './img/profile/logout.png';
 
-import { date, profileIcon, skillIcon } from './Global';
+import { badgeIcon, date, profileIcon, skillIcon } from './Global';
 
 export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
 
@@ -56,41 +56,37 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
 
     let updatedLoggedUser = null;
 
-    if(id && users.data) {    
+    if(id && users.data) {
         updatedLoggedUser = users.data.find(item => item.id === parseInt(id));
     } else if(users.data) {
         updatedLoggedUser = users.data.find(item => item.id === loggedUser.id);
     }
 
     let userHours = [];
+    let userHoursTotal = [];
 
     if(events.data) {
         events.data.forEach(event => {
             event.skills.forEach(skill => {
                 skill.users.forEach(user => {
-                    if(id) {
-                        if(user.id === parseInt(id) && user.present === 1) {
-                            if(userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid)) {
-                                let temp = userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid);
-                                temp.hours = temp.hours + skill.hours;
-                            } else {
-                                userHours.push({id: skill.skill.id, name: skill.skill.name, icon: skill.skill.icon, hours: skill.hours, paid: skill.paid});
-                            }
+                    if(user.id === (id ? parseInt(id) : loggedUser.id) && user.present === 1) {
+                        if(userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid)) {
+                            userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid).hours += skill.hours;
+                        } else {
+                            userHours.push({id: skill.skill.id, name: skill.skill.name, icon: skill.skill.icon, hours: skill.hours, paid: skill.paid});
                         }
-                    } else {
-                        if(user.id === loggedUser.id && user.present === 1) {
-                            if(userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid)) {
-                                let temp = userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid);
-                                temp.hours = temp.hours + skill.hours;
-                            } else {
-                                userHours.push({id: skill.skill.id, name: skill.skill.name, icon: skill.skill.icon, hours: skill.hours, paid: skill.paid});
-                            }
+                        if(userHoursTotal.find(userHour => userHour.id === skill.skill.id)) {
+                            userHoursTotal.find(userHour => userHour.id === skill.skill.id).hours += skill.hours;
+                        } else {
+                            userHoursTotal.push({id: skill.skill.id, name: skill.skill.name, icon: skill.skill.icon, hours: skill.hours, paid: skill.paid});
                         }
                     }
                 })
             })
         })
     }
+
+    console.log(userHours);
 
     const freeUserHours = userHours ? userHours.filter(userHour => userHour.paid === 0) : null
     const paidUserHours = userHours ? userHours.filter(userHour => userHour.paid === 1) : null
@@ -143,6 +139,18 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                 })
             })
         })
+    }
+
+    const calculateLevel = (skill) => {
+        if(skill.hours > 7) {
+            return <img src={badgeIcon(skill.name,  "legend")}/>
+        } else if(skill.hours > 5) {
+            return <img src={badgeIcon(skill.name, "pro")}/>
+        } else if(skill.hours > 3) {
+            return <img src={badgeIcon(skill.name, "beginner")}/>
+        } else {
+            return <img className={"starter"} src={badgeIcon(skill.name, "starter")}/>
+        }
     }
 
     return (
@@ -257,6 +265,16 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                     </div>
                     <div className="right">
                         <h2><img src={badges} alt=""/>Behaalde badges</h2>
+                        <div className="badges">
+                            {
+                                userHoursTotal.map(skill => 
+                                    <div key= {skill.id}>
+                                        {calculateLevel(skill)}
+                                    </div>
+                                )
+                            }
+                        </div>
+                        
                     </div>
                 </div>
 
