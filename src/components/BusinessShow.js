@@ -15,6 +15,7 @@ import location from '../img/nav/see.png';
 import accept from '../img/eventshow/accept.png';
 import decline from '../img/eventshow/decline.png';
 import get from '../img/nav/get.png';
+import like from '../img/eventshow/like.png';
 
 let icon = L.icon({
   iconUrl: get,
@@ -81,7 +82,12 @@ function BusinessShow(props) {
     }
 
     return (
-        <div className="products-container">          
+        <div className="products-container">
+            <div className={props.business.users && props.business.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.business.users && props.business.users.find(user => user.id === loggedUser.id) ? null : props.likeBusiness(props.business.id)}>
+                <span>{props.liked ? props.business.users.length + 1 : props.business.users.length}</span>
+                <img src={like}/>
+                <p>Interesse!</p>
+            </div>          
             <div>
                 <FontAwesomeIcon icon={profileIcon(props.business.leader.icon)} className="profile-icon" color="white"/>
                 <h2><span>{props.business.name}</span></h2>
@@ -132,7 +138,7 @@ function BusinessShow(props) {
                     <img className="accept" src={accept} onClick={e => buy(product)}/>
                     <img className="accept" src={decline} onClick={e => setAreYouSure(0)}/>
                 </div> : null
-                }   
+                }
             </div>
             <ToastContainer />
         </div>

@@ -144,8 +144,43 @@
     padding: 25px;
     border-radius: 35px;
     box-sizing: border-box;
+    .like {     
+        flex-grow: 1;
+        flex-basis: 0;
+        display: flex;
+        justify-content: right;
+        margin: 20px 10px 0 0;
+        opacity: 0.3;
+        cursor: pointer;
+        position: relative;
+        span {
+            position: absolute;
+            top: -12px;
+            right: 105px;
+            padding: 5px 0;
+            background: #745AA2;
+            padding: 4px 11px 6px 11px;
+            border-radius: 100%;
+            font-weight: bold;
+            margin: 0 10px 0 0;
+            color: white;
+        }
+        img {
+            width: 60px;
+            height: 60px;
+            margin: 0 7px 0 0;
+        }
+        p {
+            padding: 18px 0 0 0;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+    }
+    .liked {
+        opacity: 1;
+    }
     .profile-icon {
-        margin: 40px auto 15px auto;
+        margin: 0 auto 15px auto;
         display: block;
         background: black;
         padding: 37px;
