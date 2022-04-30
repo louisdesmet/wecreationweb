@@ -54,51 +54,81 @@ export const MyEvents = ({getAllEvents}) => {
         return JSON.parse(localStorage.getItem("user")).id === event.project.leader.id && new Date(event.date) > new Date();
     }) : null;
 
+    const futureGroup = futureEvents ? futureEvents.reduce((acc, item) => {
+        if (!acc[item.project.id]) {
+            acc[item.project.id] = [];
+        }
+        acc[item.project.id].push(item);
+        return acc;
+    }, {}) : null
+
     const pastEvents = events.data ? events.data.filter(event => {
         return JSON.parse(localStorage.getItem("user")).id === event.project.leader.id && new Date(event.date) < new Date();
     }) : null;
+
+    const pastGroup = pastEvents ? pastEvents.reduce((acc, item) => {
+        if (!acc[item.project.id]) {
+            acc[item.project.id] = [];
+        }
+        acc[item.project.id].push(item);
+        return acc;
+    }, {}) : null
     
     function date(date) {
         const jsDate = new Date(date);
         return jsDate.getDate()+'-'+(jsDate.getMonth()+1)+'-'+jsDate.getFullYear();
     }
 
+    function Collapsible(props) {
+
+        const [open, setOpen] = useState(false);
+    
+        return (
+            <div className='project'>
+                <p className='project-name' onClick={e => setOpen(!open)}><img className='project-picture' src={ require('./img/project/' + props.events[0].project.picture) }/>{props.events[0].project.name}</p>
+                {
+                    open && <div>
+                        {
+                            props.events.map(event => 
+                                <div className="event" key={event.id}>
+                                    <p><img src={work} alt=""/>{event.name}</p>
+                                    <p><img src={agenda} alt=""/>{date(event.date)}</p>
+                                    <p><img src={time} alt=""/>{new Date(event.date).toLocaleTimeString()}</p>
+                                    <p><img src={see} alt=""/>{event.location}</p>
+                                    <p className='team'><img src={team} alt=""/>{event.totalRequests ? <span>{event.totalRequests}</span> : null}{ (event.totalFilled ? event.totalFilled : 0) + " / " + (event.totalPostions ? event.totalPostions : 0)}</p>
+                                    <div><Link to={"/event-leader-board/" + event.id}><img src={edit} alt=""/></Link></div>
+                                </div>
+                            )
+                        }
+                    </div>
+                }
+            </div>
+        );
+    }
+
     return (
-      <div className="height100">
-          <Nav/>
-          <div className="event-container">
-            <h2><img src={work} alt=""/>Lopende events</h2>
-            {
-                futureEvents ? futureEvents.map(event =>
-                    <div className="event" key={event.id}>
-                        <p><img className='project-picture' src={ require('./img/project/' + event.project.picture) }/>{event.project.name}</p>
-                        <p><img src={work} alt=""/>{event.name}</p>
-                        <p><img src={agenda} alt=""/>{date(event.date)}</p>
-                        <p><img src={time} alt=""/>{new Date(event.date).toLocaleTimeString()}</p>
-                        <p><img src={see} alt=""/>{event.location}</p>
-                        <p className='team'><img src={team} alt=""/>{event.totalRequests ? <span>{event.totalRequests}</span> : null}{ (event.totalFilled ? event.totalFilled : 0) + " / " + (event.totalPostions ? event.totalPostions : 0)}</p>
-                        <div><Link to={"/event-leader-board/" + event.id}><img src={edit} alt=""/></Link></div>
-                    </div>
-                ) : null
-            }
-            <h2><img src={work} alt=""/>Afgelopen events</h2>
-            {
-                pastEvents ? pastEvents.map(event =>
-                    <div className="event" key={event.id}>
-                         <p><img src={work} alt=""/>{event.project.name}</p>
-                        <p><img src={work} alt=""/>{event.name}</p>
-                        <p><img src={agenda} alt=""/>{date(event.date)}</p>
-                        <p><img src={time} alt=""/>{new Date(event.date).toLocaleTimeString()}</p>
-                        <p><img src={see} alt=""/>{event.location}</p>
-                        <p className='team'><img src={team} alt=""/>{event.totalRequests ? <span>{event.totalRequests}</span> : null}{ (event.totalFilled ? event.totalFilled : 0) + " / " + (event.totalPostions ? event.totalPostions : 0)}</p>
-                        <div><Link to={"/event-leader-board/" + event.id}><img src={edit} alt=""/></Link></div>
-                    </div>
-                ) : null
-            }
-          </div>
+        <div className="height100">
+            <Nav/>
+            <div className="event-container">
+                <h2><img src={work} alt=""/>Lopende events</h2>
+                {
+                    futureGroup ? Object.values(futureGroup).map((events, index) => 
+                        <Collapsible  key={index} events={events}/>
+                    ) : null
+                }
+                <h2><img src={work} alt=""/>Afgelopen events</h2>
+                {
+                    pastGroup ? Object.values(pastGroup).map((events, index) => 
+                        <Collapsible  key={index} events={events}/>
+                    ) : null
+                }
+               
+            </div>
       </div>
     );
 }
+
+
 
 export default connect(
     null,

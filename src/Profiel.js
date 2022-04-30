@@ -142,11 +142,11 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
     }
 
     const calculateLevel = (skill) => {
-        if(skill.hours > 7) {
+        if(skill.hours > 25) {
             return <img src={badgeIcon(skill.name,  "legend")}/>
-        } else if(skill.hours > 5) {
+        } else if(skill.hours > 50) {
             return <img src={badgeIcon(skill.name, "pro")}/>
-        } else if(skill.hours > 3) {
+        } else if(skill.hours > 100) {
             return <img src={badgeIcon(skill.name, "beginner")}/>
         } else {
             return <img className={"starter"} src={badgeIcon(skill.name, "starter")}/>

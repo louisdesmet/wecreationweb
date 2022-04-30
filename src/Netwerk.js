@@ -110,8 +110,8 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
 
     let allowedEventGroups = [];
     if(events.data) {
-        events.data.forEach(event => {
-            if(event.project.leader.id === loggedUser.id && !allowedEventGroups.includes(event.group.id)) {
+        events.data.forEach(event => {  
+            if (event.project.leader.id === loggedUser.id && !allowedEventGroups.includes(event.group.id)) {
                 allowedEventGroups.push(event.group.id);
             }
             event.skills.forEach(skill => { 
