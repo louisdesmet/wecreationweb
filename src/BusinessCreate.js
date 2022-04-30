@@ -4,7 +4,7 @@ import { getBusinesses } from './redux/actions';
 import { Link, useParams } from 'react-router-dom';
 import locprod from './Global';
 import './css/EventCreate.scss';
-import { Map, TileLayer } from 'react-leaflet'
+import { MapContainer, TileLayer } from 'react-leaflet'
 import Nav from './Nav';
 import Geocode from "react-geocode";
 
@@ -135,12 +135,12 @@ export const BusinessCreate = ({getBusinesses}) => {
             <input defaultValue={business && business.location ?  business.location : ""} onChange={e => setLocation(e.target.value)} placeholder='Adres'/>
             <span onClick={e => searchAddress(location)}>Zoeken</span>
           </div>
-          <Map className="map" center={[lat, lng]} zoom={18}>
+          <MapContainer className="map" center={[lat, lng]} zoom={18}>
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-          </Map>
+          </MapContainer>
 
           <h2><img src={get} alt=""/>Handelswaren</h2>
           <h2 className='hours'><img src={free} alt=""/>Producten</h2>

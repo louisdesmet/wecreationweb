@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { date } from "../Global";
-import { Map, Marker, TileLayer } from 'react-leaflet'
+import { MapContainer, Marker, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
 
@@ -67,13 +67,13 @@ function ActivityShow(props) {
             </div>
           </div>
         </div>
-        <Map className="map" center={position} zoom={15}>
+        <MapContainer className="map" center={position} zoom={15}>
           <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <Marker key={props.activity.id} position={[props.activity.lat, props.activity.lng]} icon={evenementenIcon}></Marker>
-        </Map>
+        </MapContainer>
       </div>
     </div>
   );

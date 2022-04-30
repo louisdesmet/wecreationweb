@@ -5,10 +5,11 @@ import {useSelector} from "react-redux";
 import { Link } from 'react-router-dom';
 import Geocode from "react-geocode";
 import axios from "axios";
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
-import 'leaflet/dist/leaflet.css'
+
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import L from 'leaflet';
 import Nav from "./Nav";
+import MarkerClusterGroup from 'react-leaflet-markercluster';
 
 import './css/See.scss';
 import see from './img/nav/see.png';
@@ -358,17 +359,20 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
           </div> : null
         }
         {
-          displayMap ? <Map className="map" center={position} zoom={13}>
+          displayMap ? <MapContainer className="map" center={position} zoom={13}>
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            { a ? businessMarkers : null}
-            { b ? serviceMarkers : null}
-            { c ? activityMarkers : null}
-            { d ? eventMarkersFree : null}
-            { e ? eventMarkersPaid : null}
-          </Map> : null
+            <MarkerClusterGroup>
+              { a ? businessMarkers : null}
+              { b ? serviceMarkers : null}
+              { c ? activityMarkers : null}
+              { d ? eventMarkersFree : null}
+              { e ? eventMarkersPaid : null}
+            </MarkerClusterGroup>
+        
+          </MapContainer> : null
         }
         {
           displayAddActivity ? <div className="add-activity-panel">
@@ -387,12 +391,12 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
               <label>Locatie:</label>
               <input onChange={e => setActivityLocation(e.target.value)} placeholder='Locatie'/>
               <button onClick={e => searchAddress(activityLocation)}>Zoeken</button>
-              <Map className="map-activity" center={[lat, lng]} zoom={18}>
+              <MapContainer className="map-activity" center={[lat, lng]} zoom={18}>
                 <TileLayer
                   attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-              </Map>
+              </MapContainer>
             </div>
           </div> : null
         }

@@ -2,7 +2,7 @@
 import Axios from "axios";
 import React, { useState } from "react";
 import { profileIcon } from '../Global.js'
-import { Map, Marker, TileLayer } from 'react-leaflet'
+import { MapContainer, Marker, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
 import { ToastContainer, toast } from 'react-toastify';
@@ -125,13 +125,13 @@ function BusinessShow(props) {
                     )
                 }
                 </div>
-                <Map className="map" center={position} zoom={13}>
+                <MapContainer className="map" center={position} zoom={13}>
                 <TileLayer
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {businessMarkers}
-                </Map>
+                </MapContainer>
                 {
                 areYouSure && product ? <div className="are-you-sure">
                     <p>Bevestig je aankoop.</p>
