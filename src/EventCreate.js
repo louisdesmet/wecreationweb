@@ -227,12 +227,15 @@ export const EventCreate = ({getProjects, getSkills}) => {
           <input defaultValue={event && event.location ?  event.location : ""} onChange={e => setLocation(e.target.value)} placeholder='Locatie'/>
           <span onClick={e => searchAddress(location)}>Zoeken</span>
         </div>
-        <MapContainer className="map" center={[lat, lng]} zoom={18}>
-          <TileLayer
-            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-        </MapContainer>
+        {
+          lat && lng ? <MapContainer className="map" center={[lat, lng]} zoom={18}>
+            <TileLayer
+              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+          </MapContainer> : null
+        }
+        
         <h2><img src={work} alt=""/>Team</h2>
         <h2 className='hours'><img src={free} alt=""/>Vrijwilliger uren</h2>
         {

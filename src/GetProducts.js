@@ -23,7 +23,7 @@ export const GetProducts = ({getBusinesses, getUsers}) => {
   return (
     <div className="height100">
       <Nav/>
-      {business && users.data ? <BusinessShow business={business} users={users.data}/> : null}
+      {business && users.data ? <BusinessShow business={business} users={users.data} isPage={true}/> : null}
     </div>
   );
 }

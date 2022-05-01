@@ -6,8 +6,11 @@ import {getBusinesses} from "./redux/actions";
 import Nav from "./Nav";
 import get from './img/nav/get.png';
 import location from './img/nav/see.png';
+import { useHistory } from "react-router-dom";
 
 export const GetHandelaars = ({getBusinesses}) => {
+
+  const history = useHistory();
 
   useEffect(() => {
     getBusinesses();
@@ -42,6 +45,10 @@ export const GetHandelaars = ({getBusinesses}) => {
     <div className="height100">
       <Nav/>
       <div className="business-container">
+        <div className='back' onClick={e =>  history.goBack()}>
+            <span>&#10508;</span>
+            <b>BACK</b>
+        </div>
         <img className="logo" src={get}/>
         <h2 className="title"><span>Handelaars</span></h2>
           <div className="business-flex">

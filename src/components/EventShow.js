@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Axios from 'axios';
 import { date, skillIcon } from "../Global";
+import { useHistory } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -18,8 +19,11 @@ import geelPuzzel from '../img/eventshow/geel-puzzel.png';
 import credit from '../img/profile/credit.png';
 import free from '../img/profile/free.png';
 import like from '../img/eventshow/like.png';
+import credits from '../img/profile/credits.png';
 
 function EventShow(props) {
+
+  const history = useHistory();
 
   const notify = (event, skill) => toast("Je bent ingeschreven om te werken op " + event.name + " voor " + skill.hours + " uur " + skill.skill.name + ". De projectleider moet je nu eerst aanvaarden");
 
@@ -41,10 +45,10 @@ function EventShow(props) {
   const paidSkill = props.event && props.event.skills ? props.event.skills.map(skill => 
     skill.paid === 1 ? <div className="skills" key={skill.id}>
       <div className="image"><img src={skillIcon(skill.skill.icon)}/></div>
-      <p>{skill.amount} x {skill.skill.name} - {skill.hours}u</p>
+      <p>{skill.amount} x {skill.skill.name} - {skill.hours}u  <span>{skill.credits}<img className='credits' src={credits}/></span></p>
       <div className="button">
         {
-          skill.users.filter(user => user.accepted).length < skill.amount ? <button onClick={e => areYouSureBox(skill)}>Inschrijven</button> : <button className="full">Volzet</button>
+          skill.users.filter(user => user.accepted).length < skill.amount ? skill.users.find(user => user.id === loggedUser.id) ? <button className="requested">Aangevraagd</button> : <button onClick={e => areYouSureBox(skill)}>Inschrijven</button> : <button className="full">Volzet</button>
         }
       </div>
     </div> : null
@@ -56,7 +60,7 @@ function EventShow(props) {
       <p>{skill.amount} x {skill.skill.name} - {skill.hours}u</p>
       <div className="button">
         {
-          skill.users.filter(user => user.accepted).length < skill.amount ? <button onClick={e => areYouSureBox(skill)}>Inschrijven</button> : <button className="full">Volzet</button>
+          skill.users.filter(user => user.accepted).length < skill.amount ? skill.users.find(user => user.id === loggedUser.id) ? <button className="requested">Aangevraagd</button> : <button onClick={e => areYouSureBox(skill)}>Inschrijven</button> : <button className="full">Volzet</button>
         }
       </div>
     </div> : null
@@ -117,15 +121,25 @@ function EventShow(props) {
             {
               props.event.allowedInGroupchat || props.event.project.leader.id === loggedUser.id ? <p onClick={e => window.location.href = "/netwerk/" + props.event.id}>Groupchat</p> : null
             }
+            {
+              props.isPage ? <div className='back' onClick={e =>  history.goBack()}>
+                <span>&#10508;</span>
+                <b>BACK</b>
+              </div> : null
+            }
           </div>
-          <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + props.event.image}/>
+          <div>
+            <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + props.event.image}/>
+            <h2 className="event-title"><span>{props.event.name}</span></h2>
+          </div>
+         
           <div className={props.event.users && props.event.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.event.users && props.event.users.find(user => user.id === loggedUser.id) ? null : props.likeEvent(props.event.id)}>
             <span>{props.liked ? props.event.users.length + 1 : props.event.users.length}</span>
             <img src={like}/>
             <p>Interesse!</p>
           </div>
         </div>
-        <h2 className="event-title"><span>{props.event.name}</span></h2>
+        
         <div className="container">
           <div className="left">
             <div className="left-item">

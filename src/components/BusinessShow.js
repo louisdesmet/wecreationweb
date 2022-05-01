@@ -16,6 +16,8 @@ import accept from '../img/eventshow/accept.png';
 import decline from '../img/eventshow/decline.png';
 import get from '../img/nav/get.png';
 import like from '../img/eventshow/like.png';
+import credits from '../img/profile/credits.png';
+import { useHistory } from "react-router-dom";
 
 let icon = L.icon({
   iconUrl: get,
@@ -23,6 +25,8 @@ let icon = L.icon({
   popupAnchor: [0, -20],
 });
 function BusinessShow(props) {
+
+    const history = useHistory();
 
     const notifyCredits = (user, product) => toast("Je hebt " + user.credits + " credits en  het product " + product.name + " kost " + product.price + " credits");
     const notifyStock = (product) => toast("Het product " + product.name + " is uitverkocht.");
@@ -55,11 +59,7 @@ function BusinessShow(props) {
             } else {
                 notifyStock(product)
             }
-        
-            
-        
         }
-     
     }
 
     function buy(product) {
@@ -83,14 +83,26 @@ function BusinessShow(props) {
 
     return (
         <div className="products-container">
-            <div className={props.business.users && props.business.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.business.users && props.business.users.find(user => user.id === loggedUser.id) ? null : props.likeBusiness(props.business.id)}>
-                <span>{props.liked ? props.business.users.length + 1 : props.business.users.length}</span>
-                <img src={like}/>
-                <p>Interesse!</p>
-            </div>          
+            <div className="top-items">
+                <div className="groupchat">
+                    {
+                    props.isPage ? <div className='back' onClick={e =>  history.goBack()}>
+                        <span>&#10508;</span>
+                        <b>BACK</b>
+                    </div> : null
+                    }
+                </div>
+                <div>
+                    <FontAwesomeIcon icon={profileIcon(props.business.leader.icon)} className="profile-icon" color="white"/>
+                    <h2><span>{props.business.name}</span></h2>
+                </div>
+                <div className={props.business.users && props.business.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.business.users && props.business.users.find(user => user.id === loggedUser.id) ? null : props.likeBusiness(props.business.id)}>
+                    <span>{props.liked ? props.business.users.length + 1 : props.business.users.length}</span>
+                    <img src={like}/>
+                    <p>Interesse!</p>
+                </div>  
+            </div>
             <div>
-                <FontAwesomeIcon icon={profileIcon(props.business.leader.icon)} className="profile-icon" color="white"/>
-                <h2><span>{props.business.name}</span></h2>
                 <div className="business-info">
                 <div className="left">
                     <div>
@@ -134,7 +146,7 @@ function BusinessShow(props) {
                 </MapContainer>
                 {
                 areYouSure && product ? <div className="are-you-sure">
-                    <p>Bevestig je aankoop.</p>
+                    <p>Weet je zeker dat je een {product.name} wilt aankopen voor {product.price}<img className='credits' src={credits}/></p>
                     <img className="accept" src={accept} onClick={e => buy(product)}/>
                     <img className="accept" src={decline} onClick={e => setAreYouSure(0)}/>
                 </div> : null

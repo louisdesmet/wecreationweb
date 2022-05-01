@@ -34,7 +34,6 @@ import AdminActivities from "./AdminActivities";
 import AdminActivitiesCreate from "./AdminActivitiesCreate";
 import AdminActivitiesEdit from "./AdminActivitiesEdit";
 import AdminUserVerification from "./AdminUserVerification";
-import WorkLeaderBoard from "./WorkLeaderBoard";
 import EventShow from "./EventShow";
 import ProjectShow from "./ProjectShow";
 import OrderShow from "./OrderShow";
@@ -120,7 +119,6 @@ function App() {
               <Route path="/register" component={Register}/>
               <PrivateRoute path="/home" component={Home}/>
               <PrivateRoute path="/work" component={Work}/>
-              <PrivateRoute path="/work-project-leader/:id" component={WorkLeaderBoard}/>
               <Route path="/see" component={See}/>
 
               <PrivateRoute path="/get/handelaars/:id/products" component={GetProducts}/>

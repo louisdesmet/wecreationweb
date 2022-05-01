@@ -7,8 +7,12 @@ import kassa from './img/profile/kassa.png';
 import credit from './img/profile/credit.png';
 import { Link } from "react-router-dom";
 import Nav from "./Nav";
+import { useHistory } from "react-router-dom";
 
 export const GetHistoriek = ({getOrders}) => {
+
+  const history = useHistory();
+  
   useEffect(() => {
     getOrders();
   }, []);
@@ -23,6 +27,10 @@ export const GetHistoriek = ({getOrders}) => {
     <div className="height100">
       <Nav/>
       <div className="historiek">
+        <div className='back' onClick={e =>  history.goBack()}>
+            <span>&#10508;</span>
+            <b>BACK</b>
+        </div>
         <FontAwesomeIcon icon={profileIcon(JSON.parse(localStorage.getItem("user")).icon)} className="profile-icon" color="white"/>
         <h2><span>Kassaticketjes</span></h2>
         {

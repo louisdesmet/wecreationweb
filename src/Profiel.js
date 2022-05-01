@@ -163,7 +163,6 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                         !id ? <div>
                             <Link to={updatedLoggedUser && updatedLoggedUser.roles.find(role => role.id === 3) ? "/handelaar/create/" +  updatedLoggedUser.roles.find(role => role.id === 3).business_id : "/handelaar/create"}><img src={handel} alt=""/>Mijn handelszaak</Link>
                             <Link to={"/get/historiek"}><img src={kassa} alt=""/>Mijn kassatickets</Link>
-                            <Link to={"/work"}><img src={agenda} alt=""/>Mijn projecten</Link>
                             <Link to={"/my-events"}><img src={agenda} alt=""/>Mijn events</Link>
                             <a className="logout" onClick={() => logout()}><img src={logoutImg} alt=""/>Afmelden</a>
                         </div> : null

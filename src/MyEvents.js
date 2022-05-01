@@ -93,7 +93,7 @@ export const MyEvents = ({getAllEvents}) => {
                                 <div className="event" key={event.id}>
                                     <p><img src={work} alt=""/>{event.name}</p>
                                     <p><img src={agenda} alt=""/>{date(event.date)}</p>
-                                    <p><img src={time} alt=""/>{new Date(event.date).toLocaleTimeString()}</p>
+                                    <p><img src={time} alt=""/>{event.time}</p>
                                     <p><img src={see} alt=""/>{event.location}</p>
                                     <p className='team'><img src={team} alt=""/>{event.totalRequests ? <span>{event.totalRequests}</span> : null}{ (event.totalFilled ? event.totalFilled : 0) + " / " + (event.totalPostions ? event.totalPostions : 0)}</p>
                                     <div><Link to={"/event-leader-board/" + event.id}><img src={edit} alt=""/></Link></div>

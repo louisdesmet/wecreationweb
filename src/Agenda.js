@@ -42,7 +42,7 @@ export const Agenda = ({getAllEvents}) => {
     events.data.forEach(event => {
       event.skills.forEach(skill => {
         skill.users.forEach(user => {
-          if(user.id === loggedUser.id) {
+          if(loggedUser && user.id === loggedUser.id) {
             event.worked = true
           }
         })
@@ -51,10 +51,13 @@ export const Agenda = ({getAllEvents}) => {
   }
 
   const fcEvents = events.data ? events.data.map((event, index) => {
-    return {id: event.id, title: event.name, date: event.date, extendedProps: {
+    let newDate = new Date(event.date);
+    let time = event.time.split(":");
+    newDate.setHours(time[0]);
+    newDate.setMinutes(time[1]);
+    return {id: event.id, title: event.name, date: newDate, extendedProps: {
       worked: event.worked,
       time: event.time
-
     }}
   }) : null
 

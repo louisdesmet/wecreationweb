@@ -10,9 +10,24 @@
         display: flex;
         justify-content: space-between;
         .groupchat {
-            margin: 20px 0 0 10px;
+            margin: 50px 0 0 10px;
             flex-grow: 1;
             flex-basis: 0;
+            .back {
+                width: auto;
+                margin: 15px 0 0 0;
+                b {
+                    font-size: 1.3em;
+                    font-weight: bolder;
+                    letter-spacing: 3px;
+                    margin: 12px 0 0 0;
+                }
+                span {
+                    font-size: 2em;
+                    margin: 0 5px 0 0;
+                 
+                }
+            }
             p {
                 display: inline-block;
                 background: black;
@@ -25,19 +40,23 @@
                 opacity: 0.8;
             }
         }
-        .event-logo {
-            width: 100px;
-            height: 100px;
-            border-radius: 100%;
-
+        div {
+            .event-logo {
+                width: 100px;
+                height: 100px;
+                border-radius: 100%;
+                margin: 30px auto 0 auto;
+                display: block;
+            }
         }
+     
         .like {
            
             flex-grow: 1;
             flex-basis: 0;
             display: flex;
             justify-content: right;
-            margin: 20px 10px 0 0;
+            margin: 50px 10px 0 0;
             opacity: 0.3;
             cursor: pointer;
             position: relative;
@@ -96,7 +115,7 @@
         }
         .accept {
             width: 70px;
-            margin-right: 50px;
+            margin: 0 25px;
         }
 
     }
@@ -159,6 +178,17 @@
             .skills {
                 display: flex;
                 margin: 5px 0 0 55px;
+                p {  
+                    span {
+                        margin: 0 0 0 30px;
+                        img {
+                            width: 20px;
+                            position: relative;
+                            top: 5px;
+                        }
+                    }
+                   
+                }
                 .image {
                     img {
                         width: 30px;
@@ -175,10 +205,14 @@
                         background: #34AD72;
                         border: none;
                         border-radius: 15px;
-                        padding: 3px 25px;
+                        width: 130px;
+                        padding: 3px 0;
                     }
                     .full {
                         background: #CF3466;
+                    }
+                    .requested {
+                        background: #FEC800;
                     }
                 }
             }

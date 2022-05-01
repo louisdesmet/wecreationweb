@@ -155,9 +155,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
         <p>{activity.location}</p>
       </div>
     </Popup>
-  </Marker>;
-
-
+  </Marker>
 
   const activityMarkers = activities.data ? (activities.data.map(activity =>
     today || week ? 
@@ -174,42 +172,39 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
       })
     })
   }
-  
 
-
+  const eventMarker = (event) => <Marker key={event.id} position={[event.lat, event.lng]} icon={workIcon}>
+    <Popup className="popup" minWidth="280">
+      <h2><Link to={"/events/" + event.id}>{event.name}</Link></h2>
+      <div className="data-container">
+        <img src={datum}/>
+        <p>{event.date}</p>
+      </div>
+      <div className="data-container">
+        <img src={see}/>
+        <p>{event.location}</p>
+      </div>
+    </Popup>
+  </Marker>
 
   const eventMarkersFree = events.data ? (events.data.map(event =>
-    !event.hasPaid ? <Marker key={event.id} position={[event.lat, event.lng]} icon={workIcon}>
-      <Popup className="popup" minWidth="280">
-        <h2><Link to={"/events/" + event.id}>{event.name}</Link></h2>
-        <div className="data-container">
-          <img src={datum}/>
-          <p>{event.date}</p>
-        </div>
-        <div className="data-container">
-          <img src={see}/>
-          <p>{event.location}</p>
-        </div>
-    
-      </Popup>
-    </Marker> : null
+    !event.hasPaid ?
+      today || week ?
+          today ? 
+            isToday(new Date(event.date)) ? eventMarker(event) : null 
+            :
+            onCurrentWeek(new Date(event.date)) ? eventMarker(event) : null
+    : eventMarker(event) : null
   )) : null;
 
   const eventMarkersPaid = events.data ? (events.data.map(event =>
-    event.hasPaid ? <Marker key={event.id} position={[event.lat, event.lng]} icon={workIcon}>
-      <Popup className="popup" minWidth="280">
-        <h2><Link to={"/events/" + event.id}>{event.name}</Link></h2>
-        <div className="data-container">
-          <img src={datum}/>
-          <p>{event.date}</p>
-        </div>
-        <div className="data-container">
-          <img src={see}/>
-          <p>{event.location}</p>
-        </div>
-    
-      </Popup>
-    </Marker> : null
+    event.hasPaid ?
+      today || week ?
+          today ? 
+            isToday(new Date(event.date)) ? eventMarker(event) : null 
+            :
+            onCurrentWeek(new Date(event.date)) ? eventMarker(event) : null
+    : eventMarker(event) : null
   )) : null;
 
 
@@ -391,12 +386,15 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
               <label>Locatie:</label>
               <input onChange={e => setActivityLocation(e.target.value)} placeholder='Locatie'/>
               <button onClick={e => searchAddress(activityLocation)}>Zoeken</button>
-              <MapContainer className="map-activity" center={[lat, lng]} zoom={18}>
-                <TileLayer
-                  attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-              </MapContainer>
+              {
+                lat && lng ? <MapContainer className="map-activity" center={[lat, lng]} zoom={18}>
+                  <TileLayer
+                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                </MapContainer> : null
+              }
+              
             </div>
           </div> : null
         }

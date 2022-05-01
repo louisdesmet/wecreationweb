@@ -1,10 +1,12 @@
 import React, {useEffect} from 'react';
 import {connect} from "react-redux";
-import {getAllEvents} from "./redux/actions";
+import {getAllEvents, getUsers} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { useParams } from 'react-router-dom';
 import { skillIcon } from './Global';
 import Axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Nav from './Nav';
 import './css/EventLeaderBoard.scss';
@@ -21,13 +23,20 @@ import accept from './img/eventshow/accept.png';
 import decline from './img/eventshow/decline.png';
 import credits from './img/profile/credits.png';
 
-export const EventLeaderBoard = ({getAllEvents}) => {
+export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
+
+    const notifyEventFull = (eventSkill) => toast("Er is geen plaats meer vrij om deze gebruiker te accepteren voor " + eventSkill.skill.name + ". Als je toch meer gebruikers wilt accepteren zal je het aantal werknemers moeten verhogen.");
+    const notifyCredits = (user, eventSkill) => toast("Je hebt niet genoeg credits om " + user.name + " te vergoeden voor " + eventSkill.hours + "u " + eventSkill.skill.name + ".");
 
     useEffect(() => {
       getAllEvents();
+      getUsers();
     }, []);
     
     const events = useSelector(state => state.remoteAllEvents);
+    const users = useSelector(state => state.remoteUsers);
+
+    let loggedUser = users.data ? users.data.find(user => user.id === JSON.parse(localStorage.getItem("user")).id) : null;
 
     const { id } = useParams();
     const event = events.data ? events.data.find(event => event.id === parseInt(id)) : null;
@@ -37,10 +46,32 @@ export const EventLeaderBoard = ({getAllEvents}) => {
       return jsDate.getDate()+'-'+(jsDate.getMonth()+1)+'-'+jsDate.getFullYear();
     }
 
-    function acceptUser(eventSkillId, userId) {
-      Axios.post('/accept', {
-        'eventSkillId': eventSkillId,
-        'userId': userId
+    function acceptUser(eventSkill, user) {
+      if(eventSkill.users.filter(userItem => userItem.accepted === 1).length < eventSkill.amount) {
+        Axios.post('/accept', {
+          'eventSkill': eventSkill.id,
+          'user': user.id
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+          }
+        })
+        .then((response) => {
+          getAllEvents();
+        })
+        .catch((error) => {
+      
+        })
+      } else {
+        notifyEventFull(eventSkill);
+      }
+    }
+
+    function declineUser(eventSkill, user) {
+      Axios.post('/decline', {
+        'eventSkill': eventSkill.id,
+        'user': user.id
       }, {
         headers: {
           'Content-Type': 'application/json',
@@ -48,19 +79,42 @@ export const EventLeaderBoard = ({getAllEvents}) => {
         }
       })
       .then((response) => {
-        window.location.href = '/event-leader-board/' + event.id;
+        getAllEvents();
       })
       .catch((error) => {
     
       })
     }
 
-    function presentUser(eventSkillId, userId, credits) {
-      Axios.post('/present', {
-        'eventSkillId': eventSkillId,
-        'credits': credits,
-        'userId': userId,
-        'leader': event.project.leader.id
+    function presentUser(eventSkill, user) {
+      if(parseInt(loggedUser.credits) >= eventSkill.credits || eventSkill.paid === 0) {
+        Axios.post('/present', {
+          'eventSkill': eventSkill.id,
+          'credits': eventSkill.credits,
+          'user': user.id,
+          'leader': event.project.leader.id
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+          }
+        })
+        .then((response) => {
+          getAllEvents();
+        })
+        .catch((error) => {
+      
+        })
+      } else {
+        notifyCredits(user, eventSkill);
+      }
+      
+    }
+
+    function nonPresentUser(eventSkill, user) {
+      Axios.post('/not-present', {
+        'eventSkill': eventSkill.id,
+        'user': user.id,
       }, {
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +122,7 @@ export const EventLeaderBoard = ({getAllEvents}) => {
         }
       })
       .then((response) => {
-        window.location.href = '/event-leader-board/' + event.id;
+        getAllEvents();
       })
       .catch((error) => {
     
@@ -95,13 +149,13 @@ export const EventLeaderBoard = ({getAllEvents}) => {
                     <img className='credits' src={credits}/>
                     {
                       user.present ? <p>Aanwezig</p> : <div className='accept-present'>
-                        <img src={accept} onClick={e => presentUser(skill.id, user.id)}/>
-                        <img src={decline}/>
+                        <img src={accept} onClick={e => presentUser(skill, user)}/>
+                        <img src={decline} onClick={e => nonPresentUser(skill, user)}/>
                       </div>
                     }
                   </div> : <div className="accept-accepted">
-                    <img src={accept} onClick={e => acceptUser(skill.id, user.id)}/>
-                    <img src={decline}/>
+                    <img src={accept} onClick={e => acceptUser(skill, user)}/>
+                    <img src={decline} onClick={e => declineUser(skill, user)}/>
                   </div>
                 }
               </div>
@@ -119,8 +173,8 @@ export const EventLeaderBoard = ({getAllEvents}) => {
             <p>{skill.amount} x {skill.skill.name} - {skill.hours}u</p>
           </div>
           {
-            skill.users ? skill.users.map(user => 
-              <div className="users">
+            skill.users ? skill.users.map(user =>
+              <div className="users" key={user.id}>
                 <div className="image">
                   <img src={profile}/>
                   <p>{user.name}</p>
@@ -131,13 +185,13 @@ export const EventLeaderBoard = ({getAllEvents}) => {
                     <img className='credits' src={credits}/>
                     {
                       user.present ? <p>Betaald</p> : <div className='accept-present'>
-                        <img src={accept} onClick={e => presentUser(skill.id, user.id, skill.credits)}/>
-                        <img src={decline}/>
+                        <img src={accept} onClick={e => presentUser(skill, user)}/>
+                        <img src={decline} onClick={e => nonPresentUser(skill, user)}/>
                       </div>
                     }
                   </div> : <div className="accept-accepted">
-                    <img src={accept} onClick={e => acceptUser(skill.id, user.id)}/>
-                    <img src={decline}/>
+                    <img src={accept} onClick={e => acceptUser(skill, user)}/>
+                    <img src={decline} onClick={e => declineUser(skill, user)}/>
                   </div>
                 }
               </div>
@@ -161,7 +215,7 @@ export const EventLeaderBoard = ({getAllEvents}) => {
               </div>
               <div>
                   <img src={time} alt=""/>
-                  <h2>{new Date(event.date).toLocaleTimeString()}</h2>
+                  <h2>{event.time}</h2>
               </div>
               <div>
                   <img src={get} alt=""/>
@@ -187,11 +241,12 @@ export const EventLeaderBoard = ({getAllEvents}) => {
           </div>
           : null
         }
+        <ToastContainer />
       </div>
     );
 }
 
 export default connect(
     null,
-    {getAllEvents}
+    {getAllEvents, getUsers}
   )(EventLeaderBoard);

@@ -16,133 +16,139 @@ import './css/ProjectShow.scss';
 import locprod, { profileIcon } from './Global';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useHistory } from 'react-router-dom';
 
 export const ProjectShow = ({getProjects}) => {
 
-    useEffect(() => {
-      getProjects();
-    }, []);
+  const history = useHistory();
 
-    const projects = useSelector(state => state.remoteProjects);
+  useEffect(() => {
+    getProjects();
+  }, []);
 
-    const { id } = useParams();
-    const project = projects.data ? projects.data.find(project => project.id === parseInt(id)) : null;
+  const projects = useSelector(state => state.remoteProjects);
 
-    function date(date) {
-      const jsDate = new Date(date);
-      return jsDate.getDate()+'-'+(jsDate.getMonth()+1)+'-'+jsDate.getFullYear();
-    }
+  const { id } = useParams();
+  const project = projects.data ? projects.data.find(project => project.id === parseInt(id)) : null;
 
-    var sorted = project ? project.events.sort((a,b) => {
-      return new Date(a.date).getTime() - new Date(b.date).getTime()
-    }) : null;
-    const reversed = sorted ? sorted.slice().reverse() : null;
+  function date(date) {
+    const jsDate = new Date(date);
+    return jsDate.getDate()+'-'+(jsDate.getMonth()+1)+'-'+jsDate.getFullYear();
+  }
 
-    let totalHoursPaid = 0;
-    let totalHoursFree = 0;
-    let team = [];
+  var sorted = project ? project.events.sort((a,b) => {
+    return new Date(a.date).getTime() - new Date(b.date).getTime()
+  }) : null;
+  const reversed = sorted ? sorted.slice().reverse() : null;
 
-    if(project) { 
-      project.events.forEach(event => {
-        event.skills.forEach(skill => {
-          skill.users.forEach(user => {
-            if(user.present) {
-              if(skill.paid) {
-                totalHoursPaid += skill.hours
-              } else {
-                totalHoursFree += skill.hours
-              }
-              if(!team.find(item => item.id === user.id)) {
-                team.push({id: user.id, name: user.name, icon: user.icon})
-              }
+  let totalHoursPaid = 0;
+  let totalHoursFree = 0;
+  let team = [];
+
+  if(project) { 
+    project.events.forEach(event => {
+      event.skills.forEach(skill => {
+        skill.users.forEach(user => {
+          if(user.present) {
+            if(skill.paid) {
+              totalHoursPaid += skill.hours
+            } else {
+              totalHoursFree += skill.hours
             }
-          })
+            if(!team.find(item => item.id === user.id)) {
+              team.push({id: user.id, name: user.name, icon: user.icon})
+            }
+          }
         })
       })
-    }
+    })
+  }
 
-    function deleteEvent(e, id) { 
-      e.preventDefault();
-      fetch(locprod + '/events/' + id, {
-        method: 'DELETE',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem("token")
-        }
-      }).then(response => {
-        window.location.href = '/projects/' + project.id;
-      })
-    }
+  function deleteEvent(e, id) { 
+    e.preventDefault();
+    fetch(locprod + '/events/' + id, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem("token")
+      }
+    }).then(response => {
+      window.location.href = '/projects/' + project.id;
+    })
+  }
 
-    function editEvent(e, event) {
-      e.preventDefault();
-      window.location.href = "/event/create/" + project.id + "/" + event.id;
-    }
+  function editEvent(e, event) {
+    e.preventDefault();
+    window.location.href = "/event/create/" + project.id + "/" + event.id;
+  }
 
-  
 
-    return (
-      <div className="project-details height100">
-          <Nav/>
-          {project ?
-            <div className='project-panel'>
-              <div className="column-1">
-                
-                <h2 className='title'>{project.name}</h2>
-                <div className='line'></div>
-                <p className="desc">{project.description}</p>
-                <div className="project-headers">
-                  <img src={accept}/>
-                  <img src={credit}/>
-                  <img src={profiel}/>
-                </div>
-                <div className="project-info">
-                    <p>{project.type}</p>
-                    <p>{project.credits} cc</p>
-                    <p>{project.leader.name}</p>
-                </div>
-                
-                <p>{"Er werden al " + (totalHoursPaid + totalHoursFree) + " uren gepresteerd waarvan " + totalHoursPaid + " betaald en " + totalHoursFree + " vrijwillig"}</p>
-                <h2 className='teamtitle'>Team</h2>
-                {team.map(user => 
-                  <Link key={user.id} className="team" to={"/profiel/" + user.id}><FontAwesomeIcon className="teamIcon" icon={profileIcon(user.icon)} color="white"/>{user.name}</Link>                      
-                )}
-                {JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <Link to={"/event/create/" + project.id} className='new-event'>Nieuw event</Link> : null}
+
+  return (
+    <div className="project-details height100">
+        <Nav/>
+        {project ?
+          <div className='project-panel'>
+            <div className="column-1">
+              <div className='back' onClick={e =>  history.goBack()}>
+                <span>&#10508;</span>
+                <b>BACK</b>
               </div>
-              <div className="column-2">
-                {
-                  reversed.map(event =>
-                    <Link to={"/events/" + event.id} className={"project-panel-event" + (new Date(event.date) < new Date() ? " project-panel-event-past" : "")} key={event.id}>
-                      {
-                        JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <div className='leader-buttons'>
-                        <img className="delete" onClick={e => deleteEvent(e, event.id)} src={decline} alt=""/>
-                        <img className="edit" onClick={e => editEvent(e, event)} src={update} alt=""/>
-                        </div> : <div className='placebox'></div>
-                      }
-                      <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image}/>
-                      <h2>{event.name}</h2>
-                      <p className="mt-15">{event.description}</p>
-                      <div className='flex-container'>
-                        <img src={datum}/>
-                        <img src={location}/>
-                        <img src={navGet}/>
-                      </div>
-                      <div className='flex-container'>
-                        <p>{date(event.date)}</p>
-                        <p>{event.location}</p>
-                        <p>{event.credits} cc</p>
-                      </div>
-                    </Link>
-                  )
-                }
+              <h2 className='title'>{project.name}</h2>
+              <div className='line'></div>
+              <p className="desc">{project.description}</p>
+              <div className="project-headers">
+                <img src={accept}/>
+                <img src={credit}/>
+                <img src={profiel}/>
               </div>
+              <div className="project-info">
+                  <p>{project.type}</p>
+                  <p>{project.credits} cc</p>
+                  <p>{project.leader.name}</p>
+              </div>
+              
+              <p>{"Er werden al " + (totalHoursPaid + totalHoursFree) + " uren gepresteerd waarvan " + totalHoursPaid + " betaald en " + totalHoursFree + " vrijwillig"}</p>
+              <h2 className='teamtitle'>Team</h2>
+              {team.map(user => 
+                <Link key={user.id} className="team" to={"/profiel/" + user.id}><FontAwesomeIcon className="teamIcon" icon={profileIcon(user.icon)} color="white"/>{user.name}</Link>                      
+              )}
+              {JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <Link to={"/event/create/" + project.id} className='new-event'>Nieuw event</Link> : null}
             </div>
-            :
-            null
-          }
-      </div>
-    );
+            <div className="column-2">
+              {
+                reversed.map(event =>
+                  <Link to={"/events/" + event.id} className={"project-panel-event" + (new Date(event.date) < new Date() ? " project-panel-event-past" : "")} key={event.id}>
+                    {
+                      JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <div className='leader-buttons'>
+                      <img className="delete" onClick={e => deleteEvent(e, event.id)} src={decline} alt=""/>
+                      <img className="edit" onClick={e => editEvent(e, event)} src={update} alt=""/>
+                      </div> : <div className='placebox'></div>
+                    }
+                    <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image}/>
+                    <h2>{event.name}</h2>
+                    <p className="mt-15">{event.description}</p>
+                    <div className='flex-container'>
+                      <img src={datum}/>
+                      <img src={location}/>
+                      <img src={navGet}/>
+                    </div>
+                    <div className='flex-container'>
+                      <p>{date(event.date)}</p>
+                      <p>{event.location}</p>
+                      <p>{event.credits} cc</p>
+                    </div>
+                  </Link>
+                )
+              }
+            </div>
+          </div>
+          :
+          null
+        }
+    </div>
+  );
 }
 
 

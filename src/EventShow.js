@@ -11,6 +11,8 @@ import './css/EventShow.scss';
 
 export const EventShow = ({getAllEvents}) => {
 
+
+
   useEffect(() => {
     getAllEvents();
   }, []);
@@ -42,7 +44,7 @@ export const EventShow = ({getAllEvents}) => {
   return (
     <div className="height100">
         <Nav/>
-        {event ? <EventShowComp event={event} likeEvent={likeEvent}/> : null}
+        {event ? <EventShowComp event={event} likeEvent={likeEvent} isPage={true}/> : null}
     </div>
   );
 }
