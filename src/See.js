@@ -67,14 +67,15 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   // A Geocoding request with region=es (Spain) will return the Spanish city.
   Geocode.setRegion("es");
 
-  const [a, setA] = useState(true);
-  const [b, setB] = useState(true);
-  const [c, setC] = useState(true);
-  const [d, setD] = useState(true);
-  const [e, setE] = useState(true);
+  const [business, setBusiness] = useState(true);
+  const [service, setService] = useState(true);
+  const [activity, setActivity] = useState(true);
+  const [freeWork, setFreeWork] = useState(true);
+  const [paidWork, setPaidWork] = useState(true);
 
   const [displayMap, setDisplayMap] = useState(true);
   const [displayAddActivity, setDisplayAddActivity] = useState(false);
+  const [displayFilters, setDisplayFilters] = useState(window.innerWidth > 1000 ? true : false);
 
   const [activityLocation, setActivityLocation] = useState("");
   const [name, setName] = useState("");
@@ -87,7 +88,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   const [today, setToday] = useState(false);
   const [week, setWeek] = useState(false);
   
-  const [position, setPosition] = useState({ lat: 51.05, lng: 3.71667 });
+  const [position, setPosition] = useState({ lat: parseFloat(51.05), lng: parseFloat(3.71667) });
   const [zoom, setZoom] = useState(13);
 
   const [searchResults, setSearchResults] = useState(null);
@@ -104,42 +105,22 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     getBusinesses();
     getActivities();
     getAllEvents();
-  }, []);
 
+    function handleResize() {
+      if(window.innerWidth > 1000) {
+        setDisplayFilters(true);
+      } else {
+        setDisplayFilters(false);
+      }
+    }
+    window.addEventListener('resize', handleResize);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const businesses = useSelector(state => state.remoteBusinesses);
   const activities = useSelector(state => state.remoteActivities);
-  const events = useSelector(state => state.remoteAllEvents)
-
-  const businessMarkers = businesses.data ? businesses.data.filter((business) => {
-      return business.type === 'business';
-  }).map(business => {
-    return <Marker key={business.id} position={[business.lat, business.lng]} icon={getIcon}>
-      <Popup className="popup">
-        <h2><Link to={"/get/handelaars/" + business.id + "/products"}>{business.name}</Link></h2>
-        <p>{business.description}</p>
-        <div className="data-container">
-          <img src={see}/>
-          <p>{business.location}</p>
-        </div>
-      </Popup>
-    </Marker>
-  }) : null;
-
-  const serviceMarkers = businesses.data ? businesses.data.filter((business) => {
-      return business.type === 'service';
-  }).map(business => {
-    return <Marker key={business.id} position={[business.lat, business.lng]} icon={dienstIcon}>
-      <Popup className="popup">
-        <h2><Link to={"/get/handelaars/" + business.id + "/products"}>{business.name}</Link></h2>
-        <p>{business.description}</p>
-        <div className="data-container">
-          <img src={see}/>
-          <p>{business.location}</p>
-        </div>
-      </Popup>
-    </Marker>
-  }) : null;
+  const events = useSelector(state => state.remoteAllEvents);
 
   const isToday = (someDate) => {
     const today = new Date()
@@ -166,15 +147,45 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
       d1.getDate() === d2.getDate();
   }
 
+  const businessMarkers = businesses.data ? businesses.data.filter((business) => {
+      return business.type === 'business';
+  }).map(business => {
+    return <Marker key={business.id} position={[business.lat, business.lng]} icon={getIcon}>
+      <Popup className="popup">
+        <h2><Link to={"/get/handelaars/" + business.id + "/products"}>{business.name}</Link></h2>
+        <p>{business.description}</p>
+        <div className="data-container">
+          <img src={see} alt=""/>
+          <p>{business.location}</p>
+        </div>
+      </Popup>
+    </Marker>
+  }) : null;
+
+  const serviceMarkers = businesses.data ? businesses.data.filter((business) => {
+      return business.type === 'service';
+  }).map(business => {
+    return <Marker key={business.id} position={[business.lat, business.lng]} icon={dienstIcon}>
+      <Popup className="popup">
+        <h2><Link to={"/get/handelaars/" + business.id + "/products"}>{business.name}</Link></h2>
+        <p>{business.description}</p>
+        <div className="data-container">
+          <img src={see} alt=""/>
+          <p>{business.location}</p>
+        </div>
+      </Popup>
+    </Marker>
+  }) : null;
+
   const activityMarker = (activity) => <Marker key={activity.id} position={[activity.lat, activity.lng]} icon={evenementenIcon}>
     <Popup className="popup">
       <h2><Link to={"/activities/" + activity.id}>{activity.name}</Link></h2>
       <div className="data-container">
-        <img src={datum}/>
+        <img src={datum} alt=""/>
         <p>{activity.date}</p>
       </div>
       <div className="data-container">
-        <img src={see}/>
+        <img src={see} alt=""/>
         <p>{activity.location}</p>
       </div>
     </Popup>
@@ -218,62 +229,42 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     <Popup className="popup" minWidth="280">
       <h2><Link to={"/events/" + event.id}>{event.name}</Link></h2>
       <div className="data-container">
-        <img src={datum}/>
+        <img src={datum} alt=""/>
         <p>{event.date}</p>
       </div>
       <div className="data-container">
-        <img src={see}/>
+        <img src={see} alt=""/>
         <p>{event.location}</p>
       </div>
     </Popup>
   </Marker>
 
+  const filteredEventMarkers = (event) => {
+    if(today || week || state[0].startDate) {
+      if(today) {
+        return isToday(new Date(event.date)) ? eventMarker(event) : null
+      }
+      if(week) {
+        return onCurrentWeek(new Date(event.date)) ? eventMarker(event) : null
+      }
+      if(state[0].startDate && state[0].endDate) {
+        return new Date(event.date) > new Date(state[0].startDate) && new Date(event.date) < new Date(state[0].endDate) ? eventMarker(event) : null
+      }
+      if(state[0].startDate) {
+        return sameDay(new Date(state[0].startDate), new Date(event.date)) ? eventMarker(event) : null
+      }
+    } else {
+      return eventMarker(event)
+    }
+  }
+
   const eventMarkersFree = events.data ? (events.data.map(event =>
-    !event.hasPaid ?
-      today || week ?
-          today ? 
-            isToday(new Date(event.date)) ? eventMarker(event) : null 
-            :
-            onCurrentWeek(new Date(event.date)) ? eventMarker(event) : null
-    : eventMarker(event) : null
+    !event.hasPaid ? filteredEventMarkers(event) : null
   )) : null;
 
   const eventMarkersPaid = events.data ? (events.data.map(event =>
-    event.hasPaid ?
-      today || week ?
-          today ? 
-            isToday(new Date(event.date)) ? eventMarker(event) : null 
-            :
-            onCurrentWeek(new Date(event.date)) ? eventMarker(event) : null
-    : eventMarker(event) : null
+    event.hasPaid ? filteredEventMarkers(event) : null
   )) : null;
-
-  function all() {
-    setA(true);
-    setB(true);
-    setC(true);
-    setD(true);
-  }
-
-  function business() {
-    setA(a ? false : true);
-  }
-  
-  function service() {
-    setB(b ? false : true);
-  }
-
-  function event() {
-    setC(c ? false : true);
-  }
-
-  function work() {
-    setD(d ? false : true);
-  }
-
-  function workPaid() {
-    setE(e ? false : true);
-  }
 
   function clickDay() {
     setWeek(false);
@@ -306,27 +297,25 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   }
 
   function showFilters() {
-    document.querySelector(".filters").style.display = "block";
-    document.querySelector(".map-filter").style.display = "none";
-    document.querySelector(".map").style.display = "none";
+    setDisplayFilters(true);
+    setDisplayMap(false);
   }
 
   function showMap() {
-    document.querySelector(".filters").style.display = "none";
-    document.querySelector(".map-filter").style.display = "block";
-    document.querySelector(".map").style.display = "block";
+    setDisplayFilters(false);
+    setDisplayMap(true);
   }
 
   function switchToActivity() {
     setDisplayMap(false);
+    setDisplayFilters(false);
     setDisplayAddActivity(true);
-    document.querySelector(".map-filter").style.display = "none";
   }
 
   function switchToMap() {
     setDisplayMap(true);
+    setDisplayFilters(window.innerWidth > 1000 ? true : false);
     setDisplayAddActivity(false);
-    document.querySelector(".map-filter").style.display = "block";
   }
 
   function searchAddress(address) {
@@ -360,6 +349,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
       getActivities();
       setDisplayAddActivity(false);
       setDisplayMap(true);
+      setDisplayFilters(window.innerWidth > 1000 ? true : false);
     }).catch((error) => {})
   }
 
@@ -388,7 +378,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   }
 
   function clickResult(result) {
-    setPosition({lat: result.lat, lng: result.lng});
+    setPosition({lat: parseFloat(result.lat), lng: parseFloat(result.lng)});
     setZoom(18);
   }
 
@@ -409,15 +399,15 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     <div className="map-container">
       <Nav/>
       <div className="container">
-        <div className="add-activity" onClick={e => displayMap ? switchToActivity() : switchToMap()}>{displayMap ? "Activiteit toevoegen" : "Annuleren" }<img src={displayMap ? add : decline}/></div>
-        <img onClick={() => {showFilters()}} className="map-filter" src={mapFilter}/>
+        <div className="add-activity" onClick={e => displayMap ? switchToActivity() : switchToMap()}>{displayAddActivity ? "Annuleren" : "Activiteit toevoegen" }<img src={displayAddActivity ? decline : add} alt=""/></div>
+        { !displayFilters ? <img onClick={() => {showFilters()}} className="map-filter" src={mapFilter} alt=""/> : null}
         {
-          displayMap ? <div className="filters">
-            <img onClick={() => {showMap()}} className="close" src={close}/>
+          displayFilters ? <div className="filters">
+            <img onClick={() => {showMap()}} className="close" src={close} alt=""/>
             <input onChange={e => searchItem(e.target.value)} type="text" placeholder="Zoeken..."/>
             <div className="searchResults">
               {
-                searchResults ? searchResults.map(result => <div onClick={e => clickResult(result)}><img src={findIcon(result.type)}/><span>{result.name}</span></div>) : null
+                searchResults ? searchResults.map(result => <div key={result.type + result.id} onClick={e => clickResult(result)}><img src={findIcon(result.type)} alt=""/><span>{result.name}</span></div>) : null
               }
             </div>
             <div className="time">
@@ -431,54 +421,55 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
             <h2>Filters</h2>
             <div className="categories">
               <div>
-                <img src={evenementen}/>
+                <img src={evenementen} alt=""/>
                 <p>Evenementen</p>
               </div>
-              <img onClick={() => {event()}} className="switch" src={c ? active : nonactive}/>
+              <img onClick={() => setActivity(!activity)} className="switch" src={activity ? active : nonactive} alt=""/>
             </div>
             <div className="categories">
               <div>
-                <img src={get}/>
+                <img src={get} alt=""/>
                 <p>Handelaars</p>
               </div>
-              <img onClick={() => {business()}} className="switch" src={a ? active: nonactive}/>
+              <img onClick={() => setBusiness(!business)} className="switch" src={business ? active: nonactive} alt=""/>
             </div>
             <div className="categories">
               <div>
-                <img src={diensten}/>
+                <img src={diensten} alt=""/>
                 <p>Diensten</p>
               </div>
-              <img onClick={() => {service()}} className="switch" src={b ? active : nonactive}/>
+              <img onClick={() => setService(!service)} className="switch" src={service ? active : nonactive} alt=""/>
             </div>
             <div className="categories">
               <div>
-                <img src={free}/>
+                <img src={free} alt=""/>
                 <p>Vrijwillig werk</p>
               </div>
-              <img onClick={() => {work()}} className="switch" src={d ? active : nonactive}/>
+              <img onClick={() => setFreeWork(!freeWork)} className="switch" src={freeWork ? active : nonactive} alt=""/>
             </div>
             <div className="categories">
               <div>
-                <img src={credit}/>
+                <img src={credit} alt=""/>
                 <p>Credit werk</p>
               </div>
-              <img onClick={() => {workPaid()}} className="switch" src={e ? active : nonactive}/>
+              <img onClick={() => setPaidWork(!paidWork)} className="switch" src={paidWork ? active : nonactive} alt=""/>
             </div>
           </div> : null
         }
         {
           displayMap ? <MapContainer className="map" center={position} zoom={zoom}>
+            <ChangeView center={position} zoom={zoom} /> 
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <ChangeMapView coords={position} zoom={zoom} />
+       
             <MarkerClusterGroup>
-              { a ? businessMarkers : null}
-              { b ? serviceMarkers : null}
-              { c ? activityMarkers : null}
-              { d ? eventMarkersFree : null}
-              { e ? eventMarkersPaid : null}
+              { business ? businessMarkers : null}
+              { service ? serviceMarkers : null}
+              { activity ? activityMarkers : null}
+              { freeWork ? eventMarkersFree : null}
+              { paidWork ? eventMarkersPaid : null}
             </MarkerClusterGroup>
           </MapContainer> : null
         }
@@ -493,7 +484,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
               <input className="date" type="date" onChange={e => setDate(e.target.value)}/>
               <label>Tijdstip: (optioneel)</label>
               <input type='time' onChange={e => setTime(e.target.value)} placeholder='Tijdstip'/>
-              <div className="submit" onClick={e => sendActivity()}>Activiteit toevoegen<img src={add}/></div>
+              <div className="submit" onClick={e => sendActivity()}>Activiteit toevoegen<img src={add} alt=""/></div>
             </div>
             <div>
               <label>Locatie:</label>
@@ -519,10 +510,9 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   );
 }
 
-function ChangeMapView({ coords, zoom }) {
+function ChangeView({ center, zoom }) {
   const map = useMap();
-  map.setView([coords.lat, coords.lng], map.getZoom());
-  map.setZoom(zoom);
+  map.setView(center, zoom);
   return null;
 }
 

@@ -137,6 +137,7 @@ function App() {
               <Route path="/agenda/:id" component={Agenda}/>
               <Route path="/agenda" component={Agenda}/>
 
+              <PrivateRoute path="/netwerk/dm/:dmId" component={Netwerk}/>
               <PrivateRoute path="/netwerk/:groupchatId" component={Netwerk}/>
               <PrivateRoute path="/netwerk" component={Netwerk}/>
 

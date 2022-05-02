@@ -10,28 +10,24 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import agenda from './img/profile/agenda.png';
 import handel from './img/profile/handel.png';
 import kassa from './img/profile/kassa.png';
-
 import credits from './img/profile/credits.png';
 import edit from './img/profile/edit.png';
-
 import navAgenda from './img/nav/agenda.png';
 import master from './img/profile/master.png';
 import see from './img/nav/see.png';
 import credit from './img/profile/credit.png';
 import team from './img/profile/team.png';
 import leader from './img/profile/leader.png';
-
 import desc from './img/profile/desc.png';
 import data from './img/profile/data.png';
-import get from './img/nav/get.png';
-
 import free from './img/profile/free.png';
 import skill from './img/profile/skill.png';
 import badges from './img/profile/badges.png';
-
+import like from './img/eventshow/like.png';
 import logoutImg from './img/profile/logout.png';
 
 import { badgeIcon, date, profileIcon, skillIcon } from './Global';
+import Axios from 'axios';
 
 export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
 
@@ -41,6 +37,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
     const [leaderClicked, setLeaderClicked] = useState(false);
     const [eventsClicked, setEventsClicked] = useState(false);
     const [teamClicked, setTeamClicked] = useState(false);
+    const [liked, setLiked] = useState(false);
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
     
@@ -85,8 +82,6 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
             })
         })
     }
-
-    console.log(userHours);
 
     const freeUserHours = userHours ? userHours.filter(userHour => userHour.paid === 0) : null
     const paidUserHours = userHours ? userHours.filter(userHour => userHour.paid === 1) : null
@@ -153,6 +148,24 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
         }
     }
 
+    const likeUser = (userId) => {
+        Axios.post('/like-user', {
+          'liker': JSON.parse(localStorage.getItem("user")).id,
+          'user': userId
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+          }
+        })
+        .then((response) => {
+            getUsers();
+        })
+        .catch((error) => {
+
+        })
+      }
+
     return (
         <div className="height100">
             <Nav/>
@@ -181,7 +194,10 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                     </div>
                     <div className="right">
                         {
-                            !id ? <Link to={"/profiel/edit"}><img className="profile-edit" src={edit} alt=""/></Link> : null
+                            !id ? <Link to={"/profiel/edit"}><img className="profile-edit" src={edit} alt=""/></Link> : updatedLoggedUser ? <div className={updatedLoggedUser.users && updatedLoggedUser.users.find(user => user.id === loggedUser.id) || liked ? "like liked" : "like"} onClick={e => updatedLoggedUser.users && updatedLoggedUser.users.find(user => user.id === loggedUser.id) ? null : likeUser(updatedLoggedUser.id)}>
+                                <span>{liked ? updatedLoggedUser.users.length + 1 : updatedLoggedUser.users.length}</span>
+                                <img src={like}/>
+                            </div> : null
                         }
                     </div>
                 </div>

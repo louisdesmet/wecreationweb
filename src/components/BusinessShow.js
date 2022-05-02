@@ -109,6 +109,7 @@ function BusinessShow(props) {
                     <img src={profile}/>
                     <h3>Handelaar</h3>
                     <p>{props.business.leader.name}</p>
+                    <p onClick={e => window.location.href = "/netwerk/dm/" + props.business.leader.id}>Stuur een bericht</p>
                     </div>
                     <div>
                     <img src={team}/>

@@ -17,7 +17,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
 
-    const { groupchatId } = useParams();
+    const { groupchatId, dmId} = useParams();
 
     const [name, setName] = useState(null);
 
@@ -94,6 +94,11 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         setOneTime(true);
     }
 
+    if(users.data && dmId && !oneTime) {
+        setFirstMessagesUser(users.data.find(user => user.id === parseInt(dmId)))
+        setOneTime(true);
+    }
+
     if(threadGroups) {
         threadGroups.forEach(group => {
             if(group.messages.length) {
@@ -116,7 +121,6 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
             }
             event.skills.forEach(skill => { 
                 skill.users.forEach(user => {
-                    console.log(user)
                     if(user.id === loggedUser.id && user.accepted && !allowedEventGroups.includes(event.group.id)) {
                         allowedEventGroups.push(event.group.id);
                     }
@@ -124,7 +128,6 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
             })
         })
     }
-    /*console.log(allowedEventGroups);*/
 
     if(eventGroups && allowedEventGroups.length) {
         eventGroups.forEach(group => {
@@ -381,7 +384,8 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 <div className={showNotifications ? "notifications-button active" : "notifications-button"} onClick={e => switchToNotifications()} dangerouslySetInnerHTML={{__html: '<3'}}></div>
                 <div className="dms">
                     {
-                        users.data ? <Select placeholder="Zoeken" onChange={e => searchUser(e.value)} className="search" options={users.data.map(user => {
+                        users.data ? <Select placeholder="Zoeken" onChange={e => searchUser(e.value)} className="search" options={users.data.filter(user => user.id !== loggedUser.id).map(user => {
+
                             return { value: user, label: user.name }
                         })}/> : null
                     }

@@ -77,7 +77,8 @@
     .login {
         width: 90%;
         .logo {
-            margin: 100px auto 50px auto;
+            margin: 0 auto 50px auto;
+            padding-top: 30px;
         }
         button {
             padding: 8px 45px;
@@ -88,15 +89,15 @@
         }
     }
     .left-bottom {
-        width: 100px;
+        display: none;
     }
     .right-top {
-        width: 100px;
+        display: none;
     }
     .right-bottom {
-        width: 100px;
+        display: none;
     }
     .left-top{
-        width: 100px;
+        display: none;
     }
 }
