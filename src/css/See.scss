@@ -98,23 +98,65 @@
             display: none;
         }
         .filters {
+            -ms-overflow-style: none;  /* Internet Explorer 10+ */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .filters::-webkit-scrollbar { 
+            display: none;  /* Safari and Chrome */
+        }
+        .filters {
             width: 28%; 
             background: black;  
             padding: 25px;
             box-sizing: border-box;
             border-bottom-left-radius: 55px;
             border-top-left-radius: 55px;  
+            overflow: scroll;
             .close {
                 display: none;
+            }
+            input {
+                padding: 9px 15px;
+                box-sizing: border-box;
+                width: 100%;
+                margin: 5px 0 0 0;
+                display: block;
+                border-radius: 18px;
+                border: none;
+                font-size: 1.3em;
+                
+            }
+            .searchResults {
+                background: white;
+                border-radius: 15px;
+                margin: 15px 0 0 0;
+                div {
+                    display: flex;
+                    color: black;
+                    padding: 7px 15px;
+                    border-bottom: 1px solid lightgray;
+                    img {
+                        width: 25px;
+                        margin: 0 6px 0 0;
+                    }
+                }
+                div:hover {
+                    background: black;
+                    color: white;
+                }
+            }
+            .searchResults div:last-child {
+                border: none;
             }
             .time {
                 display: flex;
                 justify-content: space-between;
-                margin: 0 0 15px 0;
+                width: 100%;
+                margin: 20px 0 15px 0;
                 div {
                     width: 47%;
                     color: black;
-                    padding: 12px 0;
+                    padding: 9px 0;
                     border-radius: 25px;
                     background: white;
                     text-align: center;
@@ -129,9 +171,36 @@
                     border: 2px solid white;
                 }
             }
+          
+          
+            .rdrCalendarWrapper {
+                width: 100%;
+                border-radius: 15px;
+                overflow: hidden;
+                background: white;
+                .rdrDateDisplayWrapper {
+                    background: white;
+                    .rdrDateInput {
+                        input {
+                            padding: 0;
+                            margin: 0;
+                        }
+                    }
+                }
+                .rdrMonth {
+                    width: 100%;
+                    box-sizing: border-box;
+                    .rdrInRange {
+                        background: black;
+                    }
+                    .rdrStartEdge, .rdrEndEdge {
+                        background: black;
+                    }
+                }
+            }
             h2 {
                 color: white;
-                padding: 0 0 15px 0;
+                padding: 25px 0 15px 0;
             }     
             .categories {
                 display: flex;
@@ -208,7 +277,7 @@
                 position: absolute;
                 top: 65px;
                 right: 65px;
-                width: 30px;
+                width: 40px;
                 z-index: 999;
                 cursor: pointer;
             }

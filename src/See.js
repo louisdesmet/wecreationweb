@@ -6,10 +6,14 @@ import { Link } from 'react-router-dom';
 import Geocode from "react-geocode";
 import axios from "axios";
 
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet';
 import Nav from "./Nav";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
+
+import { DateRange } from "react-date-range";
+import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
 import './css/See.scss';
 import see from './img/nav/see.png';
@@ -17,7 +21,7 @@ import datum from './img/nav/agenda.png';
 import evenementen from './img/profile/badges.png';
 import get from './img/nav/get.png';
 import diensten from './img/map/diensten.png';
-import work from './img/nav/work.png';
+import workImage from './img/nav/work.png';
 import free from './img/profile/free.png';
 import credit from './img/profile/credit.png';
 import active from './img/map/filter-active.png';
@@ -27,8 +31,9 @@ import close from './img/map/close.png';
 import add from './img/eventshow/add.png';
 import decline from './img/eventshow/decline.png';
 
+
 let workIcon = L.icon({
-  iconUrl: work,
+  iconUrl: workImage,
   iconSize: [30, 30],
   popupAnchor: [0, -20],
 });
@@ -76,11 +81,24 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   const [desc, setDesc] = useState("");
   const [lat, setLat] = useState("");
   const [lng, setLng] = useState("");
+  const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState("");
 
   const [today, setToday] = useState(false);
   const [week, setWeek] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const [time, setTime] = useState();
+  
+  const [position, setPosition] = useState({ lat: 51.05, lng: 3.71667 });
+  const [zoom, setZoom] = useState(13);
+
+  const [searchResults, setSearchResults] = useState(null);
+
+  const [state, setState] = useState([
+    {
+      startDate: null,
+      endDate: new Date(""),
+      key: 'selection'
+    }
+  ]);
 
   useEffect(() => {
     getBusinesses();
@@ -88,7 +106,6 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     getAllEvents();
   }, []);
 
-  const position = [51.05, 3.71667];
 
   const businesses = useSelector(state => state.remoteBusinesses);
   const activities = useSelector(state => state.remoteActivities);
@@ -114,7 +131,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   }).map(business => {
     return <Marker key={business.id} position={[business.lat, business.lng]} icon={dienstIcon}>
       <Popup className="popup">
-        <h2><Link to={"/businesses/" + business.id}>{business.name}</Link></h2>
+        <h2><Link to={"/get/handelaars/" + business.id + "/products"}>{business.name}</Link></h2>
         <p>{business.description}</p>
         <div className="data-container">
           <img src={see}/>
@@ -143,6 +160,12 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
       return res; // true / false
   }
 
+  function sameDay(d1, d2) {
+    return d1.getFullYear() === d2.getFullYear() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate();
+  }
+
   const activityMarker = (activity) => <Marker key={activity.id} position={[activity.lat, activity.lng]} icon={evenementenIcon}>
     <Popup className="popup">
       <h2><Link to={"/activities/" + activity.id}>{activity.name}</Link></h2>
@@ -157,10 +180,28 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     </Popup>
   </Marker>
 
+  const filteredActivityMarkers = (activity) => {
+    if(today || week || state[0].startDate) {
+      if(today) {
+        return isToday(new Date(activity.date)) ? activityMarker(activity) : null
+      }
+      if(week) {
+        return onCurrentWeek(new Date(activity.date)) ? activityMarker(activity) : null
+      }
+      if(state[0].startDate && state[0].endDate) {
+        return new Date(activity.date) > new Date(state[0].startDate) && new Date(activity.date) < new Date(state[0].endDate) ? activityMarker(activity) : null
+      }
+      if(state[0].startDate) {
+        return sameDay(new Date(state[0].startDate), new Date(activity.date)) ? activityMarker(activity) : null
+      }
+      
+    } else {
+      return activityMarker(activity)
+    }
+  }
+
   const activityMarkers = activities.data ? (activities.data.map(activity =>
-    today || week ? 
-      today ? isToday(new Date(activity.date)) ? activityMarker(activity) : null : onCurrentWeek(new Date(activity.date)) ? activityMarker(activity) : null
-    : activityMarker(activity)
+    filteredActivityMarkers(activity)
   )) : null;
 
   if(events.data) {
@@ -207,8 +248,6 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     : eventMarker(event) : null
   )) : null;
 
-
-
   function all() {
     setA(true);
     setB(true);
@@ -239,11 +278,31 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   function clickDay() {
     setWeek(false);
     setToday(today ? false : true);
+    setState([
+      {
+        startDate: null,
+        endDate: new Date(""),
+        key: 'selection'
+      }
+    ]);
   } 
 
   function clickWeek() {
     setToday(false);
     setWeek(week ? false : true);
+    setState([
+      {
+        startDate: null,
+        endDate: new Date(""),
+        key: 'selection'
+      }
+    ]);
+  }
+
+  function clickDaterange(selection) {
+    setState([selection]);
+    setToday(false);
+    setWeek(false);
   }
 
   function showFilters() {
@@ -261,11 +320,13 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   function switchToActivity() {
     setDisplayMap(false);
     setDisplayAddActivity(true);
+    document.querySelector(".map-filter").style.display = "none";
   }
 
   function switchToMap() {
     setDisplayMap(true);
     setDisplayAddActivity(false);
+    document.querySelector(".map-filter").style.display = "block";
   }
 
   function searchAddress(address) {
@@ -302,6 +363,48 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     }).catch((error) => {})
   }
 
+  function searchItem(query) {
+    const foundActivities = activities.data.filter((activity) => {
+      const name = activity.name.toLowerCase();
+      activity.type = "activity";
+      return name.includes(query) && query !== "";
+    });
+    const foundBusinesses = businesses.data.filter((business) => {
+      const name = business.name.toLowerCase();
+      return business.type === "business" && name.includes(query) && query !== "";
+    });
+    const foundServices = businesses.data.filter((business) => {
+      const name = business.name.toLowerCase();
+      return business.type === "service" && name.includes(query) && query !== "";
+    });
+    const foundEvents = events.data.filter((event) => {
+      const name = event.name.toLowerCase();
+      event.type = "event";
+      return name.includes(query) && query !== "";
+    });
+
+    const result = foundActivities.concat(foundBusinesses, foundServices, foundEvents);
+    setSearchResults(result);
+  }
+
+  function clickResult(result) {
+    setPosition({lat: result.lat, lng: result.lng});
+    setZoom(18);
+  }
+
+  function findIcon(type) {
+    switch(type) {
+      case "activity": return evenementen;
+      break;
+      case "business": return get;
+      break;
+      case "service": return diensten;
+      break;
+      case "event": return workImage;
+      break;
+    }
+  }
+
   return (
     <div className="map-container">
       <Nav/>
@@ -311,10 +414,20 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
         {
           displayMap ? <div className="filters">
             <img onClick={() => {showMap()}} className="close" src={close}/>
+            <input onChange={e => searchItem(e.target.value)} type="text" placeholder="Zoeken..."/>
+            <div className="searchResults">
+              {
+                searchResults ? searchResults.map(result => <div onClick={e => clickResult(result)}><img src={findIcon(result.type)}/><span>{result.name}</span></div>) : null
+              }
+            </div>
             <div className="time">
               <div className={today ? "on" : ""} onClick={() => clickDay()}>Vandaag</div>
               <div className={week ? "on" : ""} onClick={() => clickWeek()}>Deze week</div>
             </div>
+            <DateRange
+              onChange={item => clickDaterange(item.selection)}
+              ranges={state}
+            />
             <h2>Filters</h2>
             <div className="categories">
               <div>
@@ -354,11 +467,12 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
           </div> : null
         }
         {
-          displayMap ? <MapContainer className="map" center={position} zoom={13}>
+          displayMap ? <MapContainer className="map" center={position} zoom={zoom}>
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
+            <ChangeMapView coords={position} zoom={zoom} />
             <MarkerClusterGroup>
               { a ? businessMarkers : null}
               { b ? serviceMarkers : null}
@@ -366,7 +480,6 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
               { d ? eventMarkersFree : null}
               { e ? eventMarkersPaid : null}
             </MarkerClusterGroup>
-        
           </MapContainer> : null
         }
         {
@@ -392,6 +505,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
                     attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
+                  
                 </MapContainer> : null
               }
               
@@ -403,6 +517,13 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
       </div>
     </div>
   );
+}
+
+function ChangeMapView({ coords, zoom }) {
+  const map = useMap();
+  map.setView([coords.lat, coords.lng], map.getZoom());
+  map.setZoom(zoom);
+  return null;
 }
 
 export default connect(
