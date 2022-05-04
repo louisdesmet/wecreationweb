@@ -103,11 +103,11 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
     }
 
     const leaderList = projects.data && updatedLoggedUser ? projects.data.map(project =>
-        updatedLoggedUser.id === project.leader.id ? <Link key={project.id} className="projects" to={"/projects/" + project.id}><img src={ require('./img/project/' + project.picture) }/>{project.name}</Link> : null
+        updatedLoggedUser.id === project.leader.id ? <Link key={project.id} className="projects" to={"/projects/" + project.id}><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "projects/" + project.picture}/>{project.name}</Link> : null
     ) : null
 
     const eventsList = events.data && updatedLoggedUser ? events.data.map(event =>
-        updatedLoggedUser.id === event.project.leader.id ? <Link key={event.id} className="projects" to={"/events/" + event.id}><img src={ require('./img/project/' + event.project.picture) }/>{event.name}</Link> : null
+        updatedLoggedUser.id === event.project.leader.id ? <Link key={event.id} className="projects" to={"/events/" + event.id}><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.project.picture}/>{event.name}</Link> : null
     ) : null;
 
     let teamList = [];
@@ -148,10 +148,10 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
         }
     }
 
-    const likeUser = (userId) => {
+    const likeUser = (user) => {
         Axios.post('/like-user', {
-          'liker': JSON.parse(localStorage.getItem("user")).id,
-          'user': userId
+          'liker': JSON.parse(localStorage.getItem("user")),
+          'user': user.id
         }, {
           headers: {
             'Content-Type': 'application/json',
@@ -177,6 +177,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                             <Link to={updatedLoggedUser && updatedLoggedUser.roles.find(role => role.id === 3) ? "/handelaar/create/" +  updatedLoggedUser.roles.find(role => role.id === 3).business_id : "/handelaar/create"}><img src={handel} alt=""/>Mijn handelszaak</Link>
                             <Link to={"/get/historiek"}><img src={kassa} alt=""/>Mijn kassatickets</Link>
                             <Link to={"/my-events"}><img src={agenda} alt=""/>Mijn events</Link>
+                            <Link to={"/my-interests"}><img src={like} alt=""/>Mijn interesses</Link>
                             <a className="logout" onClick={() => logout()}><img src={logoutImg} alt=""/>Afmelden</a>
                         </div> : null
                     }
@@ -194,7 +195,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                     </div>
                     <div className="right">
                         {
-                            !id ? <Link to={"/profiel/edit"}><img className="profile-edit" src={edit} alt=""/></Link> : updatedLoggedUser ? <div className={updatedLoggedUser.users && updatedLoggedUser.users.find(user => user.id === loggedUser.id) || liked ? "like liked" : "like"} onClick={e => updatedLoggedUser.users && updatedLoggedUser.users.find(user => user.id === loggedUser.id) ? null : likeUser(updatedLoggedUser.id)}>
+                            !id ? <Link to={"/profiel/edit"}><img className="profile-edit" src={edit} alt=""/></Link> : updatedLoggedUser ? <div className={updatedLoggedUser.users && updatedLoggedUser.users.find(user => user.id === loggedUser.id) || liked ? "like liked" : "like"} onClick={e => updatedLoggedUser.users && updatedLoggedUser.users.find(user => user.id === loggedUser.id) ? null : likeUser(updatedLoggedUser)}>
                                 <span>{liked ? updatedLoggedUser.users.length + 1 : updatedLoggedUser.users.length}</span>
                                 <img src={like}/>
                             </div> : null
@@ -203,10 +204,9 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                 </div>
                 <div className="profile-container">
                     <div className="left">
-                        <div onClick={e => setEventsClicked(!eventsClicked)}>
-                            <img src={navAgenda} alt=""/>
-                            <h2>Lopende events</h2>
-                            {eventsClicked ? eventsList : null}
+                        <div>
+                            <img src={credit} alt=""/>
+                            <h2>Verdiende credits</h2>
                         </div>
                         <div>
                             <img src={master} alt=""/>
@@ -216,9 +216,10 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                             <img src={see} alt=""/>
                             <h2>Geen adres ingesteld</h2>
                         </div>
-                        <div>
-                            <img src={credit} alt=""/>
-                            <h2>Verdiende credits</h2>
+                        <div onClick={e => setEventsClicked(!eventsClicked)}>
+                            <img src={navAgenda} alt=""/>
+                            <h2>Lopende events</h2>
+                            {eventsClicked ? eventsList : null}
                         </div>
                         <div onClick={e => setTeamClicked(!teamClicked)}>
                         <img src={team} alt=""/>

@@ -396,7 +396,8 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                     {
                         showLatestGroupchats && latestMessagesEventGroup.map(groupchat =>
                             <div className="message" key={groupchat.group.id} onClick={e => switchViewGroupchat(groupchat)}>
-                                <div className="netwerk-profile-icon"><img src={ require('./img/project/' + groupchat.group.event.project.picture) }/></div>
+                              
+                                <div className="netwerk-profile-icon"><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + groupchat.group.event.image}/></div>
                                 <div>
                                     <p className="message-name">{groupchat.group.event.name}</p>
                                     <p>{groupchat.user ? groupchat.user.name : null}</p>
@@ -426,8 +427,9 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                     {
                         dmsActive && firstMessagesUser ? <h2 className="person"><FontAwesomeIcon icon={profileIcon(firstMessagesUser.icon)} color="white"/>{firstMessagesUser.name}</h2> : null
                     }
+                      
                     {
-                        groupchatsActive && groupMessageEventGroup ? <h2 className="person"><img src={ require('./img/project/' + groupMessageEventGroup.event.project.picture) }/>{groupMessageEventGroup.event.name}</h2> : null
+                        groupchatsActive && groupMessageEventGroup ? <h2 className="person"><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + groupMessageEventGroup.event.image}/>{groupMessageEventGroup.event.name}</h2> : null
                     }
                     {
                         threadsActive && groupMessageEventGroup ? <h2 className="person">#{groupMessageEventGroup.name}</h2> : null

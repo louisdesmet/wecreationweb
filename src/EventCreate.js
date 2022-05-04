@@ -238,11 +238,12 @@ export const EventCreate = ({getProjects, getSkills}) => {
         
         <h2><img src={work} alt=""/>Team</h2>
         <h2 className='hours'><img src={free} alt=""/>Vrijwilliger uren</h2>
+        {console.log(freeData)}
         {
           [...Array(freeAmount)].map((el, index) =>
           <div key={index} className='input-data'>
             {
-              event && freeData.length && freeData[index] && freeData[index].skill ?  <select defaultValue={freeData[index].skill} onChange={e => AddToFree(index, 'skill', e.target.value)}>
+              freeData.length && freeData[index] && freeData[index].skill ?  <select defaultValue={freeData[index].skill} onChange={e => AddToFree(index, 'skill', e.target.value)}>
                   <option>Kies een functie</option>
                   {skillList}
               </select> : null

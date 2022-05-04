@@ -1,0 +1,30 @@
+.interest-container {
+    width: 50%;
+    margin: 0 auto;
+    h2 {
+        font-size: 1.7em;
+        margin: 30px 0 20px 0;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        text-align: center;
+    }
+    .list {
+        .item {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0 0 0;
+            text-decoration: none;
+            color: black;
+            div {
+                display: flex;
+                img {
+                    width: 50px;
+                    display: block;
+                }
+            }
+            p {
+                padding: 15px;
+            }
+        }
+    }
+}

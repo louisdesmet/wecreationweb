@@ -10,6 +10,9 @@
         .left {
             flex: 1;
             margin: 20px 0 0 0;
+            .logout {
+                margin-top: 15px;
+            }
             a {
                 display: block;
                 text-decoration: none;

@@ -49,8 +49,10 @@ export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
     function acceptUser(eventSkill, user) {
       if(eventSkill.users.filter(userItem => userItem.accepted === 1).length < eventSkill.amount) {
         Axios.post('/accept', {
-          'eventSkill': eventSkill.id,
-          'user': user.id
+          'eventSkill': eventSkill,
+          'user': user.id,
+          'leader': event.project.leader.name,
+          'eventName': event.name
         }, {
           headers: {
             'Content-Type': 'application/json',

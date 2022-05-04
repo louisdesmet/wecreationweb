@@ -11,6 +11,8 @@ import navProfile from './img/nav/profile.png';
 import work from './img/nav/work.png';
 import './css/Work.scss';
 
+import add from './img/eventshow/add.png';
+
 export const Work = ({getProjects}) => {
 
   const history = useHistory();
@@ -37,7 +39,7 @@ export const Work = ({getProjects}) => {
       {
         projects.data.map(project =>
           <div className="project" key={project.id} onClick={e => events(project.id)}>
-              <img className="project-logo" src={ require('./img/project/' + project.picture) }/>
+              <img className="project-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "projects/" + project.picture}/>
               <p className="project-title">{project.name}</p>
               <div className="project-desc">
                 <p>Beschrijving</p>

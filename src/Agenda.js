@@ -103,7 +103,8 @@ export const Agenda = ({getAllEvents}) => {
           <div>
             <div className='top-agenda-popup'>
               <div>
-                <img src={ require('./img/project/' + findEvent(event.id).project.picture) }/>
+             
+                <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + findEvent(event.id).image}/>
                 <Link to={"/events/" + event.id}>{findEvent(event.id).project.name} - {event.title}</Link>
               </div>
               <span className="close" onClick={e => setEnabled(0)}>x</span>
@@ -138,7 +139,7 @@ export const Agenda = ({getAllEvents}) => {
         {dateEvents.map(event =>
           <div className='events-list' key={event.id}>
             <div className='events-list-flex'>
-              <img src={ require('./img/project/' + event.project.picture) }/>
+              <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image}/>
               <div>
                 <p className={event.worked ? "title worked" : "title"}>{event.project.name + " - " + event.name}</p>
                 <p>{event.time}</p>

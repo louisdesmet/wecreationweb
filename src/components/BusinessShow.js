@@ -69,7 +69,8 @@ function BusinessShow(props) {
         }
         Axios.post('/orders', {
             product: product.id,
-            user: JSON.parse(localStorage.getItem("user")).id
+            user: JSON.parse(localStorage.getItem("user")).id,
+            business_user: props.business.leader.id
         }, {
             headers: headers
         })

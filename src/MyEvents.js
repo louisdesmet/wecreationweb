@@ -85,7 +85,7 @@ export const MyEvents = ({getAllEvents}) => {
     
         return (
             <div className='project'>
-                <p className='project-name' onClick={e => setOpen(!open)}><img className='project-picture' src={ require('./img/project/' + props.events[0].project.picture) }/>{props.events[0].project.name}</p>
+                <p className='project-name' onClick={e => setOpen(!open)}><img className='project-picture' src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "projects/" + props.events[0].project.picture}/>{props.events[0].project.name}</p>
                 {
                     open && <div>
                         {

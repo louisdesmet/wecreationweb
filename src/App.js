@@ -49,6 +49,8 @@ import MyEvents from "./MyEvents";
 import EventLeaderBoard from "./EventLeaderBoard";
 import EventCreate from "./EventCreate";
 import ActivityShow from "./ActivityShow";
+import MyInterests from "./MyInterests";
+import ProjectCreate from "./ProjectCreate";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   
@@ -132,6 +134,7 @@ function App() {
               <PrivateRoute path="/profiel/:id" component={Profiel}/>
               <PrivateRoute path="/profiel" component={Profiel}/>
               <PrivateRoute path="/my-events" component={MyEvents}/>
+              <PrivateRoute path="/my-interests" component={MyInterests}/>
               <PrivateRoute path="/event-leader-board/:id" component={EventLeaderBoard}/>
               
               <Route path="/agenda/:id" component={Agenda}/>
@@ -140,6 +143,9 @@ function App() {
               <PrivateRoute path="/netwerk/dm/:dmId" component={Netwerk}/>
               <PrivateRoute path="/netwerk/:groupchatId" component={Netwerk}/>
               <PrivateRoute path="/netwerk" component={Netwerk}/>
+
+              <PrivateRoute path="/project/create/:id" component={ProjectCreate}/>
+              <PrivateRoute path="/project/create" component={ProjectCreate}/>
 
               <PrivateRoute path="/event/create/:id/:eventId" component={EventCreate}/>
               <PrivateRoute path="/event/create/:id" component={EventCreate}/>
