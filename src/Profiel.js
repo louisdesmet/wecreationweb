@@ -107,7 +107,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
     ) : null
 
     const eventsList = events.data && updatedLoggedUser ? events.data.map(event =>
-        updatedLoggedUser.id === event.project.leader.id ? <Link key={event.id} className="projects" to={"/events/" + event.id}><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.project.picture}/>{event.name}</Link> : null
+        updatedLoggedUser.id === event.project.leader.id ? <Link key={event.id} className="projects" to={"/events/" + event.id}><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image}/>{event.name}</Link> : null
     ) : null;
 
     let teamList = [];

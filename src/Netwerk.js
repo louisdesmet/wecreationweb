@@ -314,6 +314,10 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
     }
 
     function searchUser(user) {
+        if(window.innerWidth < 700) {
+            setMobileChatsActive(true);
+            setMobileDmsActive(false);
+        }
         setFirstMessagesUser(user);
         setMessageList(null);
         setDmsActive(true);
@@ -410,12 +414,6 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         setMobileThreadsActive(false);
     }
 
-    function mobileGoChats() {
-        setMobileDmsActive(false);
-        setMobileChatsActive(true);
-        setMobileThreadsActive(false);
-    }
-
     function mobileGoThreads() {
         setMobileDmsActive(false);
         setMobileChatsActive(false);
@@ -433,9 +431,6 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                     <div className="inner">
                         <div onClick={e => mobileGoDms()}>
                             dm's en groups
-                        </div>
-                        <div onClick={e => mobileGoChats()}>
-                            chat
                         </div>
                         <div onClick={e => mobileGoThreads()}>
                             threads
