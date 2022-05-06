@@ -198,6 +198,12 @@ export const EventCreate = ({getProjects, getSkills}) => {
     );
   }
 
+  function setLocationFunction(value) {
+    setLat(null);
+    setLng(null);
+    setLocation(value)
+  }
+
   const skillList =  skills.data ? skills.data.map(skill => <option key={skill.id} value={skill.id}>{skill.name}</option>) : null;
   return (
     <div className="height100">
@@ -224,7 +230,7 @@ export const EventCreate = ({getProjects, getSkills}) => {
         </div>
         <div className='input-image'>
           <img src={see} alt=""/>
-          <input defaultValue={event && event.location ?  event.location : ""} onChange={e => setLocation(e.target.value)} placeholder='Locatie'/>
+          <input defaultValue={event && event.location ?  event.location : ""} onChange={e => setLocationFunction(e.target.value)} placeholder='Locatie'/>
           <span onClick={e => searchAddress(location)}>Zoeken</span>
         </div>
         {
@@ -265,7 +271,7 @@ export const EventCreate = ({getProjects, getSkills}) => {
           [...Array(paidAmount)].map((el, index) =>
             <div key={index} className='input-data'>
               {
-                event && paidData.length && paidData[index] && paidData[index].skill ?  <select defaultValue={paidData[index].skill} onChange={e => AddToPaid(index, 'skill', e.target.value)}>
+                paidData.length && paidData[index] && paidData[index].skill ?  <select defaultValue={paidData[index].skill} onChange={e => AddToPaid(index, 'skill', e.target.value)}>
                     <option>Kies een functie</option>
                     {skillList}
                 </select> : null

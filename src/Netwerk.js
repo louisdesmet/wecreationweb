@@ -53,11 +53,28 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
 
     const [threadMessageList, setThreadMessageList] = useState(null);
 
+    const [mobileDmsActive, setMobileDmsActive] = useState(true);
+    const [mobileChatsActive, setMobileChatsActive] = useState(window.innerWidth > 700 ? true : false);
+    const [mobileThreadsActive, setMobileThreadsActive] = useState(window.innerWidth > 700 ? true : false);
+
     useEffect(() => {
         getMessages();
         getUsers();
         getAllEvents();
         getGroups();
+
+        function handleResize() {
+            if(window.innerWidth > 700) {
+              setMobileDmsActive(true);
+              setMobileChatsActive(true);
+              setMobileThreadsActive(true);
+            } else {
+                setMobileDmsActive(true);
+                setMobileChatsActive(false);
+                setMobileThreadsActive(false);
+            }
+          }
+          window.addEventListener('resize', handleResize);
     }, []);
 
     const messages = useSelector(state => state.remoteMessages);
@@ -245,6 +262,10 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
 
 
     function switchView(dm) {
+        if(window.innerWidth < 700) {
+            setMobileChatsActive(true);
+            setMobileDmsActive(false);
+        }
         dm.user.id === loggedUser.id ? setFirstMessagesUser(dm.recipient) : setFirstMessagesUser(dm.user);
         setSwitchedView(true);
         setDmsActive(true);
@@ -253,6 +274,10 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
     }
 
     function switchViewGroupchat(groupchat) {
+        if(window.innerWidth < 700) {
+            setMobileChatsActive(true);
+            setMobileDmsActive(false);
+        }
         setDmsActive(false);
         setGroupchatsActive(true);
         setThreadsActive(false);
@@ -269,6 +294,10 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
     }
 
     function switchViewThread(groupchat) {
+        if(window.innerWidth < 700) {
+            setMobileChatsActive(true);
+            setMobileThreadsActive(false);
+        }
         setDmsActive(false);
         setGroupchatsActive(false);
         setThreadsActive(true);
@@ -374,122 +403,160 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
             getGroups();
         }).catch((error) => {})
     }
+
+    function mobileGoDms() {
+        setMobileDmsActive(true);
+        setMobileChatsActive(false);
+        setMobileThreadsActive(false);
+    }
+
+    function mobileGoChats() {
+        setMobileDmsActive(false);
+        setMobileChatsActive(true);
+        setMobileThreadsActive(false);
+    }
+
+    function mobileGoThreads() {
+        setMobileDmsActive(false);
+        setMobileChatsActive(false);
+        setMobileThreadsActive(true);
+    }
     
     return (
         <div className="height100">
             <Nav/>
             <div className="network">
                 <div className="add-thread" onClick={e => !showAddThread ?  switchToAddThread() : switchToThreads()}>{!showAddThread ? "Thread aanmaken" : "Annuleren" }<img src={!showAddThread ? add : decline}/></div>
-                <div className={showThreads ? "threads-button active" : "threads-button"} onClick={e => switchToThreads()}>#</div>
-                <div className={showNotifications ? "notifications-button active" : "notifications-button"} onClick={e => switchToNotifications()} dangerouslySetInnerHTML={{__html: '<3'}}></div>
-                <div className="dms">
-                    {
-                        users.data ? <Select placeholder="Zoeken" onChange={e => searchUser(e.value)} className="search" options={users.data.filter(user => user.id !== loggedUser.id).map(user => {
-
-                            return { value: user, label: user.name }
-                        })}/> : null
-                    }
-                    <div className="messageSwitch">
-                        <div className={showLatestDms ? "active" : ""} onClick={e => switchToDm()}>DM's</div>
-                        <div className={showLatestGroupchats ? "active" : ""} onClick={e => switchToGroup()}>Group chats</div>
+                {mobileThreadsActive  && <div className={showThreads ? "threads-button active" : "threads-button"} onClick={e => switchToThreads()}>#</div>}
+                {mobileThreadsActive && <div className={showNotifications ? "notifications-button active" : "notifications-button"} onClick={e => switchToNotifications()} dangerouslySetInnerHTML={{__html: '<3'}}></div>}
+                <div className="mobile-buttons">
+                    <div className="inner">
+                        <div onClick={e => mobileGoDms()}>
+                            dm's en groups
+                        </div>
+                        <div onClick={e => mobileGoChats()}>
+                            chat
+                        </div>
+                        <div onClick={e => mobileGoThreads()}>
+                            threads
+                        </div>
                     </div>
-                    {
-                        showLatestGroupchats && latestMessagesEventGroup.map(groupchat =>
-                            <div className="message" key={groupchat.group.id} onClick={e => switchViewGroupchat(groupchat)}>
-                              
-                                <div className="netwerk-profile-icon"><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + groupchat.group.event.image}/></div>
-                                <div>
-                                    <p className="message-name">{groupchat.group.event.name}</p>
-                                    <p>{groupchat.user ? groupchat.user.name : null}</p>
-                                    {
-                                        groupchat.created_at && groupchat.message && <p title={ datetime(groupchat.created_at) }>{groupchat.message}</p>
-                                    }
-                                </div>
-                            </div>
-                        )
-                    }
-                    {
-                        showLatestDms && latestMessages.map(dm =>
-                            <div className="message" key={dm.id} onClick={e => switchView(dm)}>
-                                <div className="netwerk-profile-icon"><FontAwesomeIcon icon={profileIcon(dm.user.id === loggedUser.id ? dm.recipient.icon : dm.user.icon)} color="#F7931E"/></div>
-                                <div>
-                                    <p className="message-name">{dm.user.id === loggedUser.id ? dm.recipient.name : dm.user.name}</p>
-                                    <p title={ datetime(dm.created_at) }>{dm.message}</p>
-                                </div>
-                            </div>
-                        )
-                    }
-                    {
-
-                    }
+                 
                 </div>
-                <div className="chat">
-                    {
-                        dmsActive && firstMessagesUser ? <h2 className="person"><FontAwesomeIcon icon={profileIcon(firstMessagesUser.icon)} color="white"/>{firstMessagesUser.name}</h2> : null
-                    }
-                      
-                    {
-                        groupchatsActive && groupMessageEventGroup ? <h2 className="person"><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + groupMessageEventGroup.event.image}/>{groupMessageEventGroup.event.name}</h2> : null
-                    }
-                    {
-                        threadsActive && groupMessageEventGroup ? <h2 className="person">#{groupMessageEventGroup.name}</h2> : null
-                    }
-                    <div className="messages">
+                {
+                    mobileDmsActive ? <div className="dms">
                         {
-                            dmsActive ? messageList : groupchatsActive ? groupMessageList : threadMessageList
+                            users.data ? <Select placeholder="Zoeken" onChange={e => searchUser(e.value)} className="search" options={users.data.filter(user => user.id !== loggedUser.id).map(user => {
+
+                                return { value: user, label: user.name }
+                            })}/> : null
                         }
-                    </div>
-                    <form className="network-inputs">
-                        <input value={message} onChange={(e) => setMessage(e.target.value)} type="text" placeholder="What's on your mind?"/>
-                        <button type="submit" onClick={e => send(e, dmsActive ? firstMessagesUser.id : groupMessageEventGroup.id)}><img src={sendImg}/></button>
-                    </form>
-                </div>
-                <div className="threads">
-                    {
-                        showThreads ? <div>
-                            <h2>Threads</h2>
-                            {
-                                latestMessagesThreadGroup.map(message =>
-                                    <div className="message" key={message.group.id} onClick={e => switchViewThread(message)}>
-                                        <div>
-                                            <p className="message-name">#{message.group.name}</p>
-                                            {
-                                                message.user && message.created_at && message.message && <p title={ datetime(message.created_at) }>{message.user.name + ': ' + message.message}</p>
-                                            }
-                                        </div>
+                        <div className="messageSwitch">
+                            <div className={showLatestDms ? "active" : ""} onClick={e => switchToDm()}>DM's</div>
+                            <div className={showLatestGroupchats ? "active" : ""} onClick={e => switchToGroup()}>Group chats</div>
+                        </div>
+                        {
+                            showLatestGroupchats && latestMessagesEventGroup.map(groupchat =>
+                                <div className="message" key={groupchat.group.id} onClick={e => switchViewGroupchat(groupchat)}>
+                                
+                                    <div className="netwerk-profile-icon"><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + groupchat.group.event.image}/></div>
+                                    <div>
+                                        <p className="message-name">{groupchat.group.event.name}</p>
+                                        <p>{groupchat.user ? groupchat.user.name : null}</p>
+                                        {
+                                            groupchat.created_at && groupchat.message && <p title={ datetime(groupchat.created_at) }>{groupchat.message}</p>
+                                        }
                                     </div>
-                                )
-                            }
-                        </div> : null
-                    }
-                   
-                    {
-                        showNotifications ? <div>
-                            <h2>Notifications</h2>
-                            {
-                                notifications && notifications.length ? notifications.map(notification => 
-                                    <div className="message" key={notification.id}>
-                                        <div>
-                                            {
-                                                notification.created_at && notification.message && <p title={ datetime(notification.created_at) }>{notification.message}</p>
-                                            }
-                                        </div>
+                                </div>
+                            )
+                        }
+                        {
+                            showLatestDms && latestMessages.map(dm =>
+                                <div className="message" key={dm.id} onClick={e => switchView(dm)}>
+                                    <div className="netwerk-profile-icon"><FontAwesomeIcon icon={profileIcon(dm.user.id === loggedUser.id ? dm.recipient.icon : dm.user.icon)} color="#F7931E"/></div>
+                                    <div>
+                                        <p className="message-name">{dm.user.id === loggedUser.id ? dm.recipient.name : dm.user.name}</p>
+                                        <p title={ datetime(dm.created_at) }>{dm.message}</p>
                                     </div>
-                                ) : null
+                                </div>
+                            )
+                        }
+                        {
+
+                        }
+                    </div> : null
+                }
+                { 
+                    mobileChatsActive ? <div className="chat">
+                        {
+                            dmsActive && firstMessagesUser ? <h2 className="person"><FontAwesomeIcon icon={profileIcon(firstMessagesUser.icon)} color="white"/>{firstMessagesUser.name}</h2> : null
+                        }
+                        
+                        {
+                            groupchatsActive && groupMessageEventGroup ? <h2 className="person"><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + groupMessageEventGroup.event.image}/>{groupMessageEventGroup.event.name}</h2> : null
+                        }
+                        {
+                            threadsActive && groupMessageEventGroup ? <h2 className="person">#{groupMessageEventGroup.name}</h2> : null
+                        }
+                        <div className="messages">
+                            {
+                                dmsActive ? messageList : groupchatsActive ? groupMessageList : threadMessageList
                             }
-                        </div> : null
-                    }
-                    {
-                        showAddThread ? <div className="add-thread-panel">
-                            <div>
-                            <label>Naam:</label>
-                            <input onChange={e => setName(e.target.value)} placeholder='Naam'/>
-                            <div className="submit" onClick={e => sendThread()}>Thread toevoegen<img src={add}/></div>
-                            </div>
-                        </div> : null
-                    }
+                        </div>
+                        <form className="network-inputs">
+                            <input value={message} onChange={(e) => setMessage(e.target.value)} type="text" placeholder="What's on your mind?"/>
+                            <button type="submit" onClick={e => send(e, dmsActive ? firstMessagesUser.id : groupMessageEventGroup.id)}><img src={sendImg}/></button>
+                        </form>
+                    </div> : null
+                }
+                {
+                    mobileThreadsActive ? <div className="threads">
+                        {
+                            showThreads ? <div>
+                                <h2>Threads</h2>
+                                {
+                                    latestMessagesThreadGroup.map(message =>
+                                        <div className="message" key={message.group.id} onClick={e => switchViewThread(message)}>
+                                            <div>
+                                                <p className="message-name">#{message.group.name}</p>
+                                                {
+                                                    message.user && message.created_at && message.message && <p title={ datetime(message.created_at) }>{message.user.name + ': ' + message.message}</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                            </div> : null
+                        }
                     
-                </div>
+                        {
+                            showNotifications ? <div>
+                                <h2>Notifications</h2>
+                                {
+                                    notifications && notifications.length ? notifications.map(notification => 
+                                        <div className="message" key={notification.id}>
+                                            <div>
+                                                {
+                                                    notification.created_at && notification.message && <p title={ datetime(notification.created_at) }>{notification.message}</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    ) : null
+                                }
+                            </div> : null
+                        }
+                        {
+                            showAddThread ? <div className="add-thread-panel">
+                                <div>
+                                <label>Naam:</label>
+                                <input onChange={e => setName(e.target.value)} placeholder='Naam'/>
+                                <div className="submit" onClick={e => sendThread()}>Thread toevoegen<img src={add}/></div>
+                                </div>
+                            </div> : null
+                        }
+                        
+                    </div> : null
+                }
             </div>
         </div>
     );

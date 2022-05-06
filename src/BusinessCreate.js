@@ -20,6 +20,9 @@ import add from './img/eventshow/add.png';
 
 export const BusinessCreate = ({getBusinesses}) => {
 
+  
+    const loggedUser = JSON.parse(localStorage.getItem("user"));
+
     // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
     Geocode.setApiKey("AIzaSyB3hu-a1Gnzog5zG63fnQ8ZaMLghPGUPwI");
 
@@ -90,7 +93,8 @@ export const BusinessCreate = ({getBusinesses}) => {
             location: location,
             lat: lat,
             lng: lng,
-            freeData: freeData
+            freeData: freeData,
+            user: loggedUser.id
           })
         }).then(response => {
           /*window.location.href = '/handelaar/create';*/
@@ -119,6 +123,12 @@ export const BusinessCreate = ({getBusinesses}) => {
       );
     }
 
+    function setLocationFunction(value) {
+      setLat(null);
+      setLng(null);
+      setLocation(value)
+    }
+
     return (
       <div className="height100">
         <Nav/>
@@ -132,15 +142,19 @@ export const BusinessCreate = ({getBusinesses}) => {
 
           <div className='input-image'>
             <img src={see} alt=""/>
-            <input defaultValue={business && business.location ?  business.location : ""} onChange={e => setLocation(e.target.value)} placeholder='Adres'/>
+            <input defaultValue={business && business.location ?  business.location : ""} onChange={e => setLocationFunction(e.target.value) } placeholder='Adres'/>
             <span onClick={e => searchAddress(location)}>Zoeken</span>
           </div>
-          <MapContainer className="map" center={[lat, lng]} zoom={18}>
+
+          {
+            lat && lng ? <MapContainer className="map" center={[lat, lng]} zoom={18}>
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-          </MapContainer>
+          </MapContainer> : null
+          }
+          
 
           <h2><img src={get} alt=""/>Handelswaren</h2>
           <h2 className='hours'><img src={free} alt=""/>Producten</h2>
