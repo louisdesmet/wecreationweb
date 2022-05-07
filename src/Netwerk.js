@@ -69,9 +69,14 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
               setMobileChatsActive(true);
               setMobileThreadsActive(true);
             } else {
-                setMobileDmsActive(true);
-                setMobileChatsActive(false);
-                setMobileThreadsActive(false);
+                if(mobileChatsActive) {
+                    setMobileDmsActive(false);
+                    setMobileThreadsActive(false);
+                } else {
+                    setMobileDmsActive(true);
+                    setMobileThreadsActive(false);
+                }
+                
             }
           }
           window.addEventListener('resize', handleResize);
