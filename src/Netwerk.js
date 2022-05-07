@@ -63,23 +63,21 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         getAllEvents();
         getGroups();
 
-        function handleResize() {
+        /*function handleResize() {
+
             if(window.innerWidth > 700) {
               setMobileDmsActive(true);
               setMobileChatsActive(true);
               setMobileThreadsActive(true);
-            } else {
-                if(mobileChatsActive) {
-                    setMobileDmsActive(false);
-                    setMobileThreadsActive(false);
-                } else {
-                    setMobileDmsActive(true);
-                    setMobileThreadsActive(false);
-                }
-                
             }
-          }
-          window.addEventListener('resize', handleResize);
+            if(window.innerWidth < 700) {
+                setMobileDmsActive(true);
+                setMobileChatsActive(false);
+                setMobileThreadsActive(false);
+            }
+            
+        }
+        window.addEventListener('resize', handleResize);*/
     }, []);
 
     const messages = useSelector(state => state.remoteMessages);
