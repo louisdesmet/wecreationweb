@@ -42,8 +42,8 @@
         }
         div {
             .event-logo {
-                width: 100px;
-                height: 100px;
+                width: 120px;
+                height: 120px;
                 border-radius: 100%;
                 margin: 30px auto 0 auto;
                 display: block;
@@ -66,12 +66,13 @@
                     top: -12px;
                     right: 105px;
                     padding: 5px 0;
-                    background: #745AA2;
+                    background: white;
                     padding: 4px 11px 6px 11px;
                     border-radius: 100%;
                     font-weight: bold;
                     margin: 0 10px 0 0;
-                    color: white;
+                    color: black;
+                    border: 1px solid #745AA2;
                 }
                 img {
                     width: 60px;
@@ -128,18 +129,17 @@
             padding: 0 15px;
         }
     }
-    .container { 
+    .container {
+        display: flex;
+        justify-content: space-between;
+        width: 90%;
+        margin: 0 auto;
         .left {
-            display: flex;
-            flex-wrap: wrap;
-            width: 95%;
-            margin: 0 auto;
-            
+            width: 17%;
             .left-item {
-                width: 33.3%;
                 margin: 0 0 30px 0;
                 img {
-                    width: 17%;
+                    width: 45%;
                     margin: 0 auto 17px auto;
                     display: block;
                 }
@@ -147,10 +147,12 @@
                     color: black;
                     text-align: center;
                     display: block;
+                    text-decoration: none;
                 }
                 p, h2 {
                     text-align: center;
                     font-size: 1em;
+                    font-weight: bold;
                 }
             }
             .team {
@@ -162,8 +164,7 @@
             }
         }
         .right {
-            width: 70%;
-            margin: 0 auto 100px auto;
+            width: 78%;
             h2 {
                 img {
                     width: 43px;
@@ -216,22 +217,28 @@
                     }
                 }
             }
+            .map {
+                height: 300px;
+                border-radius: 35px;
+                border: 3px solid #F8E6EC;
+                margin: 50px 0 0 0;
+            }
         }
     }
 }
 .activity-panel {
     background: #bee5f6;
-    padding: 25px;
-    .map {
-        height: 300px;
-        border-bottom-left-radius: 35px;
-        border-bottom-right-radius: 35px;
+    padding: 10px;
+    .container {
+        .right {
+            .desc {
+              margin-bottom: 50px;
+            }
+            .map {
+                border: 3px solid #E7F4FB;
+            }
+        }
     }
-    .desc {
-        width: 60%;
-        margin: 0 auto 50px auto;
-    }
-
 }
 
 @media only screen and (max-width: 700px) {

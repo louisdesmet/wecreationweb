@@ -40,7 +40,9 @@ function ActivityShow(props) {
               /*props.event.allowedInGroupchat || props.event.project.leader.id === loggedUser.id ? <p onClick={e => window.location.href = "/netwerk/" + props.event.id}>Groupchat</p> : null*/
             }
           </div>
-          {/*<img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + props.activity.image}/>*/}
+          <div>
+            <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "activities/" + props.activity.image}/>
+          </div>
           <div className={props.activity.users && props.activity.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.activity.users && props.activity.users.find(user => user.id === loggedUser.id) ? null : props.likeActivity(props.activity.id)}>
             <span>{props.liked ? props.activity.users.length + 1 : props.activity.users.length}</span>
             <img src={like}/>
@@ -48,8 +50,19 @@ function ActivityShow(props) {
           </div>
         </div>
         <h2 className="event-title"><span>{props.activity.name}</span></h2>
-        <p className="desc">{props.activity.description}</p>
+        
         <div className="container">
+          <div className="right">
+            <h2><img src={evenementen} alt=""/>Eventbeschrijving</h2>
+            <p className="desc">{props.activity.description}</p>
+            <MapContainer className="map" center={position} zoom={15}>
+              <TileLayer
+              attribution='&amp;copy <a href="http://osm.org/copyright">OSM</a>'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker key={props.activity.id} position={[props.activity.lat, props.activity.lng]} icon={evenementenIcon}></Marker>
+            </MapContainer>
+          </div>
           <div className="left">
             <div className="left-item">
               <img src={agenda}/>
@@ -67,13 +80,7 @@ function ActivityShow(props) {
             </div>
           </div>
         </div>
-        <MapContainer className="map" center={position} zoom={15}>
-          <TileLayer
-          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <Marker key={props.activity.id} position={[props.activity.lat, props.activity.lng]} icon={evenementenIcon}></Marker>
-        </MapContainer>
+      
       </div>
     </div>
   );

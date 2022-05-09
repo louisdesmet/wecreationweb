@@ -7,8 +7,9 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import profile from '../img/eventshow/profile-purple.png';
 import team from '../img/profile/team.png';
 import location from '../img/nav/see.png';
@@ -17,7 +18,6 @@ import decline from '../img/eventshow/decline.png';
 import get from '../img/nav/get.png';
 import like from '../img/eventshow/like.png';
 import credits from '../img/profile/credits.png';
-import { useHistory } from "react-router-dom";
 
 let icon = L.icon({
   iconUrl: get,
@@ -95,57 +95,57 @@ function BusinessShow(props) {
                 </div>
                 <div>
                     <FontAwesomeIcon icon={profileIcon(props.business.leader.icon)} className="profile-icon" color="white"/>
-                    <h2><span>{props.business.name}</span></h2>
                 </div>
-                <div className={props.business.users && props.business.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.business.users && props.business.users.find(user => user.id === loggedUser.id) ? null : props.likeBusiness(props.business.id)}>
+                <div className="like" onClick={e => props.business.users && props.business.users.find(user => user.id === loggedUser.id) ? null : props.likeBusiness(props.business.id)}>
                     <span>{props.liked ? props.business.users.length + 1 : props.business.users.length}</span>
-                    <img src={like}/>
-                    <p>Interesse!</p>
-                </div>  
+                    <img className={props.business.users && props.business.users.find(user => user.id === loggedUser.id) || props.liked ? "liked" : ""} src={like}/>
+                    <p className={props.business.users && props.business.users.find(user => user.id === loggedUser.id) || props.liked ? "liked" : ""}>Interesse!</p>
+                </div>
             </div>
-            <div>
-                <div className="business-info">
+            <h2><span>{props.business.name}</span></h2>
+            <div className="business-info">
                 <div className="left">
-                    <div>
-                    <img src={profile}/>
-                    <h3>Handelaar</h3>
-                    <p>{props.business.leader.name}</p>
-                    <p onClick={e => window.location.href = "/netwerk/dm/" + props.business.leader.id}>Stuur een bericht</p>
+                    <h3><img src={get} alt=""/>Beschrijving</h3>
+                    <p className="desc">{props.business.description}</p>
+                    <h2><span>Producten</span></h2>
+                    <div className="products">
+                    {
+                        props.business.products.map(product =>
+                        <div className="product" key={product.id}>
+                            <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "products/" + product.picture}/>
+                            <h4>{ product.name }</h4>
+                            <p className="product-desc">{product.description}</p>
+                            <p>{product.price}<img className='credits' src={credits}/></p>
+                            <button onClick={e => areYouSureBox(product)}><span className="product-buy">Kopen</span></button>
+                        </div>
+                        )
+                    }
                     </div>
-                    <div>
-                    <img src={team}/>
-                    </div>
-                    <div>
-                    <img src={location}/>
-                    <p>{props.business.location}</p>
-                    </div>
+                    <MapContainer className="map" center={position} zoom={13}>
+                    <TileLayer
+                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    {businessMarkers}
+                    </MapContainer>
                 </div>
                 <div className="right">
-                    <h3><img src={get} alt=""/>Beschrijving</h3>
-                    <p>{props.business.description}</p>
-                </div>
-                </div>
-                <h2><span>Producten</span></h2>
-                <div className="products">
-                {
-                    props.business.products.map(product =>
-                    <div className="product" key={product.id}>
-                        <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "products/" + product.picture}/>
-                        <h4>{ product.name }</h4>
-                        <p>{product.description}</p>
-                        <p>{product.price}cc</p>
-                        <button onClick={e => areYouSureBox(product)}><span className="product-buy">Ik neem er 1</span></button>
+                    <div>
+                        <img src={profile}/>
+                        <h3>Handelaar</h3>
+                        <p>{props.business.leader.name}</p>
+        
                     </div>
-                    )
-                }
-                </div>
-                <MapContainer className="map" center={position} zoom={13}>
-                <TileLayer
-                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                {businessMarkers}
-                </MapContainer>
+                    <div>
+                        <img src={team}/>
+                        <p className="message" onClick={e => window.location.href = "/netwerk/dm/" + props.business.leader.id}>Stuur een bericht</p>
+                    </div>
+                    <div>
+                        <img src={location}/>
+                        <p>{props.business.location}</p>
+                    </div>
+                    
+                </div>  
                 {
                 areYouSure && product ? <div className="are-you-sure">
                     <p>Weet je zeker dat je een {product.name} wilt aankopen voor {product.price}<img className='credits' src={credits}/></p>

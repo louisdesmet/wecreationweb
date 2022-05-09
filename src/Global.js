@@ -386,7 +386,7 @@ export const badgeIcon = (name, level) => {
 
 export const date = (date) => {
     const jsDate = new Date(date);
-    return jsDate.getDate()+'/'+(jsDate.getMonth()+1)+'/'+jsDate.getFullYear();
+    return jsDate.getDate()+'-'+(jsDate.getMonth()+1)+'-'+jsDate.getFullYear();
 }
 
 export const datetime = (date) => {

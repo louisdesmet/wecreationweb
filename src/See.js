@@ -5,15 +5,16 @@ import {useSelector} from "react-redux";
 import { Link } from 'react-router-dom';
 import Geocode from "react-geocode";
 import axios from "axios";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet';
 import Nav from "./Nav";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
-
 import { DateRange } from "react-date-range";
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+import locprod from './Global';
 
 import './css/See.scss';
 import see from './img/nav/see.png';
@@ -57,6 +58,8 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
+  const notify = () => toast("Gelieve alle velden in te vullen. Afbeelding is niet verplicht.");
+
   // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
   Geocode.setApiKey("AIzaSyB3hu-a1Gnzog5zG63fnQ8ZaMLghPGUPwI");
 
@@ -84,6 +87,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   const [lng, setLng] = useState("");
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState("");
+  const [file, setFile] = useState(null);
 
   const [today, setToday] = useState(false);
   const [week, setWeek] = useState(false);
@@ -331,26 +335,44 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     );
   }
 
+  const formData = new FormData();
+  const imageHandler = (event) => {
+    setFile(event.target.files[0]);
+  }
+
   function sendActivity() {
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem("token")
+    if(name && desc && date && time && activityLocation && lat && lng) {
+
+      formData.append('name', name);
+      formData.append('desc', desc);
+      formData.append('date', date);
+      formData.append('time', time);
+      formData.append('location', activityLocation);
+      formData.append('lat', lat);
+      formData.append('lng', lng);
+      formData.append('user', loggedUser.id);
+      formData.append('image', file);
+
+      fetch(locprod + '/activities', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'multipart/form-data',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        },
+      }).then(response => {
+        getActivities();
+        setDisplayAddActivity(false);
+        setDisplayMap(true);
+        setDisplayFilters(window.innerWidth > 1000 ? true : false);
+      })
+      .catch(error => {
+      
+      });
+    } else {
+      notify();
     }
-    axios.post('/activities', {
-        date: date,
-        time: time,
-        name: name,
-        desc: desc,
-        location: activityLocation,
-        lat: lat,
-        lng: lng,
-        user: loggedUser.id
-    }, { headers: headers }).then((response) => {
-      getActivities();
-      setDisplayAddActivity(false);
-      setDisplayMap(true);
-      setDisplayFilters(window.innerWidth > 1000 ? true : false);
-    }).catch((error) => {})
+    
   }
 
   function searchItem(query) {
@@ -487,6 +509,8 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
               <div className="submit" onClick={e => sendActivity()}>Activiteit toevoegen<img src={add} alt=""/></div>
             </div>
             <div>
+              <label>Afbeelding</label>
+              <input type="file" name="image" accept="application/image" multiple={false} onChange={imageHandler}/>
               <label>Locatie:</label>
               <input onChange={e => setActivityLocation(e.target.value)} placeholder='Locatie'/>
               <button onClick={e => searchAddress(activityLocation)}>Zoeken</button>
@@ -506,6 +530,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
         
         
       </div>
+      <ToastContainer />
     </div>
   );
 }

@@ -5,8 +5,12 @@ import { date, skillIcon } from "../Global";
 import { useHistory } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { MapContainer, Marker, TileLayer } from 'react-leaflet'
+import 'leaflet/dist/leaflet.css'
+import L from 'leaflet';
 
 import see from '../img/nav/see.png';
+import work from '../img/nav/work.png';
 import get from '../img/nav/get.png';
 import agenda from '../img/nav/agenda.png';
 import time from '../img/eventshow/time.png';
@@ -17,9 +21,14 @@ import decline from '../img/eventshow/decline.png';
 import desc from '../img/profile/desc.png';
 import geelPuzzel from '../img/eventshow/geel-puzzel.png';
 import credit from '../img/profile/credit.png';
-import free from '../img/profile/free.png';
 import like from '../img/eventshow/like.png';
 import credits from '../img/profile/credits.png';
+
+let workIcon = L.icon({
+  iconUrl: work,
+  iconSize: [30, 30],
+  popupAnchor: [0, -20],
+});
 
 function EventShow(props) {
 
@@ -112,6 +121,8 @@ function EventShow(props) {
   
     })
   }
+
+  let position = [props.event.lat, props.event.lng];
   
   return (
     <div>    
@@ -130,17 +141,33 @@ function EventShow(props) {
           </div>
           <div>
             <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + props.event.image}/>
-            <h2 className="event-title"><span>{props.event.name}</span></h2>
           </div>
-         
           <div className={props.event.users && props.event.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.event.users && props.event.users.find(user => user.id === loggedUser.id) ? null : props.likeEvent(props.event.id)}>
             <span>{props.liked ? props.event.users.length + 1 : props.event.users.length}</span>
             <img src={like}/>
             <p>Interesse!</p>
           </div>
         </div>
+        <h2 className="event-title"><span>{props.event.name}</span></h2>
         
         <div className="container">
+          <div className="right">
+            <h2><img src={geelPuzzel} alt=""/>Eventbeschrijving</h2>
+            <p className="desc">{props.event.description}</p>
+            <h2><img src={desc} alt=""/>{props.event.project.name}</h2>
+            <p className="desc">{props.event.project.description}</p>
+            <h2><img src={work} alt=""/>vrijwilliger uren</h2>
+            {freeSkill}
+            <h2><img src={credit} alt=""/>skill uren</h2>
+            {paidSkill} 
+            <MapContainer className="map" center={position} zoom={15}>
+              <TileLayer
+              attribution='&amp;copy <a href="http://osm.org/copyright">OSM</a>'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker key={props.event.id} position={[props.event.lat, props.event.lng]} icon={workIcon}></Marker>
+            </MapContainer>
+          </div>
           <div className="left">
             <div className="left-item">
               <Link to={"/agenda/" + props.event.id}>
@@ -153,36 +180,26 @@ function EventShow(props) {
               <p>{props.event.time}</p>
             </div>
             <div className="left-item">
-              <Link to={"/see"}>
-                  <img src={see}/>
-                  <p>{props.event.location}</p>
-              </Link>
-            </div>
-            <div className="left-item" onClick={e => setBudgetClicked(!budgetClicked)}>
-              <img src={get}/>
-              <h2>Totaal budget</h2>
-              {budgetClicked ? budget : null}
+              <img src={leader}/>
+              <h2>Projectleider</h2>
+              <Link to={"/profiel/" + props.event.project.leader.id}>{props.event.project.leader.name}</Link>
             </div>
             <div className="left-item" onClick={e => setTeamClicked(!teamClicked)}>
               <img src={team}/>
               <h2>Team</h2>
               {teamClicked ? teamList : null}
             </div>
-            <div className="left-item">
-              <img src={leader}/>
-              <h2>Projectleider</h2>
-              <Link to={"/profiel/" + props.event.project.leader.id}>{props.event.project.leader.name}</Link>
+            <div className="left-item" onClick={e => setBudgetClicked(!budgetClicked)}>
+              <img src={get}/>
+              <h2>Totaal budget</h2>
+              {budgetClicked ? budget : null}
             </div>
-          </div>
-          <div className="right">
-            <h2><img src={desc} alt=""/>{props.event.project.name}</h2>
-            <p className="desc">{props.event.project.description}</p>
-            <h2><img src={geelPuzzel} alt=""/>Eventbeschrijving</h2>
-            <p className="desc">{props.event.description}</p>
-            <h2><img src={free} alt=""/>Vrijwilliger uren</h2>
-            {freeSkill}
-            <h2><img src={credit} alt=""/>Skill uren</h2>
-            {paidSkill} 
+            <div className="left-item">
+              <Link to={"/see"}>
+                  <img src={see}/>
+                  <p>{props.event.location}</p>
+              </Link>
+            </div>
           </div>
         </div>
         {
