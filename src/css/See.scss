@@ -8,7 +8,7 @@
         justify-content: space-between;
         background: #D9D9D9;
         height: 83%;
-        width: 93%;
+        width: 90%;
         padding: 45px;
         border-radius: 65px;
         margin: 0 auto;
@@ -53,14 +53,17 @@
                     padding: 9px;
                     border-radius: 15px;
                     border: none;
+                    width: 70%;
+                    box-sizing: border-box;
                 }
                 textarea {
                     padding: 9px;
                     border-radius: 15px;
                     border: none;
-                    width: 90%;
                     box-sizing: border-box;
                     height: 100px;
+                    width: 70%;
+                    box-sizing: border-box;
 
                 }
                 button {
@@ -75,7 +78,7 @@
                     height: 300px;
                 }
                 .date {
-                    width: 400px;
+                    width: 70%;
                 }
                 .submit {
                     color: white;
@@ -271,12 +274,71 @@
         .container {
             position: relative;
             display: block;
-            padding: 25px;
+            padding: 10px;
+            .add-activity {
+                right: -21px;
+                padding: 10px 0 10px 0;
+                cursor: pointer;
+                img {
+                    width: 19px;
+                    margin-top: 10px;
+                    position: relative;
+                    right: -1px;
+                }
+            }
+            .add-activity-panel::-webkit-scrollbar { 
+                display: none;  /* Safari and Chrome */
+            }
+            .add-activity-panel {
+                width: 100%;
+                border-radius: 65px;
+                display: block;
+                height: 100%;
+                overflow: scroll;
+                div {
+
+                    input {
+                        width: 100%;
+                    }
+                    textarea {
+                        width: 100%;
+                    }
+                    button {
+                        padding: 9px;
+                        border-radius: 15px;
+                        border: none;
+                        background: white;
+                        font-weight: bold;
+                        margin: 15px 0 15px 0;
+                    }
+                    .map-activity {
+                        height: 300px;
+                    }
+                    .date {
+                        width: 100%;
+                    }
+                    .submit {
+                        color: white;
+                        border: 2px solid white;
+                        width: 200px;
+                        text-align: center;
+                        padding: 0 0 8px 0;
+                        margin: 30px 0 0 0;
+                        border-radius: 15px;
+                        img {
+                            width: 20px;
+                            position: relative;
+                            top: 6px;
+                            left: 10px;
+                        }
+                    }
+                }
+            }
             .map-filter {
                 display: block;
                 position: absolute;
-                top: 65px;
-                right: 65px;
+                top: 45px;
+                right: 45px;
                 width: 40px;
                 z-index: 999;
                 cursor: pointer;

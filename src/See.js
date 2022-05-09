@@ -422,7 +422,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
       <Nav/>
       <div className="container">
         <div className="add-activity" onClick={e => displayMap ? switchToActivity() : switchToMap()}>{displayAddActivity ? "Annuleren" : "Activiteit toevoegen" }<img src={displayAddActivity ? decline : add} alt=""/></div>
-        { !displayFilters ? <img onClick={() => {showFilters()}} className="map-filter" src={mapFilter} alt=""/> : null}
+        { !displayFilters && !displayAddActivity ? <img onClick={() => {showFilters()}} className="map-filter" src={mapFilter} alt=""/> : null }
         {
           displayFilters ? <div className="filters">
             <img onClick={() => {showMap()}} className="close" src={close} alt=""/>
@@ -506,7 +506,6 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
               <input className="date" type="date" onChange={e => setDate(e.target.value)}/>
               <label>Tijdstip: (optioneel)</label>
               <input type='time' onChange={e => setTime(e.target.value)} placeholder='Tijdstip'/>
-              <div className="submit" onClick={e => sendActivity()}>Activiteit toevoegen<img src={add} alt=""/></div>
             </div>
             <div>
               <label>Afbeelding</label>
@@ -523,7 +522,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
                   
                 </MapContainer> : null
               }
-              
+              <div className="submit" onClick={e => sendActivity()}>Activiteit toevoegen<img src={add} alt=""/></div>
             </div>
           </div> : null
         }

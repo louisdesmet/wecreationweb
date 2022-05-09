@@ -354,6 +354,11 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         setShowThreads(false);
         setShowNotifications(false);
         setShowAddThread(true);
+
+        setMobileChatsActive(false);
+        setMobileDmsActive(false);
+        setMobileThreadsActive(true);
+
     }
 
     function send(e, recipient) {

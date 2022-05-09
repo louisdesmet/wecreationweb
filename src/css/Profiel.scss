@@ -146,6 +146,7 @@
                     margin: 15px 0 0 0;
                     color: black;
                     display: block;
+                    text-decoration: none;
                     .teamIcon {
                         background: black;
                         border-radius: 100%;
@@ -203,6 +204,7 @@
             }
             .skill {
                 display: flex;
+                margin: 0 0 8px 0;
                 div {
                     flex: 1;
                     display: flex;
@@ -303,6 +305,19 @@
         }
         .profile-container {
             display: block;
+            .left {
+                div {
+                    .projects {
+                        overflow: hidden;
+                        .teamIcon {
+                            display: none;
+                        }
+                        img {
+                            display: none;
+                        }
+                    }
+                }
+            }
         }
         .profile-below-container {
             display: block;

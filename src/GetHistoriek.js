@@ -31,7 +31,9 @@ export const GetHistoriek = ({getOrders}) => {
             <span>&#10508;</span>
             <b>BACK</b>
         </div>
-        <FontAwesomeIcon icon={profileIcon(JSON.parse(localStorage.getItem("user")).icon)} className="profile-icon" color="white"/>
+        <div className="profile-icon-cont">
+          <FontAwesomeIcon icon={profileIcon(JSON.parse(localStorage.getItem("user")).icon)} className="profile-icon" color="white"/>
+        </div>
         <h2><span>Kassaticketjes</span></h2>
         {
           userOrders ? userOrders.map(order =>
