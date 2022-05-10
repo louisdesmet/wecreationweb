@@ -195,8 +195,8 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                     </div>
                     <div className="right">
                         {
-                            !id ? <Link to={"/profiel/edit"}><img className="profile-edit" src={edit} alt=""/></Link> : updatedLoggedUser ? <div className={updatedLoggedUser.users && updatedLoggedUser.users.find(user => user.id === loggedUser.id) || liked ? "like liked" : "like"} onClick={e => updatedLoggedUser.users && updatedLoggedUser.users.find(user => user.id === loggedUser.id) ? null : likeUser(updatedLoggedUser)}>
-                                <span>{liked ? updatedLoggedUser.users.length + 1 : updatedLoggedUser.users.length}</span>
+                            !id ? <Link to={"/profiel/edit"}><img className="profile-edit" src={edit} alt=""/></Link> : updatedLoggedUser ? <div className={updatedLoggedUser.receivedLikes && updatedLoggedUser.receivedLikes.find(user => user.id === loggedUser.id) || liked ? "like liked" : "like"} onClick={e => updatedLoggedUser.receivedLikes && updatedLoggedUser.receivedLikes.find(user => user.id === loggedUser.id) ? null : likeUser(updatedLoggedUser)}>
+                                <span>{liked ? updatedLoggedUser.receivedLikes.length + 1 : updatedLoggedUser.receivedLikes.length}</span>
                                 <img src={like}/>
                             </div> : null
                         }

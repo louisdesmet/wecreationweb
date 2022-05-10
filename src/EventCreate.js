@@ -215,7 +215,7 @@ export const EventCreate = ({getProjects, getSkills}) => {
         <h2><img src={work} alt=""/>Event beschrijving</h2>
         <input defaultValue={event && event.name ? event.name : ""} className='naam' onChange={e => setName(e.target.value)} placeholder='Naam'/>
         <textarea defaultValue={event && event.description ? event.description : ""} onChange={e => setDesc(e.target.value)} placeholder='Omschrijving'></textarea>
-        <label>Afbeelding</label>
+        <label>Afbeelding (optioneel)</label>
         {
           event && event.image ? <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image}/> : null
         }

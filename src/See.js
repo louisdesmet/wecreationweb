@@ -87,6 +87,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   const [lng, setLng] = useState("");
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState("");
+  const [ticketlink, setTicketlink] = useState("");
   const [file, setFile] = useState(null);
 
   const [today, setToday] = useState(false);
@@ -109,6 +110,8 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     getBusinesses();
     getActivities();
     getAllEvents();
+
+    document.getElementsByClassName( 'leaflet-control-attribution' )[0].style.display = 'none';
 
     function handleResize() {
       if(window.innerWidth > 1000) {
@@ -347,6 +350,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
       formData.append('desc', desc);
       formData.append('date', date);
       formData.append('time', time);
+      formData.append('ticketlink', ticketlink);
       formData.append('location', activityLocation);
       formData.append('lat', lat);
       formData.append('lng', lng);
@@ -506,6 +510,8 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
               <input className="date" type="date" onChange={e => setDate(e.target.value)}/>
               <label>Tijdstip: (optioneel)</label>
               <input type='time' onChange={e => setTime(e.target.value)} placeholder='Tijdstip'/>
+              <label>Link ticketverdeler (optioneel)</label>
+              <input onChange={e => setTicketlink(e.target.value)} placeholder='Link ticketverdeler'/>
             </div>
             <div>
               <label>Afbeelding</label>

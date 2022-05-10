@@ -10,6 +10,7 @@ import agenda from '../img/nav/agenda.png';
 import time from '../img/eventshow/time.png';
 import evenementen from '../img/profile/badges.png';
 import like from '../img/eventshow/like.png';
+import geelPuzzel from '../img/eventshow/geel-puzzel.png';
 
 let evenementenIcon = L.icon({
   iconUrl: evenementen,
@@ -55,6 +56,8 @@ function ActivityShow(props) {
           <div className="right">
             <h2><img src={evenementen} alt=""/>Eventbeschrijving</h2>
             <p className="desc">{props.activity.description}</p>
+            <h2><img src={geelPuzzel} alt=""/>Ticketinfo</h2>
+            <p className="desc"><a href={props.activity.ticketlink}>Koop hier je tickets</a></p>
             <MapContainer className="map" center={position} zoom={15}>
               <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OSM</a>'

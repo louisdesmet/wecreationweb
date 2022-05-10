@@ -9,9 +9,10 @@ import { datetime, profileIcon } from './Global';
 import './css/Netwerk.scss';
 
 import sendImg from './img/get/send.png';
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import add from './img/eventshow/accept.png';
 import decline from './img/eventshow/decline.png';
+import linkArrow from './img/eventshow/link.png';
 
 export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
 
@@ -492,11 +493,11 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 { 
                     mobileChatsActive ? <div className="chat">
                         {
-                            dmsActive && firstMessagesUser ? <h2 className="person"><FontAwesomeIcon icon={profileIcon(firstMessagesUser.icon)} color="white"/>{firstMessagesUser.name}</h2> : null
+                            dmsActive && firstMessagesUser ? <Link to={"/profiel/" + firstMessagesUser.id} className="person"><FontAwesomeIcon icon={profileIcon(firstMessagesUser.icon)} color="white"/>{firstMessagesUser.name}<img className="arrowlink" src={linkArrow}/></Link> : null
                         }
                         
                         {
-                            groupchatsActive && groupMessageEventGroup ? <h2 className="person"><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + groupMessageEventGroup.event.image}/>{groupMessageEventGroup.event.name}</h2> : null
+                            groupchatsActive && groupMessageEventGroup ? <Link to={"/events/" + groupMessageEventGroup.event.id} className="person"><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + groupMessageEventGroup.event.image}/>{groupMessageEventGroup.event.name}<img className="arrowlink" src={linkArrow}/></Link> : null
                         }
                         {
                             threadsActive && groupMessageEventGroup ? <h2 className="person">#{groupMessageEventGroup.name}</h2> : null

@@ -74,7 +74,7 @@ export const Profiel = ({getUsers}) => {
     const userList = user ? (
         <div className='list'>
             {
-                user.users.map(user =>
+                user.givenLikes.map(user =>
                     <Link to={"profiel/" + user.id} className='item' key={user.id}>
                         <div>
                             <img src={profile}/>

@@ -33,7 +33,7 @@ function Register(props) {
               email,
               password
             }).then(result => {
-              localStorage.setItem('loginMessage', "Je account werd aangemaakt maar wacht nog op verificatie.");
+              /*localStorage.setItem('loginMessage', "Je account werd aangemaakt maar wacht nog op verificatie.");*/
               props.history.push("/login");
     
             })

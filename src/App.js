@@ -53,63 +53,39 @@ import MyInterests from "./MyInterests";
 import ProjectCreate from "./ProjectCreate";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
-  
-  let user = null;
-  if(JSON.parse(localStorage.getItem("user"))) {
-    user = JSON.parse(localStorage.getItem("user")).email_verified_at;
-  }
   return (
       <Route {...rest} render={props => (
         localStorage.getItem('token') !== 'null' &&
         localStorage.getItem('token') !== null &&
-        typeof localStorage.getItem('token') !== 'undefined' &&
-        user !== null ?
-        <Component {...props} /> :
-        <Redirect to="/login" />
+        typeof localStorage.getItem('token') !== 'undefined'
+        ? <Component {...props} /> : <Redirect to="/login" />
       )} />
   );
 };
 
 const AdminRoute = ({component: Component, ...rest}) => {
-  
-  let user = null;
-  if(JSON.parse(localStorage.getItem("user"))) {
-    user = JSON.parse(localStorage.getItem("user"));
-    return (
-      <Route {...rest} render={props => (
-        localStorage.getItem('token') !== 'null' &&
-        localStorage.getItem('token') !== null &&
-        typeof localStorage.getItem('token') !== 'undefined' &&
-        user.email_verified_at !== null &&
-        user.roles.find(role => role.name === 'admin') ?
-        <Component {...props} /> :
-        <Redirect to="/login" />
-      )} />
-    );
-  }
-  return <Redirect to="/login" />;
-  
+  return (
+    <Route {...rest} render={props => (
+      localStorage.getItem('token') !== 'null' &&
+      localStorage.getItem('token') !== null &&
+      typeof localStorage.getItem('token') !== 'undefined' &&
+      JSON.parse(localStorage.getItem("user")).roles.find(role => role.name === 'admin')
+      ? <Component {...props} /> : <Redirect to="/login" />
+    )} />
+  );
 };
 
 const BusinessRoute = ({component: Component, ...rest}) => {
-  
-  let user = null;
-  if(JSON.parse(localStorage.getItem("user"))) {
-    user = JSON.parse(localStorage.getItem("user"));
-    return (
-      <Route {...rest} render={props => (
-        localStorage.getItem('token') !== 'null' &&
-        localStorage.getItem('token') !== null &&
-        typeof localStorage.getItem('token') !== 'undefined' &&
-        user.email_verified_at !== null &&
-        user.roles.find(role => role.name === 'business') ?
-        <Component {...props} /> :
-        <Redirect to="/login" />
-      )} />
-    );
-  }
-  return <Redirect to="/login" />;
-  
+  return (
+    <Route {...rest} render={props => (
+      localStorage.getItem('token') !== 'null' &&
+      localStorage.getItem('token') !== null &&
+      typeof localStorage.getItem('token') !== 'undefined' &&
+      JSON.parse(localStorage.getItem("user")).roles.find(role => role.name === 'business') ?
+      <Component {...props} /> :
+      <Redirect to="/login" />
+    )} />
+  );
 };
 
 

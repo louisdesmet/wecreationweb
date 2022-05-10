@@ -28,8 +28,7 @@ function Login(props) {
         if(result.data.token.access_token) {
           localStorage.setItem('token', result.data.token.access_token);
           localStorage.setItem('user', JSON.stringify(result.data.user[0]));
-          localStorage.removeItem("loginMessage");
-          props.history.push("/home");
+          /*localStorage.removeItem("loginMessage");*/
         }
       }).catch(e => {
         setError("Email en paswoord combinatie niet gevonden.")
@@ -39,7 +38,7 @@ function Login(props) {
     return (
         <div>
             {
-              localStorage.getItem("loginMessage") ? <div className="login-message">{localStorage.getItem("loginMessage")}</div> : null
+              /*localStorage.getItem("loginMessage") ? <div className="login-message">{localStorage.getItem("loginMessage")}</div> : null*/
             }
             <img className="left-top" src={leftTop} alt=""/>
             <img className="left-bottom" src={leftBottom} alt=""/>
