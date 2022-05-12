@@ -18,16 +18,20 @@ import diensten from './img/map/diensten.png';
 
 export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, getUsers}) => {
 
+  const loggedUser = JSON.parse(localStorage.getItem("user"));
+
   const [searchActive, setSearchActive] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState("");
 
   useEffect(() => {
-    getBusinesses();
-    getActivities();
-    getAllEvents();
-    getProjects();
-    getUsers();
+    if(loggedUser) {
+      getBusinesses();
+      getActivities();
+      getAllEvents();
+      getProjects();
+      getUsers();
+    }
   }, []);
 
   const businesses = useSelector(state => state.remoteBusinesses);
@@ -40,7 +44,6 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
     activities.data.forEach(function (element) {
       element.type = "activity";
       element.urlText = "/activities/";
-      
     });
     events.data.forEach(function (element) {
       element.type = "event";
