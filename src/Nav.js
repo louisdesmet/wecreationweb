@@ -24,23 +24,34 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
   const [query, setQuery] = useState("");
   const [results, setResults] = useState("");
 
+  const businesses = useSelector(state => state.remoteBusinesses);
+
   useEffect(() => {
     if(loggedUser) {
-      getBusinesses();
-      getActivities();
-      getAllEvents();
-      getProjects();
-      getUsers();
+      if(!businesses.data || businesses.data.length === 0) {
+        getBusinesses();
+      }
+      if(!activities.data || activities.data.length === 0) {
+        getActivities();
+      }
+      if(!events.data || events.data.length === 0) {
+        getAllEvents();
+      }
+      if(!projects.data || projects.data.length === 0) {
+        getProjects();
+      }
+      if(!users.data || users.data.length === 0) {
+        getUsers();
+      }
     }
   }, []);
 
-  const businesses = useSelector(state => state.remoteBusinesses);
   const activities = useSelector(state => state.remoteActivities);
   const events = useSelector(state => state.remoteAllEvents);
   const projects = useSelector(state => state.remoteProjects);
   const users = useSelector(state => state.remoteUsers);
 
-  if(activities.data && events.data && projects.data && users.data) {
+  if(businesses.data && activities.data && events.data && projects.data && users.data) {
     activities.data.forEach(function (element) {
       element.type = "activity";
       element.urlText = "/activities/";
@@ -73,16 +84,12 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
     setResults(businesses.data.filter(business => business.name.includes(value)).concat(projects.data.filter(project => project.name.includes(value)), events.data.filter(event => event.name.includes(value)), activities.data.filter(activity => activity.name.includes(value)), users.data.filter(user => user.name.includes(value))));
   }
 
-  console.log(results);
-
   const resultList = results ? results.map(result => <Link to={result.urlText + result.id + (result.urlText2 ? result.urlText2 : "")}>
     <img src={result.type === "business" ? get : result.type === "service" ? diensten : result.type === "user" ? profiel : result.type === "activity" ? activity : result.type === "event" ? agenda : result.type === "project" ? work : null }/>
     <p>{result.name}</p>
   </Link>) : null
 
-  
   return (
-
     <div className='nav'>
         {
           searchActive ? <input onChange={e => getResults(e.target.value)} type="text"/> : <div className="innernav">
