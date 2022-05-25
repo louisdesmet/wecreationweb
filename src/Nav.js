@@ -81,7 +81,8 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
 
   function getResults(value) {
     setQuery(value);
-    setResults(businesses.data.filter(business => business.name.includes(value)).concat(projects.data.filter(project => project.name.includes(value)), events.data.filter(event => event.name.includes(value)), activities.data.filter(activity => activity.name.includes(value)), users.data.filter(user => user.name.includes(value))));
+    console.log(users.data);
+    setResults(businesses.data.filter(business => business.name.toLowerCase().includes(value)).concat(projects.data.filter(project => project.name.toLowerCase().includes(value)), events.data.filter(event => event.name.toLowerCase().includes(value)), activities.data.filter(activity => activity.name.toLowerCase().includes(value)), users.data.filter(user => user.name.toLowerCase().includes(value))));
   }
 
   const resultList = results ? results.map(result => <Link to={result.urlText + result.id + (result.urlText2 ? result.urlText2 : "")}>
@@ -92,7 +93,7 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
   return (
     <div className='nav'>
         {
-          searchActive ? <input onChange={e => getResults(e.target.value)} type="text"/> : <div className="innernav">
+          searchActive ? <input onChange={e => getResults(e.target.value)} type="text" placeholder="Zoek naar events, activiteiten, gebruikers en handelaars"/> : <div className="innernav">
             <div><Link to="/work"><img src={work} alt=""/></Link></div>
             <div><Link to="/see"><img src={see} alt=""/></Link></div>
             <div><Link to="/get"><img src={get} alt=""/></Link></div>
@@ -103,7 +104,7 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
           </div>
         }
         {
-          searchActive ? <img onClick={e => search()} className="filter close" src={close}/> : <img onClick={e => search()} className="filter" src={mapFilter}/>
+          loggedUser ? searchActive ? <img onClick={e => search()} className="filter close" src={close}/> : <img onClick={e => search()} className="filter" src={mapFilter}/> : null
         }
         {
           query ? <div className="results">

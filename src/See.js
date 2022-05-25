@@ -323,6 +323,9 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     setDisplayMap(true);
     setDisplayFilters(window.innerWidth > 1000 ? true : false);
     setDisplayAddActivity(false);
+    setLat("");
+    setLng("");
+    setActivityLocation("");
   }
 
   function searchAddress(address) {
@@ -344,7 +347,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   }
 
   function sendActivity() {
-    if(name && desc && date && time && activityLocation && lat && lng) {
+    if(name && date && activityLocation && lat && lng) {
 
       formData.append('name', name);
       formData.append('desc', desc);

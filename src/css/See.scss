@@ -33,6 +33,9 @@
                 right: 2px;
             }
         }
+        .add-activity-panel::-webkit-scrollbar { 
+            display: none;  /* Safari and Chrome */
+        }
         .add-activity-panel {
             background: black;
             width: 100%;
@@ -40,6 +43,7 @@
             padding: 25px;
             box-sizing: border-box;
             display: flex;
+            overflow: scroll;
             div {
                 flex: 1;
                 label {
@@ -286,17 +290,12 @@
                     right: -1px;
                 }
             }
-            .add-activity-panel::-webkit-scrollbar { 
-                display: none;  /* Safari and Chrome */
-            }
             .add-activity-panel {
                 width: 100%;
                 border-radius: 65px;
                 display: block;
                 height: 100%;
-                overflow: scroll;
                 div {
-
                     input {
                         width: 100%;
                     }

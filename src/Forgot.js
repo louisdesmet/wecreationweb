@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import axios from 'axios';
-import { Link, Redirect } from "react-router-dom";
 import locprod from './Global';
 
 import './css/Login.scss';
@@ -9,30 +8,20 @@ import leftTop from './img/nav/left-top.png';
 import leftBottom from './img/nav/left-bottom.png';
 import rightTop from './img/nav/right-top.png';
 import rightBottom from './img/nav/right-bottom.png';
-import registreren from './img/nav/registreren.PNG';
 
 axios.defaults.baseURL = locprod;
 axios.defaults.headers.common['Accept'] = 'application/json';
+axios.defaults.headers.common['Content-Type'] = 'application/json';
 
-function Login(props) {
-    const [error, setError] = useState("");
+function Forgot(props) {
+    
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
 
     const onFormSubmit = e => {
       e.preventDefault();
-      axios.post("/login", {
-        email,
-        password
-      }).then(result => {
-        if(result.data.token.access_token) {
-          localStorage.setItem('token', result.data.token.access_token);
-          localStorage.setItem('user', JSON.stringify(result.data.user[0]));
-          props.history.push("/home");
-        }
-      }).catch(e => {
-        setError("Email en paswoord combinatie niet gevonden.")
-      });
+      axios.post("/password/reset", {
+        email
+      }).then(result => {}).catch(e => {});
     }
 
     return (
@@ -45,15 +34,11 @@ function Login(props) {
                 <img className="logo" src={loginlogo} alt=""/>
                 <form onSubmit={onFormSubmit}>
                   <input onChange={e => { setEmail(e.target.value); }} placeholder="Email"/>
-                  <input onChange={e => { setPassword(e.target.value); }} placeholder="Password" type="password"/>
-                  {error}
-                  <button type="submit">Aanmelden</button>
+                  <button type="submit">Mail versturen</button>
                 </form>
-                <Link to={"/forgot"}>Wachtwoord vergeten?</Link>
-                <Link to="/register" className="register"><img src={registreren} alt=""/></Link>
             </div>  
         </div>
     );
 }
 
-export default Login;
+export default Forgot;

@@ -51,6 +51,7 @@ import EventCreate from "./EventCreate";
 import ActivityShow from "./ActivityShow";
 import MyInterests from "./MyInterests";
 import ProjectCreate from "./ProjectCreate";
+import Forgot from "./Forgot";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   return (
@@ -94,6 +95,7 @@ function App() {
       <Router>
           <Switch>
               <Route path="/login" component={Login}/>
+              <Route path="/forgot" component={Forgot}/>
               <Route path="/register" component={Register}/>
               <PrivateRoute path="/home" component={Home}/>
               <PrivateRoute path="/work" component={Work}/>
