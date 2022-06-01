@@ -14,7 +14,8 @@ import MarkerClusterGroup from 'react-leaflet-markercluster';
 import { DateRange } from "react-date-range";
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-import locprod from './Global';
+import locprod, { date as dateFunction } from './Global';
+import timeIcon from './img/eventshow/time.png';
 
 import './css/See.scss';
 import see from './img/nav/see.png';
@@ -106,6 +107,9 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     }
   ]);
 
+  const [imageId, setImageId] = useState("activityImage");
+  const [imageURI, setImageURI] = useState(null);
+
   useEffect(() => {
     getBusinesses();
     getActivities();
@@ -186,11 +190,20 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
 
   const activityMarker = (activity) => <Marker key={activity.id} position={[activity.lat, activity.lng]} icon={evenementenIcon}>
     <Popup className="popup">
-      <h2><Link to={"/activities/" + activity.id}>{activity.name}</Link></h2>
+      <div className="data-container">
+        <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "activities/" + activity.image}/>
+        <Link to={"/activities/" + activity.id}>{activity.name}</Link>
+      </div>
       <div className="data-container">
         <img src={datum} alt=""/>
-        <p>{activity.date}</p>
+        <p>{dateFunction(activity.date)}</p>
       </div>
+      {
+        activity.time ? <div className="data-container">
+          <img src={timeIcon} alt=""/>
+          <p>{activity.time}</p>
+        </div> : null
+      }
       <div className="data-container">
         <img src={see} alt=""/>
         <p>{activity.location}</p>
@@ -234,11 +247,20 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
 
   const eventMarker = (event) => <Marker key={event.id} position={[event.lat, event.lng]} icon={workIcon}>
     <Popup className="popup" minWidth="280">
-      <h2><Link to={"/events/" + event.id}>{event.name}</Link></h2>
+      <div className="data-container">
+        <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image}/>
+        <Link to={"/events/" + event.id}>{event.name}</Link>
+      </div>
       <div className="data-container">
         <img src={datum} alt=""/>
-        <p>{event.date}</p>
+        <p>{dateFunction(event.date)}</p>
       </div>
+      {
+        event.time ? <div className="data-container">
+          <img src={timeIcon} alt=""/>
+          <p>{event.time}</p>
+        </div> : null
+      }
       <div className="data-container">
         <img src={see} alt=""/>
         <p>{event.location}</p>
@@ -326,6 +348,8 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     setLat("");
     setLng("");
     setActivityLocation("");
+    setFile(null);
+    setImageURI(null);
   }
 
   function searchAddress(address) {
@@ -342,8 +366,15 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   }
 
   const formData = new FormData();
-  const imageHandler = (event) => {
-    setFile(event.target.files[0]);
+  const imageHandler = (e) => {
+    if(e.target.files && e.target.files[0]){
+      let reader = new FileReader();
+      reader.onload = function(ev) {
+        setImageURI(ev.target.result)
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    setFile(e.target.files[0]);
   }
 
   function sendActivity() {
@@ -358,14 +389,17 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
       formData.append('lat', lat);
       formData.append('lng', lng);
       formData.append('user', loggedUser.id);
-      formData.append('image', file);
 
+      if(file) {
+        formData.append('image', file);
+      }
+      
       fetch(locprod + '/activities', {
         method: 'POST',
         body: formData,
         headers: {
-            'Accept': 'multipart/form-data',
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
+          'Accept': 'multipart/form-data',
+          'Authorization': 'Bearer ' + localStorage.getItem("token")
         },
       }).then(response => {
         getActivities();
@@ -423,6 +457,17 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
       break;
     }
   }
+
+  function buildImgTag() {
+    let imgTag = null;
+    if (imageURI !== null)
+      imgTag = (
+        <img className="thumbnail" src={imageURI}></img>
+      );
+    return imgTag;
+  }
+
+  const imgTag = buildImgTag();
 
   return (
     <div className="map-container">
@@ -517,8 +562,9 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
               <input onChange={e => setTicketlink(e.target.value)} placeholder='Link ticketverdeler'/>
             </div>
             <div>
-              <label>Afbeelding</label>
-              <input type="file" name="image" accept="application/image" multiple={false} onChange={imageHandler}/>
+              <label htmlFor={imageId}>Afbeelding: (optioneel)</label>
+              <input id={imageId} type="file" name="image" accept="application/image" multiple={false} onChange={imageHandler}/>
+              {imgTag}
               <label>Locatie:</label>
               <input onChange={e => setActivityLocation(e.target.value)} placeholder='Locatie'/>
               <button onClick={e => searchAddress(activityLocation)}>Zoeken</button>

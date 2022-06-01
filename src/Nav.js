@@ -82,7 +82,7 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
   function getResults(value) {
     setQuery(value);
     console.log(users.data);
-    setResults(businesses.data.filter(business => business.name.toLowerCase().includes(value)).concat(projects.data.filter(project => project.name.toLowerCase().includes(value)), events.data.filter(event => event.name.toLowerCase().includes(value)), activities.data.filter(activity => activity.name.toLowerCase().includes(value)), users.data.filter(user => user.name.toLowerCase().includes(value))));
+    setResults(businesses.data.filter(business => business.name.toLowerCase().includes(value.toLowerCase())).concat(projects.data.filter(project => project.name.toLowerCase().includes(value.toLowerCase())), events.data.filter(event => event.name.toLowerCase().includes(value.toLowerCase())), activities.data.filter(activity => activity.name.toLowerCase().includes(value.toLowerCase())), users.data.filter(user => user.name.toLowerCase().includes(value.toLowerCase()))));
   }
 
   const resultList = results ? results.map(result => <Link to={result.urlText + result.id + (result.urlText2 ? result.urlText2 : "")}>

@@ -5,6 +5,7 @@ import Nav from "./Nav";
 import {useSelector} from "react-redux";
 import './css/Profiel.scss';
 import Axios from 'axios';
+import locprod from './Global';
 
 export const ProfielEdit = ({getUsers}) => {
 
@@ -16,13 +17,38 @@ export const ProfielEdit = ({getUsers}) => {
 
     const [desc, setDesc] = useState();
     const [age, setAge] = useState();
+    const [file, setFile] = useState(null);
+    const [imageId, setImageId] = useState("profileImage");
+    const [imageURI, setImageURI] = useState(null);
 
     const users = useSelector(state => state.remoteUsers);
 
     const updatedLoggedUser = users.data ? users.data.find(item => item.id === loggedUser.id) : null;
 
     function edit() {
-        Axios.post('/users/editdata', {
+
+        formData.append('age', age ? age : updatedLoggedUser.age);
+        formData.append('description', desc ? desc : updatedLoggedUser.description);
+        formData.append('id', updatedLoggedUser.id);
+  
+        if(file) {
+          formData.append('image', file);
+        }
+        
+        fetch(locprod + '/users/editdata', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'multipart/form-data',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+          },
+        }).then(response => {
+
+        })
+        .catch(error => {
+        
+        });
+       /* Axios.post('/users/editdata', {
             'age': age,
             'description': desc,
             'id': updatedLoggedUser.id
@@ -37,8 +63,31 @@ export const ProfielEdit = ({getUsers}) => {
         })
         .catch((error) => {
     
-        })
+        })*/
     }
+
+    const formData = new FormData();
+    const imageHandler = (e) => {
+        if(e.target.files && e.target.files[0]){
+        let reader = new FileReader();
+        reader.onload = function(ev) {
+            setImageURI(ev.target.result)
+        };
+        reader.readAsDataURL(e.target.files[0]);
+        }
+        setFile(e.target.files[0]);
+    }
+
+    function buildImgTag() {
+        let imgTag = null;
+        if (imageURI !== null)
+          imgTag = (
+            <img className="thumbnail" src={imageURI}></img>
+          );
+        return imgTag;
+      }
+    
+      const imgTag = buildImgTag();
 
     return (
         <div className="height100">
@@ -50,6 +99,9 @@ export const ProfielEdit = ({getUsers}) => {
                         <textarea onChange={e => setDesc(e.target.value)} defaultValue={updatedLoggedUser.description} placeholder='Description'></textarea>
                         <label>Leeftijd</label>
                         <input onChange={e => setAge(e.target.value)} defaultValue={updatedLoggedUser.age} placeholder='Age'/>
+                        <label htmlFor={imageId}>Afbeelding: (optioneel)</label>
+                        <input id={imageId} type="file" name="image" accept="application/image" multiple={false} onChange={imageHandler}/>
+                        {imgTag}
                         <button onClick={e => edit()}>Aanpassen</button>
                     </div> : null
                 }

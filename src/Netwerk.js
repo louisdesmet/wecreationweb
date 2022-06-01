@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { datetime, profileIcon } from './Global';
 import './css/Netwerk.scss';
 
+
 import sendImg from './img/get/send.png';
 import { Link, useParams } from "react-router-dom";
 import add from './img/eventshow/accept.png';
@@ -18,7 +19,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
 
-    const { groupchatId, dmId} = useParams();
+    const { groupchatId, dmId } = useParams();
 
     const [name, setName] = useState(null);
 
@@ -63,22 +64,6 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         getUsers();
         getAllEvents();
         getGroups();
-
-        /*function handleResize() {
-
-            if(window.innerWidth > 700) {
-              setMobileDmsActive(true);
-              setMobileChatsActive(true);
-              setMobileThreadsActive(true);
-            }
-            if(window.innerWidth < 700) {
-                setMobileDmsActive(true);
-                setMobileChatsActive(false);
-                setMobileThreadsActive(false);
-            }
-            
-        }
-        window.addEventListener('resize', handleResize);*/
     }, []);
 
     const messages = useSelector(state => state.remoteMessages);

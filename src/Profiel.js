@@ -184,7 +184,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                     </div>
                     <div className="middle">
                         {
-                            updatedLoggedUser ? <FontAwesomeIcon icon={findIcon(null)} className="profile-icon" color="white"/> : null
+                            updatedLoggedUser ? updatedLoggedUser.image ?   <img className="profile-image"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "users/" + updatedLoggedUser.image}/> : <FontAwesomeIcon icon={findIcon(null)} className="profile-icon" color="white"/> : null
                         }
                         <h2 className="profile-name">{updatedLoggedUser ? updatedLoggedUser.name : null}</h2>
                         {

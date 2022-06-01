@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import {connect} from "react-redux";
 import {getProjects} from "./redux/actions";
 import Nav from "./Nav";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { date } from './Global.js';
 import upEvent from './img/eventshow/future.png';
 import downEvent from './img/eventshow/past.png';
@@ -76,6 +76,7 @@ export const Work = ({getProjects}) => {
       <div className="height100">
         <Nav/>
         <div className="projects-container">
+          <Link to={"/project/create"} className="add">Project toevoegen <img src={add}/></Link>
           <img className="logo" src={work}/>
           <h2 className="title"><span>Projecten</span></h2>
           {projectList}

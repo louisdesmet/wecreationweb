@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {connect, useSelector} from "react-redux";
 import { getBusinesses } from './redux/actions';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useHistory } from 'react-router-dom';
 import locprod from './Global';
 import './css/EventCreate.scss';
 import { MapContainer, TileLayer } from 'react-leaflet'
 import Nav from './Nav';
 import Geocode from "react-geocode";
+
 
 import work from './img/nav/work.png';
 import agenda from './img/nav/agenda.png';
@@ -20,6 +21,7 @@ import add from './img/eventshow/add.png';
 
 export const BusinessCreate = ({getBusinesses}) => {
 
+    const history = useHistory();
   
     const loggedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -97,8 +99,7 @@ export const BusinessCreate = ({getBusinesses}) => {
             user: loggedUser.id
           })
         }).then(response => {
-          /*window.location.href = '/handelaar/create';*/
-          getBusinesses();
+          history.goBack();
         })
     }
 

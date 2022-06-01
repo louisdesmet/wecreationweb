@@ -46,6 +46,9 @@
             overflow: scroll;
             div {
                 flex: 1;
+                .thumbnail {
+                    width: 50%;
+                }
                 label {
                     display: block;
                     color: white;
@@ -252,12 +255,17 @@
                     padding: 10px 0 0 0;
                     img {
                         width: 40px;
+                        border-radius: 100%;
                     }
                     p {
                         margin: 0 0 0 8px;
                         padding: 10px 0;
-
-                      
+                    }
+                    a {
+                        color: black;
+                        margin: 0 0 0 8px;
+                        padding: 10px 0;
+                        font-size: 1.4em;
                     }
                 }
            
