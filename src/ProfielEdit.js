@@ -6,8 +6,11 @@ import {useSelector} from "react-redux";
 import './css/Profiel.scss';
 import Axios from 'axios';
 import locprod from './Global';
+import { useHistory } from 'react-router-dom';
 
 export const ProfielEdit = ({getUsers}) => {
+
+    const history = useHistory();
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -43,27 +46,11 @@ export const ProfielEdit = ({getUsers}) => {
             'Authorization': 'Bearer ' + localStorage.getItem("token")
           },
         }).then(response => {
-
+            history.goBack();
         })
         .catch(error => {
         
         });
-       /* Axios.post('/users/editdata', {
-            'age': age,
-            'description': desc,
-            'id': updatedLoggedUser.id
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem("token")
-            }
-        })
-        .then((response) => {
-            window.location.href = '/profiel';
-        })
-        .catch((error) => {
-    
-        })*/
     }
 
     const formData = new FormData();
