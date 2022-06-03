@@ -211,7 +211,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 <div className={loggedUser.id === dm.user.id ? "message message-right" : "message"} key={dm.id}>
                     <div className={loggedUser.id === dm.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(dm.user.icon)} color="white"/></div>
                     <div>
-                        <p title={ datetime(dm.created_at) }>{dm.message}</p>
+                        <p title={ datetime(dm.created_at) } dangerouslySetInnerHTML={{__html: urlify(dm.message)}}></p>
                     </div>
                 </div>
             ) : []);
@@ -328,12 +328,25 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         setShowThreads(true);
         setShowNotifications(false);
         setShowAddThread(false);
+        
+        if(window.innerWidth > 700) {
+            setMobileDmsActive(true);
+            setMobileChatsActive(true);
+            setMobileThreadsActive(true);
+        }
+        
     }
 
     function switchToNotifications() {
         setShowThreads(false);
         setShowNotifications(true);
         setShowAddThread(false);
+
+        if(window.innerWidth > 700) {
+            setMobileDmsActive(true);
+            setMobileChatsActive(true);
+            setMobileThreadsActive(true);
+        }
     }
 
     function switchToAddThread() {
@@ -398,6 +411,13 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         }, { headers: headers }).then((response) => {
             setShowAddThread(false);
             setShowThreads(true);
+
+            if(window.innerWidth > 700) {
+                setMobileDmsActive(true);
+                setMobileChatsActive(true);
+                setMobileThreadsActive(true);
+            }
+      
             getGroups();
         }).catch((error) => {})
     }
@@ -412,6 +432,15 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         setMobileDmsActive(false);
         setMobileChatsActive(false);
         setMobileThreadsActive(true);
+    }
+
+    function urlify(text) {
+        var urlRegex = /(https?:\/\/[^\s]+)/g;
+        return text.replace(urlRegex, function(url) {
+          return '<a href="' + url + '" target="_blank">' + url + '</a>';
+        })
+        // or alternatively
+        // return text.replace(urlRegex, '<a href="$1">$1</a>')
     }
     
     return (

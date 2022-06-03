@@ -284,13 +284,12 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                         <div className="badges">
                             {
                                 userHoursTotal.map(skill => 
-                                    <div key= {skill.id}>
+                                    <div key={skill.id}>
                                         {calculateLevel(skill)}
                                     </div>
                                 )
                             }
                         </div>
-                        
                     </div>
                 </div>
 
