@@ -4,7 +4,7 @@ import { Link, Redirect } from "react-router-dom";
 import locprod from './Global';
 
 import './css/Login.scss';
-import loginlogo from './img/nav/loginlogo.PNG';
+import logo from './img/nav/logo.png';
 import leftTop from './img/nav/left-top.png';
 import leftBottom from './img/nav/left-bottom.png';
 import rightTop from './img/nav/right-top.png';
@@ -42,7 +42,7 @@ function Login(props) {
             <img className="right-bottom" src={rightBottom} alt=""/>
             <img className="right-top" src={rightTop} alt=""/>
             <div className="login">
-                <img className="logo" src={loginlogo} alt=""/>
+                <img className="logo" src={logo} alt=""/>
                 <form onSubmit={onFormSubmit}>
                   <input onChange={e => { setEmail(e.target.value); }} placeholder="Email"/>
                   <input onChange={e => { setPassword(e.target.value); }} placeholder="Password" type="password"/>

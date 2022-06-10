@@ -7,6 +7,7 @@ import EventShow from "./components/EventShow";
 import BusinessShow from "./components/BusinessShow";
 import ActivityShow from "./components/ActivityShow";
 
+import handleiding from './img/nav/handleiding.pdf';
 import work from './img/nav/work.png';
 import see from './img/nav/see.png';
 import get from './img/nav/get.png';
@@ -170,6 +171,7 @@ export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities}) => 
             <div><Link to="/agenda"><img src={agenda} alt=""/></Link></div>
             <div><Link to="/netwerk"><img src={netwerk} alt=""/></Link></div>
         </div>
+        <a href={handleiding} className="manual" target="_blank">?</a>
       </div>
       {event ? <EventShow event={event} likeEvent={likeEvent} liked={liked}/> : null}
       {business && users.data ? <BusinessShow business={business} users={users.data} likeBusiness={likeBusiness} liked={likedBusiness}/> : null}

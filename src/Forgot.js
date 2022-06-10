@@ -3,7 +3,7 @@ import axios from 'axios';
 import locprod from './Global';
 
 import './css/Login.scss';
-import loginlogo from './img/nav/loginlogo.PNG';
+import logo from './img/nav/logo.png';
 import leftTop from './img/nav/left-top.png';
 import leftBottom from './img/nav/left-bottom.png';
 import rightTop from './img/nav/right-top.png';
@@ -19,9 +19,11 @@ function Forgot(props) {
 
     const onFormSubmit = e => {
       e.preventDefault();
-      axios.post("/password/reset", {
+      axios.post("/reset_password_without_token", {
         email
-      }).then(result => {}).catch(e => {});
+      }).then(result => {
+        window.location.href = '/login'
+      }).catch(e => {});
     }
 
     return (
@@ -31,7 +33,7 @@ function Forgot(props) {
             <img className="right-bottom" src={rightBottom} alt=""/>
             <img className="right-top" src={rightTop} alt=""/>
             <div className="login">
-                <img className="logo" src={loginlogo} alt=""/>
+                <img className="logo" src={logo} alt=""/>
                 <form onSubmit={onFormSubmit}>
                   <input onChange={e => { setEmail(e.target.value); }} placeholder="Email"/>
                   <button type="submit">Mail versturen</button>

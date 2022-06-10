@@ -71,7 +71,8 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
     const events = useSelector(state => state.remoteAllEvents);
     const groups = useSelector(state => state.remoteGroups);
 
-    let notifications = messages.data && messages.data.length ? messages.data.filter(message => message.notification && message.recipient.id === loggedUser.id) : null;
+    let notifications = messages.data && messages.data.length ? messages.data.slice().reverse().filter(message => message.notification && message.recipient.id === loggedUser.id) : null;
+
 
     let threadGroups = groups.data ? groups.data.filter(group => !group.event) : null;
     let eventGroups = groups.data ? groups.data.filter(group => group.event) : null;

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Redirect } from "react-router-dom";
 import locprod from './Global';
 
-import loginlogo from './img/nav/loginlogo.PNG';
+import logo from './img/nav/logo.png';
 import leftTop from './img/nav/left-top.png';
 import leftBottom from './img/nav/left-bottom.png';
 import rightTop from './img/nav/right-top.png';
@@ -54,7 +54,7 @@ function Register(props) {
             <img className="right-bottom" src={rightBottom} alt=""/>
             <img className="right-top" src={rightTop} alt=""/>
             <div className="login">
-                <img className="logo" src={loginlogo} alt=""/>
+                <img className="logo" src={logo} alt=""/>
                 <input onChange={e => { setName(e.target.value); }} placeholder="Naam"/>
                 <input onChange={e => { setEmail(e.target.value); }} placeholder="Email"/>
                 <input onChange={e => { setPassword(e.target.value); }} placeholder="Wachtwoord" type="password"/>

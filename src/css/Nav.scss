@@ -44,6 +44,20 @@
         border-radius: 100%;
         background: black;
     }
+    .manual {
+        width: 40px;
+        position: absolute;
+        left: -17px;
+        top: 45px;
+        border-radius: 100%;
+        color: white;
+        padding: 8px 0;
+        background: #1D1D1B;
+        text-decoration: none;
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.2em;
+    }
     .close {
         padding: 8px;
         width: 24px;

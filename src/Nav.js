@@ -4,6 +4,7 @@ import { connect, useSelector } from "react-redux";
 import {Link} from "react-router-dom";
 import './css/Nav.scss';
 
+import handleiding from './img/nav/handleiding.pdf';
 import work from './img/nav/work.png';
 import see from './img/nav/see.png';
 import get from './img/nav/get.png';
@@ -103,6 +104,7 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
             <div><Link to="/netwerk"><img src={netwerk} alt=""/></Link></div>
           </div>
         }
+        <a href={handleiding} className="manual" target="_blank">?</a>
         {
           loggedUser ? searchActive ? <img onClick={e => search()} className="filter close" src={close}/> : <img onClick={e => search()} className="filter" src={mapFilter}/> : null
         }

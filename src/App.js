@@ -52,6 +52,7 @@ import ActivityShow from "./ActivityShow";
 import MyInterests from "./MyInterests";
 import ProjectCreate from "./ProjectCreate";
 import Forgot from "./Forgot";
+import ResetPassword from "./ResetPassword";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   return (
@@ -96,6 +97,7 @@ function App() {
           <Switch>
               <Route path="/login" component={Login}/>
               <Route path="/forgot" component={Forgot}/>
+              <Route path="/password/reset/:token/:email" component={ResetPassword}/>
               <Route path="/register" component={Register}/>
               <PrivateRoute path="/home" component={Home}/>
               <PrivateRoute path="/work" component={Work}/>
@@ -129,6 +131,8 @@ function App() {
               <PrivateRoute path="/event/create/:id" component={EventCreate}/>
               <PrivateRoute path="/handelaar/create/:id" component={BusinessCreate}/>
               <PrivateRoute path="/handelaar/create" component={BusinessCreate}/>
+              <PrivateRoute path="/dienst/create/:id" component={BusinessCreate}/>
+              <PrivateRoute path="/dienst/create" component={BusinessCreate}/>
               <BusinessRoute path="/handelaar-dashboard" component={BusinessDashboard}/>
 
               <PrivateRoute path="/events/:id" component={EventShow}/>

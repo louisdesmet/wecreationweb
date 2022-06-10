@@ -206,8 +206,8 @@ export const EventCreate = ({getProjects, getSkills}) => {
     setLng(null);
     setLocation(value)
   }
-
-  const skillList =  skills.data ? skills.data.map(skill => <option key={skill.id} value={skill.id}>{skill.name}</option>) : null;
+  const filteredSkills = skills.data ? skills.data.sort((a, b) => a.name.localeCompare(b.name)) : null;
+  const skillList = filteredSkills ? skills.data.map(skill => <option key={skill.id} value={skill.id}>{skill.name}</option>) : null;
   return (
     <div className="height100">
       <Nav/>

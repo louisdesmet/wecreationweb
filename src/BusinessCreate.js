@@ -1,26 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {connect, useSelector} from "react-redux";
 import { getBusinesses } from './redux/actions';
-import { Link, useParams, useHistory } from 'react-router-dom';
+import { useLocation, useParams, useHistory } from 'react-router-dom';
 import locprod from './Global';
 import './css/EventCreate.scss';
 import { MapContainer, TileLayer } from 'react-leaflet'
 import Nav from './Nav';
 import Geocode from "react-geocode";
 
-
-import work from './img/nav/work.png';
-import agenda from './img/nav/agenda.png';
-import timeIcon from './img/eventshow/time.png';
 import see from './img/nav/see.png';
 import free from './img/profile/free.png';
-import skill from './img/profile/skill.png';
 import get from './img/nav/get.png';
-
 import add from './img/eventshow/add.png';
 
 export const BusinessCreate = ({getBusinesses}) => {
 
+    const routerLocation = useLocation();
     const history = useHistory();
   
     const loggedUser = JSON.parse(localStorage.getItem("user"));
@@ -52,6 +47,9 @@ export const BusinessCreate = ({getBusinesses}) => {
     const [freeData, setFreeData] = useState([]);
 
     const businesses = useSelector(state => state.remoteBusinesses);
+
+    console.log(businesses);
+
     let business = businesses.data ? businesses.data.find(business => business.id === parseInt(id)) : null;
 
     if(business && lng === "") {
@@ -73,6 +71,9 @@ export const BusinessCreate = ({getBusinesses}) => {
           tempFree[index]["price"] = product.price;
           tempFree[index]["stock"] = product.amount;
           tempFree[index]["product"] = product.id;
+          tempFree[index]["date"] = product.date;
+          tempFree[index]["starthour"] = product.start_hour;
+          tempFree[index]["endhour"] = product.end_hour;
         })
         setFreeData(tempFree);
 
@@ -95,11 +96,13 @@ export const BusinessCreate = ({getBusinesses}) => {
             location: location,
             lat: lat,
             lng: lng,
+            type: routerLocation.pathname.includes("handelaar") ? "business" : "service",
             freeData: freeData,
             user: loggedUser.id
           })
         }).then(response => {
-          history.goBack();
+          /*history.goBack();*/ /* Gebruik liever deze code maar dan komen de nieuw toegevoegde producten er niet bij als je opnieuw via profiel op "mijn diensten" klikt */
+          window.location.href = '/profiel';
         })
     }
 
@@ -166,7 +169,19 @@ export const BusinessCreate = ({getBusinesses}) => {
               <input defaultValue={business && freeData.length && freeData[index] ? freeData[index].name : ""} placeholder='Naam' onChange={e => AddToFree(index, 'name', e.target.value)}/>
               <input defaultValue={business && freeData.length && freeData[index] ? freeData[index].desc : ""} placeholder='Description' onChange={e => AddToFree(index, 'desc', e.target.value)}/>
               <input defaultValue={business && freeData.length && freeData[index] ? freeData[index].price : ""} placeholder='Prijs' onChange={e => AddToFree(index, 'price', e.target.value)}/>
-              <input defaultValue={business && freeData.length && freeData[index] ? freeData[index].stock : ""} placeholder='Voorraad' onChange={e => AddToFree(index, 'stock', e.target.value)}/>
+              {
+                routerLocation.pathname.includes("handelaar") ? <>
+                  <input defaultValue={business && freeData.length && freeData[index] ? freeData[index].stock : ""} placeholder='Voorraad' onChange={e => AddToFree(index, 'stock', e.target.value)}/>
+                </> : null
+              }
+              
+              {
+                routerLocation.pathname.includes("dienst") ? <>
+                  <input type="date" defaultValue={business && freeData.length && freeData[index] ? freeData[index].date : ""} placeholder='Datum' onChange={e => AddToFree(index, 'date', e.target.value)}/>
+                  <input type="time" id="starthour" defaultValue={business && freeData.length && freeData[index] ? freeData[index].starthour : ""} placeholder='Start uur' onChange={e => AddToFree(index, 'starthour', e.target.value)}/>
+                  <input type="time" id="endhour" defaultValue={business && freeData.length && freeData[index] ? freeData[index].endhour : ""} placeholder='Eind uur' onChange={e => AddToFree(index, 'endhour', e.target.value)}/>
+                </> : null
+              }
             </div>
             )
           }

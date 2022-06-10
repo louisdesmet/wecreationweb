@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {connect} from "react-redux";
 import {getAllEvents, getUsers} from "./redux/actions";
 import {useSelector} from "react-redux";
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { skillIcon } from './Global';
 import Axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -143,7 +143,7 @@ export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
               <div className="users" key={user.id}>
                 <div className="image">
                   <img src={profile}/>
-                  <p>{user.name}</p>
+                  <Link to={"/profiel/" + user.id}>{user.name}</Link>
                 </div>
                 {
                   user.accepted ? <div className="accept">
@@ -179,7 +179,7 @@ export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
               <div className="users" key={user.id}>
                 <div className="image">
                   <img src={profile}/>
-                  <p>{user.name}</p>
+                  <Link to={"/profiel/" + user.id}>{user.name}</Link>
                 </div>
                 {
                   user.accepted ? <div className="accept">
