@@ -58,7 +58,7 @@ function ActivityShow(props) {
             <p className="desc">{props.activity.description}</p>
             <h2><img src={geelPuzzel} alt=""/>Ticketinfo</h2>
             <p className="desc"><a href={props.activity.ticketlink}>Koop hier je tickets</a></p>
-            <MapContainer className="map" center={position} zoom={15}>
+            <MapContainer className="map map-desktop" center={position} zoom={15}>
               <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OSM</a>'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -82,6 +82,13 @@ function ActivityShow(props) {
               </Link>
             </div>
           </div>
+          <MapContainer className="map map-mobile" center={position} zoom={15}>
+            <TileLayer
+            attribution='&amp;copy <a href="http://osm.org/copyright">OSM</a>'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker key={props.activity.id} position={[props.activity.lat, props.activity.lng]} icon={evenementenIcon}></Marker>
+          </MapContainer>
         </div>
       
       </div>

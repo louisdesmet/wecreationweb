@@ -80,7 +80,7 @@
             color: black;
             img {
                 width: 40px;
-                margin:  0 10px 0 0;
+                margin: 0 10px 0 0;
             }
             p {
                 padding: 10px 0;
@@ -103,5 +103,20 @@
 @media only screen and (max-width: 800px) {
     .nav {
         height: 100px;
+        .filter{
+            width: 30px;
+            right: -17px;
+            top: 37px;
+        }
+        .close {
+            width: 15px;
+        }
+        .manual {
+            width: 30px;
+            position: absolute;
+            left: -17px;
+            top: 34px;
+            font-size: 0.8em;
+        }
     }
 }

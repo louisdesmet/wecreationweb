@@ -159,14 +159,16 @@ function EventShow(props) {
             <h2><img src={work} alt=""/>vrijwilliger uren</h2>
             {freeSkill}
             <h2><img src={credit} alt=""/>skill uren</h2>
-            {paidSkill} 
-            <MapContainer className="map" center={position} zoom={15}>
-              <TileLayer
-              attribution='&amp;copy <a href="http://osm.org/copyright">OSM</a>'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker key={props.event.id} position={[props.event.lat, props.event.lng]} icon={workIcon}></Marker>
-            </MapContainer>
+            {paidSkill}
+            {
+              <MapContainer className="map map-desktop" center={position} zoom={15}>
+                <TileLayer
+                attribution='&amp;copy <a href="http://osm.org/copyright">OSM</a>'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker key={props.event.id} position={[props.event.lat, props.event.lng]} icon={workIcon}></Marker>
+              </MapContainer>
+            }   
           </div>
           <div className="left">
             <div className="left-item">
@@ -201,6 +203,13 @@ function EventShow(props) {
               </Link>
             </div>
           </div>
+          <MapContainer className="map map-mobile" center={position} zoom={15}>
+            <TileLayer
+            attribution='&amp;copy <a href="http://osm.org/copyright">OSM</a>'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker key={props.event.id} position={[props.event.lat, props.event.lng]} icon={workIcon}></Marker>
+          </MapContainer>
         </div>
         {
           areYouSure && chosenSkill ? <div className="are-you-sure">

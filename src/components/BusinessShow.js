@@ -121,12 +121,12 @@ function BusinessShow(props) {
                         )
                     }
                     </div>
-                    <MapContainer className="map" center={position} zoom={13}>
-                    <TileLayer
-                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    {businessMarkers}
+                    <MapContainer className="map map-desktop" center={position} zoom={13}>
+                        <TileLayer
+                        attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        {businessMarkers}
                     </MapContainer>
                 </div>
                 <div className="right">
@@ -146,6 +146,13 @@ function BusinessShow(props) {
                     </div>
                     
                 </div>  
+                <MapContainer className="map map-mobile" center={position} zoom={13}>
+                    <TileLayer
+                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    {businessMarkers}
+                </MapContainer>
                 {
                 areYouSure && product ? <div className="are-you-sure">
                     <p>Weet je zeker dat je een {product.name} wilt aankopen voor {product.price}<img className='credits' src={credits}/></p>
