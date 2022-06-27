@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import axios from 'axios';
-import { Redirect } from "react-router-dom";
 import locprod from './Global';
 
 import logo from './img/nav/logo.png';
@@ -8,6 +7,8 @@ import leftTop from './img/nav/left-top.png';
 import leftBottom from './img/nav/left-bottom.png';
 import rightTop from './img/nav/right-top.png';
 import rightBottom from './img/nav/right-bottom.png';
+
+import terms from './img/nav/ledencontract.pdf';
 
 axios.defaults.baseURL = locprod;
 axios.defaults.headers.common['Accept'] = 'application/json';
@@ -20,12 +21,13 @@ function Register(props) {
     const [password, setPassword] = useState("");
     const [repeat, setRepeat] = useState("");
     const [name, setName] = useState("");
+    const [checkbox, setCheckbox] = useState("");
 
 
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     function register() {
-      if(email && password && repeat && name) {
+      if(email && password && repeat && name && checkbox) {
         if(re.test(String(email).toLowerCase())) {
           if(password === repeat) {
             axios.post("/register", {
@@ -59,7 +61,9 @@ function Register(props) {
                 <input onChange={e => { setEmail(e.target.value); }} placeholder="Email"/>
                 <input onChange={e => { setPassword(e.target.value); }} placeholder="Wachtwoord" type="password"/>
                 <input onChange={e => { setRepeat(e.target.value); }} placeholder="Herhaal wachtwoord" type="password"/>
-                {error}
+                <input onChange={e => { setCheckbox(e.target.value); }} type="checkbox" className="checkbox"/>
+                <label>Ik ga akkoord met de <a href={terms} target="_blank">algemene voorwaarden</a></label>
+                <p>{error}</p>
                 <button onClick={() => register()}>Registreren</button>
             </div>
         </div>

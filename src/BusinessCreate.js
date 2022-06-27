@@ -41,6 +41,7 @@ export const BusinessCreate = ({getBusinesses}) => {
     const [location, setLocation] = useState("");
     const [lat, setLat] = useState("");
     const [lng, setLng] = useState("");
+    const [file, setFile] = useState(null);
 
     const [freeAmount, setFreeAmount] = useState(1);
 
@@ -82,28 +83,61 @@ export const BusinessCreate = ({getBusinesses}) => {
       }
     }
 
+    const formData = new FormData();
+    const imageHandler = (event) => {
+      setFile(event.target.files[0]);
+    }
+
     function submit() {
-        fetch(id ? locprod + '/businesses/' + business.id : locprod + '/businesses' , {
-          method: id ? 'PUT' : 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
-          },
-          body: JSON.stringify({
-            name: name,
-            desc: desc,
-            location: location,
-            lat: lat,
-            lng: lng,
-            type: routerLocation.pathname.includes("handelaar") ? "business" : "service",
-            freeData: freeData,
-            user: loggedUser.id
-          })
-        }).then(response => {
-          /*history.goBack();*/ /* Gebruik liever deze code maar dan komen de nieuw toegevoegde producten er niet bij als je opnieuw via profiel op "mijn diensten" klikt */
-          window.location.href = '/profiel';
-        })
+      if(name && desc && location && lat && lng) {
+        formData.append('name', name);
+        formData.append('desc', desc);
+        formData.append('type', routerLocation.pathname.includes("handelaar") ? "business" : "service",);
+        formData.append('location', location);
+        formData.append('lat', lat);
+        formData.append('lng', lng);
+        formData.append('freeData', JSON.stringify(freeData));
+        formData.append('user', loggedUser.id);
+        if(file) {
+          formData.append('image', file);
+        }
+
+        if(business) {
+          fetch(locprod + '/businesses/' + business.id, {
+            method: 'PUT',
+            body: JSON.stringify({
+              name: name,
+              desc: desc,
+              location: location,
+              lat: lat,
+              lng: lng,
+              type: routerLocation.pathname.includes("handelaar") ? "business" : "service",
+              freeData: freeData,
+              user: loggedUser.id
+            }),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
+            },
+          }).then(response => window.location.href = '/profiel')
+          .catch(error => {
+          
+          });
+        } else {
+          fetch(locprod + '/businesses', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'multipart/form-data',
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
+            },
+          }).then(response => window.location.href = '/profiel')
+          .catch(error => {
+          
+          });
+        }
+      }
     }
 
     function AddToFree(index, field, value) {
@@ -143,7 +177,11 @@ export const BusinessCreate = ({getBusinesses}) => {
           <h2><img src={get} alt=""/>Beschrijving handelszaak</h2>
           <input defaultValue={business && business.name ? business.name : ""} className='naam' onChange={e => setName(e.target.value)} placeholder='Naam'/>
           <textarea defaultValue={business && business.description ? business.description : ""} onChange={e => setDesc(e.target.value)} placeholder='Omschrijving'></textarea>
-
+          <label>Afbeelding (optioneel)</label>
+          {
+            business && business.image ? <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "businesses/" + business.image}/> : null
+          }
+          <input type="file" name="image" accept="application/image" multiple={false} onChange={imageHandler}/>
           <div className='input-image'>
             <img src={see} alt=""/>
             <input defaultValue={business && business.location ?  business.location : ""} onChange={e => setLocationFunction(e.target.value) } placeholder='Adres'/>

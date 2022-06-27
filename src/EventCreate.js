@@ -54,9 +54,6 @@ export const EventCreate = ({getProjects, getSkills}) => {
   const projects = useSelector(state => state.remoteProjects);
   const skills = useSelector(state => state.remoteSkills);
 
-  
-
-
   const project = projects.data ? projects.data.find(project => project.id === parseInt(id)) : null;
   let event = null;
   if(project) {

@@ -51,6 +51,7 @@ function Login(props) {
                 </form>
                 <Link to={"/forgot"}>Wachtwoord vergeten?</Link>
                 <Link to="/register" className="register"><img src={registreren} alt=""/></Link>
+                <h2>BETA VERSIE</h2>
             </div>  
         </div>
     );
