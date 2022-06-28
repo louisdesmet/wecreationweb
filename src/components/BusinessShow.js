@@ -94,7 +94,9 @@ function BusinessShow(props) {
                     }
                 </div>
                 <div>
-                    <FontAwesomeIcon icon={profileIcon(props.business.leader.icon)} className="profile-icon" color="white"/>
+                    {
+                        props.business.image ? <img className="business-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "businesses/" + props.business.image}/> : null
+                    }
                 </div>
                 <div className="like" onClick={e => props.business.users && props.business.users.find(user => user.id === loggedUser.id) ? null : props.likeBusiness(props.business.id)}>
                     <span>{props.liked ? props.business.users.length + 1 : props.business.users.length}</span>

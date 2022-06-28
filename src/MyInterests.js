@@ -20,7 +20,6 @@ export const Profiel = ({getUsers}) => {
 
     const users = useSelector(state => state.remoteUsers);
 
-    console.log(users.data);
     const user = users.data ? users.data.find(user => user.id === loggedUser.id) : null
     
     const eventList = user ? (

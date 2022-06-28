@@ -230,7 +230,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
                 <div>
                     <p className="message-name">{message.user.name}</p>
-                    <p title={ datetime(message.created_at) }>{message.message}</p>
+                    <p title={ datetime(message.created_at) } dangerouslySetInnerHTML={{__html: urlify(message.message)}}></p>
                 </div>
             </div>
         ));
@@ -243,7 +243,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
                 <div>
                     <p className="message-name">{message.user.name}</p>
-                    <p title={ datetime(message.created_at) }>{message.message}</p>
+                    <p title={ datetime(message.created_at) } dangerouslySetInnerHTML={{__html: urlify(message.message)}}></p>
                 </div>
             </div>
         ));
@@ -277,7 +277,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
                 <div>
                     <p className="message-name">{message.user.name}</p>
-                    <p title={ datetime(message.created_at) }>{message.message}</p>
+                    <p title={ datetime(message.created_at) } dangerouslySetInnerHTML={{__html: urlify(message.message)}}></p>
                 </div>
             </div>
         ));
@@ -297,7 +297,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
                 <div>
                     <p className="message-name">{message.user.name}</p>
-                    <p title={ datetime(message.created_at) }>{message.message}</p>
+                    <p title={ datetime(message.created_at) }  dangerouslySetInnerHTML={{__html: urlify(message.message)}}></p>
                 </div>
             </div>
         ));
@@ -466,7 +466,6 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                     mobileDmsActive ? <div className="dms">
                         {
                             users.data ? <Select placeholder="Zoeken" onChange={e => searchUser(e.value)} className="search" options={users.data.filter(user => user.id !== loggedUser.id).map(user => {
-
                                 return { value: user, label: user.name }
                             })}/> : null
                         }
@@ -483,7 +482,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                                         <p className="message-name">{groupchat.group.event.name}</p>
                                         <p>{groupchat.user ? groupchat.user.name : null}</p>
                                         {
-                                            groupchat.created_at && groupchat.message && <p title={ datetime(groupchat.created_at) }>{groupchat.message}</p>
+                                            groupchat.created_at && groupchat.message && <p title={ datetime(groupchat.created_at) } dangerouslySetInnerHTML={{__html: urlify(groupchat.message)}}></p>
                                         }
                                     </div>
                                 </div>
@@ -492,10 +491,17 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                         {
                             showLatestDms && latestMessages.map(dm =>
                                 <div className="message" key={dm.id} onClick={e => switchView(dm)}>
-                                    <div className="netwerk-profile-icon"><FontAwesomeIcon icon={profileIcon(dm.user.id === loggedUser.id ? dm.recipient.icon : dm.user.icon)} color="#F7931E"/></div>
+                                    <div className="netwerk-profile-icon">
+                                        {
+                                            dm.user.id === loggedUser.id ?
+                                                dm.recipient.image ? <img className="profile-image"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "users/" + dm.recipient.image}/> : <FontAwesomeIcon icon={profileIcon(dm.recipient.icon)} color="#F7931E"/> 
+                                            : dm.user.image ? <img className="profile-image"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "users/" + dm.user.image}/> : <FontAwesomeIcon icon={profileIcon(dm.user.icon)} color="#F7931E"/>
+                                        }
+                                        
+                                    </div>
                                     <div>
                                         <p className="message-name">{dm.user.id === loggedUser.id ? dm.recipient.name : dm.user.name}</p>
-                                        <p title={ datetime(dm.created_at) }>{dm.message}</p>
+                                        <p title={ datetime(dm.created_at) } dangerouslySetInnerHTML={{__html: urlify(dm.message)}}></p>
                                     </div>
                                 </div>
                             )

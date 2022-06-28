@@ -385,11 +385,14 @@ export const badgeIcon = (name, level) => {
 
 
 export const date = (date) => {
-    const jsDate = new Date(date);
-    return jsDate.getDate()+'-'+(jsDate.getMonth()+1)+'-'+jsDate.getFullYear();
+    var t = date.split(/[- :]/);
+    var d = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+    var actiondate = new Date(d);
+    return actiondate.getDate()+'-'+(actiondate.getMonth()+1)+'-'+actiondate.getFullYear();
 }
 
 export const datetime = (date) => {
+    
     const jsDate = new Date(date);
     return jsDate.getDate()+'/'+(jsDate.getMonth()+1)+'/'+jsDate.getFullYear()+' '+jsDate.getHours ()+':'+jsDate.getMinutes();
 }

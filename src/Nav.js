@@ -82,7 +82,6 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
 
   function getResults(value) {
     setQuery(value);
-    console.log(users.data);
     setResults(businesses.data.filter(business => business.name.toLowerCase().includes(value.toLowerCase())).concat(projects.data.filter(project => project.name.toLowerCase().includes(value.toLowerCase())), events.data.filter(event => event.name.toLowerCase().includes(value.toLowerCase())), activities.data.filter(activity => activity.name.toLowerCase().includes(value.toLowerCase())), users.data.filter(user => user.name.toLowerCase().includes(value.toLowerCase()))));
   }
 

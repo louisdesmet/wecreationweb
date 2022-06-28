@@ -7,6 +7,8 @@ import './css/EventCreate.scss';
 import { MapContainer, TileLayer } from 'react-leaflet'
 import Nav from './Nav';
 import Geocode from "react-geocode";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import work from './img/nav/work.png';
 import agenda from './img/nav/agenda.png';
@@ -28,6 +30,8 @@ export const EventCreate = ({getProjects, getSkills}) => {
   // set response region. Its optional.
   // A Geocoding request with region=es (Spain) will return the Spanish city.
   Geocode.setRegion("es");
+
+  const notify = () => toast("Gelieve alle verplichte velden in te vullen");
 
   useEffect(() => {
     getProjects();
@@ -127,6 +131,7 @@ export const EventCreate = ({getProjects, getSkills}) => {
  
 
       if(event) {
+        formData.append('eventid', event.id);
         fetch(locprod + '/events/' + event.id, {
           method: 'PUT',
           body: JSON.stringify({
@@ -145,7 +150,19 @@ export const EventCreate = ({getProjects, getSkills}) => {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ' + localStorage.getItem("token")
           },
-        }).then(response => window.location.href = '/projects/' + project.id)
+        }).then(response => {
+          fetch(locprod + '/events/image', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'multipart/form-data',
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
+            },
+          }).then(response => window.location.href = '/projects/' + project.id)
+          .catch(error => {
+          
+          });
+        })
         .catch(error => {
         
         });
@@ -162,8 +179,8 @@ export const EventCreate = ({getProjects, getSkills}) => {
         
         });
       }
-      
-      
+    } else {
+      notify();
     }
   }
 
@@ -244,7 +261,6 @@ export const EventCreate = ({getProjects, getSkills}) => {
         
         <h2><img src={work} alt=""/>Team</h2>
         <h2 className='hours'><img src={free} alt=""/>Vrijwilliger uren</h2>
-        {console.log(freeData)}
         {
           [...Array(freeAmount)].map((el, index) =>
           <div key={index} className='input-data'>
@@ -292,6 +308,7 @@ export const EventCreate = ({getProjects, getSkills}) => {
         <h2 className='new' onClick={e => setPaidAmount(paidAmount + 1)}><img src={add} alt=""/>Nieuwe functie</h2>
         <button onClick={e => submit(e)}>Event aanmaken</button>
       </div>
+      <ToastContainer />
     </div>
   );
 }

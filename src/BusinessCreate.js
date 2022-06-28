@@ -49,8 +49,6 @@ export const BusinessCreate = ({getBusinesses}) => {
 
     const businesses = useSelector(state => state.remoteBusinesses);
 
-    console.log(businesses);
-
     let business = businesses.data ? businesses.data.find(business => business.id === parseInt(id)) : null;
 
     if(business && lng === "") {
@@ -164,7 +162,7 @@ export const BusinessCreate = ({getBusinesses}) => {
     function setLocationFunction(value) {
       setLat(null);
       setLng(null);
-      setLocation(value)
+      setLocation(value);
     }
 
     return (
@@ -176,7 +174,7 @@ export const BusinessCreate = ({getBusinesses}) => {
           }
           <h2><img src={get} alt=""/>Beschrijving handelszaak</h2>
           <input defaultValue={business && business.name ? business.name : ""} className='naam' onChange={e => setName(e.target.value)} placeholder='Naam'/>
-          <textarea defaultValue={business && business.description ? business.description : ""} onChange={e => setDesc(e.target.value)} placeholder='Omschrijving'></textarea>
+          <textarea defaultValue={business && business.description ? business.description : ""} onChange={e => setDesc(e.target.value)} placeholder='Omschrijving'/>
           <label>Afbeelding (optioneel)</label>
           {
             business && business.image ? <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "businesses/" + business.image}/> : null
@@ -196,11 +194,8 @@ export const BusinessCreate = ({getBusinesses}) => {
             />
           </MapContainer> : null
           }
-          
-
           <h2><img src={get} alt=""/>Handelswaren</h2>
           <h2 className='hours'><img src={free} alt=""/>Producten</h2>
-
           {
             [...Array(freeAmount)].map((el, index) =>
             <div key={index} className='input-data'>
@@ -220,6 +215,7 @@ export const BusinessCreate = ({getBusinesses}) => {
                   <input type="time" id="endhour" defaultValue={business && freeData.length && freeData[index] ? freeData[index].endhour : ""} placeholder='Eind uur' onChange={e => AddToFree(index, 'endhour', e.target.value)}/>
                 </> : null
               }
+              
             </div>
             )
           }
