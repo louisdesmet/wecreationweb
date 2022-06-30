@@ -265,7 +265,7 @@ export const EventCreate = ({getProjects, getSkills}) => {
           [...Array(freeAmount)].map((el, index) =>
           <div key={index} className='input-data'>
             {
-              freeData.length && freeData[index] && freeData[index].skill ?  <select defaultValue={freeData[index].skill} onChange={e => AddToFree(index, 'skill', e.target.value)}>
+              freeData.length && freeData[index] && freeData[index].skill ? <select defaultValue={freeData[index].skill} onChange={e => AddToFree(index, 'skill', e.target.value)}>
                   <option>Kies een functie</option>
                   {skillList}
               </select> : null

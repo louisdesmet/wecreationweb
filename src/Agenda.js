@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
-import {getAllEvents} from "./redux/actions";
+import {getAllEvents, getActivities} from "./redux/actions";
 import {useSelector} from "react-redux";
 import { Link, useParams } from 'react-router-dom';
 import { skillIcon } from './Global';
@@ -17,8 +17,7 @@ import location from './img/nav/see.png';
 
 import './css/Agenda.scss';
 
-
-export const Agenda = ({getAllEvents}) => {
+export const Agenda = ({getAllEvents, getActivities}) => {
 
   const { id } = useParams();
 
@@ -33,9 +32,11 @@ export const Agenda = ({getAllEvents}) => {
 
   useEffect(() => {
     getAllEvents();
+    getActivities();
   }, []);
 
   const events = useSelector(state => state.remoteAllEvents);
+  const activities = useSelector(state => state.remoteActivities);
 
 
   if(events.data) {
@@ -57,7 +58,16 @@ export const Agenda = ({getAllEvents}) => {
     newDate.setMinutes(time[1]);
     return {id: event.id, title: event.name, date: newDate, extendedProps: {
       worked: event.worked,
-      time: event.time
+      time: event.time,
+      type: "event"
+    }}
+  }) : null
+
+  const fcActivities = activities.data ? activities.data.map((activity, index) => {
+    let newDate = new Date(activity.date);
+    return {id: activity.id, title: activity.name, date: newDate, extendedProps: {
+      time: activity.time,
+      type: "activity"
     }}
   }) : null
 
@@ -76,14 +86,20 @@ export const Agenda = ({getAllEvents}) => {
 
   function Popup(props) {
 
-    function findEvent(eventId) {
-      return events.data.find(event => event.id === parseInt(eventId));
+    function findEvent(paramEvent) {
+      console.log(paramEvent.extendedProps.type);
+      if(paramEvent.extendedProps.type === "event") {
+        return events.data.find(event => event.id === parseInt(paramEvent.id));
+      } else {
+        return activities.data.find(activity => activity.id === parseInt(paramEvent.id));
+      }
+      
     }
 
-    function attendance(id) {
+    function attendance(event) {
       let display = [];
 
-      findEvent(id).skills.forEach(skill => {
+      findEvent(event).skills.forEach(skill => {
         skill.users.forEach(user => {
             if(loggedUser && user.id === loggedUser.id) {
               display.push(<p className='attendance' key={skill.skill.name + "zin1"}>Je hebt je ingeschreven voor <img src={skillIcon(skill.skill.icon)}/> {skill.skill.name} voor {skill.hours} uur.</p>);    
@@ -104,8 +120,8 @@ export const Agenda = ({getAllEvents}) => {
             <div className='top-agenda-popup'>
               <div>
              
-                <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + findEvent(event.id).image}/>
-                <Link to={"/events/" + event.id}>{findEvent(event.id).project.name} - {event.title}</Link>
+                <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + findEvent(event).image}/>
+                <Link to={"/events/" + event.id}>{event.extendedProps.type === "event" ? findEvent(event).project.name + " - " : null}{event.title}</Link>
               </div>
               <span className="close" onClick={e => setEnabled(0)}>x</span>
             </div>
@@ -116,12 +132,12 @@ export const Agenda = ({getAllEvents}) => {
             </div>
             <div className="flex-popup">
               <img src={location}/>
-              <p>{findEvent(event.id).location}</p>
+              <p>{findEvent(event).location}</p>
             </div>
             {
-              attendance(event.id)
+              event.extendedProps.type === "event" ? attendance(event) : null
             }
-            <Link to={"/events/" + event.id}><span>Naar event</span></Link>
+            <Link to={event.extendedProps.type === "event" ? "/events/" + event.id : "/activities/" + event.id}><span>Naar event</span></Link>
           </div>
         : null}
       </div>
@@ -141,12 +157,12 @@ export const Agenda = ({getAllEvents}) => {
             <div className='events-list-flex'>
               <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image}/>
               <div>
-                <p className={event.worked ? "title worked" : "title"}>{event.project.name + " - " + event.name}</p>
+                <p className={event.worked ? "title worked" : "title"}>{event.project ? event.project.name + " - " : null + event.name}</p>
                 <p>{event.time}</p>
               </div>
             </div>
 
-            <Link to={"/events/" + event.id}><span>Naar event</span></Link>
+            <Link to={event.project ? "/events/" + event.id : "/activities/" + event.id}><span>Naar event</span></Link>
           </div>
         )}
       </div>
@@ -160,8 +176,10 @@ export const Agenda = ({getAllEvents}) => {
   
   const handleDateClick = (args) => {
     let filteredEvents = events.data.filter(event => date(event.date) === date(args.dateStr));
-    if(filteredEvents.length > 0) {
-      setDateEvents(filteredEvents);
+    let filteredActivities = activities.data.filter(activity => date(activity.date) === date(args.dateStr));
+    let mergedEvents = filteredEvents.concat(filteredActivities);
+    if(mergedEvents.length > 0) {
+      setDateEvents(mergedEvents);
       setDateClicked(args.dateStr);
       setEnabledEvents(1);
     }
@@ -170,7 +188,7 @@ export const Agenda = ({getAllEvents}) => {
   function renderEventContent(eventInfo) {
     return (
       <>
-        <span className={eventInfo.event.extendedProps.worked ? "worked" : ""}></span>
+        <span className={eventInfo.event.extendedProps.worked ? "worked" : eventInfo.event.extendedProps.type === "event" ? "event" : "activity"}></span>
         <b>{eventInfo.event.extendedProps.time} </b>
         <i> {eventInfo.event.title}</i>
       </>
@@ -187,7 +205,7 @@ export const Agenda = ({getAllEvents}) => {
         <FullCalendar
           plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
           initialView="dayGridMonth"
-          events={fcEvents}
+          events={fcEvents && fcActivities ? fcEvents.concat(fcActivities) : null}
           eventClick={handleEventClick}
           dateClick={handleDateClick}
           eventContent={renderEventContent}
@@ -202,7 +220,7 @@ export const Agenda = ({getAllEvents}) => {
         />
       </div>
       <div className='legend'>
-        <span className="default"></span><b>Default</b><span className="worked"></span><b>Ingeschreven als werkkracht</b>
+        <span className="activity"></span><b>Activiteit</b><span className="default"></span><b>Job</b><span className="worked"></span><b>Ingeschreven</b>
       </div>
       {enabled ? <Popup event={event}/> : null}
       {enabledEvents ? <EventsPopup event={dateEvents}/> : null}
@@ -212,6 +230,6 @@ export const Agenda = ({getAllEvents}) => {
 
 export default connect(
   null,
-  {getAllEvents}
+  {getAllEvents, getActivities}
 )(Agenda);
 

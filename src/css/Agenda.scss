@@ -39,7 +39,7 @@
                     color: #4BC566;
                 }
                 .worked {
-                    color: #5FB7E7;
+                    color: #CF3467;
                 }
             }
         }
@@ -112,7 +112,7 @@
 .legend {
     height: 3%;
     width: 100%;
-    .default, .worked {
+    .default, .worked, .activity {
         width: 10px;
         height: 10px;
         border-radius: 100%;
@@ -125,7 +125,10 @@
   
     }
     .worked {
-        background: #5FB7E7;
+        background: #CF3467;
+    }
+    .activity {
+        background: #29ABE2;
     }
 }
 .agenda {
@@ -216,13 +219,17 @@
                     width: 10px;
                     height: 10px;
                     border-radius: 100%;
-                    background: #4BC566;
                     margin: 0 3px 0 0;
                 }
                 .worked {
-                    background: #5FB7E7;
+                    background: #CF3467;
                 }
-
+                .event {
+                    background: #4BC566;
+                }
+                .activity {
+                    background: #29ABE2;
+                }
                 b {
                     font-weight: 500;
                     margin: 0 5px 0 0;
