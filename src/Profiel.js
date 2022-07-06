@@ -25,7 +25,10 @@ import skill from './img/profile/skill.png';
 import badges from './img/profile/badges.png';
 import like from './img/eventshow/like.png';
 import logoutImg from './img/profile/logout.png';
-
+import starter from './img/profile/starter.png';
+import beginner from './img/profile/beginner.png';
+import pro from './img/profile/pro.png';
+import legend from './img/profile/legend.png';
 import { badgeIcon, date, profileIcon, skillIcon } from './Global';
 import Axios from 'axios';
 
@@ -137,11 +140,11 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
     }
 
     const calculateLevel = (skill) => {
-        if(skill.hours > 25) {
+        if(skill.hours > 150) {
             return <img src={badgeIcon(skill.name,  "legend")}/>
-        } else if(skill.hours > 50) {
+        } else if(skill.hours > 75) {
             return <img src={badgeIcon(skill.name, "pro")}/>
-        } else if(skill.hours > 100) {
+        } else if(skill.hours > 25) {
             return <img src={badgeIcon(skill.name, "beginner")}/>
         } else {
             return <img className={"starter"} src={badgeIcon(skill.name, "starter")}/>
@@ -259,11 +262,14 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                         {
                             freeUserHours ? freeUserHours.map(userHour =>
                                 <div className='skill' key={userHour.id}>
-                                    <div>
+                                    <div className='nameAndIcon'>
                                         <img src={skillIcon(userHour.icon)}/>
                                         <p>{userHour.name}</p>
                                     </div>
                                     <p>{userHour.hours}u</p>
+                                    <div>
+
+                                    </div>
                                 </div>
                             ) : null
                         }
@@ -271,11 +277,14 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                         {
                             paidUserHours ? paidUserHours.map(userHour =>
                                 <div className='skill' key={userHour.id}>
-                                    <div>
+                                    <div className='nameAndIcon'>
                                         <img src={skillIcon(userHour.icon)}/>
                                         <p>{userHour.name}</p>
                                     </div>
                                     <p>{userHour.hours}u</p>
+                                    <div className='progress'>
+                                        <img style={{ left: userHour.hours / 10 + '%' }} src={userHour.hours > 150 ? legend : userHour.hours > 75 ? pro : userHour.hours > 25 ? beginner : starter}/>
+                                    </div>
                                 </div>
                             ) : null
                         }
