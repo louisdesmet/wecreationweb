@@ -147,7 +147,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
         } else if(skill.hours > 25) {
             return <img src={badgeIcon(skill.name, "beginner")}/>
         } else {
-            return <img className={"starter"} src={badgeIcon(skill.name, "starter")}/>
+            return <img src={badgeIcon(skill.name, "starter")}/>
         }
     }
 
@@ -267,8 +267,8 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                                         <p>{userHour.name}</p>
                                     </div>
                                     <p>{userHour.hours}u</p>
-                                    <div>
-
+                                    <div className='progress'>
+                                        <img style={{ left: userHour.hours / 10 * 2 + '%' }} src={userHour.hours > 150 ? legend : userHour.hours > 75 ? pro : userHour.hours > 25 ? beginner : starter}/>
                                     </div>
                                 </div>
                             ) : null
@@ -283,7 +283,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                                     </div>
                                     <p>{userHour.hours}u</p>
                                     <div className='progress'>
-                                        <img style={{ left: userHour.hours / 10 + '%' }} src={userHour.hours > 150 ? legend : userHour.hours > 75 ? pro : userHour.hours > 25 ? beginner : starter}/>
+                                        <img style={{ left: userHour.hours / 10 * 2 + '%' }} src={userHour.hours > 150 ? legend : userHour.hours > 75 ? pro : userHour.hours > 25 ? beginner : starter}/>
                                     </div>
                                 </div>
                             ) : null

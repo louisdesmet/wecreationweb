@@ -29,6 +29,33 @@ import projectleider from './img/icons/projectleider.png';
 import horeca from './img/icons/horeca.png';
 import schilderkunst from './img/icons/schilderkunst.png';
 
+import regieStarter from './img/icons/starter/regie.png';
+import montageStarter from './img/icons/starter/montage.png';
+import modeStarter from './img/icons/starter/mode.png';
+import dansStarter from './img/icons/starter/dans.png';
+import cameraStarter from './img/icons/starter/camera.png';
+import administratieStarter from './img/icons/starter/administratie.png';
+import organisatieStarter from './img/icons/starter/organisatie.png';
+import werkkrachtStarter from './img/icons/starter/werkkracht.png';
+import redactieStarter from './img/icons/starter/redactie.png';
+import kostuumStarter from './img/icons/starter/kostuum.png';
+import muzikantStarter from './img/icons/starter/muzikant.png';
+import agendaplanningStarter from './img/icons/starter/agendaplanning.png';
+import djStarter from './img/icons/starter/dj.png';
+import animatieStarter from './img/icons/starter/animatie.png';
+import tolkStarter from './img/icons/starter/tolk.png';
+import presentatieStarter from './img/icons/starter/presentatie.png';
+import socialmediaStarter from './img/icons/starter/socialmedia.png';
+import acrobatieStarter from './img/icons/starter/acrobatie.png';
+import acteurStarter from './img/icons/starter/acteur.png';
+import vakmanStarter from './img/icons/starter/vakman.png';
+import geluidstechniekerStarter from './img/icons/starter/geluidstechnieker.png';
+import conceptbedenkerStarter from './img/icons/starter/conceptbedenker.png';
+import yogaStarter from './img/icons/starter/yoga.png';
+import projectleiderStarter from './img/icons/starter/projectleider.png';
+import horecaStarter from './img/icons/starter/horeca.png';
+import schilderkunstStarter from './img/icons/starter/schilderkunst.png';
+
 import regieBeginner from './img/icons/beginner/regie.png';
 import montageBeginner from './img/icons/beginner/montage.png';
 import modeBeginner from './img/icons/beginner/mode.png';
@@ -213,7 +240,62 @@ export const skillIcon = (name) => {
 }
 
 export const badgeIcon = (name, level) => {
-    if(level === "starter" || level === "beginner") {
+    if(level === "starter") {
+        switch(name) {
+            case "regie": return regieStarter;
+            break;
+            case "montage": return montageStarter;
+            break;
+            case "mode": return modeStarter;
+            break;
+            case "dans": return dansStarter;
+            break;
+            case "camera": return cameraStarter;
+            break;
+            case "administratie": return administratieStarter;
+            break;
+            case "organisatie": return organisatieStarter;
+            break;
+            case "werkkracht": return werkkrachtStarter;
+            break;
+            case "redactie": return redactieStarter;
+            break;
+            case "kostuum": return kostuumStarter;
+            break;
+            case "muzikant": return muzikantStarter;
+            break;
+            case "agendaplanning": return agendaplanningStarter;
+            break;
+            case "dj": return djStarter;
+            break;
+            case "animatie": return animatieStarter;
+            break;
+            case "tolk": return tolkStarter;
+            break;
+            case "presentatie": return presentatieStarter;
+            break;
+            case "socialmedia": return socialmediaStarter;
+            break;
+            case "schilderkunst": return schilderkunstStarter;
+            break;
+            case "acrobatie": return acrobatieStarter;
+            break;
+            case "acteur": return acteurStarter;
+            break;
+            case "vakman": return vakmanStarter;
+            break;
+            case "geluidstechnieker": return geluidstechniekerStarter;
+            break;
+            case "conceptbedenker": return conceptbedenkerStarter;
+            break;
+            case "yoga": return yogaStarter;
+            break;
+            case "projectleider": return projectleiderStarter;
+            break;
+            case "horeca": return horecaStarter;
+            break;
+        }
+    } else if(level === "beginner") {
         switch(name) {
             case "regie": return regieBeginner;
             break;
