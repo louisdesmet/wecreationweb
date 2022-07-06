@@ -348,6 +348,18 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
             setMobileChatsActive(true);
             setMobileThreadsActive(true);
         }
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        }
+
+        axios.post('/messages/seen', {
+            user: loggedUser.id
+        }, { headers: headers }).then((response) => {
+
+        }).catch((error) => {})
+
     }
 
     function switchToAddThread() {

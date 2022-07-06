@@ -76,6 +76,11 @@ export const Agenda = ({getAllEvents, getActivities}) => {
     let tempEvent = events.data.find(event => event.id === parseInt(id));
     tempEvent.startStr = tempEvent.date
     tempEvent.title = tempEvent.name
+    tempEvent.extendedProps = {
+      worked: tempEvent.worked,
+      time: tempEvent.time,
+      type: "event"
+    }
     setEvent(tempEvent);
   }
 
@@ -87,6 +92,7 @@ export const Agenda = ({getAllEvents, getActivities}) => {
   function Popup(props) {
 
     function findEvent(paramEvent) {
+      
       console.log(paramEvent.extendedProps.type);
       if(paramEvent.extendedProps.type === "event") {
         return events.data.find(event => event.id === parseInt(paramEvent.id));
@@ -157,7 +163,7 @@ export const Agenda = ({getAllEvents, getActivities}) => {
             <div className='events-list-flex'>
               <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image}/>
               <div>
-                <p className={event.worked ? "title worked" : "title"}>{event.project ? event.project.name + " - " : null + event.name}</p>
+                <p className={event.worked ? "title worked" : "title"}>{(event.project ? event.project.name + " - " : "") + event.name}</p>
                 <p>{event.time}</p>
               </div>
             </div>

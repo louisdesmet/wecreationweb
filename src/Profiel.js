@@ -242,7 +242,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                         {
                             updatedLoggedUser && updatedLoggedUser.age ? <p>{updatedLoggedUser.age} jaar</p> : null
                         }
-                        <p>Actief Sinds {date(updatedLoggedUser ? updatedLoggedUser.created_at : null)}</p>
+                        <p>Actief Sinds {updatedLoggedUser ? date(updatedLoggedUser.created_at) : null}</p>
                         <p className="email">{updatedLoggedUser ? updatedLoggedUser.email : null}</p>
                         {
                         /*<h2><img src={get} alt=""/>Handelszaak</h2>

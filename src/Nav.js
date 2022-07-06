@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {getActivities, getBusinesses, getAllEvents, getProjects, getUsers} from "./redux/actions";
+import {getActivities, getBusinesses, getAllEvents, getProjects, getUsers, getMessages} from "./redux/actions";
 import { connect, useSelector } from "react-redux";
 import {Link} from "react-router-dom";
 import './css/Nav.scss';
@@ -17,7 +17,7 @@ import close from './img/map/close.png';
 import activity from './img/profile/badges.png';
 import diensten from './img/map/diensten.png';
 
-export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, getUsers}) => {
+export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, getUsers, getMessages}) => {
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -45,12 +45,14 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
         getUsers();
       }
     }
+    getMessages();
   }, []);
 
   const activities = useSelector(state => state.remoteActivities);
   const events = useSelector(state => state.remoteAllEvents);
   const projects = useSelector(state => state.remoteProjects);
   const users = useSelector(state => state.remoteUsers);
+  const messages = useSelector(state => state.remoteMessages);
 
   if(businesses.data && activities.data && events.data && projects.data && users.data) {
     activities.data.forEach(function (element) {
@@ -100,7 +102,12 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
             <div><Link to="/home"><img src={random} alt=""/></Link></div>
             <div><Link to="/profiel"><img src={profiel} alt=""/></Link></div>
             <div><Link to="/agenda"><img src={agenda} alt=""/></Link></div>
-            <div><Link to="/netwerk"><img src={netwerk} alt=""/></Link></div>
+            <div>
+              <Link to="/netwerk">
+                <img src={netwerk} alt=""/>
+                <span className="notifications">{messages.data ? messages.data.filter(message => message.notification && message.recipient.id === loggedUser.id && message.seen == 0).length : null}</span>
+              </Link>
+            </div>
           </div>
         }
         <a href={handleiding} className="manual" target="_blank">?</a>
@@ -118,5 +125,5 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
 
 export default connect(
   null,
-  {getBusinesses, getActivities, getAllEvents, getProjects, getUsers}
+  {getBusinesses, getActivities, getAllEvents, getProjects, getUsers, getMessages}
 )(Nav);

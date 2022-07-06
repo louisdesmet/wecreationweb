@@ -23,9 +23,11 @@
         width: 100%;
         height: 100%;
         text-align: center;
+      
         div {
             width: 100%;
             height: 100%;
+            position: relative;
             a {
                 width: 100%;
                 height: 100%;
@@ -33,8 +35,21 @@
                 img {   
                     height: 100%;
                 }
+                .notifications {
+                    position: absolute;
+                    top: -7px;
+                    left: 55%;
+                    background: #F7931E;
+                    padding: 1px 7px 2px 7px;
+                    border-radius: 100%;
+                    color: white;
+                    border: 1px solid white;
+    
+                }
             }
+           
         }
+        
     }
     .filter{
         width: 40px;
