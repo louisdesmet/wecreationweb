@@ -13,7 +13,7 @@ import navGet from './img/nav/get.png';
 import decline from './img/eventshow/decline.png';
 import update from './img/eventshow/update.png';
 import './css/ProjectShow.scss';
-import locprod, { profileIcon } from './Global';
+import locprod, { profileIcon, skillIcon } from './Global';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useHistory } from 'react-router-dom';
@@ -45,24 +45,37 @@ export const ProjectShow = ({getProjects}) => {
   let totalHoursFree = 0;
   let team = [];
 
+  let skillList = [];
+
   if(project) { 
     project.events.forEach(event => {
       event.skills.forEach(skill => {
         skill.users.forEach(user => {
           if(user.present) {
+
+            if(skillList.find(list => list.icon === skill.skill.icon)) {
+              skillList.find(list => list.icon === skill.skill.icon).hours += skill.hours;
+            } else {
+              skillList.push({icon: skill.skill.icon, hours: skill.hours});
+            }
+            
             if(skill.paid) {
               totalHoursPaid += skill.hours
             } else {
               totalHoursFree += skill.hours
             }
+
             if(!team.find(item => item.id === user.id)) {
               team.push({id: user.id, name: user.name, icon: user.icon})
             }
+
           }
         })
       })
     })
   }
+
+  console.log(skillList)
 
   function deleteEvent(e, id) { 
     e.preventDefault();
@@ -110,6 +123,20 @@ export const ProjectShow = ({getProjects}) => {
               </div>
               
               <p>{"Er werden al " + (totalHoursPaid + totalHoursFree) + " uren gepresteerd waarvan " + totalHoursPaid + " betaald en " + totalHoursFree + " vrijwillig"}</p>
+
+              <div className='skillList'>
+                {
+                  skillList.map(skill => 
+                    <div key={skill.icon}>
+                      <img src={skillIcon(skill.icon)}/>
+                      <p>{skill.hours} uren {skill.icon}</p>
+                    </div>
+                  )
+                }
+              </div>
+             
+
+
               <h2 className='teamtitle'>Team</h2>
               {team.map(user => 
                 <Link key={user.id} className="team" to={"/profiel/" + user.id}><FontAwesomeIcon className="teamIcon" icon={profileIcon(user.icon)} color="white"/>{user.name}</Link>                      

@@ -20,6 +20,7 @@ export const ProjectCreate = ({getProjects}) => {
 
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
+  const [type, setType] = useState("Uitvoerende kunst");
   const [file, setFile] = useState(null);
 
   const { id } = useParams();
@@ -38,15 +39,19 @@ export const ProjectCreate = ({getProjects}) => {
     if(name && desc) {
       formData.append('name', name);
       formData.append('desc', desc);
+      formData.append('type', type);
       formData.append('leader', JSON.parse(localStorage.getItem("user")).id);
-      formData.append('image', file);
-
+      if(file) {
+        formData.append('image', file);
+      }
+      
       if(project) {
         fetch(locprod + '/projects/' + project.id, {
           method: 'PUT',
           body: JSON.stringify({
             name: name,
             desc: desc,
+            type: type,
             leader: JSON.parse(localStorage.getItem("user")).id
           }),
           headers: {
@@ -86,6 +91,15 @@ export const ProjectCreate = ({getProjects}) => {
         <h2><img src={work} alt=""/>Project beschrijving</h2>
         <input defaultValue={project && project.name ? project.name : ""} className='naam' onChange={e => setName(e.target.value)} placeholder='Naam'/>
         <textarea defaultValue={project && project.description ? project.description : ""} onChange={e => setDesc(e.target.value)} placeholder='Omschrijving'></textarea>
+        <select className='type' onChange={e => setType(e.target.value)}>
+          <option value="Uitvoerende kunst">Uitvoerende kunst</option>
+          <option value="Audiovisueel">Audiovisueel</option>
+          <option value="Sociaal">Sociaal</option>
+          <option value="Cultureel">Cultureel</option>
+          <option value="Wetenschappelijk">Wetenschappelijk</option>
+          <option value="Zorg">Zorg</option>
+          <option value="Overige">Overige</option>
+        </select>
         <label>Afbeelding</label>
         {
           project && project.image ? <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "projects/" + project.image}/> : null

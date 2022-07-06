@@ -350,6 +350,22 @@
         }
         .profile-below-container {
             display: block;
+            .left {
+                .skill {
+                    flex-wrap: wrap;
+                    margin: 25px 0 8px 0;
+                    .nameAndIcon {
+                        width: 70%;
+                    }
+                    p {
+                        width: 30%;
+                    }
+                    .progress {
+                        width:100%;
+                        margin: 15px 0 0 0;
+                    }
+                }
+            }
             .right {
                 width: 100%;
             }

@@ -14,6 +14,14 @@
     input[type="file"] {
         margin: 0 0 0 75px;
     }
+    .type {
+        width: 25%;
+        box-sizing: border-box;
+        padding: 6px 10px;
+        border-radius: 15px;
+        border: 2px solid black;
+        margin: 15px 0 0 75px;
+    }
     .event-logo {
         margin:  0 0 0 75px;
         display: block;

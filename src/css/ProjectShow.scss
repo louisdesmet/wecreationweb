@@ -33,6 +33,19 @@
             font-size: 2.1em;
             margin-top: 27px;
         }
+        .skillList {
+            margin: 20px 0 0 0;
+            div {
+                display: flex;
+                margin: 0 0 10px 0;
+                img {
+                    width: 40px;
+                }
+                p {
+                    padding: 10px 0 0 10px;
+                }
+            }
+        }
         .teamtitle {
             padding: 15px 0 0 0;
             font-size: 1.8em;
