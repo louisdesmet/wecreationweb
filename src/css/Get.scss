@@ -471,10 +471,110 @@
 }
 
 .vergoedingen {
-    img {
-        width: 70%;
-        margin: 50px auto 0 auto;
+    background: #DDDDDD;
+    width: 80%;
+    margin: 37px auto 0 auto;
+    border-radius: 35px;
+    .top {
+        width: 100px;
+        margin: 0 auto;
+        padding: 70px 0 0 0;
         display: block;
+    }
+    h2 {
+        font-size: 1.7em;
+        margin: 15px 0 13px 0;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-align: center;
+    }
+    .line {
+        width: 80%;
+        margin: 0 auto 70px auto;
+        height: 5px;
+        border-radius: 5px;
+        background: black;
+    }
+    .bottom {
+        display: flex;
+        width: 60%;
+        margin: 0 auto;
+        justify-content: space-around;
+        padding: 0 0 100px 0;
+        div {
+            .bag {
+                width: 165px;
+                display: block;
+                margin: 0 0 35px 0;
+            }
+            .coin {
+                width: 70px;
+                display: block;
+                margin: 0 0 15px 60px;
+            }
+            a {
+                padding: 5px 25px;
+                border: 2px solid black;
+                display: block;
+                text-decoration: none;
+                color: black;
+                text-align: center;
+                font-weight: 600;
+                font-size: 1.3em;
+                letter-spacing: 2px;
+            }
+        }
+    }
+    .bottom-aankopen {
+        width: 60%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        .input-div {
+            display: flex;
+            div {
+                input {
+                    width: 50px;
+                    height: 25px;
+                    background: none;
+                    border: none;
+                    border-bottom: 3px solid black;
+                    font-size: 1.3em;
+                    margin: 22px 0 0 0;
+                }
+                .bag {
+                    width: 100px;
+                    display: block;
+                    margin: 0 0 35px 0;
+                }
+                .coin {
+                    width: 40px;
+                    display: block;
+                    margin: 0 0 15px 42px;
+                }
+            }
+        }
+        div {
+            .bill {
+                width: 100px;
+                margin: 0 auto;
+                display: block;
+            }
+            .result {
+                font-size: 4em;
+                margin: 15px 0 0 0;
+            }
+            .credit {
+                font-weight: bold;
+                font-size: 1.3em;
+            }
+        }
+        .line {
+            width: 80px;
+            height: 6px;
+            background: black;
+            margin: 46px 0 0 0;
+        }
     }
 }
 

@@ -42,6 +42,7 @@ function EventShow(props) {
   const [chosenSkill, setChosenSkill] = useState(null);
   const [teamClicked, setTeamClicked] = useState(false);
   const [budgetClicked, setBudgetClicked] = useState(false);
+  const [showDesc, setShowDesc] = useState(false);
 
   props.event.skills.forEach(skill => {
     skill.users.forEach(user => {
@@ -154,8 +155,11 @@ function EventShow(props) {
           <div className="right">
             <h2><img src={geelPuzzel} alt=""/>Eventbeschrijving</h2>
             <p className="desc">{props.event.description}</p>
-            <h2><img src={desc} alt=""/>{props.event.project.name}</h2>
-            <p className="desc">{props.event.project.description}</p>
+            <h2 onClick={e => setShowDesc(!showDesc)}><img src={desc} alt=""/>{props.event.project.name}</h2>
+            {
+              showDesc ? <p className="desc">{props.event.project.description}</p> : null
+            }
+            
             <h2><img src={work} alt=""/>vrijwilliger uren</h2>
             {freeSkill}
             <h2><img src={credit} alt=""/>skill uren</h2>

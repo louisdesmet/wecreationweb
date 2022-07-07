@@ -164,7 +164,9 @@ export const ProjectShow = ({getProjects}) => {
                     <div className='flex-container'>
                       <p>{date(event.date)}</p>
                       <p>{event.location}</p>
-                      <p>{event.credits} cc</p>
+                      <p>{
+                        event.skills.reduce((acc, obj) => { return acc + obj.amount; }, 0)
+                      } cc</p>
                     </div>
                   </Link>
                 )

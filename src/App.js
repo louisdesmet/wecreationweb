@@ -53,6 +53,8 @@ import MyInterests from "./MyInterests";
 import ProjectCreate from "./ProjectCreate";
 import Forgot from "./Forgot";
 import ResetPassword from "./ResetPassword";
+import GetVergoedingenAankopen from "./GetVergoedingenAankopen";
+import GetVergoedingenVerkopen from "./GetVergoedingenVerkopen";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   return (
@@ -106,7 +108,10 @@ function App() {
               <PrivateRoute path="/get/handelaars/:id/products" component={GetProducts}/>
               <PrivateRoute path="/get/handelaars" component={GetHandelaars}/>
               <PrivateRoute path="/get/diensten" component={GetDiensten}/>
+              <PrivateRoute path="/get/vergoedingen/aankopen" component={GetVergoedingenAankopen}/>
+              <PrivateRoute path="/get/vergoedingen/verkopen" component={GetVergoedingenVerkopen}/>
               <PrivateRoute path="/get/vergoedingen" component={GetVergoedingen}/>
+
               <PrivateRoute path="/get/historiek" component={GetHistoriek}/>
               <PrivateRoute path="/get" component={Get}/>
         
