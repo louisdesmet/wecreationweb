@@ -37,7 +37,8 @@ export const AdminProjectsEdit = ({getUsers, getProjects}) => {
             name: name,
             description: description,
             credits: credits,
-            leader: leader
+            leader: leader,
+            type: "Overige"
           })
         }).then(response => {
           window.location.href = '/admin-projects';
