@@ -44,8 +44,10 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
       if(!users.data || users.data.length === 0) {
         getUsers();
       }
+      if(!messages.data || messages.data.length === 0) {
+        getMessages();
+      }
     }
-    getMessages();
   }, []);
 
   const activities = useSelector(state => state.remoteActivities);
@@ -105,7 +107,9 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
             <div>
               <Link to="/netwerk">
                 <img src={netwerk} alt=""/>
-                <span className="notifications">{messages.data ? messages.data.filter(message => message.notification && message.recipient.id === loggedUser.id && message.seen == 0).length : null}</span>
+                {
+                  loggedUser ? <span className="notifications">{messages.data ? messages.data.filter(message => message.notification && message.recipient.id === loggedUser.id && message.seen == 0).length : null}</span> : null
+                }
               </Link>
             </div>
           </div>
