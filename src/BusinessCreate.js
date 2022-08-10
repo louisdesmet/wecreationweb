@@ -86,6 +86,23 @@ export const BusinessCreate = ({getBusinesses}) => {
       setFile(event.target.files[0]);
     }
 
+    const productImageHandler = (event, id) => {
+      const formDataImage = new FormData();
+      formDataImage.append('id', id);
+      formDataImage.append('image', event.target.files[0]);
+      fetch(locprod + '/products/image', {
+        method: 'POST',
+        body: formDataImage,
+        headers: {
+            'Accept': 'multipart/form-data',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        },
+      }).then(response => {})
+      .catch(error => {
+      
+      });
+    }
+
     function submit() {
       if(name && desc && location && lat && lng) {
         formData.append('name', name);
@@ -228,7 +245,7 @@ export const BusinessCreate = ({getBusinesses}) => {
                   <input type="time" id="endhour" defaultValue={business && freeData.length && freeData[index] ? freeData[index].endhour : ""} placeholder='Eind uur' onChange={e => AddToFree(index, 'endhour', e.target.value)}/>
                 </> : null
               }
-              
+              {business ? <input type="file" name="image" accept="application/image" multiple={false} onChange={e => productImageHandler(e, freeData[index].product)}/> : null}
             </div>
             )
           }
