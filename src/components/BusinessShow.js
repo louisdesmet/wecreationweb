@@ -20,9 +20,9 @@ import like from '../img/eventshow/like.png';
 import credits from '../img/profile/credits.png';
 
 let icon = L.icon({
-  iconUrl: get,
-  iconSize: [50, 50],
-  popupAnchor: [0, -20],
+    iconUrl: get,
+    iconSize: [50, 50],
+    popupAnchor: [0, -20],
 });
 function BusinessShow(props) {
 
@@ -35,14 +35,14 @@ function BusinessShow(props) {
 
     const [product, setProduct] = useState(null);
     const [areYouSure, setAreYouSure] = useState(1);
-  
+
     let position = [props.business.lat, props.business.lng];
 
     const businessMarkers = <Marker key={props.business.id} position={[props.business.lat, props.business.lng]} icon={icon}></Marker>;
 
     props.users.forEach(user => {
         user.roles.forEach(role => {
-            if(role.business_id === props.business.id) {
+            if (role.business_id === props.business.id) {
                 props.business.leader = user
             }
         })
@@ -50,11 +50,11 @@ function BusinessShow(props) {
 
     function areYouSureBox(product) {
         let user = props.users.find(user => user.id === loggedUser.id);
-        if(parseInt(user.credits) >= product.price && product.amount > 0) {
+        if (parseInt(user.credits) >= product.price && (product.amount > 0 || props.business.type === 'service')) {
             setAreYouSure(1);
             setProduct(product);
         } else {
-            if(product.amount > 0) {
+            if (product.amount > 0) {
                 notifyCredits(user, product)
             } else {
                 notifyStock(product)
@@ -70,7 +70,9 @@ function BusinessShow(props) {
         Axios.post('/orders', {
             product: product.id,
             user: JSON.parse(localStorage.getItem("user")).id,
-            business_user: props.business.leader.id
+            business_user: props.business.leader.id,
+            business_type: props.business.type
+
         }, {
             headers: headers
         })
@@ -78,7 +80,7 @@ function BusinessShow(props) {
             window.location.href = '/orders/' + response.data.id;
         })
         .catch((error) => {
-            
+
         })
     }
 
@@ -87,80 +89,80 @@ function BusinessShow(props) {
             <div className="top-items">
                 <div className="groupchat">
                     {
-                    props.isPage ? <div className='back' onClick={e =>  history.goBack()}>
-                        <span>&#10508;</span>
-                        <b>BACK</b>
-                    </div> : null
+                        props.isPage ? <div className='back' onClick={e => history.goBack()}>
+                            <span>&#10508;</span>
+                            <b>BACK</b>
+                        </div> : null
                     }
                 </div>
                 <div>
                     {
-                        props.business.image ? <img className="business-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "businesses/" + props.business.image}/> : null
+                        props.business.image ? <img className="business-logo" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "businesses/" + props.business.image} /> : null
                     }
                 </div>
                 <div className="like" onClick={e => props.business.users && props.business.users.find(user => user.id === loggedUser.id) ? null : props.likeBusiness(props.business.id)}>
                     <span>{props.liked ? props.business.users.length + 1 : props.business.users.length}</span>
-                    <img className={props.business.users && props.business.users.find(user => user.id === loggedUser.id) || props.liked ? "liked" : ""} src={like}/>
+                    <img className={props.business.users && props.business.users.find(user => user.id === loggedUser.id) || props.liked ? "liked" : ""} src={like} />
                     <p className={props.business.users && props.business.users.find(user => user.id === loggedUser.id) || props.liked ? "liked" : ""}>Interesse!</p>
                 </div>
             </div>
             <h2><span>{props.business.name}</span></h2>
             <div className="business-info">
                 <div className="left">
-                    <h3><img src={get} alt=""/>Beschrijving</h3>
+                    <h3><img src={get} alt="" />Beschrijving</h3>
                     <p className="desc">{props.business.description}</p>
                     <h2><span>Producten</span></h2>
                     <div className="products">
-                    {
-                        props.business.products.map(product =>
-                        <div className="product" key={product.id}>
-                            <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "products/" + product.picture}/>
-                            <h4>{ product.name }</h4>
-                            <p className="product-desc">{product.description}</p>
-                            <p>{product.price}<img className='credits' src={credits}/></p>
-                            <button onClick={e => areYouSureBox(product)}><span className="product-buy">Kopen</span></button>
-                        </div>
-                        )
-                    }
+                        {
+                            props.business.products.map(product =>
+                                <div className="product" key={product.id}>
+                                    <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "products/" + product.picture} />
+                                    <h4>{product.name}</h4>
+                                    <p className="product-desc">{product.description}</p>
+                                    <p>{product.price}<img className='credits' src={credits} /></p>
+                                    <button onClick={e => areYouSureBox(product)}><span className="product-buy">Kopen</span></button>
+                                </div>
+                            )
+                        }
                     </div>
                     <MapContainer className="map map-desktop" center={position} zoom={13}>
                         <TileLayer
-                        attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
                         {businessMarkers}
                     </MapContainer>
                 </div>
                 <div className="right">
                     <div>
-                        <img src={profile}/>
+                        <img src={profile} />
                         <h3>Handelaar</h3>
                         <p>{props.business.leader.name}</p>
-        
+
                     </div>
                     <div>
-                        <img src={team}/>
+                        <img src={team} />
                         <p className="message" onClick={e => window.location.href = "/netwerk/dm/" + props.business.leader.id}>Stuur een bericht</p>
                     </div>
                     <div>
-                        <img src={location}/>
+                        <img src={location} />
                         <p>{props.business.location}</p>
                     </div>
-                    
-                </div>  
+
+                </div>
                 <MapContainer className="map map-mobile" center={position} zoom={13}>
                     <TileLayer
-                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
                     {businessMarkers}
                 </MapContainer>
                 {
-                areYouSure && product ? <div className="are-you-sure">
-                    <p>Weet je zeker dat je een {product.name} wilt aankopen voor {product.price}<img className='credits' src={credits}/></p>
-                    <img className="accept" src={accept} onClick={e => buy(product)}/>
-                    <img className="accept" src={decline} onClick={e => setAreYouSure(0)}/>
-                </div> : null
+                    areYouSure && product ? <div className="are-you-sure">
+                        <p>Weet je zeker dat je een {product.name} wilt aankopen voor {product.price}<img className='credits' src={credits} /></p>
+                        <img className="accept" src={accept} onClick={e => buy(product)} />
+                        <img className="accept" src={decline} onClick={e => setAreYouSure(0)} />
+                    </div> : null
                 }
             </div>
             <ToastContainer />

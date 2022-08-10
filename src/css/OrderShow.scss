@@ -6,21 +6,25 @@
     border-radius: 35px;
     box-sizing: border-box;
     position: relative;
+
     .back {
         position: absolute;
         top: 15px;
         left: 30px;
+
         b {
             font-size: 1.3em;
             font-weight: bolder;
             letter-spacing: 3px;
         }
+
         span {
             font-size: 2em;
             margin: 0 5px 0 0;
-         
+
         }
     }
+
     .profile-icon {
         margin: 40px auto 15px auto;
         display: block;
@@ -29,39 +33,50 @@
         border-radius: 100%;
         font-size: 100px;
     }
+
     h2 {
         font-size: 2em;
         margin: 0 0 70px 0;
         text-transform: uppercase;
         letter-spacing: 3px;
         text-align: center;
+
         span {
             border-bottom: 5px solid black;
             padding: 0 40px 4px 40px;
         }
     }
+
     .business-info {
         display: flex;
         margin: 60px 0 0 0;
+
         .left {
             flex: 1;
             display: flex;
+
             div {
                 width: 26%;
                 margin: 0 12%;
+
                 img {
                     width: 100%;
                     margin: 0 0 10px 0;
                 }
-                h3, p {
+
+                h3,
+                p {
                     text-align: center;
                 }
             }
         }
+
         .right {
             width: 40%;
+
             h3 {
                 margin: 0 0 40px 0;
+
                 img {
                     width: 50px;
                     position: relative;
@@ -71,18 +86,22 @@
             }
         }
     }
+
     .product-container {
-        width: 50%;
+        width: 60%;
         margin: 0 auto;
+
         .product-info {
             display: flex;
             justify-content: space-between;
             margin: 100px 0 50px 0;
+
             p {
                 font-weight: 700;
                 font-size: 1.3em;
             }
         }
+
         .product-info2 {
             display: flex;
             justify-content: space-between;
@@ -97,6 +116,7 @@
                     margin: 0 0 0 10px;
                 }
             }
+
             div {
                 width: 50%;
                 img {
@@ -115,7 +135,11 @@
                 }
             }
         }
+
         .user-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 50px 0 0 0;
             p {
                 font-weight: 500;
                 font-size: 1.4em;
@@ -127,7 +151,11 @@
                 margin: 30px 0 0 0;
             }
         }
-    } 
+    }
+
+    .titeltransfer {
+        margin-top: 100px;
+    }
 }
 
 
@@ -138,16 +166,20 @@
 
         h2 {
             font-size: 1em;
+
             span {
                 padding: 0 20px 4px 20px;
             }
         }
+
         .business-info {
             display: block;
+
             .left {
                 div {
                     width: 50%;
                     margin: 0;
+
                     img {
                         width: 50%;
                         margin: 0 auto 10px auto;
@@ -155,31 +187,37 @@
                     }
                 }
             }
+
             .right {
                 width: 85%;
                 margin: 40px auto 0 auto;
             }
         }
+
         .product-container {
             width: 100%;
+
             .product-info {
                 p {
                     font-size: 1em;
                 }
             }
+
             .product-info2 {
                 p {
                     font-size: 1.3em;
                 }
+
                 .first-p {
                     margin: 75px 0 0 0;
                 }
             }
+
             .user-info {
                 p {
                     font-size: 1.1em;
                 }
             }
-        } 
+        }
     }
 }

@@ -37,6 +37,7 @@ import AdminUserVerification from "./AdminUserVerification";
 import EventShow from "./EventShow";
 import ProjectShow from "./ProjectShow";
 import OrderShow from "./OrderShow";
+import TransferShow from "./TransferShow";
 import BusinessCreate from "./BusinessCreate";
 import BusinessDashboard from "./BusinessDashboard";
 import AdminProjectsEventsSkills from "./AdminProjectsEventsSkills";
@@ -143,6 +144,7 @@ function App() {
               <PrivateRoute path="/events/:id" component={EventShow}/>
               <PrivateRoute path="/projects/:id" component={ProjectShow}/>
               <PrivateRoute path="/orders/:id" component={OrderShow}/>
+              <PrivateRoute path="/transfers/:id" component={TransferShow}/>
               <PrivateRoute path="/activities/:id" component={ActivityShow}/>
 
               <AdminRoute path="/admin" component={AdminProjects}/>

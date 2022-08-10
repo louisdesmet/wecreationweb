@@ -36,7 +36,10 @@ function Register(props) {
               password
             }).then(result => {
               /*localStorage.setItem('loginMessage', "Je account werd aangemaakt maar wacht nog op verificatie.");*/
-              props.history.push("/login");
+              localStorage.setItem('token', result.data.token.access_token);
+              localStorage.setItem('user', JSON.stringify(result.data.user[0]));
+              localStorage.setItem("firstLogin", 1);
+              props.history.push("/profiel");
     
             })
           } else {

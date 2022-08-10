@@ -81,9 +81,11 @@ export const OrderShow = ({getOrders, getUsers}) => {
               <p>= {order.product.price}<img src={credit}/></p>
             </div>
             <div className='user-info'>
-              <p>Aangekocht door:</p>
-              <img src={profile}/>
-              <p>{order.user.name}</p>
+              <div>
+                <p>Aangekocht door:</p>
+                <img src={profile}/>
+                <p>{order.user.name}</p>
+              </div>
             </div>
           </div>
         </div> : null

@@ -467,6 +467,9 @@
                 margin: 0 15px;
             }
         }
+        .amounttransfer {
+            margin-top: 29px;
+        }
     }
 }
 
@@ -563,6 +566,21 @@
             .result {
                 font-size: 4em;
                 margin: 15px 0 0 0;
+            }
+            .buybutton {
+                padding: 5px 25px;
+                border: 2px solid black;
+                display: block;
+                text-decoration: none;
+                color: black;
+                text-align: center;
+                font-weight: 600;
+                font-size: 1.3em;
+                letter-spacing: 2px;
+                border-radius: 15px;
+                margin: 50px 0 50px 0;
+                position: relative;
+                left: -38px;
             }
             .credit {
                 font-weight: bold;

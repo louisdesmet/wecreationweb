@@ -11,7 +11,9 @@ export default function* watcherSaga() {
   yield takeEvery("SKILLS_REQUESTED", skillsWorkerSaga);
   yield takeEvery("MESSAGES_REQUESTED", messagesWorkerSaga);
   yield takeEvery("ORDERS_REQUESTED", ordersWorkerSaga);
+  yield takeEvery("TRANSFERS_REQUESTED", transfersWorkerSaga);
   yield takeEvery("GROUPS_REQUESTED", groupsWorkerSaga);
+  
 }
 
 function* projectsWorkerSaga() {
@@ -131,6 +133,19 @@ function* ordersWorkerSaga() {
   }
 }
 
+function* transfersWorkerSaga() {
+  try {
+    const payload = yield call(getTransfers);
+    if(payload.message !== "Unauthenticated.") {
+      yield put({ type: "TRANSFERS_LOADED", payload });
+    } else {
+      yield put({ type: "API_ERRORED", payload });
+    } 
+  } catch (e) {
+    yield put({ type: "API_ERRORED", payload: e });
+  }
+}
+
 function* groupsWorkerSaga() {
   try {
     const payload = yield call(getGroups);
@@ -234,6 +249,17 @@ function getMessages() {
 
 function getOrders() {
   return fetch(locprod + '/orders', {
+    headers: new Headers({
+      'Authorization': 'Bearer ' + localStorage.getItem("token"),
+      'Accept': 'application/json'
+    })
+  }).then(function(response) {
+    return response.json();
+  });
+}
+
+function getTransfers() {
+  return fetch(locprod + '/transfers', {
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem("token"),
       'Accept': 'application/json'

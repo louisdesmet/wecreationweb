@@ -24,6 +24,7 @@ export const MyEvents = ({getAllEvents}) => {
     const events = useSelector(state => state.remoteAllEvents);
 
     events.data && events.data.forEach(event => {
+        event.totalRequests = 0;
         event.skills.forEach(skill => {
             if(event.totalPostions) {
                 event.totalPostions += skill.amount;
@@ -46,6 +47,7 @@ export const MyEvents = ({getAllEvents}) => {
                         event.totalRequests = 1;
                     }
                 }
+
             });
         });
     });
@@ -82,10 +84,14 @@ export const MyEvents = ({getAllEvents}) => {
     function Collapsible(props) {
 
         const [open, setOpen] = useState(false);
-    
+
         return (
-            <div className='project'>
-                <p className='project-name' onClick={e => setOpen(!open)}><img className='project-picture' src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "projects/" + props.events[0].project.picture}/>{props.events[0].project.name}</p>
+            <>
+                <div className='project'>
+                    <p className='project-name' onClick={e => setOpen(!open)}><img className='project-picture' src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "projects/" + props.events[0].project.picture}/>{props.events[0].project.name}</p>
+                    <p className='projectteam'><img src={team} alt=""/><span>{props.events.reduce((accumulator, event, index) => accumulator + event.totalRequests, 0)}</span></p>
+                    
+                </div>
                 {
                     open && <div>
                         {
@@ -102,7 +108,7 @@ export const MyEvents = ({getAllEvents}) => {
                         }
                     </div>
                 }
-            </div>
+            </>
         );
     }
 

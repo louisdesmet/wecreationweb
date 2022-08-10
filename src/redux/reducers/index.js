@@ -18,6 +18,8 @@ const initialState = {
   remoteMessages: [],
   orders: [],
   remoteOrders: [],
+  transfers: [],
+  remoteTransfers: [],
   groups: [],
   remoteGroups: []
 };
@@ -68,6 +70,11 @@ function rootReducer(state = initialState, action) {
   if (action.type === "ORDERS_LOADED") {
     return Object.assign({}, state, {
       remoteOrders: action.payload
+    });
+  }
+  if (action.type === "TRANSFERS_LOADED") {
+    return Object.assign({}, state, {
+      remoteTransfers: action.payload
     });
   }
   if (action.type === "GROUPS_LOADED") {

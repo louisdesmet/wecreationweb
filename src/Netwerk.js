@@ -383,7 +383,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
             axios.post('/messages', {
                 message: message,
                 user: loggedUser.id,
-                recipient: recipient
+                recipient: recipient,
             }, { headers: headers }).then((response) => {
                 getMessages();
                 setFinished(false);

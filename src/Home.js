@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
-import {getActivities, getAllEvents, getBusinesses, getUsers} from "./redux/actions";
+import {getActivities, getAllEvents, getBusinesses, getUsers, getProjects, getMessages} from "./redux/actions";
 import { Link } from "react-router-dom";
 import Axios from 'axios';
 import EventShow from "./components/EventShow";
@@ -15,9 +15,11 @@ import random from './img/nav/random.png';
 import profiel from './img/nav/profile.png';
 import agenda from './img/nav/agenda.png';
 import netwerk from './img/nav/network.png';
+import diensten from './img/map/diensten.png';
+import close from './img/map/close.png';
+import mapFilter from './img/map/map-filter.png';
 
-
-export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities}) => {
+export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities, getProjects, getMessages}) => {
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -26,6 +28,8 @@ export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities}) => 
     getBusinesses();
     getActivities()
     getUsers();
+    getProjects();
+    getMessages();
   }, []);
 
   const [oneTime, setOneTime] = useState(1);
@@ -42,6 +46,36 @@ export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities}) => 
   const businesses = useSelector(state => state.remoteBusinesses);
   const activities = useSelector(state => state.remoteActivities);
   const users = useSelector(state => state.remoteUsers);
+  const messages = useSelector(state => state.remoteMessages);
+  const projects = useSelector(state => state.remoteProjects);
+  //nav
+
+  const [searchActive, setSearchActive] = useState(false);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState("");
+
+  if(businesses.data && activities.data && events.data && projects.data && users.data) {
+    activities.data.forEach(function (element) {
+      element.type = "activity";
+      element.urlText = "/activities/";
+    });
+    events.data.forEach(function (element) {
+      element.type = "event";
+      element.urlText = "/events/";
+    });
+    projects.data.forEach(function (element) {
+      element.type = "project";
+      element.urlText = "/projects/";
+    });
+    users.data.forEach(function (element) {
+      element.type = "user";
+      element.urlText = "/profiel/";
+    });
+    businesses.data.forEach(function (element) {
+      element.urlText = "/get/handelaars/";
+      element.urlText2 = "/products";
+    });
+  }
 
   const futureEvents = events.data ? events.data.filter(event => {
     return new Date(event.date) > new Date();
@@ -64,11 +98,12 @@ export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities}) => 
   }
 
   function newRandom() {
+    console.log('yo');
     let rndInt = Math.floor(Math.random() * 5) + 1;
 
     if(rndInt === 1 || rndInt === 2) {
       newEvent();
-    } else if(rndInt === 3 || rndInt === 4) {
+    } else if(rndInt === 3) {
       newBusiness();
     }  else {
       newActivity();
@@ -158,21 +193,53 @@ export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities}) => 
   
     })
   }
+
+  function search() {
+    searchActive && setQuery("");
+    setSearchActive(!searchActive);
+  }
+
+  function getResults(value) {
+    setQuery(value);
+    setResults(businesses.data.filter(business => business.name.toLowerCase().includes(value.toLowerCase())).concat(projects.data.filter(project => project.name.toLowerCase().includes(value.toLowerCase())), events.data.filter(event => event.name.toLowerCase().includes(value.toLowerCase())), activities.data.filter(activity => activity.name.toLowerCase().includes(value.toLowerCase())), users.data.filter(user => user.name.toLowerCase().includes(value.toLowerCase()))));
+  }
+  console.log(results ? results : null);
+  const resultList = results ? results.map(result => <Link to={result.urlText + result.id + (result.urlText2 ? result.urlText2 : "")}>
+    <img src={result.type === "business" ? get : result.type === "service" ? diensten : result.type === "user" ? profiel : result.type === "activity" ? activity : result.type === "event" ? agenda : result.type === "project" ? work : null }/>
+    <p>{result.name}</p>
+  </Link>) : null
   
   return (
     <div className="height100">
       <div className='nav'>
-        <div className="innernav">
+        {
+          searchActive ? <input onChange={e => getResults(e.target.value)} type="text" placeholder="Zoek naar events, activiteiten, gebruikers en handelaars"/> : <div className="innernav">
             <div><Link to="/work"><img src={work} alt=""/></Link></div>
             <div><Link to="/see"><img src={see} alt=""/></Link></div>
             <div><Link to="/get"><img src={get} alt=""/></Link></div>
             <div onClick={e => newRandom()}><Link to="/home"><img src={random} alt=""/></Link></div>
             <div><Link to="/profiel"><img src={profiel} alt=""/></Link></div>
             <div><Link to="/agenda"><img src={agenda} alt=""/></Link></div>
-            <div><Link to="/netwerk"><img src={netwerk} alt=""/></Link></div>
-        </div>
+            <div>
+              <Link to="/netwerk">
+                <img src={netwerk} alt=""/>
+                {
+                  loggedUser ? <span className="notifications">{messages.data ? messages.data.filter(message => message.notification && message.recipient.id === loggedUser.id && message.seen == 0).length : null}</span> : null
+                }
+              </Link>
+            </div>
+          </div>
+        }
         <a href={handleiding} className="manual" target="_blank">?</a>
-      </div>
+        {
+          loggedUser ? searchActive ? <img onClick={e => search()} className="filter close" src={close}/> : <img onClick={e => search()} className="filter" src={mapFilter}/> : null
+        }
+        {
+          query ? <div className="results">
+            {resultList.length ? resultList : <div>Geen resultaten</div>}
+          </div> : null
+        }
+    </div>
       {event ? <EventShow event={event} likeEvent={likeEvent} liked={liked}/> : null}
       {business && users.data ? <BusinessShow business={business} users={users.data} likeBusiness={likeBusiness} liked={likedBusiness}/> : null}
       {activity ? <ActivityShow activity={activity} likeActivity={likeActivity} liked={likedActivity}/> : null}
@@ -182,5 +249,5 @@ export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities}) => 
 
 export default connect(
   null,
-  { getAllEvents, getBusinesses, getUsers, getActivities }
+  { getAllEvents, getBusinesses, getUsers, getActivities, getProjects, getMessages }
 )(Home);

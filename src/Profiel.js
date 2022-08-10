@@ -5,6 +5,7 @@ import Nav from "./Nav";
 import {useSelector} from "react-redux";
 import './css/Profiel.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ToastContainer, toast } from 'react-toastify';
 import { Link, useHistory, useParams } from "react-router-dom";
 
 import agenda from './img/profile/agenda.png';
@@ -33,6 +34,8 @@ import { badgeIcon, date, profileIcon, skillIcon } from './Global';
 import Axios from 'axios';
 
 export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
+
+    const notify = () => toast("Welkom op wecreation, je bent nu op je profiel.");
 
     const history = useHistory();
     const { id } = useParams();
@@ -137,6 +140,11 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                 })
             })
         })
+    }
+    
+    if(parseInt(localStorage.getItem('firstLogin'))) {
+        notify();
+        localStorage.setItem('firstLogin', 0);
     }
 
     const calculateLevel = (skill) => {
@@ -302,8 +310,8 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                         </div>
                     </div>
                 </div>
-
             </div>
+            <ToastContainer />
         </div>
     );
 }
