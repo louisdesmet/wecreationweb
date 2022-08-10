@@ -23,7 +23,7 @@ function GetVergoedingenVerkopen() {
         headers: headers
       })
       .then((response) => {
-        window.location.href = '/orders';
+        window.location.href = '/transfers/' + response.data.id;
       })
       .catch((error) => {
         
