@@ -43,8 +43,8 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
     const [showLatestDms, setShowLatestDms] = useState(true);
     const [showLatestGroupchats, setShowLatestGroupchats] = useState(false);
 
-    const [showThreads, setShowThreads] = useState(true);
-    const [showNotifications, setShowNotifications] = useState(false);
+    const [showThreads, setShowThreads] = useState(false);
+    const [showNotifications, setShowNotifications] = useState(true);
     const [showAddThread, setShowAddThread] = useState(false);
 
     const [latestGroupId, setLatestGroupId] = useState(null);
