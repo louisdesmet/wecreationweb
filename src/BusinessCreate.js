@@ -101,6 +101,7 @@ export const BusinessCreate = ({getBusinesses}) => {
         }
 
         if(business) {
+          formData.append('businessid', business.id);
           fetch(locprod + '/businesses/' + business.id, {
             method: 'PUT',
             body: JSON.stringify({
@@ -118,7 +119,19 @@ export const BusinessCreate = ({getBusinesses}) => {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem("token")
             },
-          }).then(response => window.location.href = '/profiel')
+          }).then(response => {
+            fetch(locprod + '/businesses/image', {
+              method: 'POST',
+              body: formData,
+              headers: {
+                  'Accept': 'multipart/form-data',
+                  'Authorization': 'Bearer ' + localStorage.getItem("token")
+              },
+            }).then(response => window.location.href = '/profiel')
+            .catch(error => {
+            
+            });
+          })
           .catch(error => {
           
           });

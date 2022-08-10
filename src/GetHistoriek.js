@@ -30,6 +30,11 @@ export const GetHistoriek = ({getOrders, getTransfers}) => {
     return transfer.user.id === JSON.parse(localStorage.getItem("user")).id
   }) : null;
 
+  const combined = userOrders && userTransfers ? userOrders.concat(userTransfers) : null;
+  const sortedCombined = combined ? combined.sort((a,b) => { return new Date(b.created_at) - new Date(a.created_at) }) : null;
+
+
+
   return (
     <div className="height100">
       <Nav/>
@@ -43,20 +48,15 @@ export const GetHistoriek = ({getOrders, getTransfers}) => {
         </div>
         <h2><span>Kassaticketjes</span></h2>
         {
-          userTransfers ? userTransfers.map(transfer =>
-            <div key={transfer.id}>
-              <Link to={"/transfers/" + transfer.id}><img src={credit}/>{ "Je aanvraag tot uitbetaling voor " + transfer.amount }</Link>
-              <p className="date">{createdDate(transfer.created_at)}</p>
-              <p className="amounttransfer">{ transfer.amount } €</p>
-            </div>
-          ) : null
-        }
-        {
-          userOrders ? userOrders.map(order =>
-            <div key={order.id}>
-              <Link to={"/orders/" + order.id}><img src={kassa}/>{ order.product.business.name + ' - ' + order.product.name }</Link>
-              <p className="date">{createdDate(order.created_at)}</p>
-              <p>{ order.product.price }<img src={credit}/></p>
+          sortedCombined ? sortedCombined.map(ticket =>
+            typeof ticket.buy !== 'undefined' ? <div key={"transfer-"+ticket.id}>
+              <Link to={"/transfers/" + ticket.id}><img src={credit}/>{ "Je aanvraag tot uitbetaling voor " + ticket.amount }</Link>
+              <p className="date">{createdDate(ticket.created_at)}</p>
+              <p className="amounttransfer">{ ticket.amount } €</p>
+            </div> : <div key={"order-"+ticket.id}>
+              <Link to={"/orders/" + ticket.id}><img src={kassa}/>{ ticket.product.business.name + ' - ' + ticket.product.name }</Link>
+              <p className="date">{createdDate(ticket.created_at)}</p>
+              <p>{ ticket.product.price }<img src={credit}/></p>
             </div>
           ) : null
         }

@@ -176,7 +176,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   const serviceMarkers = businesses.data ? businesses.data.filter((business) => {
       return business.type === 'service';
   }).map(business => {
-    return <Marker key={business.id} position={[business.lat, business.lng]} icon={dienstIcon}>
+    return <Marker key={business.id} position={[business.lat, business.lng]} icon={getIcon}>
       <Popup className="popup">
         <h2><Link to={"/get/handelaars/" + business.id + "/products"}>{business.name}</Link></h2>
         <p>{business.description}</p>
@@ -496,7 +496,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
             <div className="categories">
               <div>
                 <img src={evenementen} alt=""/>
-                <p>Evenementen</p>
+                <p>Activitetien</p>
               </div>
               <img onClick={() => setActivity(!activity)} className="switch" src={activity ? active : nonactive} alt=""/>
             </div>
@@ -509,7 +509,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
             </div>
             <div className="categories">
               <div>
-                <img src={diensten} alt=""/>
+                <img src={get} alt=""/>
                 <p>Diensten</p>
               </div>
               <img onClick={() => setService(!service)} className="switch" src={service ? active : nonactive} alt=""/>
@@ -539,11 +539,11 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
             />
        
             <MarkerClusterGroup>
-              { business ? businessMarkers : null}
-              { service ? serviceMarkers : null}
-              { activity ? activityMarkers : null}
-              { freeWork ? eventMarkersFree : null}
-              { paidWork ? eventMarkersPaid : null}
+              { business ? businessMarkers : null }
+              { service ? serviceMarkers : null }
+              { activity ? activityMarkers : null }
+              { freeWork ? eventMarkersFree : null }
+              { paidWork ? eventMarkersPaid : null }
             </MarkerClusterGroup>
           </MapContainer> : null
         }
