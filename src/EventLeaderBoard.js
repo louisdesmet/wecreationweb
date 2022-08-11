@@ -152,7 +152,7 @@ export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
           }
         })
         .then((response) => {
-          //getAllEvents();
+          getAllEvents();
         })
         .catch((error) => {
       
@@ -273,7 +273,7 @@ export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
                 {freeSkill}
                 <h2><img src={skill} alt=""/>Skill uren</h2>
                 {paidSkill}
-                <button onClick={complete}>Markeer event als afgelopen</button>
+                {!event.completed_at ? <button onClick={complete}>Markeer event als afgelopen</button> : null}
               </div>
               
             </div>
