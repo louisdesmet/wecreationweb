@@ -2,23 +2,28 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import {connect} from "react-redux";
-import {getBusinesses, getOrders} from "./redux/actions";
+import {getBusinesses, getOrders, getUsers} from "./redux/actions";
 import Nav from "./Nav";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
+import './css/BusinessDashboard.scss';
 
-export const BusinessDashboard = ({getOrders, getBusinesses}) => {
+export const BusinessDashboard = ({getOrders, getBusinesses, getUsers}) => {
   const history = useHistory();
   
   useEffect(() => {
     getOrders();
     getBusinesses();
+    getUsers();
   }, []);
 
   const orders = useSelector(state => state.remoteOrders);
   const businesses = useSelector(state => state.remoteBusinesses);
+  const users = useSelector(state => state.remoteUsers);
 
-  const userBusiness = JSON.parse(localStorage.getItem("user")).roles.find(role => role.name === 'business');
+  const user = users.data ? users.data.find(user => user.id === JSON.parse(localStorage.getItem("user")).id) : null;
+
+  const userBusiness = user ? user.roles.find(role => role.name === 'business') : null;
 
   const business = businesses.data && userBusiness ? businesses.data.find(business => business.id === userBusiness.business_id) : null;
 
@@ -39,23 +44,23 @@ export const BusinessDashboard = ({getOrders, getBusinesses}) => {
 
   const orderList = orders.data && business ? (
     <div className="leader-events">
+      <h2><span>Handelaars dashboard</span></h2>
       {
-        orders.data.map(order =>
-        
-          <div className="leader-event" key={order.id}>
-            
-          {
-            (order.product.business.id === business.id && order.accepted === 0 ?
-              <div key={order.id}>
-                  <p>{order.user.name}</p>
-                  <p>{order.product.name}</p>
-                  <p>{order.product.price + ' credits'}</p>
-                  <p onClick={e => send(order.id)}>Accepteren</p>
-                  <p>Afwijzen</p>
-              </div> 
-            : null)
-          }
-          </div>
+        orders.data.map(order =>  
+          <> 
+            {
+              
+              (order.product.business.id === business.id  && order.accepted === 0 ?
+                <div className="leader-event" key={order.id}>
+                    <p>{order.user.name}</p>
+                    <p>{order.product.name}</p>
+                    <p>{order.product.price + ' credits'}</p>
+                    <p onClick={e => send(order.id)}>Accepteren</p>
+                    <p>Afwijzen</p>
+                </div> 
+              : null)
+            }
+          </>
         )
       }
     </div>
@@ -64,7 +69,7 @@ export const BusinessDashboard = ({getOrders, getBusinesses}) => {
   return (
     <div className="height100">
       <Nav/>
-{orderList}
+      {orderList}
     </div>
   );
  
@@ -73,5 +78,5 @@ export const BusinessDashboard = ({getOrders, getBusinesses}) => {
 
 export default connect(
   null,
-  { getOrders, getBusinesses }
+  { getOrders, getBusinesses, getUsers }
 )(BusinessDashboard);

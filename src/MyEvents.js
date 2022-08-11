@@ -128,7 +128,6 @@ export const MyEvents = ({getAllEvents}) => {
                         <Collapsible  key={index} events={events}/>
                     ) : null
                 }
-               
             </div>
       </div>
     );

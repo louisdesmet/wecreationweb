@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {connect, useSelector} from "react-redux";
 import { getBusinesses } from './redux/actions';
-import { useLocation, useParams, useHistory } from 'react-router-dom';
+import { useLocation, useParams, useHistory, Link } from 'react-router-dom';
 import locprod from './Global';
 import './css/EventCreate.scss';
 import { MapContainer, TileLayer } from 'react-leaflet'
@@ -200,7 +200,7 @@ export const BusinessCreate = ({getBusinesses}) => {
         <Nav/>
         <div className="event-create">
           {
-            <h2 className="event-title"><span>Mijn handelszaak</span></h2>
+            <h2 className="event-title"><span>Mijn handelszaak</span>{business ? <Link to={"/handelaar-dashboard"}>Dashboard</Link> : null}</h2>
           }
           <h2><img src={get} alt=""/>Beschrijving handelszaak</h2>
           <input defaultValue={business && business.name ? business.name : ""} className='naam' onChange={e => setName(e.target.value)} placeholder='Naam'/>

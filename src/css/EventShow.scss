@@ -230,6 +230,18 @@
         }
     }
 }
+.completed {
+    opacity: 0.7;
+    .completed-message {
+        text-align: center;
+        img {
+            width: 50px;
+            position: relative;
+            top: 15px;
+            left: 10px;
+        }
+    }
+}
 .activity-panel {
     background: #bee5f6;
     padding: 10px;

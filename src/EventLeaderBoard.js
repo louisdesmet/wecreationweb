@@ -27,6 +27,7 @@ export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
 
     const notifyEventFull = (eventSkill) => toast("Er is geen plaats meer vrij om deze gebruiker te accepteren voor " + eventSkill.skill.name + ". Als je toch meer gebruikers wilt accepteren zal je het aantal werknemers moeten verhogen.");
     const notifyCredits = (user, eventSkill) => toast("Je hebt niet genoeg credits om " + user.name + " te vergoeden voor " + eventSkill.hours + "u " + eventSkill.skill.name + ".");
+    const notifyComplete = (user, eventSkill) => toast("Je moet nog aanvragen en aanwezigheden goedkeuren of verwijderen");
 
     useEffect(() => {
       getAllEvents();
@@ -130,6 +131,38 @@ export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
     
       })
     }
+
+    function complete() {
+      let finished = true;
+      event.skills.forEach(skill => {
+        skill.users.forEach(user => {
+          if(!user.present) {
+            finished = false;
+          }
+        })
+      })
+      if(finished) {
+        Axios.post('/complete-event', {
+          'event': event.id
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+          }
+        })
+        .then((response) => {
+          //getAllEvents();
+        })
+        .catch((error) => {
+      
+        })
+      } else {
+        notifyComplete();
+      }
+     
+    }
+
+
 
     const freeSkill = event && event.skills ? event.skills.map(skill => 
       skill.paid === 0 ? <div key={skill.id}>
@@ -238,7 +271,9 @@ export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
                 {freeSkill}
                 <h2><img src={skill} alt=""/>Skill uren</h2>
                 {paidSkill}
+                <button onClick={complete}>Markeer event als afgelopen</button>
               </div>
+              
             </div>
           </div>
           : null

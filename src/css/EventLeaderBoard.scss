@@ -54,6 +54,25 @@
         }
         .right {
             flex: 1;
+            button {
+                padding: 5px 25px;
+                border: 2px solid black;
+                display: block;
+                text-decoration: none;
+                color: black;
+                text-align: center;
+                font-weight: 600;
+                font-size: 1.3em;
+                letter-spacing: 2px;
+                border-radius: 15px;
+                margin: 50px 0 50px 0;
+                position: relative;
+                left: -38px;
+                cursor: pointer;
+            }
+            button:hover {
+                opacity: 0.5;
+            }
             .skills {
                 margin: 15px 0 0 55px;
                 .skills-inner {

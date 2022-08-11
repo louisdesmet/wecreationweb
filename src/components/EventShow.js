@@ -23,6 +23,7 @@ import geelPuzzel from '../img/eventshow/geel-puzzel.png';
 import credit from '../img/profile/credit.png';
 import like from '../img/eventshow/like.png';
 import credits from '../img/profile/credits.png';
+import add from '../img/eventshow/accept.png';
 
 let workIcon = L.icon({
   iconUrl: work,
@@ -127,7 +128,8 @@ function EventShow(props) {
   
   return (
     <div>    
-      <div className='event-panel'>
+      <div className={ props.event.completed_at ? 'event-panel completed' : 'event-panel'}>
+        {props.event.completed_at ? <h2 className="completed-message">Dit event is afgerond.<img src={add}/></h2> : null}
         <div className="top-items">
           <div className="groupchat">
             {

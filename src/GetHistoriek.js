@@ -20,7 +20,6 @@ export const GetHistoriek = ({getOrders, getTransfers}) => {
 
   const orders = useSelector(state => state.remoteOrders);
   const transfers = useSelector(state => state.remoteTransfers);
-  console.log(transfers);
 
   const userOrders = orders.data ? orders.data.filter(order => {
     return order.user.id === JSON.parse(localStorage.getItem("user")).id

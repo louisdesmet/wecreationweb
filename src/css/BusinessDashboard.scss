@@ -1,0 +1,22 @@
+.leader-events {
+    h2 {
+        font-size: 1.7em;
+        margin: 15px 0 30px 0;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        text-align: center;
+    }
+    .leader-event {
+        padding: 15px 0;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        border-bottom: 1px solid black;
+        padding: 15px;
+        box-sizing: border-box;
+        p {
+            flex-grow: 1;
+            flex-basis: 0;
+        }
+    }
+}

@@ -93,7 +93,6 @@ export const Agenda = ({getAllEvents, getActivities}) => {
 
     function findEvent(paramEvent) {
       
-      console.log(paramEvent.extendedProps.type);
       if(paramEvent.extendedProps.type === "event") {
         return events.data.find(event => event.id === parseInt(paramEvent.id));
       } else {

@@ -75,8 +75,6 @@ export const ProjectShow = ({getProjects}) => {
     })
   }
 
-  console.log(skillList)
-
   function deleteEvent(e, id) { 
     e.preventDefault();
     fetch(locprod + '/events/' + id, {
