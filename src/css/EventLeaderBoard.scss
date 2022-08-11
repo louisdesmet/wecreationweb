@@ -17,6 +17,15 @@
             padding: 0 13px;
         }
     }
+    .completed {
+        text-align: center;
+        img {
+            width: 50px;
+            position: relative;
+            top: 15px;
+            left: 10px;
+        }
+    }
     .top {
         display: flex;
         width: 80%;

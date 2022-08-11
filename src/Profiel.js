@@ -188,7 +188,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
                             <Link to={updatedLoggedUser && updatedLoggedUser.roles.find(role => role.id === 3) ? "/handelaar/create/" +  updatedLoggedUser.roles.find(role => role.id === 3).business_id : "/handelaar/create"}><img src={handel} alt=""/>Mijn handelszaak</Link>
                             <Link to={updatedLoggedUser && updatedLoggedUser.roles.find(role => role.id === 4) ? "/dienst/create/" +  updatedLoggedUser.roles.find(role => role.id === 4).business_id : "/dienst/create"}><img src={handel} alt=""/>Mijn diensten</Link>
                             <Link to={"/get/historiek"}><img src={kassa} alt=""/>Mijn kassatickets</Link>
-                            <Link to={"/my-events"}><img src={agenda} alt=""/>Mijn events</Link>
+                            <Link to={"/my-events"}><img src={agenda} alt=""/>Mijn projecten</Link>
                             <Link to={"/my-interests"}><img src={like} alt=""/>Mijn interesses</Link>
                             <a className="logout" onClick={() => logout()}><img src={logoutImg} alt=""/>Afmelden</a>
                         </div> : null

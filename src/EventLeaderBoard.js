@@ -22,6 +22,7 @@ import profile from './img/eventshow/profile-purple.png';
 import accept from './img/eventshow/accept.png';
 import decline from './img/eventshow/decline.png';
 import credits from './img/profile/credits.png';
+import add from './img/eventshow/accept.png';
 
 export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
 
@@ -243,6 +244,7 @@ export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
           event ? 
           <div className="event-leader-board">
             <h2 className="event-title"><span>{event.project.name} - {event.name}</span></h2>
+            { event.completed_at ? <h2 className='completed'><span>Dit event staat gemarkeerd als afgelopen.</span><img src={add}/></h2> : null}
             <div className="top">
               <div>
                   <img src={agenda} alt=""/>
