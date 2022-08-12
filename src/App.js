@@ -56,6 +56,8 @@ import Forgot from "./Forgot";
 import ResetPassword from "./ResetPassword";
 import GetVergoedingenAankopen from "./GetVergoedingenAankopen";
 import GetVergoedingenVerkopen from "./GetVergoedingenVerkopen";
+import MyActivities from "./MyActivities";
+import ActivityUpdate from "./ActivityUpdate";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   return (
@@ -120,8 +122,10 @@ function App() {
               <PrivateRoute path="/profiel/:id" component={Profiel}/>
               <PrivateRoute path="/profiel" component={Profiel}/>
               <PrivateRoute path="/my-events" component={MyEvents}/>
+              <PrivateRoute path="/my-activities" component={MyActivities}/>
               <PrivateRoute path="/my-interests" component={MyInterests}/>
               <PrivateRoute path="/event-leader-board/:id" component={EventLeaderBoard}/>
+              
               
               <Route path="/agenda/:id" component={Agenda}/>
               <Route path="/agenda" component={Agenda}/>
@@ -135,6 +139,7 @@ function App() {
 
               <PrivateRoute path="/event/create/:id/:eventId" component={EventCreate}/>
               <PrivateRoute path="/event/create/:id" component={EventCreate}/>
+              <PrivateRoute path="/activity/update/:id" component={ActivityUpdate}/>
               <PrivateRoute path="/handelaar/create/:id" component={BusinessCreate}/>
               <PrivateRoute path="/handelaar/create" component={BusinessCreate}/>
               <PrivateRoute path="/dienst/create/:id" component={BusinessCreate}/>

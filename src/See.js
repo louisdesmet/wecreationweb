@@ -496,7 +496,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
             <div className="categories">
               <div>
                 <img src={evenementen} alt=""/>
-                <p>Activitetien</p>
+                <p>Activiteiten</p>
               </div>
               <img onClick={() => setActivity(!activity)} className="switch" src={activity ? active : nonactive} alt=""/>
             </div>
