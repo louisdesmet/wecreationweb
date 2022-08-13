@@ -471,10 +471,12 @@ export const createdDate = (date) => {
 
 
 export const date = (date) => {
-    var t = date.split(/[- :]/);
+    const jsDate = new Date(date);
+    return jsDate.getDate()+'/'+(jsDate.getMonth()+1)+'/'+jsDate.getFullYear();
+   /* var t = date.split(/[- :]/);
     var d = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
     var actiondate = new Date(d);
-    return actiondate.getDate()+'-'+(actiondate.getMonth()+1)+'-'+actiondate.getFullYear();
+    return actiondate.getDate()+'-'+(actiondate.getMonth()+1)+'-'+actiondate.getFullYear();*/
 }
 
 export const datetime = (date) => {

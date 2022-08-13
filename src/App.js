@@ -11,7 +11,7 @@ import {
 import './App.scss';
 import Agenda from "./Agenda";
 import Work from "./Work";
-import See from "./See";
+import See from "./See/See";
 import Get from "./Get";
 import Profiel from "./Profiel";
 import ProfielEdit from "./ProfielEdit";
@@ -148,7 +148,7 @@ export const App = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
               events.data && activities.data && businesses.data && projects.data && users.data && messages.data && groups.data && orders.data && transfers.data ?
             <>
               <Route exact path="/see">
-                <See events={events} activities={activities} businesses={businesses}/>
+                <See events={events} activities={activities} businesses={businesses} reloadActivities={() => getActivities()}/>
               </Route>
               <Route exact path="/agenda/:id">
                 <Agenda events={events} activities={activities}/>
@@ -347,7 +347,7 @@ export const App = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
               {
                 isUserLoggedIn ? 
                 <Route exact path="/"><Home activities={activities} events={events} businesses={businesses} users={users} projects={projects}/></Route>
-                : <Route exact path="/"><See events={events} activities={activities} businesses={businesses}/></Route>
+                : <Route exact path="/"><See events={events} activities={activities} businesses={businesses} reloadActivities={() => getActivities()}/></Route>
               }
             </>
             : null

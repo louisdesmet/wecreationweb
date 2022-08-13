@@ -135,7 +135,6 @@ function EventShow(props) {
       if(props.event.users && !props.event.users.find(user => user.id === loggedUser.id)) {
         props.likeEvent(props.event.id);
       }
-      
     } else {
       notifyRegister();
     }
