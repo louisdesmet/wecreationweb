@@ -1,6 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import {connect, useSelector} from "react-redux";
-import { getProjects } from './redux/actions';
+import React, {useState} from 'react';
 import { useParams } from 'react-router-dom';
 import locprod from './Global';
 import './css/EventCreate.scss';
@@ -10,13 +8,9 @@ import { useHistory } from 'react-router';
 import work from './img/nav/work.png';
 
 
-export const ProjectCreate = ({getProjects}) => {
+function ProjectCreate(props) {
 
   const routerHistory = useHistory();
-
-  useEffect(() => {
-    getProjects();
-  }, []);
 
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
@@ -25,9 +19,7 @@ export const ProjectCreate = ({getProjects}) => {
 
   const { id } = useParams();
 
-  const projects = useSelector(state => state.remoteProjects);
-
-  const project = id && projects.data ? projects.data.find(project => project.id === parseInt(id)) : null;
+  const project = id && props.projects.data ? props.projects.data.find(project => project.id === parseInt(id)) : null;
 
   const formData = new FormData();
   const imageHandler = (event) => {
@@ -111,7 +103,4 @@ export const ProjectCreate = ({getProjects}) => {
   );
 }
 
-export default connect(
-    null,
-    {getProjects}
-)(ProjectCreate);
+export default ProjectCreate;

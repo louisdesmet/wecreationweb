@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
-import {getActivities, getAllEvents, getBusinesses, getUsers, getProjects, getMessages} from "./redux/actions";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Axios from 'axios';
 import EventShow from "./components/EventShow";
@@ -19,18 +17,9 @@ import diensten from './img/map/diensten.png';
 import close from './img/map/close.png';
 import mapFilter from './img/map/map-filter.png';
 
-export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities, getProjects, getMessages}) => {
+function Home(props) {
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
-
-  useEffect(() => {
-    getAllEvents();
-    getBusinesses();
-    getActivities()
-    getUsers();
-    getProjects();
-    getMessages();
-  }, []);
 
   const [oneTime, setOneTime] = useState(1);
   const [event, setEvent] = useState(null);
@@ -41,58 +30,50 @@ export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities, getP
   const [likedActivity, setLikedActivity] = useState(false);
   const [likedBusiness, setLikedBusiness] = useState(false);
 
-
-  const events = useSelector(state => state.remoteAllEvents);
-  const businesses = useSelector(state => state.remoteBusinesses);
-  const activities = useSelector(state => state.remoteActivities);
-  const users = useSelector(state => state.remoteUsers);
-  const messages = useSelector(state => state.remoteMessages);
-  const projects = useSelector(state => state.remoteProjects);
   //nav
-
   const [searchActive, setSearchActive] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState("");
 
-  if(businesses.data && activities.data && events.data && projects.data && users.data) {
-    activities.data.forEach(function (element) {
+  if(props.businesses.data && props.activities.data && props.events.data && props.projects.data && props.users.data) {
+    props.activities.data.forEach(function (element) {
       element.type = "activity";
       element.urlText = "/activities/";
     });
-    events.data.forEach(function (element) {
+    props.events.data.forEach(function (element) {
       element.type = "event";
       element.urlText = "/events/";
     });
-    projects.data.forEach(function (element) {
+    props.projects.data.forEach(function (element) {
       element.type = "project";
       element.urlText = "/projects/";
     });
-    users.data.forEach(function (element) {
+    props.users.data.forEach(function (element) {
       element.type = "user";
       element.urlText = "/profiel/";
     });
-    businesses.data.forEach(function (element) {
+    props.businesses.data.forEach(function (element) {
       element.urlText = "/get/handelaars/";
       element.urlText2 = "/products";
     });
   }
 
-  const futureEvents = events.data ? events.data.filter(event => {
+  const futureEvents = props.events.data ? props.events.data.filter(event => {
     return new Date(event.date) > new Date();
   }) : null;
   
-  if(activities.data && businesses.data && users.data && futureEvents && oneTime) {
+  if(props.activities.data && props.businesses.data && props.users.data && futureEvents && oneTime) {
     let rndInt = Math.floor(Math.random() * 5) + 1;
 
     if(rndInt === 1 || rndInt === 2) {
       let rndIntEvent = Math.floor(Math.random() * futureEvents.length) + 1;
       setEvent(futureEvents.find((event, index) => index + 1 === rndIntEvent));
     } else if(rndInt === 3 || rndInt === 4) {
-      let rndIntBusiness = Math.floor(Math.random() * businesses.data.length) + 1;
-      setBusiness(businesses.data.find((business, index) => index + 1 === rndIntBusiness));
+      let rndIntBusiness = Math.floor(Math.random() * props.businesses.data.length) + 1;
+      setBusiness(props.businesses.data.find((business, index) => index + 1 === rndIntBusiness));
     }  else {
-      let rndIntActivity = Math.floor(Math.random() * activities.data.length) + 1;
-      setActivity(activities.data.find((activity, index) => index + 1 === rndIntActivity));
+      let rndIntActivity = Math.floor(Math.random() * props.activities.data.length) + 1;
+      setActivity(props.activities.data.find((activity, index) => index + 1 === rndIntActivity));
     }
     setOneTime(0);
   }
@@ -121,17 +102,17 @@ export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities, getP
   }
 
   function newBusiness() {
-    let businessLength = businesses.data.length;
+    let businessLength = props.businesses.data.length;
     let rndIntBusiness = Math.floor(Math.random() * businessLength) + 1;
-    setBusiness(businesses.data.find((business, index) => index + 1 === rndIntBusiness));
+    setBusiness(props.businesses.data.find((business, index) => index + 1 === rndIntBusiness));
     setEvent(null);
     setActivity(null);
   }
 
   function newActivity() {
-    let activityLength = activities.data.length;
+    let activityLength = props.activities.data.length;
     let rndIntActivity = Math.floor(Math.random() * activityLength) + 1;
-    setActivity(activities.data.find((activity, index) => index + 1 === rndIntActivity));
+    setActivity(props.activities.data.find((activity, index) => index + 1 === rndIntActivity));
     setEvent(null);
     setBusiness(null);
   }
@@ -147,7 +128,7 @@ export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities, getP
       }
     })
     .then((response) => {
-      getAllEvents();
+      //getAllEvents();
       setLiked(true);
     })
     .catch((error) => {
@@ -166,7 +147,7 @@ export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities, getP
       }
     })
     .then((response) => {
-        getActivities();
+        //getActivities();
         setLikedActivity(true);
     })
     .catch((error) => {
@@ -185,8 +166,8 @@ export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities, getP
       }
     })
     .then((response) => {
-        getBusinesses();
-        setLikedBusiness(true);
+        //getBusinesses();
+        //setLikedBusiness(true);
     })
     .catch((error) => {
   
@@ -200,7 +181,7 @@ export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities, getP
 
   function getResults(value) {
     setQuery(value);
-    setResults(businesses.data.filter(business => business.name.toLowerCase().includes(value.toLowerCase())).concat(projects.data.filter(project => project.name.toLowerCase().includes(value.toLowerCase())), events.data.filter(event => event.name.toLowerCase().includes(value.toLowerCase())), activities.data.filter(activity => activity.name.toLowerCase().includes(value.toLowerCase())), users.data.filter(user => user.name.toLowerCase().includes(value.toLowerCase()))));
+    setResults(props.businesses.data.filter(business => business.name.toLowerCase().includes(value.toLowerCase())).concat(props.projects.data.filter(project => project.name.toLowerCase().includes(value.toLowerCase())), props.events.data.filter(event => event.name.toLowerCase().includes(value.toLowerCase())), props.activities.data.filter(activity => activity.name.toLowerCase().includes(value.toLowerCase())), props.users.data.filter(user => user.name.toLowerCase().includes(value.toLowerCase()))));
   }
   
   const resultList = results ? results.map(result => <Link to={result.urlText + result.id + (result.urlText2 ? result.urlText2 : "")}>
@@ -223,7 +204,7 @@ export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities, getP
               <Link to="/netwerk">
                 <img src={netwerk} alt=""/>
                 {
-                  loggedUser ? <span className="notifications">{messages.data ? messages.data.filter(message => message.notification && message.recipient.id === loggedUser.id && message.seen == 0).length : null}</span> : null
+                  loggedUser ? <span className="notifications">{props.messages.data ? props.messages.data.filter(message => message.notification && message.recipient.id === loggedUser.id && message.seen == 0).length : null}</span> : null
                 }
               </Link>
             </div>
@@ -240,13 +221,10 @@ export const Home = ({getAllEvents, getBusinesses, getUsers, getActivities, getP
         }
     </div>
       {event ? <EventShow event={event} likeEvent={likeEvent} liked={liked}/> : null}
-      {business && users.data ? <BusinessShow business={business} users={users.data} likeBusiness={likeBusiness} liked={likedBusiness}/> : null}
+      {business && props.users.data ? <BusinessShow business={business} users={props.users.data} likeBusiness={likeBusiness} liked={likedBusiness}/> : null}
       {activity ? <ActivityShow activity={activity} likeActivity={likeActivity} liked={likedActivity}/> : null}
     </div>
   );
 }
 
-export default connect(
-  null,
-  { getAllEvents, getBusinesses, getUsers, getActivities, getProjects, getMessages }
-)(Home);
+export default Home;

@@ -1,7 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {connect, useSelector} from "react-redux";
-import { getProjects, getSkills } from './redux/actions';
-import { Link, useParams } from 'react-router-dom';
+import React, {useState} from 'react';
+import { useParams } from 'react-router-dom';
 import locprod from './Global';
 import './css/EventCreate.scss';
 import { MapContainer, TileLayer } from 'react-leaflet'
@@ -19,7 +17,7 @@ import skill from './img/profile/skill.png';
 
 import add from './img/eventshow/add.png';
 
-export const EventCreate = ({getProjects, getSkills}) => {
+function EventCreate(props) {
 
   // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
   Geocode.setApiKey("AIzaSyB3hu-a1Gnzog5zG63fnQ8ZaMLghPGUPwI");
@@ -32,11 +30,6 @@ export const EventCreate = ({getProjects, getSkills}) => {
   Geocode.setRegion("es");
 
   const notify = () => toast("Gelieve alle verplichte velden in te vullen");
-
-  useEffect(() => {
-    getProjects();
-    getSkills();
-  }, []);
 
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
@@ -55,10 +48,7 @@ export const EventCreate = ({getProjects, getSkills}) => {
 
   const { id, eventId } = useParams();
 
-  const projects = useSelector(state => state.remoteProjects);
-  const skills = useSelector(state => state.remoteSkills);
-
-  const project = projects.data ? projects.data.find(project => project.id === parseInt(id)) : null;
+  const project = props.projects.data ? props.projects.data.find(project => project.id === parseInt(id)) : null;
   let event = null;
   if(project) {
     event = project.events.find(event => event.id === parseInt(eventId));
@@ -220,8 +210,8 @@ export const EventCreate = ({getProjects, getSkills}) => {
     setLng(null);
     setLocation(value)
   }
-  const filteredSkills = skills.data ? skills.data.sort((a, b) => a.name.localeCompare(b.name)) : null;
-  const skillList = filteredSkills ? skills.data.map(skill => <option key={skill.id} value={skill.id}>{skill.name}</option>) : null;
+  const filteredSkills = props.skills.data ? props.skills.data.sort((a, b) => a.name.localeCompare(b.name)) : null;
+  const skillList = filteredSkills ? props.skills.data.map(skill => <option key={skill.id} value={skill.id}>{skill.name}</option>) : null;
   return (
     <div className="height100">
       <Nav/>
@@ -313,7 +303,4 @@ export const EventCreate = ({getProjects, getSkills}) => {
   );
 }
 
-export default connect(
-    null,
-    {getProjects, getSkills}
-)(EventCreate);
+export default EventCreate;

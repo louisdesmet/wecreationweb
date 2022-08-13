@@ -1,6 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import {connect, useSelector} from "react-redux";
-import { getBusinesses } from './redux/actions';
+import React, {useState} from 'react';
 import { useLocation, useParams, useHistory, Link } from 'react-router-dom';
 import locprod from './Global';
 import './css/EventCreate.scss';
@@ -13,7 +11,9 @@ import free from './img/profile/free.png';
 import get from './img/nav/get.png';
 import add from './img/eventshow/add.png';
 
-export const BusinessCreate = ({getBusinesses}) => {
+
+
+function BusinessCreate(props) {
 
     const routerLocation = useLocation();
     const history = useHistory();
@@ -30,10 +30,6 @@ export const BusinessCreate = ({getBusinesses}) => {
     // A Geocoding request with region=es (Spain) will return the Spanish city.
     Geocode.setRegion("es");
 
-    useEffect(() => {
-      getBusinesses();
-    }, []);
-
     const { id } = useParams();
 
     const [name, setName] = useState("");
@@ -47,9 +43,7 @@ export const BusinessCreate = ({getBusinesses}) => {
 
     const [freeData, setFreeData] = useState([]);
 
-    const businesses = useSelector(state => state.remoteBusinesses);
-
-    let business = businesses.data ? businesses.data.find(business => business.id === parseInt(id)) : null;
+    let business = props.businesses.data ? props.businesses.data.find(business => business.id === parseInt(id)) : null;
 
     if(business && lng === "") {
       setName(business.name);
@@ -256,7 +250,4 @@ export const BusinessCreate = ({getBusinesses}) => {
     );
 }
 
-export default connect(
-    null,
-    {getBusinesses}
-)(BusinessCreate);
+export default BusinessCreate;

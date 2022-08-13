@@ -1,7 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from "react-redux";
-import {getAllEvents, getActivities} from "./redux/actions";
-import {useSelector} from "react-redux";
+import React, {useState} from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { skillIcon } from './Global';
 
@@ -17,7 +14,7 @@ import location from './img/nav/see.png';
 
 import './css/Agenda.scss';
 
-export const Agenda = ({getAllEvents, getActivities}) => {
+function Agenda(props) {
 
   const { id } = useParams();
 
@@ -30,17 +27,8 @@ export const Agenda = ({getAllEvents, getActivities}) => {
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
-  useEffect(() => {
-    getAllEvents();
-    getActivities();
-  }, []);
-
-  const events = useSelector(state => state.remoteAllEvents);
-  const activities = useSelector(state => state.remoteActivities);
-
-
-  if(events.data) {
-    events.data.forEach(event => {
+  if(props.events.data) {
+    props.events.data.forEach(event => {
       event.skills.forEach(skill => {
         skill.users.forEach(user => {
           if(loggedUser && user.id === loggedUser.id) {
@@ -51,7 +39,7 @@ export const Agenda = ({getAllEvents, getActivities}) => {
     })
   }
 
-  const fcEvents = events.data ? events.data.map((event, index) => {
+  const fcEvents = props.events.data ? props.events.data.map((event, index) => {
     let newDate = new Date(event.date);
     let time = event.time.split(":");
     newDate.setHours(time[0]);
@@ -63,7 +51,7 @@ export const Agenda = ({getAllEvents, getActivities}) => {
     }}
   }) : null
 
-  const fcActivities = activities.data ? activities.data.map((activity, index) => {
+  const fcActivities = props.activities.data ? props.activities.data.map((activity, index) => {
     let newDate = new Date(activity.date);
     return {id: activity.id, title: activity.name, date: newDate, extendedProps: {
       time: activity.time,
@@ -71,9 +59,9 @@ export const Agenda = ({getAllEvents, getActivities}) => {
     }}
   }) : null
 
-  if(id && events.data && !event) {
+  if(id && props.events.data && !event) {
     setEnabled(1);
-    let tempEvent = events.data.find(event => event.id === parseInt(id));
+    let tempEvent = props.events.data.find(event => event.id === parseInt(id));
     tempEvent.startStr = tempEvent.date
     tempEvent.title = tempEvent.name
     tempEvent.extendedProps = {
@@ -94,9 +82,9 @@ export const Agenda = ({getAllEvents, getActivities}) => {
     function findEvent(paramEvent) {
       
       if(paramEvent.extendedProps.type === "event") {
-        return events.data.find(event => event.id === parseInt(paramEvent.id));
+        return props.events.data.find(event => event.id === parseInt(paramEvent.id));
       } else {
-        return activities.data.find(activity => activity.id === parseInt(paramEvent.id));
+        return props.activities.data.find(activity => activity.id === parseInt(paramEvent.id));
       }
       
     }
@@ -180,8 +168,8 @@ export const Agenda = ({getAllEvents, getActivities}) => {
   };
   
   const handleDateClick = (args) => {
-    let filteredEvents = events.data.filter(event => date(event.date) === date(args.dateStr));
-    let filteredActivities = activities.data.filter(activity => date(activity.date) === date(args.dateStr));
+    let filteredEvents = props.events.data.filter(event => date(event.date) === date(args.dateStr));
+    let filteredActivities = props.activities.data.filter(activity => date(activity.date) === date(args.dateStr));
     let mergedEvents = filteredEvents.concat(filteredActivities);
     if(mergedEvents.length > 0) {
       setDateEvents(mergedEvents);
@@ -215,7 +203,7 @@ export const Agenda = ({getAllEvents, getActivities}) => {
           dateClick={handleDateClick}
           eventContent={renderEventContent}
           height="parent"
-          initialDate={events.data && id ? events.data.find(event => event.id === parseInt(id)).date : null}
+          initialDate={props.events.data && id ? props.events.data.find(event => event.id === parseInt(id)).date : null}
           locale={nlLocale}
           headerToolbar={{
             left: 'prev title next',
@@ -233,8 +221,5 @@ export const Agenda = ({getAllEvents, getActivities}) => {
   );
 }
 
-export default connect(
-  null,
-  {getAllEvents, getActivities}
-)(Agenda);
+export default Agenda;
 

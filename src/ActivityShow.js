@@ -1,7 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from "react-redux";
+import React from 'react';
 import {getActivities} from "./redux/actions";
-import {useSelector} from "react-redux";
 import { useParams } from 'react-router-dom';
 import Nav from './Nav';
 import Axios from 'axios';
@@ -9,16 +7,11 @@ import ActivityShowComp from "./components/ActivityShow";
 
 import './css/EventShow.scss';
 
-export const ActivityShow = ({getActivities}) => {
 
-  useEffect(() => {
-    getActivities();
-  }, []);
-
-  const activities = useSelector(state => state.remoteActivities);
+function ActivityShow(props) {
 
   const { id } = useParams();
-  const activity = activities.data ? activities.data.find(activity => activity.id === parseInt(id)) : null;
+  const activity = props.activities.data ? props.activities.data.find(activity => activity.id === parseInt(id)) : null;
 
   const likeActivity = (activityId) => {
     Axios.post('/like-activity', {
@@ -47,7 +40,4 @@ export const ActivityShow = ({getActivities}) => {
   );
 }
 
-export default connect(
-  null,
-  {getActivities}
-)(ActivityShow);
+export default ActivityShow;

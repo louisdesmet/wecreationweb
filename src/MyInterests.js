@@ -1,8 +1,5 @@
-import React, {useEffect} from 'react';
-import {connect} from "react-redux";
-import {getUsers} from "./redux/actions";
+import React from 'react';
 import Nav from "./Nav";
-import {useSelector} from "react-redux";
 import './css/MyInterests.scss';
 import {datetime} from './Global';
 import get from './img/nav/get.png';
@@ -10,17 +7,12 @@ import work from './img/nav/work.png';
 import evenementen from './img/profile/badges.png';
 import profile from './img/nav/profile.png';
 import { Link } from 'react-router-dom';
-export const Profiel = ({getUsers}) => {
+
+function MyInterests(props) {
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
-    
-    useEffect(() => {
-        getUsers();
-    }, []);
 
-    const users = useSelector(state => state.remoteUsers);
-
-    const user = users.data ? users.data.find(user => user.id === loggedUser.id) : null
+    const user = props.users.data ? props.users.data.find(user => user.id === loggedUser.id) : null
     
     const eventList = user ? (
         <div className='list'>
@@ -101,7 +93,4 @@ export const Profiel = ({getUsers}) => {
 }
 
 
-export default connect(
-    null,
-    {getUsers}
-)(Profiel);
+export default MyInterests;

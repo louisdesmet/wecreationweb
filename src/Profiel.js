@@ -1,8 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from "react-redux";
-import {getProjects, getAllEvents, getUsers} from "./redux/actions";
+import React, {useState} from 'react';
 import Nav from "./Nav";
-import {useSelector} from "react-redux";
 import './css/Profiel.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ToastContainer, toast } from 'react-toastify';
@@ -33,7 +30,7 @@ import legend from './img/profile/legend.png';
 import { badgeIcon, date, profileIcon, skillIcon } from './Global';
 import Axios from 'axios';
 
-export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
+function Profiel(props) {
 
     const notify = () => toast("Welkom op wecreation, je bent nu op je profiel.");
 
@@ -46,30 +43,19 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
     const [liked, setLiked] = useState(false);
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
-    
-    useEffect(() => {
-        getUsers();
-        getProjects();
-        getAllEvents();
-    }, []);
-
-    const users = useSelector(state => state.remoteUsers);
-    const events = useSelector(state => state.remoteAllEvents);
-    const projects = useSelector(state => state.remoteProjects);
 
     let updatedLoggedUser = null;
-
-    if(id && users.data) {
-        updatedLoggedUser = users.data.find(item => item.id === parseInt(id));
-    } else if(users.data) {
-        updatedLoggedUser = users.data.find(item => item.id === loggedUser.id);
+    if(id && props.users.data) {
+        updatedLoggedUser = props.users.data.find(item => item.id === parseInt(id));
+    } else if(props.users.data) {
+        updatedLoggedUser = props.users.data.find(item => item.id === loggedUser.id);
     }
 
     let userHours = [];
     let userHoursTotal = [];
 
-    if(events.data) {
-        events.data.forEach(event => {
+    if(props.events.data) {
+        props.events.data.forEach(event => {
             event.skills.forEach(skill => {
                 skill.users.forEach(user => {
                     if(user.id === (id ? parseInt(id) : loggedUser.id) && user.present === 1) {
@@ -108,18 +94,18 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
         history.push("/login");
     }
 
-    const leaderList = projects.data && updatedLoggedUser ? projects.data.map(project =>
+    const leaderList = props.projects.data && updatedLoggedUser ? props.projects.data.map(project =>
         updatedLoggedUser.id === project.leader.id ? <Link key={project.id} className="projects" to={"/projects/" + project.id}><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "projects/" + project.picture}/>{project.name}</Link> : null
     ) : null
 
-    const eventsList = events.data && updatedLoggedUser ? events.data.map(event =>
+    const eventsList = props.events.data && updatedLoggedUser ? props.events.data.map(event =>
         updatedLoggedUser.id === event.project.leader.id ? <Link key={event.id} className="projects" to={"/events/" + event.id}><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image}/>{event.name}</Link> : null
     ) : null;
 
     let teamList = [];
 
-    if(events.data && updatedLoggedUser) {
-        events.data.forEach(event => {
+    if(props.events.data && updatedLoggedUser) {
+        props.events.data.forEach(event => {
             event.skills.forEach(skill => {
                 skill.users.forEach(user => {
                     if(user.id === updatedLoggedUser.id) {
@@ -129,7 +115,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
             })
         })
 
-        events.data.forEach(event => {
+        props.events.data.forEach(event => {
             event.team && event.skills.forEach(skill => {
                 skill.users.forEach(user => {
                     if(!teamList.find(item => item.id === user.id)) {
@@ -170,7 +156,7 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
           }
         })
         .then((response) => {
-            getUsers();
+            //getUsers();
         })
         .catch((error) => {
 
@@ -316,8 +302,4 @@ export const Profiel = ({getUsers,getProjects,getAllEvents}) => {
     );
 }
 
-
-export default connect(
-    null,
-    {getProjects, getUsers, getAllEvents}
-)(Profiel);
+export default Profiel;

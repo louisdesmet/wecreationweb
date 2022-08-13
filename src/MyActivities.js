@@ -1,54 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from "react-redux";
-import {getActivities} from "./redux/actions";
-import {useSelector} from "react-redux";
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Nav from './Nav';
 
 import './css/MyEvents.scss';
 
-import work from './img/nav/work.png';
 import agenda from './img/nav/agenda.png';
 import time from './img/eventshow/time.png';
 import see from './img/nav/see.png';
-import team from './img/profile/team.png';
 import evenementen from './img/profile/badges.png';
 import edit from './img/eventshow/edit.png';
 
-export const MyActivities = ({getActivities}) => {
+function MyActivities(props) {
 
-    useEffect(() => {
-        getActivities();
-    }, []);
-    
-    const activities = useSelector(state => state.remoteActivities);
-
-
-    const futureActivities = activities.data ? activities.data.filter(activity => {
+    const futureActivities = props.activities.data ? props.activities.data.filter(activity => {
         return JSON.parse(localStorage.getItem("user")).id === activity.user.id && new Date(activity.date) > new Date();
     }) : null;
 
-
-
-   /* const futureGroup = futureEvents ? futureEvents.reduce((acc, item) => {
-        if (!acc[item.project.id]) {
-            acc[item.project.id] = [];
-        }
-        acc[item.project.id].push(item);
-        return acc;
-    }, {}) : null*/
-
-    const pastActivities = activities.data ? activities.data.filter(activity => {
+    const pastActivities = props.activities.data ? props.activities.data.filter(activity => {
         return JSON.parse(localStorage.getItem("user")).id === activity.user.id && new Date(activity.date) < new Date();
     }) : null;
-
-   /* const pastGroup = pastEvents ? pastEvents.reduce((acc, item) => {
-        if (!acc[item.project.id]) {
-            acc[item.project.id] = [];
-        }
-        acc[item.project.id].push(item);
-        return acc;
-    }, {}) : null*/
     
     function date(date) {
         const jsDate = new Date(date);
@@ -80,7 +50,7 @@ export const MyActivities = ({getActivities}) => {
                             <p><img src={agenda} alt=""/>{date(activity.date)}</p>
                             <p><img src={time} alt=""/>{activity.time}</p>
                             <p><img src={see} alt=""/>{activity.location}</p>
-                            <div><Link to={"/event-leader-board/" + activity.id}><img src={edit} alt=""/></Link></div>
+                            <div><Link to={"/activity/update/" + activity.id}><img src={edit} alt=""/></Link></div>
                         </div>
                     )): null
                 }
@@ -92,7 +62,4 @@ export const MyActivities = ({getActivities}) => {
 
 
 
-export default connect(
-    null,
-    {getActivities}
-  )(MyActivities);
+export default MyActivities;

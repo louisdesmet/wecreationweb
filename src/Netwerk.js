@@ -1,7 +1,5 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import Nav from "./Nav";
-import {connect, useSelector, useStore} from "react-redux";
-import {getMessages, getUsers, getAllEvents, getGroups} from "./redux/actions";
 import Select from 'react-select';
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,7 +13,7 @@ import add from './img/eventshow/accept.png';
 import decline from './img/eventshow/decline.png';
 import linkArrow from './img/eventshow/link.png';
 
-export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
+function Network(props) {
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -59,23 +57,11 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
     const [mobileChatsActive, setMobileChatsActive] = useState(window.innerWidth > 700 ? true : false);
     const [mobileThreadsActive, setMobileThreadsActive] = useState(window.innerWidth > 700 ? true : false);
 
-    useEffect(() => {
-        getMessages();
-        getUsers();
-        getAllEvents();
-        getGroups();
-    }, []);
-
-    const messages = useSelector(state => state.remoteMessages);
-    const users = useSelector(state => state.remoteUsers);
-    const events = useSelector(state => state.remoteAllEvents);
-    const groups = useSelector(state => state.remoteGroups);
-
-    let notifications = messages.data && messages.data.length ? messages.data.slice().reverse().filter(message => message.notification && message.recipient.id === loggedUser.id) : null;
+    let notifications = props.messages.data && props.messages.data.length ? props.messages.data.slice().reverse().filter(message => message.notification && message.recipient.id === loggedUser.id) : null;
 
 
-    let threadGroups = groups.data ? groups.data.filter(group => !group.event) : null;
-    let eventGroups = groups.data ? groups.data.filter(group => group.event) : null;
+    let threadGroups = props.groups.data ? props.groups.data.filter(group => !group.event) : null;
+    let eventGroups = props.groups.data ? props.groups.data.filter(group => group.event) : null;
 
     let latestMessagesThreadGroup = [];
     let latestMessagesEventGroup = [];
@@ -101,8 +87,8 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         setOneTime(true);
     }
 
-    if(users.data && dmId && !oneTime) {
-        setFirstMessagesUser(users.data.find(user => user.id === parseInt(dmId)))
+    if(props.users.data && dmId && !oneTime) {
+        setFirstMessagesUser(props.users.data.find(user => user.id === parseInt(dmId)))
         setOneTime(true);
     }
 
@@ -121,8 +107,8 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
     }
 
     let allowedEventGroups = [];
-    if(events.data) {
-        events.data.forEach(event => {  
+    if(props.events.data) {
+        props.events.data.forEach(event => {  
             if (event.project.leader.id === loggedUser.id && !allowedEventGroups.includes(event.group.id)) {
                 allowedEventGroups.push(event.group.id);
             }
@@ -156,14 +142,14 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
     let dmsTo = [];
     let dmsPerPerson = {};
 
-    if(messages.data && messages.data.length && messagesAmount === 0) {
-        setMessagesAmount(messages.data.length);
+    if(props.messages.data && props.messages.data.length && messagesAmount === 0) {
+        setMessagesAmount(props.messages.data.length);
     }
 
-    if(messages.data && messages.data.length && (!finished || messages.data.length !== messagesAmount || switchedView || !messageList)) {
+    if(props.messages.data && props.messages.data.length && (!finished || props.messages.data.length !== messagesAmount || switchedView || !messageList)) {
 
-        dmsFrom = messages.data.filter(message => message.recipient && message.user && message.recipient.id === loggedUser.id);
-        dmsTo = messages.data.filter(message => message.recipient && message.user && message.user.id === loggedUser.id);
+        dmsFrom = props.messages.data.filter(message => message.recipient && message.user && message.recipient.id === loggedUser.id);
+        dmsTo = props.messages.data.filter(message => message.recipient && message.user && message.user.id === loggedUser.id);
 
         dmsFrom.forEach(dm => {
             if(dmsPerPerson[dm.user.id]) {
@@ -218,13 +204,13 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
             ) : []);
 
             setSwitchedView(false);
-            setMessagesAmount(messages.data.length);
+            setMessagesAmount(props.messages.data.length);
             setFinished(true);
             
         }
     
     }
-    if(groups.data && latestGroupId && (latestGroupMessagesAmount || latestGroupMessagesAmount === 0) && eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.length !== latestGroupMessagesAmount) {
+    if(props.groups.data && latestGroupId && (latestGroupMessagesAmount || latestGroupMessagesAmount === 0) && eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.length !== latestGroupMessagesAmount) {
         setGroupMessageList(eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.slice().reverse().map(message =>
             <div className={loggedUser.id === message.user.id ? "message message-right" : "message"} key={message.id}>
                 <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
@@ -237,7 +223,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
         setLatestGroupMessagesAmount(eventGroups.find(group => group.id === parseInt(latestGroupId)).messages.length);
     }
 
-    if(groups.data && latestThreadId && (latestThreadMessagesAmount || latestThreadMessagesAmount === 0) && threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.length !== latestThreadMessagesAmount) {
+    if(props.groups.data && latestThreadId && (latestThreadMessagesAmount || latestThreadMessagesAmount === 0) && threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.length !== latestThreadMessagesAmount) {
         setThreadMessageList(threadGroups.find(group => group.id === parseInt(latestThreadId)).messages.slice().reverse().map(message =>
             <div className={loggedUser.id === message.user.id ? "message message-right" : "message"} key={message.id}>
                 <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
@@ -385,7 +371,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 user: loggedUser.id,
                 recipient: recipient,
             }, { headers: headers }).then((response) => {
-                getMessages();
+                //getMessages();
                 setFinished(false);
             }).catch((error) => {})
         } else if(groupchatsActive) {
@@ -396,8 +382,8 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
             }, { headers: headers }).then((response) => {
                 setLatestGroupId(recipient);
                 setLatestGroupMessagesAmount(eventGroups.find(group => group.id === recipient).messages.length);
-                getGroups();
-                getMessages();
+                //getGroups();
+                //getMessages();
             }).catch((error) => {})
         } else {
             axios.post('/messages', {
@@ -407,8 +393,8 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
             }, { headers: headers }).then((response) => {
                 setLatestThreadId(recipient);
                 setLatestThreadMessagesAmount(threadGroups.find(group => group.id === recipient).messages.length);
-                getGroups();
-                getMessages();
+                //getGroups();
+                //getMessages();
             }).catch((error) => {})
         }
         setMessage("");
@@ -431,7 +417,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 setMobileThreadsActive(true);
             }
       
-            getGroups();
+            //getGroups();
         }).catch((error) => {})
     }
 
@@ -477,7 +463,7 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
                 {
                     mobileDmsActive ? <div className="dms">
                         {
-                            users.data ? <Select placeholder="Zoeken" onChange={e => searchUser(e.value)} className="search" options={users.data.filter(user => user.id !== loggedUser.id).map(user => {
+                            props.users.data ? <Select placeholder="Zoeken" onChange={e => searchUser(e.value)} className="search" options={props.users.data.filter(user => user.id !== loggedUser.id).map(user => {
                                 return { value: user, label: user.name }
                             })}/> : null
                         }
@@ -599,7 +585,4 @@ export const Network = ({getMessages, getUsers, getAllEvents, getGroups}) => {
     );
 }
 
-export default connect(
-    null,
-    {getMessages, getUsers, getAllEvents, getGroups}
-  )(Network);
+export default Network;

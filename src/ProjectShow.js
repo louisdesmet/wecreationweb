@@ -1,7 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from "react-redux";
-import {getProjects} from "./redux/actions";
-import {useSelector} from "react-redux";
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Nav from './Nav';
 import accept from './img/eventshow/accept.png';
@@ -15,21 +12,15 @@ import update from './img/eventshow/update.png';
 import './css/ProjectShow.scss';
 import locprod, { profileIcon, skillIcon } from './Global';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useHistory } from 'react-router-dom';
 
-export const ProjectShow = ({getProjects}) => {
+function ProjectShow(props) {
 
   const history = useHistory();
 
-  useEffect(() => {
-    getProjects();
-  }, []);
-
-  const projects = useSelector(state => state.remoteProjects);
-
   const { id } = useParams();
-  const project = projects.data ? projects.data.find(project => project.id === parseInt(id)) : null;
+  const project = props.projects.data ? props.projects.data.find(project => project.id === parseInt(id)) : null;
 
   function date(date) {
     const jsDate = new Date(date);
@@ -74,6 +65,9 @@ export const ProjectShow = ({getProjects}) => {
       })
     })
   }
+  
+
+
 
   function deleteEvent(e, id) { 
     e.preventDefault();
@@ -137,7 +131,7 @@ export const ProjectShow = ({getProjects}) => {
 
               <h2 className='teamtitle'>Team</h2>
               {team.map(user => 
-                <Link key={user.id} className="team" to={"/profiel/" + user.id}><FontAwesomeIcon className="teamIcon" icon={profileIcon(user.icon)} color="white"/>{user.name}</Link>                      
+                <Link key={user.id} className="team" to={"/profiel/" + user.id}><FontAwesomeIcon className="teamIcon" icon={profileIcon(user.icon)} color="white"/>{user.name}</Link>
               )}
               {JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <Link to={"/event/create/" + project.id} className='new-event'>Nieuw event</Link> : null}
             </div>
@@ -217,7 +211,4 @@ function List({ event }) {
   );
 }
 
-export default connect(
-    null,
-    {getProjects}
-  )(ProjectShow);
+export default ProjectShow;

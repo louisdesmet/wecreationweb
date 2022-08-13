@@ -1,7 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {connect, useSelector} from "react-redux";
-import { getActivities } from './redux/actions';
-import { Link, useParams } from 'react-router-dom';
+import React, {useState} from 'react';
+import { useParams } from 'react-router-dom';
 import locprod from './Global';
 import './css/EventCreate.scss';
 import { MapContainer, TileLayer } from 'react-leaflet'
@@ -14,12 +12,7 @@ import work from './img/nav/work.png';
 import agenda from './img/nav/agenda.png';
 import timeIcon from './img/eventshow/time.png';
 import see from './img/nav/see.png';
-import free from './img/profile/free.png';
-import skill from './img/profile/skill.png';
-
-import add from './img/eventshow/add.png';
-
-export const ActivityUpdate = ({getActivities}) => {
+function ActivityUpdate(props) {
 
   // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
   Geocode.setApiKey("AIzaSyB3hu-a1Gnzog5zG63fnQ8ZaMLghPGUPwI");
@@ -33,10 +26,6 @@ export const ActivityUpdate = ({getActivities}) => {
 
   const notify = () => toast("Gelieve alle verplichte velden in te vullen");
 
-  useEffect(() => {
-    getActivities();
-  }, []);
-
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [date, setDate] = useState("");
@@ -48,9 +37,7 @@ export const ActivityUpdate = ({getActivities}) => {
 
   const { id } = useParams();
 
-  const activities = useSelector(state => state.remoteActivities);
-
-  const activity = activities.data ? activities.data.find(activity => activity.id === parseInt(id)) : null;
+  const activity = props.activities.data ? props.activities.data.find(activity => activity.id === parseInt(id)) : null;
 
   if(activity && lng === "") {
     setName(activity.name);
@@ -175,7 +162,4 @@ export const ActivityUpdate = ({getActivities}) => {
   );
 }
 
-export default connect(
-    null,
-    {getActivities}
-)(ActivityUpdate);
+export default ActivityUpdate;

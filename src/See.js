@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {connect} from "react-redux";
 import {getActivities, getBusinesses, getAllEvents} from "./redux/actions";
-import {useSelector} from "react-redux";
 import { Link } from 'react-router-dom';
 import Geocode from "react-geocode";
 import axios from "axios";
@@ -54,8 +52,7 @@ let getIcon = L.icon({
   iconSize: [30, 30],
   popupAnchor: [0, -20],
 });
-
-export const See = ({getBusinesses, getActivities, getAllEvents}) => {
+function See(props) {
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -111,10 +108,6 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   const [imageURI, setImageURI] = useState(null);
 
   useEffect(() => {
-    getBusinesses();
-    getActivities();
-    getAllEvents();
-
     document.getElementsByClassName( 'leaflet-control-attribution' )[0].style.display = 'none';
 
     function handleResize() {
@@ -128,10 +121,6 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const businesses = useSelector(state => state.remoteBusinesses);
-  const activities = useSelector(state => state.remoteActivities);
-  const events = useSelector(state => state.remoteAllEvents);
 
   const isToday = (someDate) => {
     const today = new Date()
@@ -158,7 +147,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
       d1.getDate() === d2.getDate();
   }
 
-  const businessMarkers = businesses.data ? businesses.data.filter((business) => {
+  const businessMarkers = props.businesses.data ? props.businesses.data.filter((business) => {
       return business.type === 'business';
   }).map(business => {
     return <Marker key={business.id} position={[business.lat, business.lng]} icon={getIcon}>
@@ -173,7 +162,7 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     </Marker>
   }) : null;
 
-  const serviceMarkers = businesses.data ? businesses.data.filter((business) => {
+  const serviceMarkers = props.businesses.data ? props.businesses.data.filter((business) => {
       return business.type === 'service';
   }).map(business => {
     return <Marker key={business.id} position={[business.lat, business.lng]} icon={getIcon}>
@@ -231,12 +220,12 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     }
   }
 
-  const activityMarkers = activities.data ? (activities.data.map(activity =>
+  const activityMarkers = props.activities.data ? (props.activities.data.map(activity =>
     filteredActivityMarkers(activity)
   )) : null;
 
-  if(events.data) {
-    events.data.forEach(event => {
+  if(props.events.data) {
+    props.events.data.forEach(event => {
       event.skills.forEach(skill => {
         if(skill.paid) {
           event.hasPaid = 1
@@ -287,11 +276,11 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
     }
   }
 
-  const eventMarkersFree = events.data ? (events.data.map(event =>
+  const eventMarkersFree = props.events.data ? (props.events.data.map(event =>
     !event.hasPaid ? filteredEventMarkers(event) : null
   )) : null;
 
-  const eventMarkersPaid = events.data ? (events.data.map(event =>
+  const eventMarkersPaid = props.events.data ? (props.events.data.map(event =>
     event.hasPaid ? filteredEventMarkers(event) : null
   )) : null;
 
@@ -417,20 +406,20 @@ export const See = ({getBusinesses, getActivities, getAllEvents}) => {
   }
 
   function searchItem(query) {
-    const foundActivities = activities.data.filter((activity) => {
+    const foundActivities = props.activities.data.filter((activity) => {
       const name = activity.name.toLowerCase();
       activity.type = "activity";
       return name.includes(query) && query !== "";
     });
-    const foundBusinesses = businesses.data.filter((business) => {
+    const foundBusinesses = props.businesses.data.filter((business) => {
       const name = business.name.toLowerCase();
       return business.type === "business" && name.includes(query) && query !== "";
     });
-    const foundServices = businesses.data.filter((business) => {
+    const foundServices = props.businesses.data.filter((business) => {
       const name = business.name.toLowerCase();
       return business.type === "service" && name.includes(query) && query !== "";
     });
-    const foundEvents = events.data.filter((event) => {
+    const foundEvents = props.events.data.filter((event) => {
       const name = event.name.toLowerCase();
       event.type = "event";
       return name.includes(query) && query !== "";
@@ -595,7 +584,4 @@ function ChangeView({ center, zoom }) {
   return null;
 }
 
-export default connect(
-  null,
-  {getBusinesses, getActivities, getAllEvents}
-)(See);
+export default See;

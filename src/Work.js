@@ -1,7 +1,4 @@
-import React, { useState, useEffect } from "react";
-import {useSelector} from "react-redux";
-import {connect} from "react-redux";
-import {getProjects} from "./redux/actions";
+import React from "react";
 import Nav from "./Nav";
 import { Link, useHistory } from "react-router-dom";
 import { date } from './Global.js';
@@ -13,31 +10,25 @@ import './css/Work.scss';
 
 import add from './img/eventshow/add.png';
 
-export const Work = ({getProjects}) => {
+function Work(props) {
 
   const history = useHistory();
-
-  useEffect(() => {
-    getProjects();
-  }, []);
-
-  const projects = useSelector(state => state.remoteProjects);
 
   function events(id) {
     history.push("/projects/" + id);
   }
 
-  if(projects.data) {
-    projects.data.forEach(project => {
+  if(props.projects.data) {
+    props.projects.data.forEach(project => {
       project.upEvents = project.events.filter(event => new Date(event.date) > new Date()).length;
       project.downEvents = project.events.filter(event => new Date(event.date) < new Date()).length;
     });
   }
 
-  const projectList = projects.data ? (
+  const projectList = props.projects.data ? (
     <div className="projects">
       {
-        projects.data.map(project =>
+        props.projects.data.map(project =>
           <div className="project" key={project.id} onClick={e => events(project.id)}>
               <img className="project-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "projects/" + project.picture}/>
               <p className="project-title">{project.name}</p>
@@ -85,7 +76,4 @@ export const Work = ({getProjects}) => {
   );
 }
 
-export default connect(
-  null,
-  { getProjects }
-)(Work);
+export default Work;

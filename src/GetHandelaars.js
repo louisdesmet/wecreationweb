@@ -8,17 +8,11 @@ import get from './img/nav/get.png';
 import location from './img/nav/see.png';
 import { useHistory } from "react-router-dom";
 
-export const GetHandelaars = ({getBusinesses}) => {
+function GetHandelaars(props) {
 
   const history = useHistory();
 
-  useEffect(() => {
-    getBusinesses();
-  }, []);
-
-  const businesses = useSelector(state => state.remoteBusinesses);
-
-  const businessFiltered = businesses.data ? ( Object.values(businesses.data).filter(function(item) {
+  const businessFiltered = props.businesses.data ? ( Object.values(props.businesses.data).filter(function(item) {
     return item.type === 'business';
   })) : null;
 
@@ -73,7 +67,4 @@ export const GetHandelaars = ({getBusinesses}) => {
   );
 }
 
-export default connect(
-  null,
-  {getBusinesses}
-)(GetHandelaars);
+export default GetHandelaars;

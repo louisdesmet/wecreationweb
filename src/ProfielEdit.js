@@ -1,22 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from "react-redux";
-import {getUsers} from "./redux/actions";
+import React, {useState} from 'react';
 import Nav from "./Nav";
-import {useSelector} from "react-redux";
 import './css/Profiel.scss';
-import Axios from 'axios';
 import locprod from './Global';
 import { useHistory } from 'react-router-dom';
 
-export const ProfielEdit = ({getUsers}) => {
+function ProfielEdit(props) {
 
     const history = useHistory();
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
-
-    useEffect(() => {
-        getUsers();
-    }, []);
 
     const [desc, setDesc] = useState();
     const [age, setAge] = useState();
@@ -24,9 +16,7 @@ export const ProfielEdit = ({getUsers}) => {
     const [imageId, setImageId] = useState("profileImage");
     const [imageURI, setImageURI] = useState(null);
 
-    const users = useSelector(state => state.remoteUsers);
-
-    const updatedLoggedUser = users.data ? users.data.find(item => item.id === loggedUser.id) : null;
+    const updatedLoggedUser = props.users.data ? props.users.data.find(item => item.id === loggedUser.id) : null;
 
     function edit() {
 
@@ -99,7 +89,4 @@ export const ProfielEdit = ({getUsers}) => {
 }
 
 
-export default connect(
-    null,
-    {getUsers}
-)(ProfielEdit);
+export default ProfielEdit;

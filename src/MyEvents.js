@@ -1,7 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from "react-redux";
-import {getAllEvents} from "./redux/actions";
-import {useSelector} from "react-redux";
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import Nav from './Nav';
 
@@ -15,15 +12,9 @@ import team from './img/profile/team.png';
 
 import edit from './img/eventshow/edit.png';
 
-export const MyEvents = ({getAllEvents}) => {
+function MyEvents(props) {
 
-    useEffect(() => {
-      getAllEvents();
-    }, []);
-    
-    const events = useSelector(state => state.remoteAllEvents);
-
-    events.data && events.data.forEach(event => {
+    props.events.data && props.events.data.forEach(event => {
         event.totalRequests = 0;
         event.skills.forEach(skill => {
             if(event.totalPostions) {
@@ -52,7 +43,7 @@ export const MyEvents = ({getAllEvents}) => {
         });
     });
 
-    const futureEvents = events.data ? events.data.filter(event => {
+    const futureEvents = props.events.data ? props.events.data.filter(event => {
         return JSON.parse(localStorage.getItem("user")).id === event.project.leader.id && new Date(event.date) > new Date();
     }) : null;
 
@@ -64,7 +55,7 @@ export const MyEvents = ({getAllEvents}) => {
         return acc;
     }, {}) : null
 
-    const pastEvents = events.data ? events.data.filter(event => {
+    const pastEvents = props.events.data ? props.events.data.filter(event => {
         return JSON.parse(localStorage.getItem("user")).id === event.project.leader.id && new Date(event.date) < new Date();
     }) : null;
 
@@ -133,9 +124,4 @@ export const MyEvents = ({getAllEvents}) => {
     );
 }
 
-
-
-export default connect(
-    null,
-    {getAllEvents}
-  )(MyEvents);
+export default MyEvents;

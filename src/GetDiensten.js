@@ -1,19 +1,11 @@
-import React, { useEffect } from "react";
-import { connect, useSelector } from "react-redux";
+import React from "react";
 import { Link } from "react-router-dom";
-import {getBusinesses} from "./redux/actions";
 import Nav from "./Nav";
 import diensten from './img/map/diensten.png';
 import location from './img/nav/see.png';
-export const GetDiensten = ({getBusinesses}) => {
+function GetDiensten(props) {
 
-  useEffect(() => {
-    getBusinesses();
-  }, []);
-
-  const businesses = useSelector(state => state.remoteBusinesses);
-
-  const serviceFiltered = businesses.data ? ( Object.values(businesses.data).filter(function(item) {
+  const serviceFiltered = props.businesses.data ? ( Object.values(props.businesses.data).filter(function(item) {
     return item.type === 'service';
   })) : null;
 
@@ -47,7 +39,4 @@ export const GetDiensten = ({getBusinesses}) => {
   );
 }
 
-export default connect(
-  null,
-  {getBusinesses}
-)(GetDiensten);
+export default GetDiensten;

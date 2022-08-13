@@ -13,23 +13,15 @@ import get from './img/nav/get.png';
 import credit from './img/profile/credit.png';
 import { useHistory } from 'react-router-dom';
 
-export const OrderShow = ({getOrders, getUsers}) => {
+function OrderShow(props) {
 
   const history = useHistory();
 
-  useEffect(() => {
-    getOrders();
-    getUsers();
-  }, []);
-
-  const orders = useSelector(state => state.remoteOrders);
-  const users = useSelector(state => state.remoteUsers);
-
   const { id } = useParams();
-  const order = orders.data ? orders.data.find(order => order.id === parseInt(id)) : null;
+  const order = props.orders.data ? props.orders.data.find(order => order.id === parseInt(id)) : null;
 
-  if(users.data && order) {
-    users.data.forEach(user => {
+  if(props.users.data && order) {
+    props.users.data.forEach(user => {
       user.roles.forEach(role => {
         if(role.business_id === order.product.business.id) {
           order.leader = user
@@ -95,7 +87,4 @@ export const OrderShow = ({getOrders, getUsers}) => {
   );
 }
 
-export default connect(
-    null,
-    {getOrders, getUsers}
-  )(OrderShow);
+export default OrderShow;

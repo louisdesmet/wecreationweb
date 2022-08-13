@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
-import { connect, useSelector } from "react-redux";
+import React from "react";
 import { createdDate, profileIcon } from "./Global";
-import {getOrders, getTransfers} from "./redux/actions";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import kassa from './img/profile/kassa.png';
 import credit from './img/profile/credit.png';
@@ -9,23 +7,15 @@ import { Link } from "react-router-dom";
 import Nav from "./Nav";
 import { useHistory } from "react-router-dom";
 
-export const GetHistoriek = ({getOrders, getTransfers}) => {
+function GetHistoriek(props) {
 
   const history = useHistory();
-  
-  useEffect(() => {
-    getOrders();
-    getTransfers();
-  }, []);
 
-  const orders = useSelector(state => state.remoteOrders);
-  const transfers = useSelector(state => state.remoteTransfers);
-
-  const userOrders = orders.data ? orders.data.filter(order => {
+  const userOrders = props.orders.data ? props.orders.data.filter(order => {
     return order.user.id === JSON.parse(localStorage.getItem("user")).id
   }) : null;
 
-  const userTransfers = transfers.data ? transfers.data.filter(transfer => {
+  const userTransfers = props.transfers.data ? props.transfers.data.filter(transfer => {
     return transfer.user.id === JSON.parse(localStorage.getItem("user")).id
   }) : null;
 
@@ -64,7 +54,4 @@ export const GetHistoriek = ({getOrders, getTransfers}) => {
   );
 }
 
-export default connect(
-  null,
-  {getOrders, getTransfers}
-)(GetHistoriek);
+export default GetHistoriek;

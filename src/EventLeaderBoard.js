@@ -1,7 +1,4 @@
-import React, {useEffect} from 'react';
-import {connect} from "react-redux";
-import {getAllEvents, getUsers} from "./redux/actions";
-import {useSelector} from "react-redux";
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { skillIcon } from './Global';
 import Axios from 'axios';
@@ -24,24 +21,16 @@ import decline from './img/eventshow/decline.png';
 import credits from './img/profile/credits.png';
 import add from './img/eventshow/accept.png';
 
-export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
+function EventLeaderBoard (props) {
 
     const notifyEventFull = (eventSkill) => toast("Er is geen plaats meer vrij om deze gebruiker te accepteren voor " + eventSkill.skill.name + ". Als je toch meer gebruikers wilt accepteren zal je het aantal werknemers moeten verhogen.");
     const notifyCredits = (user, eventSkill) => toast("Je hebt niet genoeg credits om " + user.name + " te vergoeden voor " + eventSkill.hours + "u " + eventSkill.skill.name + ".");
-    const notifyComplete = (user, eventSkill) => toast("Je moet nog aanvragen en aanwezigheden goedkeuren of verwijderen");
+    const notifyComplete = () => toast("Je moet nog aanvragen en aanwezigheden goedkeuren of verwijderen");
 
-    useEffect(() => {
-      getAllEvents();
-      getUsers();
-    }, []);
-    
-    const events = useSelector(state => state.remoteAllEvents);
-    const users = useSelector(state => state.remoteUsers);
-
-    let loggedUser = users.data ? users.data.find(user => user.id === JSON.parse(localStorage.getItem("user")).id) : null;
+    let loggedUser = props.users.data ? props.users.data.find(user => user.id === JSON.parse(localStorage.getItem("user")).id) : null;
 
     const { id } = useParams();
-    const event = events.data ? events.data.find(event => event.id === parseInt(id)) : null;
+    const event = props.events.data ? props.events.data.find(event => event.id === parseInt(id)) : null;
 
     function date(date) {
       const jsDate = new Date(date);
@@ -62,7 +51,7 @@ export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
           }
         })
         .then((response) => {
-          getAllEvents();
+          //getAllEvents();
         })
         .catch((error) => {
       
@@ -83,7 +72,7 @@ export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
         }
       })
       .then((response) => {
-        getAllEvents();
+        //getAllEvents();
       })
       .catch((error) => {
     
@@ -104,7 +93,7 @@ export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
           }
         })
         .then((response) => {
-          getAllEvents();
+          //getAllEvents();
         })
         .catch((error) => {
       
@@ -126,7 +115,7 @@ export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
         }
       })
       .then((response) => {
-        getAllEvents();
+        //getAllEvents();
       })
       .catch((error) => {
     
@@ -152,7 +141,7 @@ export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
           }
         })
         .then((response) => {
-          getAllEvents();
+          //getAllEvents();
         })
         .catch((error) => {
       
@@ -285,7 +274,4 @@ export const EventLeaderBoard = ({getAllEvents, getUsers}) => {
     );
 }
 
-export default connect(
-    null,
-    {getAllEvents, getUsers}
-  )(EventLeaderBoard);
+export default EventLeaderBoard;

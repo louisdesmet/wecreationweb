@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {getActivities, getBusinesses, getAllEvents, getProjects, getUsers, getMessages} from "./redux/actions";
-import { connect, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import {Link} from "react-router-dom";
 import './css/Nav.scss';
 
@@ -17,7 +16,7 @@ import close from './img/map/close.png';
 import activity from './img/profile/badges.png';
 import diensten from './img/map/diensten.png';
 
-export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, getUsers, getMessages}) => {
+function Nav(props) {
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -26,30 +25,6 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
   const [results, setResults] = useState("");
 
   const businesses = useSelector(state => state.remoteBusinesses);
-
-  useEffect(() => {
-    if(loggedUser) {
-      if(!businesses.data || businesses.data.length === 0) {
-        getBusinesses();
-      }
-      if(!activities.data || activities.data.length === 0) {
-        getActivities();
-      }
-      if(!events.data || events.data.length === 0) {
-        getAllEvents();
-      }
-      if(!projects.data || projects.data.length === 0) {
-        getProjects();
-      }
-      if(!users.data || users.data.length === 0) {
-        getUsers();
-      }
-      if(!messages.data || messages.data.length === 0) {
-        getMessages();
-      }
-    }
-  }, []);
-
   const activities = useSelector(state => state.remoteActivities);
   const events = useSelector(state => state.remoteAllEvents);
   const projects = useSelector(state => state.remoteProjects);
@@ -127,7 +102,4 @@ export const Nav = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
   );
 }
 
-export default connect(
-  null,
-  {getBusinesses, getActivities, getAllEvents, getProjects, getUsers, getMessages}
-)(Nav);
+export default Nav;
