@@ -221,6 +221,24 @@
                 left: 5px;
             }
         }
+        .noaccount {
+            width: 100%;
+            position: absolute;
+            bottom: 12px;
+            display: flex;
+            justify-content: space-around;
+            a {
+                background: black;
+                color: white;
+                text-decoration: none;
+                padding: 1px 15px 7px 15px;
+                border-radius: 25px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                font-weight: 500;
+                font-size: 0.9em;
+            }
+        }
         .network-inputs {
             position: absolute;
             bottom: 12px;

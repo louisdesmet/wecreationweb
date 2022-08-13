@@ -17,6 +17,8 @@ import { useHistory } from 'react-router-dom';
 
 function ProjectShow(props) {
 
+  const loggedUser = JSON.parse(localStorage.getItem("user"));
+
   const history = useHistory();
 
   const { id } = useParams();
@@ -133,14 +135,14 @@ function ProjectShow(props) {
               {team.map(user => 
                 <Link key={user.id} className="team" to={"/profiel/" + user.id}><FontAwesomeIcon className="teamIcon" icon={profileIcon(user.icon)} color="white"/>{user.name}</Link>
               )}
-              {JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <Link to={"/event/create/" + project.id} className='new-event'>Nieuw event</Link> : null}
+              {loggedUser && loggedUser.id === project.leader.id ? <Link to={"/event/create/" + project.id} className='new-event'>Nieuw event</Link> : null}
             </div>
             <div className="column-2">
               {
                 reversed.map(event =>
                   <Link to={"/events/" + event.id} className={"project-panel-event" + (new Date(event.date) < new Date() ? " project-panel-event-past" : "")} key={event.id}>
                     {
-                      JSON.parse(localStorage.getItem("user")).id === project.leader.id ? <div className='leader-buttons'>
+                      loggedUser && loggedUser.id === project.leader.id ? <div className='leader-buttons'>
                       <img className="delete" onClick={e => deleteEvent(e, event.id)} src={decline} alt=""/>
                       <img className="edit" onClick={e => editEvent(e, event)} src={update} alt=""/>
                       </div> : <div className='placebox'></div>

@@ -9,12 +9,13 @@ import rightTop from './img/nav/right-top.png';
 import rightBottom from './img/nav/right-bottom.png';
 
 import terms from './img/nav/ledencontract.pdf';
+import { useHistory } from "react-router-dom";
 
 axios.defaults.baseURL = locprod;
 axios.defaults.headers.common['Accept'] = 'application/json';
 
 function Register(props) {
-
+    const history = useHistory();
     const [error, setError] = useState("");
 
     const [email, setEmail] = useState("");
@@ -39,8 +40,9 @@ function Register(props) {
               localStorage.setItem('token', result.data.token.access_token);
               localStorage.setItem('user', JSON.stringify(result.data.user[0]));
               localStorage.setItem("firstLogin", 1);
-              props.history.push("/profiel");
-    
+              props.reloadUsers();
+              history.push("/profiel");
+              
             })
           } else {
             setError("De wachtwoorden komen niet overeen.");

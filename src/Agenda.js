@@ -215,7 +215,7 @@ function Agenda(props) {
       <div className='legend'>
         <span className="activity"></span><b>Activiteit</b><span className="default"></span><b>Job</b><span className="worked"></span><b>Ingeschreven</b>
       </div>
-      {enabled ? <Popup event={event}/> : null}
+      {enabled ? <Popup events={props.events} activities={props.activities} event={event}/> : null}
       {enabledEvents ? <EventsPopup event={dateEvents}/> : null}
     </div>
   );

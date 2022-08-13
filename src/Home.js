@@ -128,7 +128,7 @@ function Home(props) {
       }
     })
     .then((response) => {
-      //getAllEvents();
+      props.reloadEvents();
       setLiked(true);
     })
     .catch((error) => {
@@ -147,7 +147,7 @@ function Home(props) {
       }
     })
     .then((response) => {
-        //getActivities();
+        props.reloadActivities();
         setLikedActivity(true);
     })
     .catch((error) => {
@@ -166,8 +166,8 @@ function Home(props) {
       }
     })
     .then((response) => {
-        //getBusinesses();
-        //setLikedBusiness(true);
+        props.reloadBusinesses();
+        setLikedBusiness(true);
     })
     .catch((error) => {
   

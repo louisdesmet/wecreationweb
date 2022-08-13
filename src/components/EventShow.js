@@ -36,6 +36,7 @@ function EventShow(props) {
   const history = useHistory();
 
   const notify = (event, skill) => toast("Je bent ingeschreven om te werken op " + event.name + " voor " + skill.hours + " uur " + skill.skill.name + ". De projectleider moet je nu eerst aanvaarden");
+  const notifyRegister = () => toast("Voor deze actie heb je een account nodig.");
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -47,7 +48,7 @@ function EventShow(props) {
 
   props.event.skills.forEach(skill => {
     skill.users.forEach(user => {
-      if(user.id === loggedUser.id) {
+      if(loggedUser && user.id === loggedUser.id) {
         props.event.allowedInGroupchat = true;
       }
     })
@@ -59,7 +60,7 @@ function EventShow(props) {
       <p>{skill.amount} x {skill.skill.name} - {skill.hours}u  <span>{skill.credits}<img className='credits' src={credits}/></span></p>
       <div className="button">
         {
-          skill.users.filter(user => user.accepted).length < skill.amount ? skill.users.find(user => user.id === loggedUser.id) ? <button className="requested">Aangevraagd</button> : <button onClick={e => areYouSureBox(skill)}>Inschrijven</button> : <button className="full">Volzet</button>
+          skill.users.filter(user => user.accepted).length < skill.amount ? skill.users.find(user => loggedUser && user.id === loggedUser.id) ? <button className="requested">Aangevraagd</button> : <button onClick={e =>  areYouSureBox(skill)}>Inschrijven</button> : <button className="full">Volzet</button>
         }
       </div>
     </div> : null
@@ -71,7 +72,7 @@ function EventShow(props) {
       <p>{skill.amount} x {skill.skill.name} - {skill.hours}u</p>
       <div className="button">
         {
-          skill.users.filter(user => user.accepted).length < skill.amount ? skill.users.find(user => user.id === loggedUser.id) ? <button className="requested">Aangevraagd</button> : <button onClick={e => areYouSureBox(skill)}>Inschrijven</button> : <button className="full">Volzet</button>
+          skill.users.filter(user => user.accepted).length < skill.amount ? skill.users.find(user => loggedUser && user.id === loggedUser.id) ? <button className="requested">Aangevraagd</button> : <button onClick={e => areYouSureBox(skill)}>Inschrijven</button> : <button className="full">Volzet</button>
         }
       </div>
     </div> : null
@@ -101,8 +102,13 @@ function EventShow(props) {
   )}</div> : null;
 
   function areYouSureBox(skill) {
-    setAreYouSure(1);
-    setChosenSkill(skill);
+    if(loggedUser) {
+      setAreYouSure(1);
+      setChosenSkill(skill);
+    } else {
+      notifyRegister();
+    }
+    
   }
 
   function register(eventSkillId) {
@@ -124,16 +130,26 @@ function EventShow(props) {
     })
   }
 
+  function likeEvent() {
+    if(loggedUser) {
+      if(props.event.users && !props.event.users.find(user => user.id === loggedUser.id)) {
+        props.likeEvent(props.event.id);
+      }
+      
+    } else {
+      notifyRegister();
+    }
+  }
+
   let position = [props.event.lat, props.event.lng];
   
   return (
     <div>    
       <div className={ props.event.completed_at ? 'event-panel completed' : 'event-panel'}>
-        {props.event.completed_at ? <h2 className="completed-message">Dit event is afgerond.<img src={add}/></h2> : null}
         <div className="top-items">
           <div className="groupchat">
             {
-              props.event.allowedInGroupchat || props.event.project.leader.id === loggedUser.id ? <p onClick={e => window.location.href = "/netwerk/" + props.event.id}>Groupchat</p> : null
+              props.event.allowedInGroupchat || (loggedUser && props.event.project.leader.id === loggedUser.id) ? <p onClick={e => window.location.href = "/netwerk/" + props.event.id}>Groupchat</p> : null
             }
             {
               props.isPage ? <div className='back' onClick={e =>  history.goBack()}>
@@ -143,9 +159,10 @@ function EventShow(props) {
             }
           </div>
           <div>
+            {props.event.completed_at ? <h2 className="completed-message">Dit event is afgerond.<img src={add}/></h2> : null}
             <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + props.event.image}/>
           </div>
-          <div className={props.event.users && props.event.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.event.users && props.event.users.find(user => user.id === loggedUser.id) ? null : props.likeEvent(props.event.id)}>
+          <div className={props.event.users && props.event.users.find(user => loggedUser && user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => likeEvent()}>
             <span>{props.liked ? props.event.users.length + 1 : props.event.users.length}</span>
             <img src={like}/>
             <p>Interesse!</p>

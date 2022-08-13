@@ -30,6 +30,7 @@ function BusinessShow(props) {
 
     const notifyCredits = (user, product) => toast("Je hebt " + user.credits + " credits en  het product " + product.name + " kost " + product.price + " credits");
     const notifyStock = (product) => toast("Het product " + product.name + " is uitverkocht.");
+    const notifyRegister = () => toast("Voor deze actie heb je een account nodig.");
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -49,16 +50,20 @@ function BusinessShow(props) {
     })
 
     function areYouSureBox(product) {
-        let user = props.users.find(user => user.id === loggedUser.id);
-        if (parseInt(user.credits) >= product.price && (product.amount > 0 || props.business.type === 'service')) {
-            setAreYouSure(1);
-            setProduct(product);
-        } else {
-            if (product.amount > 0) {
-                notifyCredits(user, product)
+        if(loggedUser) {
+            let user = props.users.find(user => user.id === loggedUser.id);
+            if (parseInt(user.credits) >= product.price && (product.amount > 0 || props.business.type === 'service')) {
+                setAreYouSure(1);
+                setProduct(product);
             } else {
-                notifyStock(product)
+                if (product.amount > 0) {
+                    notifyCredits(user, product)
+                } else {
+                    notifyStock(product)
+                }
             }
+        } else {
+            notifyRegister();
         }
     }
 
@@ -84,6 +89,17 @@ function BusinessShow(props) {
         })
     }
 
+    function likeBusiness() {
+        if(loggedUser) {
+            if(props.business.users && props.business.users.find(user => loggedUser && user.id === loggedUser.id)) {
+            props.likeBusiness(props.business.id);
+            }
+            
+        } else {
+            notifyRegister();
+        }
+    }
+
     return (
         <div className="products-container">
             <div className="top-items">
@@ -100,10 +116,10 @@ function BusinessShow(props) {
                         props.business.image ? <img className="business-logo" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "businesses/" + props.business.image} /> : null
                     }
                 </div>
-                <div className="like" onClick={e => props.business.users && props.business.users.find(user => user.id === loggedUser.id) ? null : props.likeBusiness(props.business.id)}>
+                <div className="like" onClick={e => likeBusiness()}>
                     <span>{props.liked ? props.business.users.length + 1 : props.business.users.length}</span>
-                    <img className={props.business.users && props.business.users.find(user => user.id === loggedUser.id) || props.liked ? "liked" : ""} src={like} />
-                    <p className={props.business.users && props.business.users.find(user => user.id === loggedUser.id) || props.liked ? "liked" : ""}>Interesse!</p>
+                    <img className={props.business.users && props.business.users.find(user => loggedUser && user.id === loggedUser.id) || props.liked ? "liked" : ""} src={like} />
+                    <p className={props.business.users && props.business.users.find(user => loggedUser && user.id === loggedUser.id) || props.liked ? "liked" : ""}>Interesse!</p>
                 </div>
             </div>
             <h2><span>{props.business.name}</span></h2>

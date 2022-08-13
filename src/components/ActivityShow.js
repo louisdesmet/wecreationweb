@@ -11,6 +11,8 @@ import time from '../img/eventshow/time.png';
 import evenementen from '../img/profile/badges.png';
 import like from '../img/eventshow/like.png';
 import geelPuzzel from '../img/eventshow/geel-puzzel.png';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 let evenementenIcon = L.icon({
   iconUrl: evenementen,
@@ -22,6 +24,8 @@ function ActivityShow(props) {
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
+  const notifyRegister = () => toast("Voor deze actie heb je een account nodig.");
+
   /*props.event.skills.forEach(skill => {
     skill.users.forEach(user => {
       if(user.id === loggedUser.id) {
@@ -31,6 +35,16 @@ function ActivityShow(props) {
   })*/
 
   let position = [props.activity.lat, props.activity.lng];
+
+  function likeActivity() {
+    if(loggedUser) {
+      if(props.activity.users && props.activity.users.find(user => user.id === loggedUser.id)) {
+        props.likeActivity(props.activity.id);
+      }
+    } else {
+      notifyRegister();
+    }
+  }
   
   return (
     <div>    
@@ -44,7 +58,7 @@ function ActivityShow(props) {
           <div>
             <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "activities/" + props.activity.image}/>
           </div>
-          <div className={props.activity.users && props.activity.users.find(user => user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => props.activity.users && props.activity.users.find(user => user.id === loggedUser.id) ? null : props.likeActivity(props.activity.id)}>
+          <div className={props.activity.users && props.activity.users.find(user => loggedUser && user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => likeActivity()}>
             <span>{props.liked ? props.activity.users.length + 1 : props.activity.users.length}</span>
             <img src={like}/>
             <p>Interesse!</p>
@@ -92,6 +106,7 @@ function ActivityShow(props) {
         </div>
       
       </div>
+      <ToastContainer />
     </div>
   );
 }

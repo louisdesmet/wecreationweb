@@ -20,7 +20,7 @@ function GetProducts(props) {
       }
     })
     .then((response) => {
-        //getBusinesses();
+        props.reloadBusinesses();
     })
     .catch((error) => {
   

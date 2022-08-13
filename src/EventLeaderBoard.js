@@ -51,7 +51,7 @@ function EventLeaderBoard (props) {
           }
         })
         .then((response) => {
-          //getAllEvents();
+          props.reloadEvents();
         })
         .catch((error) => {
       
@@ -72,7 +72,7 @@ function EventLeaderBoard (props) {
         }
       })
       .then((response) => {
-        //getAllEvents();
+        props.reloadEvents();
       })
       .catch((error) => {
     
@@ -93,7 +93,7 @@ function EventLeaderBoard (props) {
           }
         })
         .then((response) => {
-          //getAllEvents();
+          props.reloadEvents();
         })
         .catch((error) => {
       
@@ -115,7 +115,7 @@ function EventLeaderBoard (props) {
         }
       })
       .then((response) => {
-        //getAllEvents();
+        props.reloadEvents();
       })
       .catch((error) => {
     
@@ -141,7 +141,7 @@ function EventLeaderBoard (props) {
           }
         })
         .then((response) => {
-          //getAllEvents();
+          props.reloadEvents();
         })
         .catch((error) => {
       

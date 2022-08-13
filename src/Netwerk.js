@@ -57,7 +57,7 @@ function Network(props) {
     const [mobileChatsActive, setMobileChatsActive] = useState(window.innerWidth > 700 ? true : false);
     const [mobileThreadsActive, setMobileThreadsActive] = useState(window.innerWidth > 700 ? true : false);
 
-    let notifications = props.messages.data && props.messages.data.length ? props.messages.data.slice().reverse().filter(message => message.notification && message.recipient.id === loggedUser.id) : null;
+    let notifications = props.messages.data && props.messages.data.length ? props.messages.data.slice().reverse().filter(message => message.notification && loggedUser && message.recipient.id === loggedUser.id) : null;
 
 
     let threadGroups = props.groups.data ? props.groups.data.filter(group => !group.event) : null;
@@ -109,12 +109,12 @@ function Network(props) {
     let allowedEventGroups = [];
     if(props.events.data) {
         props.events.data.forEach(event => {  
-            if (event.project.leader.id === loggedUser.id && !allowedEventGroups.includes(event.group.id)) {
+            if (loggedUser && event.project.leader.id === loggedUser.id && !allowedEventGroups.includes(event.group.id)) {
                 allowedEventGroups.push(event.group.id);
             }
             event.skills.forEach(skill => { 
                 skill.users.forEach(user => {
-                    if(user.id === loggedUser.id && user.accepted && !allowedEventGroups.includes(event.group.id)) {
+                    if(loggedUser && user.id === loggedUser.id && user.accepted && !allowedEventGroups.includes(event.group.id)) {
                         allowedEventGroups.push(event.group.id);
                     }
                 })
@@ -148,8 +148,8 @@ function Network(props) {
 
     if(props.messages.data && props.messages.data.length && (!finished || props.messages.data.length !== messagesAmount || switchedView || !messageList)) {
 
-        dmsFrom = props.messages.data.filter(message => message.recipient && message.user && message.recipient.id === loggedUser.id);
-        dmsTo = props.messages.data.filter(message => message.recipient && message.user && message.user.id === loggedUser.id);
+        dmsFrom = props.messages.data.filter(message => loggedUser && message.recipient && message.user && message.recipient.id === loggedUser.id);
+        dmsTo = props.messages.data.filter(message => loggedUser && message.recipient && message.user && message.user.id === loggedUser.id);
 
         dmsFrom.forEach(dm => {
             if(dmsPerPerson[dm.user.id]) {
@@ -279,8 +279,8 @@ function Network(props) {
         setThreadsActive(true);
         setGroupMessageEventGroup(groupchat.group);
         setThreadMessageList(threadGroups.find(group => group.id === groupchat.group.id).messages.slice().reverse().map(message =>
-            <div className={loggedUser.id === message.user.id ? "message message-right" : "message"} key={message.id}>
-                <div className={loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
+            <div className={loggedUser && loggedUser.id === message.user.id ? "message message-right" : "message"} key={message.id}>
+                <div className={loggedUser && loggedUser.id === message.user.id ? "hidden" : "netwerk-profile-icon"}><FontAwesomeIcon icon={profileIcon(message.user.icon)} color="white"/></div>
                 <div>
                     <p className="message-name">{message.user.name}</p>
                     <p title={ datetime(message.created_at) }  dangerouslySetInnerHTML={{__html: urlify(message.message)}}></p>
@@ -334,18 +334,19 @@ function Network(props) {
             setMobileChatsActive(true);
             setMobileThreadsActive(true);
         }
-
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        if(loggedUser) {
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
+            }
+    
+            axios.post('/messages/seen', {
+                user: loggedUser.id
+            }, { headers: headers }).then((response) => {
+    
+            }).catch((error) => {})    
         }
-
-        axios.post('/messages/seen', {
-            user: loggedUser.id
-        }, { headers: headers }).then((response) => {
-
-        }).catch((error) => {})
-
+       
     }
 
     function switchToAddThread() {
@@ -371,7 +372,7 @@ function Network(props) {
                 user: loggedUser.id,
                 recipient: recipient,
             }, { headers: headers }).then((response) => {
-                //getMessages();
+                props.reloadMessages();
                 setFinished(false);
             }).catch((error) => {})
         } else if(groupchatsActive) {
@@ -382,8 +383,8 @@ function Network(props) {
             }, { headers: headers }).then((response) => {
                 setLatestGroupId(recipient);
                 setLatestGroupMessagesAmount(eventGroups.find(group => group.id === recipient).messages.length);
-                //getGroups();
-                //getMessages();
+                props.reloadGroups();
+                props.reloadMessages();
             }).catch((error) => {})
         } else {
             axios.post('/messages', {
@@ -393,8 +394,8 @@ function Network(props) {
             }, { headers: headers }).then((response) => {
                 setLatestThreadId(recipient);
                 setLatestThreadMessagesAmount(threadGroups.find(group => group.id === recipient).messages.length);
-                //getGroups();
-                //getMessages();
+                props.reloadGroups();
+                props.reloadMessages();
             }).catch((error) => {})
         }
         setMessage("");
@@ -416,8 +417,7 @@ function Network(props) {
                 setMobileChatsActive(true);
                 setMobileThreadsActive(true);
             }
-      
-            //getGroups();
+            props.reloadGroups();
         }).catch((error) => {})
     }
 
@@ -463,7 +463,7 @@ function Network(props) {
                 {
                     mobileDmsActive ? <div className="dms">
                         {
-                            props.users.data ? <Select placeholder="Zoeken" onChange={e => searchUser(e.value)} className="search" options={props.users.data.filter(user => user.id !== loggedUser.id).map(user => {
+                            props.users.data ? <Select placeholder="Zoeken" onChange={e => searchUser(e.value)} className="search" options={props.users.data.filter(user => loggedUser && user.id !== loggedUser.id).map(user => {
                                 return { value: user, label: user.name }
                             })}/> : null
                         }
@@ -526,10 +526,13 @@ function Network(props) {
                                 dmsActive ? messageList : groupchatsActive ? groupMessageList : threadMessageList
                             }
                         </div>
-                        <form className="network-inputs">
-                            <input value={message} onChange={(e) => setMessage(e.target.value)} type="text" placeholder="What's on your mind?"/>
-                            <button type="submit" onClick={e => send(e, dmsActive ? firstMessagesUser.id : groupMessageEventGroup.id)}><img src={sendImg}/></button>
-                        </form>
+                        {
+                            loggedUser ? <form className="network-inputs">
+                                <input value={message} onChange={(e) => setMessage(e.target.value)} type="text" placeholder="What's on your mind?"/>
+                                <button type="submit" onClick={e => send(e, dmsActive ? firstMessagesUser.id : groupMessageEventGroup.id)}><img src={sendImg}/></button>
+                            </form> : <h2 className='noaccount'><Link to={"/login"}>Login</Link><Link to={"/register"}>Registreer</Link></h2>
+                        }
+                        
                     </div> : null
                 }
                 {

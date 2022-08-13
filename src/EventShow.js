@@ -8,26 +8,31 @@ import './css/EventShow.scss';
 
 function EventShow(props) {
 
+  const loggedUser = JSON.parse(localStorage.getItem("user"));
+
   const { id } = useParams();
   const event = props.events.data ? props.events.data.find(event => event.id === parseInt(id)) : null;
 
   const likeEvent = (eventId) => {
-    Axios.post('/like-event', {
-      'event': eventId,
-      'user': JSON.parse(localStorage.getItem("user")).id
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem("token")
-      }
-    })
-    .then((response) => {
-      //getAllEvents();
- 
-    })
-    .catch((error) => {
-  
-    })
+    if(loggedUser) {
+      Axios.post('/like-event', {
+        'event': eventId,
+        'user': loggedUser.id
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem("token")
+        }
+      })
+      .then((response) => {
+        props.reloadEvents();
+   
+      })
+      .catch((error) => {
+    
+      })
+    }
+    
   }
 
   return (

@@ -9,14 +9,16 @@ import { useHistory } from "react-router-dom";
 
 function GetHistoriek(props) {
 
+  const loggedUser = JSON.parse(localStorage.getItem("user"));
+
   const history = useHistory();
 
   const userOrders = props.orders.data ? props.orders.data.filter(order => {
-    return order.user.id === JSON.parse(localStorage.getItem("user")).id
+    return loggedUser && order.user.id === loggedUser.id
   }) : null;
 
   const userTransfers = props.transfers.data ? props.transfers.data.filter(transfer => {
-    return transfer.user.id === JSON.parse(localStorage.getItem("user")).id
+    return loggedUser && transfer.user.id === loggedUser.id
   }) : null;
 
   const combined = userOrders && userTransfers ? userOrders.concat(userTransfers) : null;
@@ -33,7 +35,7 @@ function GetHistoriek(props) {
             <b>BACK</b>
         </div>
         <div className="profile-icon-cont">
-          <FontAwesomeIcon icon={profileIcon(JSON.parse(localStorage.getItem("user")).icon)} className="profile-icon" color="white"/>
+          { loggedUser ? <FontAwesomeIcon icon={profileIcon(loggedUser.icon)} className="profile-icon" color="white"/> : null}
         </div>
         <h2><span>Kassaticketjes</span></h2>
         {

@@ -11,6 +11,8 @@ import './css/Work.scss';
 import add from './img/eventshow/add.png';
 
 function Work(props) {
+  
+  const loggedUser = JSON.parse(localStorage.getItem("user"));
 
   const history = useHistory();
 
@@ -67,7 +69,7 @@ function Work(props) {
       <div className="height100">
         <Nav/>
         <div className="projects-container">
-          <Link to={"/project/create"} className="add">Project toevoegen <img src={add}/></Link>
+          { loggedUser && <Link to={"/project/create"} className="add">Project toevoegen <img src={add}/></Link>}
           <img className="logo" src={work}/>
           <h2 className="title"><span>Projecten</span></h2>
           {projectList}

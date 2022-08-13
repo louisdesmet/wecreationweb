@@ -48,7 +48,7 @@ function Profiel(props) {
     if(id && props.users.data) {
         updatedLoggedUser = props.users.data.find(item => item.id === parseInt(id));
     } else if(props.users.data) {
-        updatedLoggedUser = props.users.data.find(item => item.id === loggedUser.id);
+        updatedLoggedUser = props.users.data.find(item => loggedUser && item.id === loggedUser.id);
     }
 
     let userHours = [];
@@ -58,7 +58,7 @@ function Profiel(props) {
         props.events.data.forEach(event => {
             event.skills.forEach(skill => {
                 skill.users.forEach(user => {
-                    if(user.id === (id ? parseInt(id) : loggedUser.id) && user.present === 1) {
+                    if(user.id === (id ? parseInt(id) : loggedUser ? loggedUser.id : null) && user.present === 1) {
                         if(userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid)) {
                             userHours.find(userHour => userHour.id === skill.skill.id && userHour.paid === skill.paid).hours += skill.hours;
                         } else {
@@ -156,7 +156,7 @@ function Profiel(props) {
           }
         })
         .then((response) => {
-            //getUsers();
+            props.reloadUsers();
         })
         .catch((error) => {
 
@@ -167,39 +167,44 @@ function Profiel(props) {
         <div className="height100">
             <Nav/>
             <div className="profile">
-                <div className="container">
-                    <div className="left">
-                    {
-                        !id ? <div>
-                            <Link to={updatedLoggedUser && updatedLoggedUser.roles.find(role => role.id === 3) ? "/handelaar/create/" +  updatedLoggedUser.roles.find(role => role.id === 3).business_id : "/handelaar/create"}><img src={handel} alt=""/>Mijn handelszaak</Link>
-                            <Link to={updatedLoggedUser && updatedLoggedUser.roles.find(role => role.id === 4) ? "/dienst/create/" +  updatedLoggedUser.roles.find(role => role.id === 4).business_id : "/dienst/create"}><img src={handel} alt=""/>Mijn diensten</Link>
-                            <Link to={"/get/historiek"}><img src={kassa} alt=""/>Mijn kassatickets</Link>
-                            <Link to={"/my-events"}><img src={agenda} alt=""/>Mijn projecten</Link>
-                            <Link to={"/my-interests"}><img src={like} alt=""/>Mijn interesses</Link>
-                            <a className="logout" onClick={() => logout()}><img src={logoutImg} alt=""/>Afmelden</a>
-                        </div> : null
-                    }
-                    </div>
-                    <div className="middle">
-                        {
-                            updatedLoggedUser ? updatedLoggedUser.image ?   <img className="profile-image"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "users/" + updatedLoggedUser.image}/> : <FontAwesomeIcon icon={findIcon(null)} className="profile-icon" color="white"/> : null
-                        }
-                        <h2 className="profile-name">{updatedLoggedUser ? updatedLoggedUser.name : null}</h2>
-                        {
-                            !id ? <p className="profile-credits"><img src={credits} alt=""/>{updatedLoggedUser ? updatedLoggedUser.credits : null} cc</p> : null
-                        }
-                        
-                        <div className="line"></div>
-                    </div>
-                    <div className="right">
-                        {
-                            !id ? <Link to={"/profiel/edit"}><img className="profile-edit" src={edit} alt=""/></Link> : updatedLoggedUser ? <div className={updatedLoggedUser.receivedLikes && updatedLoggedUser.receivedLikes.find(user => user.id === loggedUser.id) || liked ? "like liked" : "like"} onClick={e => updatedLoggedUser.receivedLikes && updatedLoggedUser.receivedLikes.find(user => user.id === loggedUser.id) ? null : likeUser(updatedLoggedUser)}>
-                                <span>{liked ? updatedLoggedUser.receivedLikes.length + 1 : updatedLoggedUser.receivedLikes.length}</span>
-                                <img src={like}/>
-                            </div> : null
-                        }
-                    </div>
-                </div>
+                {
+                    loggedUser ?
+                        <div className="container">
+                            <div className="left">
+                            {
+                                !id ? <div>
+                                    <Link to={updatedLoggedUser && updatedLoggedUser.roles.find(role => role.id === 3) ? "/handelaar/create/" +  updatedLoggedUser.roles.find(role => role.id === 3).business_id : "/handelaar/create"}><img src={handel} alt=""/>Mijn handelszaak</Link>
+                                    <Link to={updatedLoggedUser && updatedLoggedUser.roles.find(role => role.id === 4) ? "/dienst/create/" +  updatedLoggedUser.roles.find(role => role.id === 4).business_id : "/dienst/create"}><img src={handel} alt=""/>Mijn diensten</Link>
+                                    <Link to={"/get/historiek"}><img src={kassa} alt=""/>Mijn kassatickets</Link>
+                                    <Link to={"/my-events"}><img src={agenda} alt=""/>Mijn projecten</Link>
+                                    <Link to={"/my-interests"}><img src={like} alt=""/>Mijn interesses</Link>
+                                    <a className="logout" onClick={() => logout()}><img src={logoutImg} alt=""/>Afmelden</a>
+                                </div> : null
+                            }
+                            </div>
+                            <div className="middle">
+                                {
+                                    updatedLoggedUser ? updatedLoggedUser.image ?   <img className="profile-image"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "users/" + updatedLoggedUser.image}/> : <FontAwesomeIcon icon={findIcon(null)} className="profile-icon" color="white"/> : null
+                                }
+                                <h2 className="profile-name">{updatedLoggedUser ? updatedLoggedUser.name : null}</h2>
+                                {
+                                    !id ? <p className="profile-credits"><img src={credits} alt=""/>{updatedLoggedUser ? updatedLoggedUser.credits : null} cc</p> : null
+                                }
+                                
+                                <div className="line"></div>
+                            </div>
+                            <div className="right">
+                                {
+                                    !id ? <Link to={"/profiel/edit"}><img className="profile-edit" src={edit} alt=""/></Link> : updatedLoggedUser ? <div className={updatedLoggedUser.receivedLikes && updatedLoggedUser.receivedLikes.find(user => user.id === loggedUser.id) || liked ? "like liked" : "like"} onClick={e => updatedLoggedUser.receivedLikes && updatedLoggedUser.receivedLikes.find(user => user.id === loggedUser.id) ? null : likeUser(updatedLoggedUser)}>
+                                        <span>{liked ? updatedLoggedUser.receivedLikes.length + 1 : updatedLoggedUser.receivedLikes.length}</span>
+                                        <img src={like}/>
+                                    </div> : null
+                                }
+                            </div>
+                        </div>
+                    : <h2 className='noaccount'><Link to={"/login"}>Login</Link><Link to={"/register"}>Registreer</Link></h2>
+                }
+                
                 <div className="profile-container">
                     <div className="left">
                         <div>

@@ -57,6 +57,7 @@ function See(props) {
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
   const notify = () => toast("Gelieve alle velden in te vullen. Afbeelding is niet verplicht.");
+  const notifyRegister = () => toast("Voor deze actie heb je een account nodig.");
 
   // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
   Geocode.setApiKey("AIzaSyB3hu-a1Gnzog5zG63fnQ8ZaMLghPGUPwI");
@@ -458,11 +459,24 @@ function See(props) {
 
   const imgTag = buildImgTag();
 
+  function addActivity() {
+    if(loggedUser) {
+      if(displayMap) {
+        switchToActivity()
+      } else {
+        switchToMap();
+      }
+    } else {
+      notifyRegister();
+    }
+    
+  }
+
   return (
     <div className="map-container">
       <Nav/>
       <div className="container">
-        <div className="add-activity" onClick={e => displayMap ? switchToActivity() : switchToMap()}>{displayAddActivity ? "Annuleren" : "Activiteit toevoegen" }<img src={displayAddActivity ? decline : add} alt=""/></div>
+        <div className="add-activity" onClick={e => addActivity()}>{displayAddActivity ? "Annuleren" : "Activiteit toevoegen" }<img src={displayAddActivity ? decline : add} alt=""/></div>
         { !displayFilters && !displayAddActivity ? <img onClick={() => {showFilters()}} className="map-filter" src={mapFilter} alt=""/> : null }
         {
           displayFilters ? <div className="filters">
