@@ -27,10 +27,10 @@ function EventLeaderBoard (props) {
     const notifyCredits = (user, eventSkill) => toast("Je hebt niet genoeg credits om " + user.name + " te vergoeden voor " + eventSkill.hours + "u " + eventSkill.skill.name + ".");
     const notifyComplete = () => toast("Je moet nog aanvragen en aanwezigheden goedkeuren of verwijderen");
 
-    let loggedUser = props.users.data ? props.users.data.find(user => user.id === JSON.parse(localStorage.getItem("user")).id) : null;
+    let loggedUser = props.users.data.find(user => user.id === JSON.parse(localStorage.getItem("user")).id);
 
     const { id } = useParams();
-    const event = props.events.data ? props.events.data.find(event => event.id === parseInt(id)) : null;
+    const event = props.events.data.find(event => event.id === parseInt(id));
 
     function date(date) {
       const jsDate = new Date(date);

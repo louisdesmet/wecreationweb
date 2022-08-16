@@ -61,27 +61,25 @@ function See(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const businessMarkers = props.businesses.data ? props.businesses.data.filter((business) => {
+  const businessMarkers = props.businesses.data.filter((business) => {
       return business.type === 'business';
   }).map(business => {
     return <BusinessMarker business={business}/>
-  }) : null;
+  });
 
-  const serviceMarkers = props.businesses.data ? props.businesses.data.filter((business) => {
+  const serviceMarkers = props.businesses.data.filter((business) => {
       return business.type === 'service';
   }).map(business => {
     return <ServiceMarker business={business}/>
-  }) : null;
+  });
 
-  if(props.events.data) {
-    props.events.data.forEach(event => {
-      event.skills.forEach(skill => {
-        if(skill.paid) {
-          event.hasPaid = 1
-        }
-      })
+  props.events.data.forEach(event => {
+    event.skills.forEach(skill => {
+      if(skill.paid) {
+        event.hasPaid = 1
+      }
     })
-  }
+  })
 
   function showFilters() {
     setDisplayFilters(true);

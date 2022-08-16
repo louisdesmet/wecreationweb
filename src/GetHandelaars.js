@@ -12,9 +12,9 @@ function GetHandelaars(props) {
 
   const history = useHistory();
 
-  const businessFiltered = props.businesses.data ? ( Object.values(props.businesses.data).filter(function(item) {
+  const businessFiltered = ( Object.values(props.businesses.data).filter(function(item) {
     return item.type === 'business';
-  })) : null;
+  }));
 
   function buy(product) {
     const headers = {

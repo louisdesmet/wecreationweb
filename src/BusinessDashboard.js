@@ -8,11 +8,11 @@ function BusinessDashboard(props) {
 
   const history = useHistory();
 
-  const user = props.users.data ? props.users.data.find(user => user.id === JSON.parse(localStorage.getItem("user")).id) : null;
+  const user = props.users.data.find(user => user.id === JSON.parse(localStorage.getItem("user")).id);
 
-  const userBusiness = user ? user.roles.find(role => role.name === 'business') : null;
+  const userBusiness = user.roles.find(role => role.name === 'business');
 
-  const business = props.businesses.data && userBusiness ? props.businesses.data.find(business => business.id === userBusiness.business_id) : null;
+  const business = props.businesses.data.find(business => business.id === userBusiness.business_id);
 
   function send(id) {
     const headers = {
@@ -29,7 +29,7 @@ function BusinessDashboard(props) {
     }).catch((error) => {})
   }
 
-  const orderList = props.orders.data && business ? (
+  const orderList = (
     <div className="leader-events">
       <h2><span>Handelaars dashboard</span></h2>
       {
@@ -51,7 +51,7 @@ function BusinessDashboard(props) {
         )
       }
     </div>
-  ) : null;
+  );
 
   return (
     <div className="height100">

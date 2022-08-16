@@ -43,7 +43,7 @@ function BusinessCreate(props) {
 
     const [freeData, setFreeData] = useState([]);
 
-    let business = props.businesses.data ? props.businesses.data.find(business => business.id === parseInt(id)) : null;
+    let business = props.businesses.data.find(business => business.id === parseInt(id));
 
     if(business && lng === "") {
       setName(business.name);

@@ -37,7 +37,7 @@ function ActivityUpdate(props) {
 
   const { id } = useParams();
 
-  const activity = props.activities.data ? props.activities.data.find(activity => activity.id === parseInt(id)) : null;
+  const activity = props.activities.data.find(activity => activity.id === parseInt(id));
 
   if(activity && lng === "") {
     setName(activity.name);

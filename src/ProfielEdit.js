@@ -16,7 +16,7 @@ function ProfielEdit(props) {
     const [imageId, setImageId] = useState("profileImage");
     const [imageURI, setImageURI] = useState(null);
 
-    const updatedLoggedUser = props.users.data ? props.users.data.find(item => item.id === loggedUser.id) : null;
+    const updatedLoggedUser = props.users.data.find(item => item.id === loggedUser.id);
 
     function edit() {
 

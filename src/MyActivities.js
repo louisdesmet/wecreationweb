@@ -12,13 +12,13 @@ import edit from './img/eventshow/edit.png';
 
 function MyActivities(props) {
 
-    const futureActivities = props.activities.data ? props.activities.data.filter(activity => {
+    const futureActivities = props.activities.data.filter(activity => {
         return JSON.parse(localStorage.getItem("user")).id === activity.user.id && new Date(activity.date) > new Date();
-    }) : null;
+    });
 
-    const pastActivities = props.activities.data ? props.activities.data.filter(activity => {
+    const pastActivities = props.activities.data.filter(activity => {
         return JSON.parse(localStorage.getItem("user")).id === activity.user.id && new Date(activity.date) < new Date();
-    }) : null;
+    });
     
     function date(date) {
         const jsDate = new Date(date);

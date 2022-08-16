@@ -18,7 +18,7 @@ function OrderShow(props) {
   const history = useHistory();
 
   const { id } = useParams();
-  const order = props.orders.data ? props.orders.data.find(order => order.id === parseInt(id)) : null;
+  const order = props.orders.data.find(order => order.id === parseInt(id));
 
   if(props.users.data && order) {
     props.users.data.forEach(user => {

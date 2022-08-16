@@ -48,7 +48,7 @@ function EventCreate(props) {
 
   const { id, eventId } = useParams();
 
-  const project = props.projects.data ? props.projects.data.find(project => project.id === parseInt(id)) : null;
+  const project = props.projects.data.find(project => project.id === parseInt(id));
   let event = null;
   if(project) {
     event = project.events.find(event => event.id === parseInt(eventId));
@@ -210,8 +210,8 @@ function EventCreate(props) {
     setLng(null);
     setLocation(value)
   }
-  const filteredSkills = props.skills.data ? props.skills.data.sort((a, b) => a.name.localeCompare(b.name)) : null;
-  const skillList = filteredSkills ? props.skills.data.map(skill => <option key={skill.id} value={skill.id}>{skill.name}</option>) : null;
+  const filteredSkills = props.skills.data.sort((a, b) => a.name.localeCompare(b.name));
+  const skillList = props.skills.data.map(skill => <option key={skill.id} value={skill.id}>{skill.name}</option>);
   return (
     <div className="height100">
       <Nav/>

@@ -11,7 +11,7 @@ import './css/EventShow.scss';
 function ActivityShow(props) {
 
   const { id } = useParams();
-  const activity = props.activities.data ? props.activities.data.find(activity => activity.id === parseInt(id)) : null;
+  const activity = props.activities.data.find(activity => activity.id === parseInt(id));
 
   const likeActivity = (activityId) => {
     Axios.post('/like-activity', {

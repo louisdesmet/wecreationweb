@@ -5,10 +5,9 @@ import diensten from './img/map/diensten.png';
 import location from './img/nav/see.png';
 function GetDiensten(props) {
 
-  const serviceFiltered = props.businesses.data ? ( Object.values(props.businesses.data).filter(function(item) {
+  const serviceFiltered = ( Object.values(props.businesses.data).filter(function(item) {
     return item.type === 'service';
-  })) : null;
-
+  }));
 
   return (
     <div className="height100">

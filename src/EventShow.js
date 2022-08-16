@@ -11,7 +11,7 @@ function EventShow(props) {
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
   const { id } = useParams();
-  const event = props.events.data ? props.events.data.find(event => event.id === parseInt(id)) : null;
+  const event = props.events.data.find(event => event.id === parseInt(id));
 
   const likeEvent = (eventId) => {
     if(loggedUser) {

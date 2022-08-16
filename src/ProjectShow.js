@@ -22,7 +22,7 @@ function ProjectShow(props) {
   const history = useHistory();
 
   const { id } = useParams();
-  const project = props.projects.data ? props.projects.data.find(project => project.id === parseInt(id)) : null;
+  const project = props.projects.data.find(project => project.id === parseInt(id));
 
   function date(date) {
     const jsDate = new Date(date);

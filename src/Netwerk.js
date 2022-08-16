@@ -60,8 +60,8 @@ function Network(props) {
     let notifications = props.messages.data && props.messages.data.length ? props.messages.data.slice().reverse().filter(message => message.notification && loggedUser && message.recipient.id === loggedUser.id) : null;
 
 
-    let threadGroups = props.groups.data ? props.groups.data.filter(group => !group.event) : null;
-    let eventGroups = props.groups.data ? props.groups.data.filter(group => group.event) : null;
+    let threadGroups = props.groups.data.filter(group => !group.event);
+    let eventGroups = props.groups.data.filter(group => group.event);
 
     let latestMessagesThreadGroup = [];
     let latestMessagesEventGroup = [];
@@ -463,9 +463,9 @@ function Network(props) {
                 {
                     mobileDmsActive ? <div className="dms">
                         {
-                            props.users.data ? <Select placeholder="Zoeken" onChange={e => searchUser(e.value)} className="search" options={props.users.data.filter(user => loggedUser && user.id !== loggedUser.id).map(user => {
+                            <Select placeholder="Zoeken" onChange={e => searchUser(e.value)} className="search" options={props.users.data.filter(user => loggedUser && user.id !== loggedUser.id).map(user => {
                                 return { value: user, label: user.name }
-                            })}/> : null
+                            })}/>
                         }
                         <div className="messageSwitch">
                             <div className={showLatestDms ? "active" : ""} onClick={e => switchToDm()}>DM's</div>

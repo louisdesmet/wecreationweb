@@ -43,9 +43,9 @@ function MyEvents(props) {
         });
     });
 
-    const futureEvents = props.events.data ? props.events.data.filter(event => {
+    const futureEvents = props.events.data.filter(event => {
         return JSON.parse(localStorage.getItem("user")).id === event.project.leader.id && new Date(event.date) > new Date();
-    }) : null;
+    });
 
     const futureGroup = futureEvents ? futureEvents.reduce((acc, item) => {
         if (!acc[item.project.id]) {
@@ -55,9 +55,9 @@ function MyEvents(props) {
         return acc;
     }, {}) : null
 
-    const pastEvents = props.events.data ? props.events.data.filter(event => {
+    const pastEvents = props.events.data.filter(event => {
         return JSON.parse(localStorage.getItem("user")).id === event.project.leader.id && new Date(event.date) < new Date();
-    }) : null;
+    });
 
     const pastGroup = pastEvents ? pastEvents.reduce((acc, item) => {
         if (!acc[item.project.id]) {

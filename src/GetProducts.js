@@ -27,12 +27,12 @@ function GetProducts(props) {
     })
   }
 
-  let business = props.businesses.data ? props.businesses.data.find(business => business.id === parseInt(id)) : null;
+  let business = props.businesses.data.find(business => business.id === parseInt(id));
 
   return (
     <div className="height100">
       <Nav/>
-      {business && props.users.data ? <BusinessShow business={business} users={props.users.data} likeBusiness={likeBusiness} isPage={true}/> : null}
+      {<BusinessShow business={business} users={props.users.data} likeBusiness={likeBusiness} isPage={true}/>}
     </div>
   );
 }

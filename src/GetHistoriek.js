@@ -13,18 +13,16 @@ function GetHistoriek(props) {
 
   const history = useHistory();
 
-  const userOrders = props.orders.data ? props.orders.data.filter(order => {
+  const userOrders = props.orders.data.filter(order => {
     return loggedUser && order.user.id === loggedUser.id
-  }) : null;
+  });
 
-  const userTransfers = props.transfers.data ? props.transfers.data.filter(transfer => {
+  const userTransfers = props.transfers.data.filter(transfer => {
     return loggedUser && transfer.user.id === loggedUser.id
-  }) : null;
+  });
 
-  const combined = userOrders && userTransfers ? userOrders.concat(userTransfers) : null;
-  const sortedCombined = combined ? combined.sort((a,b) => { return new Date(b.created_at) - new Date(a.created_at) }) : null;
-
-
+  const combined = userOrders.concat(userTransfers);
+  const sortedCombined = combined.sort((a,b) => { return new Date(b.created_at) - new Date(a.created_at) });
 
   return (
     <div className="height100">

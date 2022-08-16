@@ -12,7 +12,7 @@ function TransferShow(props) {
   const history = useHistory();
 
   const { id } = useParams();
-  const transfer = props.transfers.data ? props.transfers.data.find(transfer => transfer.id === parseInt(id)) : null;
+  const transfer = props.transfers.data.find(transfer => transfer.id === parseInt(id));
 
   return (
     <div className="height100">

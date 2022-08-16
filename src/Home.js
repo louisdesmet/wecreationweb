@@ -35,34 +35,34 @@ function Home(props) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState("");
 
-  if(props.businesses.data && props.activities.data && props.events.data && props.projects.data && props.users.data) {
-    props.activities.data.forEach(function (element) {
-      element.type = "activity";
-      element.urlText = "/activities/";
-    });
-    props.events.data.forEach(function (element) {
-      element.type = "event";
-      element.urlText = "/events/";
-    });
-    props.projects.data.forEach(function (element) {
-      element.type = "project";
-      element.urlText = "/projects/";
-    });
-    props.users.data.forEach(function (element) {
-      element.type = "user";
-      element.urlText = "/profiel/";
-    });
-    props.businesses.data.forEach(function (element) {
-      element.urlText = "/get/handelaars/";
-      element.urlText2 = "/products";
-    });
-  }
 
-  const futureEvents = props.events.data ? props.events.data.filter(event => {
+  props.activities.data.forEach(function (element) {
+    element.type = "activity";
+    element.urlText = "/activities/";
+  });
+  props.events.data.forEach(function (element) {
+    element.type = "event";
+    element.urlText = "/events/";
+  });
+  props.projects.data.forEach(function (element) {
+    element.type = "project";
+    element.urlText = "/projects/";
+  });
+  props.users.data.forEach(function (element) {
+    element.type = "user";
+    element.urlText = "/profiel/";
+  });
+  props.businesses.data.forEach(function (element) {
+    element.urlText = "/get/handelaars/";
+    element.urlText2 = "/products";
+  });
+
+
+  const futureEvents = props.events.data.filter(event => {
     return new Date(event.date) > new Date();
-  }) : null;
+  });
   
-  if(props.activities.data && props.businesses.data && props.users.data && futureEvents && oneTime) {
+  if(oneTime) {
     let rndInt = Math.floor(Math.random() * 5) + 1;
 
     if(rndInt === 1 || rndInt === 2) {
@@ -204,7 +204,7 @@ function Home(props) {
               <Link to="/netwerk">
                 <img src={netwerk} alt=""/>
                 {
-                  loggedUser ? <span className="notifications">{props.messages.data ? props.messages.data.filter(message => message.notification && message.recipient.id === loggedUser.id && message.seen == 0).length : null}</span> : null
+                  loggedUser ? <span className="notifications">{props.messages.data.filter(message => message.notification && message.recipient.id === loggedUser.id && message.seen == 0).length}</span> : null
                 }
               </Link>
             </div>
@@ -221,7 +221,7 @@ function Home(props) {
         }
     </div>
       {event ? <EventShow event={event} likeEvent={likeEvent} liked={liked}/> : null}
-      {business && props.users.data ? <BusinessShow business={business} users={props.users.data} likeBusiness={likeBusiness} liked={likedBusiness}/> : null}
+      {business ? <BusinessShow business={business} users={props.users.data} likeBusiness={likeBusiness} liked={likedBusiness}/> : null}
       {activity ? <ActivityShow activity={activity} likeActivity={likeActivity} liked={likedActivity}/> : null}
     </div>
   );

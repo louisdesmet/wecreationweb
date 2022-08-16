@@ -27,7 +27,7 @@ function Work(props) {
     });
   }
 
-  const projectList = props.projects.data ? (
+  const projectList = (
     <div className="projects">
       {
         props.projects.data.map(project =>
@@ -63,7 +63,7 @@ function Work(props) {
         )
       }
     </div>
-  ) : null;
+  );
 
   return (
       <div className="height100">

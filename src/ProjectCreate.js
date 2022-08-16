@@ -19,7 +19,7 @@ function ProjectCreate(props) {
 
   const { id } = useParams();
 
-  const project = id && props.projects.data ? props.projects.data.find(project => project.id === parseInt(id)) : null;
+  const project = id && props.projects.data.find(project => project.id === parseInt(id));
 
   const formData = new FormData();
   const imageHandler = (event) => {

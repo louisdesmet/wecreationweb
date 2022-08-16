@@ -31,28 +31,26 @@ function Nav(props) {
   const users = useSelector(state => state.remoteUsers);
   const messages = useSelector(state => state.remoteMessages);
 
-  if(businesses.data && activities.data && events.data && projects.data && users.data) {
-    activities.data.forEach(function (element) {
-      element.type = "activity";
-      element.urlText = "/activities/";
-    });
-    events.data.forEach(function (element) {
-      element.type = "event";
-      element.urlText = "/events/";
-    });
-    projects.data.forEach(function (element) {
-      element.type = "project";
-      element.urlText = "/projects/";
-    });
-    users.data.forEach(function (element) {
-      element.type = "user";
-      element.urlText = "/profiel/";
-    });
-    businesses.data.forEach(function (element) {
-      element.urlText = "/get/handelaars/";
-      element.urlText2 = "/products";
-    });
-  }
+  activities.data.forEach(function (element) {
+    element.type = "activity";
+    element.urlText = "/activities/";
+  });
+  events.data.forEach(function (element) {
+    element.type = "event";
+    element.urlText = "/events/";
+  });
+  projects.data.forEach(function (element) {
+    element.type = "project";
+    element.urlText = "/projects/";
+  });
+  users.data.forEach(function (element) {
+    element.type = "user";
+    element.urlText = "/profiel/";
+  });
+  businesses.data.forEach(function (element) {
+    element.urlText = "/get/handelaars/";
+    element.urlText2 = "/products";
+  });
 
   function search() {
     searchActive && setQuery("");
@@ -83,7 +81,7 @@ function Nav(props) {
               <Link to="/netwerk">
                 <img src={netwerk} alt=""/>
                 {
-                  loggedUser ? <span className="notifications">{messages.data ? messages.data.filter(message => message.notification && message.recipient.id === loggedUser.id && message.seen == 0).length : null}</span> : null
+                  loggedUser ? <span className="notifications">{messages.data.filter(message => message.notification && message.recipient.id === loggedUser.id && message.seen == 0).length}</span> : null
                 }
               </Link>
             </div>

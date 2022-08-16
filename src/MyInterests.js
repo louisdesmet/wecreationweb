@@ -12,7 +12,7 @@ function MyInterests(props) {
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
 
-    const user = props.users.data ? props.users.data.find(user => user.id === loggedUser.id) : null
+    const user = props.users.data.find(user => user.id === loggedUser.id)
     
     const eventList = user ? (
         <div className='list'>

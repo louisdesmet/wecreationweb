@@ -27,19 +27,17 @@ function Agenda(props) {
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
-  if(props.events.data) {
-    props.events.data.forEach(event => {
-      event.skills.forEach(skill => {
-        skill.users.forEach(user => {
-          if(loggedUser && user.id === loggedUser.id) {
-            event.worked = true
-          }
-        })
+  props.events.data.forEach(event => {
+    event.skills.forEach(skill => {
+      skill.users.forEach(user => {
+        if(loggedUser && user.id === loggedUser.id) {
+          event.worked = true
+        }
       })
     })
-  }
+  })
 
-  const fcEvents = props.events.data ? props.events.data.map((event, index) => {
+  const fcEvents = props.events.data.map((event, index) => {
     let newDate = new Date(event.date);
     let time = event.time.split(":");
     newDate.setHours(time[0]);
@@ -49,17 +47,17 @@ function Agenda(props) {
       time: event.time,
       type: "event"
     }}
-  }) : null
+  })
 
-  const fcActivities = props.activities.data ? props.activities.data.map((activity, index) => {
+  const fcActivities = props.activities.data.map((activity, index) => {
     let newDate = new Date(activity.date);
     return {id: activity.id, title: activity.name, date: newDate, extendedProps: {
       time: activity.time,
       type: "activity"
     }}
-  }) : null
+  })
 
-  if(id && props.events.data && !event) {
+  if(id && !event) {
     setEnabled(1);
     let tempEvent = props.events.data.find(event => event.id === parseInt(id));
     tempEvent.startStr = tempEvent.date
@@ -203,7 +201,7 @@ function Agenda(props) {
           dateClick={handleDateClick}
           eventContent={renderEventContent}
           height="parent"
-          initialDate={props.events.data && id ? props.events.data.find(event => event.id === parseInt(id)).date : null}
+          initialDate={id ? props.events.data.find(event => event.id === parseInt(id)).date : null}
           locale={nlLocale}
           headerToolbar={{
             left: 'prev title next',
