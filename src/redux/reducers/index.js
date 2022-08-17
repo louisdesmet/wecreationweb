@@ -83,9 +83,9 @@ function rootReducer(state = initialState, action) {
     });
   }
   if (action.type === "API_ERRORED") {
-    localStorage.setItem('token', null);
+    /*localStorage.setItem('token', null);
     localStorage.setItem('user', null);
-    window.location.reload();
+    window.location.reload();*/
   }
   return state;
 }

@@ -1,11 +1,12 @@
 import React from "react";
-import { createdDate, profileIcon } from "./Global";
+import { createdDate, date, profileIcon } from "./Global";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import kassa from './img/profile/kassa.png';
 import credit from './img/profile/credit.png';
 import { Link } from "react-router-dom";
 import Nav from "./Nav";
 import { useHistory } from "react-router-dom";
+import work from './img/nav/work.png';
 
 function GetHistoriek(props) {
 
@@ -21,7 +22,29 @@ function GetHistoriek(props) {
     return loggedUser && transfer.user.id === loggedUser.id
   });
 
-  const combined = userOrders.concat(userTransfers);
+  let userWorked = [];
+
+  props.events.data.forEach(event => {
+    event.skills.forEach(skill => {
+      skill.users.forEach(user => {
+        if(loggedUser && user.present === 1 && user.id === loggedUser.id) {
+          userWorked.push({
+            event_skill_user_id: user.event_skill_user_id,
+            eventId: event.id,
+            eventName: event.name,
+            skillId: skill.skill.id,
+            skillName: skill.skill.name,
+            hours: skill.hours,
+            created_at: user.present_at,
+            present: user.present
+          });
+        }
+      })
+    })
+  });
+
+  console.log(userWorked)
+  const combined = userOrders.concat(userTransfers, userWorked);
   const sortedCombined = combined.sort((a,b) => { return new Date(b.created_at) - new Date(a.created_at) });
 
   return (
@@ -42,6 +65,10 @@ function GetHistoriek(props) {
               <Link to={"/transfers/" + ticket.id}><img src={credit}/>{ "Je aanvraag tot uitbetaling voor " + ticket.amount }</Link>
               <p className="date">{createdDate(ticket.created_at)}</p>
               <p className="amounttransfer">{ ticket.amount } €</p>
+            </div> : typeof ticket.present !== 'undefined' ? <div key={"userWorked-"+ticket.event_skill_user_id}>
+              <Link to={"/event/" + ticket.eventId + "/skill/" + ticket.skillId}><img src={work}/>{ ticket.eventName + ' - ' + ticket.skillName }</Link>
+              <p className="date">{date(ticket.created_at)}</p>
+              <p>{ ticket.hours }<img src={credit}/></p>
             </div> : <div key={"order-"+ticket.id}>
               <Link to={"/orders/" + ticket.id}><img src={kassa}/>{ ticket.product.business.name + ' - ' + ticket.product.name }</Link>
               <p className="date">{createdDate(ticket.created_at)}</p>

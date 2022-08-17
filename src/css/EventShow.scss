@@ -40,6 +40,15 @@
                 opacity: 0.8;
             }
         }
+        .contract {
+            text-align: center;
+            display: block;
+            width: 120px;
+            height: 120px;
+            border-radius: 100%;
+            margin: 0 auto;
+            
+        }
         div {
             .event-logo {
                 width: 120px;
@@ -166,6 +175,12 @@
         }
         .right {
             width: 78%;
+            .contract-text {
+                padding: 20px;
+                text-align: center;
+                background: #F7E5EB;
+                margin: 50px 0 0 0;
+            }
             h2 {
                 img {
                     width: 43px;

@@ -59,6 +59,7 @@ import GetVergoedingenAankopen from "./GetVergoedingenAankopen";
 import GetVergoedingenVerkopen from "./GetVergoedingenVerkopen";
 import ActivityUpdate from "./ActivityUpdate";
 import MyActivities from "./MyActivities";
+import EventSkillUser from "./EventSkillUser";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   return (
@@ -189,7 +190,7 @@ export const App = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
   
   
               <Route exact path="/get/historiek">
-                <GetHistoriek transfers={transfers} orders={orders}/>
+                <GetHistoriek transfers={transfers} orders={orders} events={events}/>
               </Route>
               <Route exact path="/get">
                 <Get />
@@ -344,6 +345,10 @@ export const App = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
               <AdminRoute exact path="/admin-user-verification">
                 <AdminUserVerification />
               </AdminRoute>
+
+              <Route exact path="/event/:eventId/skill/:skillId">
+                <EventSkillUser events={events}/>
+              </Route>
               {
                 isUserLoggedIn ? 
                 <Route exact path="/"><Home activities={activities} events={events} businesses={businesses} users={users} projects={projects}/></Route>
