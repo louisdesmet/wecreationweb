@@ -350,8 +350,13 @@ export const App = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
                 <EventSkillUser events={events}/>
               </Route>
               {
-                isUserLoggedIn ? 
-                <Route exact path="/"><Home activities={activities} events={events} businesses={businesses} users={users} projects={projects}/></Route>
+                isUserLoggedIn ?
+                <Route exact path="/">
+                  <Home
+                    activities={activities} events={events} businesses={businesses} users={users} projects={projects} messages={messages}
+                    reloadEvents={e => getAllEvents()} reloadBusinesses={e => getBusinesses()} reloadActivities={e => getActivities()}
+                  />
+                </Route>
                 : <Route exact path="/"><See events={events} activities={activities} businesses={businesses} reloadActivities={() => getActivities()}/></Route>
               }
             </>
@@ -359,7 +364,6 @@ export const App = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
           }
            
         </Switch>
-        
       </Router>
   );
 }
