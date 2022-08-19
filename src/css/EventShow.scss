@@ -245,6 +245,10 @@
         }
     }
 }
+.popup {
+    border-radius: 0;
+    width: 100%;
+}
 .completed {
     opacity: 0.7;
     .completed-message {

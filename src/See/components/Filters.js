@@ -16,6 +16,7 @@ import workImage from '../../img/nav/work.png';
 function Filters(props) {
 
     const [searchResults, setSearchResults] = useState(null);
+    const [dateToggle, setDateToggle] = useState(false);
 
     function searchItem(query) {
         const foundActivities = props.activities.data.filter((activity) => {
@@ -100,13 +101,16 @@ function Filters(props) {
                     }
                     </div>
                     <div className="time">
-                    <div className={props.today ? "on" : ""} onClick={() => clickDay()}>Vandaag</div>
-                    <div className={props.week ? "on" : ""} onClick={() => clickWeek()}>Deze week</div>
+                        <div className={props.today ? "on" : ""} onClick={() => clickDay()}>Vandaag</div>
+                        <div className={props.week ? "on" : ""} onClick={() => clickWeek()}>Deze week</div>
                     </div>
-                    <DateRange
-                    onChange={item => clickDaterange(item.selection)}
-                    ranges={props.state}
-                    />
+                    <div className="datetoggle" onClick={e => setDateToggle(!dateToggle)}>Selecteer datum(s)</div>
+                    {
+                    dateToggle ? <DateRange
+                        onChange={item => clickDaterange(item.selection)}
+                        ranges={props.state}
+                    /> : null
+                    }
                     <h2>Filters</h2>
                     <div className="categories">
                         <div>

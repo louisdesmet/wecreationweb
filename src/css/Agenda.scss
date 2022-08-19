@@ -1,113 +1,58 @@
-.agenda-popup {
-    width: 700px;
-    top: 50%;
-    left: 50%;
-    margin: -200px 0 0 -350px;
-    background: white;
-    color: #666666;
-    position: fixed;
-    z-index: 9999;
-    border-radius: 15px;
-    padding: 35px;
-    box-sizing: border-box;
-    border: 3px solid lightgray;
+a {
+    text-decoration: none;
+    color: black;
+    span {
+        border: 2px solid black;
+        border-radius: 25px;
+        padding: 2px 5px;
+        font-size: 0.8em;
+        font-weight: bold;
+    }
+    
+}
+.single-event {
+    img {
+        width: 50px;
+    }
     a {
+        color: #666666;
         text-decoration: none;
-        color: black;
-        span {
-            border: 2px solid black;
-            border-radius: 25px;
-            padding: 2px 5px;
-            font-size: 0.8em;
-            font-weight: bold;
-        }
-        
-    } 
-    .events-list {
-        display: flex;
-        justify-content: space-between;
-        .events-list-flex {
-            display: flex;
-            padding: 0 0 10px 0;
-            img {
-                width: 50px;
-          
-            }
-            div {
-                .title {
-                    color: #4BC566;
-                }
-                .worked {
-                    color: #CF3467;
-                }
-            }
-        }
-        a {
-            text-decoration: none;
-            color: black;
-            span {
-                border: 2px solid black;
-                border-radius: 25px;
-                padding: 2px 5px;
-                font-size: 0.8em;
-                font-weight: bold;
-            }
-            
-        } 
+        font-size: 1.3em;
+        font-weight: 500;
+        padding: 8px 0 0 0;
     }
-    .top-agenda-popup {
-        display: flex;
-        justify-content: space-between;
-        margin: 0 0 15px 0;
-        .dategreen {
-            color: #67CE7F;
-        }
-        div {
-            display: flex;
-            img {
-                width: 50px;
-            }
-            a {
-                color: #666666;
-                text-decoration: none;
-                font-size: 1.3em;
-                font-weight: 500;
-                padding: 8px 0 0 0;
-                
-            }
-        }
-        p {
-            font-size: 1em;
-            padding: 7px 0 0 0;
-        }
-        .close {
-            font-size: 2em;
-            display: block;
-            position: relative;
-            top: -5px;
-        }
+    p {
+        font-size: 1em;
+        padding: 7px 0 0 0;
     }
-    .flex-popup {
-        display: flex;
-        margin: 0 0 12px 0;
-        img {
-            width: 30px;
-            height: 30px;
-        }
-        p {
-            padding: 5px 0 5px 10px;
-            font-size: 1em;
-        }
-    } 
-    .attendance {
-        padding: 0 0 15px 0;
-        img {
-            width: 30px;
-            position: relative;
-            top: 9px;
-        }
+    .close {
+        font-size: 2em;
+        display: block;
+        position: relative;
+        top: -5px;
     }
 }
+.flex-popup {
+    display: flex;
+    margin: 0 0 12px 0;
+    img {
+        width: 30px;
+        height: 30px;
+    }
+    p {
+        padding: 5px 0 5px 10px;
+        font-size: 1em;
+    }
+} 
+.attendance {
+    padding: 0 0 15px 0;
+    img {
+        width: 30px;
+        position: relative;
+        top: 9px;
+    }
+}
+
 .legend {
     height: 3%;
     width: 100%;
@@ -219,6 +164,7 @@
                     height: 10px;
                     border-radius: 100%;
                     margin: 0 3px 0 0;
+                    border: 0;
                 }
                 .worked {
                     background: #CF3467;

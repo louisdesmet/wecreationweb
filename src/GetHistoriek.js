@@ -64,15 +64,15 @@ function GetHistoriek(props) {
             typeof ticket.buy !== 'undefined' ? <div key={"transfer-"+ticket.id}>
               <Link to={"/transfers/" + ticket.id}><img src={credit}/>{ "Je aanvraag tot uitbetaling voor " + ticket.amount }</Link>
               <p className="date">{createdDate(ticket.created_at)}</p>
-              <p className="amounttransfer">{ ticket.amount } €</p>
+              <p className="lastp amounttransfer">{ ticket.amount } €</p>
             </div> : typeof ticket.present !== 'undefined' ? <div key={"userWorked-"+ticket.event_skill_user_id}>
               <Link to={"/event/" + ticket.eventId + "/skill/" + ticket.skillId}><img src={work}/>{ ticket.eventName + ' - ' + ticket.skillName }</Link>
               <p className="date">{date(ticket.created_at)}</p>
-              <p>{ ticket.hours }<img src={credit}/></p>
+              <p className="lastp">{ ticket.hours }<img src={credit}/></p>
             </div> : <div key={"order-"+ticket.id}>
               <Link to={"/orders/" + ticket.id}><img src={kassa}/>{ ticket.product.business.name + ' - ' + ticket.product.name }</Link>
               <p className="date">{createdDate(ticket.created_at)}</p>
-              <p>{ ticket.product.price }<img src={credit}/></p>
+              <p className="lastp">{ ticket.product.price }<img src={credit}/></p>
             </div>
           ) : null
         }
