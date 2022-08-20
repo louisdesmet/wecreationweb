@@ -152,10 +152,10 @@ export const App = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
                 <See events={events} activities={activities} businesses={businesses} reloadActivities={() => getActivities()}/>
               </Route>
               <Route exact path="/agenda/:id">
-                <Agenda events={events} activities={activities}/>
+                <Agenda events={events} activities={activities} reloadEvents={e => getAllEvents()} reloadActivities={() => getActivities()}/>
               </Route>    
               <Route exact path="/agenda">
-                <Agenda events={events} activities={activities}/>
+                <Agenda events={events} activities={activities} reloadEvents={e => getAllEvents()} reloadActivities={() => getActivities()}/>
               </Route>
 
               <Route exact path="/home">
@@ -287,7 +287,7 @@ export const App = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
                 <TransferShow users={users} transfers={transfers}/>
               </Route>
               <Route exact path="/activities/:id">
-                <ActivityShow activities={activities}/>
+                <ActivityShow activities={activities} reloadActivities={e => getActivities()}/>
               </Route>
   
   

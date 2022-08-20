@@ -24,7 +24,7 @@ function ActivityShow(props) {
       }
     })
     .then((response) => {
-        getActivities();
+        props.reloadActivities();
  
     })
     .catch((error) => {

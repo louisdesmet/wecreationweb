@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import { Link, useHistory, useParams } from 'react-router-dom';
-import { skillIcon } from './Global';
+import { useHistory, useParams } from 'react-router-dom';
 
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -8,7 +7,6 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from '@fullcalendar/interaction';
 import nlLocale from '@fullcalendar/core/locales/nl';
 
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -23,11 +21,10 @@ import Divider from '@mui/material/Divider';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 
 import EventShowComp from "./components/EventShow";
+import ActivityShowComp from "./components/ActivityShow";
 import Axios from 'axios';
 
 import Nav from './Nav';
-import datum from './img/nav/agenda.png';
-import location from './img/nav/see.png';
 
 import './css/Agenda.scss';
 import { Avatar } from '@mui/material';
@@ -119,55 +116,6 @@ export default function Agenda(props) {
     return jsDate.toLocaleString('nl-be', {  weekday: 'long' })+' '+jsDate.toLocaleString('nl-be', { month: 'short' })+' '+jsDate.getDate()+', '+jsDate.getFullYear();
   }
 
-  function Popup(props) {
-
-    function findEvent(paramEvent) {
-      
-      if(paramEvent.extendedProps.type === "event") {
-        return props.events.data.find(event => event.id === parseInt(paramEvent.id));
-      } else {
-        return props.activities.data.find(activity => activity.id === parseInt(paramEvent.id));
-      }
-      
-    }
-
-    function attendance(event) {
-      let display = [];
-
-      findEvent(event).skills.forEach(skill => {
-        skill.users.forEach(user => {
-            if(loggedUser && user.id === loggedUser.id) {
-              display.push(<p className='attendance' key={skill.skill.name + "zin1"}>Je hebt je ingeschreven voor <img src={skillIcon(skill.skill.icon)}/> {skill.skill.name} voor {skill.hours} uur.</p>);    
-              if(user.accepted === 1) {
-                display.push(<p className='attendance' key={skill.skill.name + "zin2"}>Je bent goedgekeurd voor <img src={skillIcon(skill.skill.icon)}/> {skill.skill.name} door de project leider.</p>);
-              }
-            }
-            
-        })
-      })
-      return display;
-    }
-
-    return (
-      <div className='single-event'>
-        <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + findEvent(event).image}/>
-        <Link to={"/events/" + event.id}>{event.extendedProps.type === "event" ? findEvent(event).project.name + " - " : null}{event.title}</Link>
-        <div className="flex-popup">
-          <img src={datum}/>
-          <p dangerouslySetInnerHTML={{__html: date(event.startStr)}}></p>
-        </div>
-        <div className="flex-popup">
-          <img src={location}/>
-          <p>{findEvent(event).location}</p>
-        </div>
-        {
-          event.extendedProps.type === "event" ? attendance(event) : null
-        }
-        <Link to={event.extendedProps.type === "event" ? "/events/" + event.id : "/activities/" + event.id}><span>Naar event</span></Link>
-      </div>
-    );
-  }
-
   const handleEventClick = ({ event, el }) => {
     setEnabled(1);
     setEvent(event);
@@ -215,7 +163,25 @@ export default function Agenda(props) {
     
       })
     }
-    
+  }
+
+  const likeActivity = (activityId) => {
+    Axios.post('/like-activity', {
+      'activity': activityId,
+      'user': JSON.parse(localStorage.getItem("user")).id
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem("token")
+      }
+    })
+    .then((response) => {
+      props.reloadActivities();
+ 
+    })
+    .catch((error) => {
+  
+    })
   }
 
   return (
@@ -266,8 +232,13 @@ export default function Agenda(props) {
                 </Typography>
               </Toolbar>
             </AppBar>
-            {event ? <EventShowComp event={props.events.data.find(foundEvent => foundEvent.id === parseInt(event.id))} likeEvent={likeEvent} isPage={true} popup={true}/> : null}
-            
+            {
+              event ?
+              event.extendedProps.type === "event" ?
+              <EventShowComp event={props.events.data.find(foundEvent => foundEvent.id === parseInt(event.id))} likeEvent={likeEvent} isPage={true} popup={true}/>
+              : <ActivityShowComp activity={props.activities.data.find(foundActivity => foundActivity.id === parseInt(event.id))} likeActivity={likeActivity} popup={true}/>
+              : null
+            }
           </Dialog>
         : null
       }

@@ -144,7 +144,7 @@ function EventShow(props) {
   
   return (
     <div>    
-      <div className={'event-panel' + (props.popup ? ' popup' : '') + (props.event.completed_at ? ' completed' : '')}>
+      <div className={'event-panel' + (props.popup ? ' popup-agenda' : '') + (props.event.completed_at ? ' completed' : '')}>
         <div className="top-items">
           <div className="groupchat">
             {

@@ -48,7 +48,7 @@ function ActivityShow(props) {
   
   return (
     <div>    
-      <div className='event-panel activity-panel'>
+      <div className={'event-panel activity-panel' + (props.popup ? ' popup-agenda' : '')}>
         <div className="top-items">
           <div className="groupchat">
             {

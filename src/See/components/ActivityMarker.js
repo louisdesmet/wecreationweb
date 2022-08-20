@@ -1,13 +1,15 @@
 import React from "react";
 import { Marker, Popup } from 'react-leaflet'
 import L from 'leaflet';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { date } from '../../Global';
+import { Avatar, ListItemText, ListItem, List, Divider, ListItemAvatar } from "@mui/material";
 
 import datum from '../../img/nav/agenda.png';
 import timeIcon from '../../img/eventshow/time.png';
 import see from '../../img/nav/see.png';
 import evenementen from '../../img/profile/badges.png';
+
 
 let evenementenIcon = L.icon({
     iconUrl: evenementen,
@@ -16,6 +18,8 @@ let evenementenIcon = L.icon({
 });
 
 function ActivityMarker(props) {
+    
+    const history = useHistory();
 
     const isToday = (someDate) => {
         const today = new Date()
@@ -64,24 +68,35 @@ function ActivityMarker(props) {
 
     const marker = (activity) => <Marker key={activity.id} position={[activity.lat, activity.lng]} icon={evenementenIcon}>
         <Popup className="popup">
-        <div className="data-container">
-            <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "activities/" + activity.image}/>
-            <Link to={"/activities/" + activity.id}>{activity.name}</Link>
-        </div>
-        <div className="data-container">
-            <img src={datum} alt=""/>
-            <p>{date(activity.date)}</p>
-        </div>
-        {
-            activity.time ? <div className="data-container">
-            <img src={timeIcon} alt=""/>
-            <p>{activity.time}</p>
-            </div> : null
-        }
-        <div className="data-container">
-            <img src={see} alt=""/>
-            <p>{activity.location}</p>
-        </div>
+            <List>
+                <ListItem button onClick={e => history.push("/activities/" + activity.id)}>
+                    <ListItemAvatar>
+                        <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "activities/" + activity.image} />
+                    </ListItemAvatar>
+                    <ListItemText primary={activity.name}/>
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar alt="" src={datum}/>
+                    </ListItemAvatar>
+                    <ListItemText primary={date(activity.date)}/>
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar alt="" src={timeIcon}/>
+                    </ListItemAvatar>
+                    <ListItemText primary={activity.time}/>
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar alt="" src={see}/>
+                    </ListItemAvatar>
+                    <ListItemText primary={activity.location}/>
+                </ListItem>
+            </List>
         </Popup>
     </Marker>;
 

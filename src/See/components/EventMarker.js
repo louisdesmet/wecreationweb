@@ -1,8 +1,9 @@
 import React from "react";
 import { Marker, Popup } from 'react-leaflet'
 import L from 'leaflet';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { date } from '../../Global';
+import { Avatar, ListItemText, ListItem, List, Divider, ListItemAvatar } from "@mui/material";
 
 import datum from '../../img/nav/agenda.png';
 import workImage from '../../img/nav/work.png';
@@ -16,6 +17,8 @@ let workIcon = L.icon({
 });
 
 function EventMarker(props) {
+
+    const history = useHistory();
 
     const isToday = (someDate) => {
         const today = new Date()
@@ -64,24 +67,35 @@ function EventMarker(props) {
 
     const marker = (event) => <Marker key={event.id} position={[event.lat, event.lng]} icon={workIcon}>
         <Popup className="popup">
-        <div className="data-container">
-            <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image}/>
-            <Link to={"/events/" + event.id}>{event.name}</Link>
-        </div>
-        <div className="data-container">
-            <img src={datum} alt=""/>
-            <p>{date(event.date)}</p>
-        </div>
-        {
-            event.time ? <div className="data-container">
-            <img src={timeIcon} alt=""/>
-            <p>{event.time}</p>
-            </div> : null
-        }
-        <div className="data-container">
-            <img src={see} alt=""/>
-            <p>{event.location}</p>
-        </div>
+            <List>
+                <ListItem button onClick={e => history.push("/events/" + event.id)}>
+                    <ListItemAvatar>
+                        <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image} />
+                    </ListItemAvatar>
+                    <ListItemText primary={event.name}/>
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar alt="" src={datum}/>
+                    </ListItemAvatar>
+                    <ListItemText primary={date(event.date)}/>
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar alt="" src={timeIcon}/>
+                    </ListItemAvatar>
+                    <ListItemText primary={event.time}/>
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar alt="" src={see}/>
+                    </ListItemAvatar>
+                    <ListItemText primary={event.location}/>
+                </ListItem>
+            </List>
         </Popup>
     </Marker>;
 

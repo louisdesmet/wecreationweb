@@ -251,36 +251,6 @@
             height: 100%;
             border-bottom-right-radius: 55px;
             border-top-right-radius: 55px;
-            .popup {
-                h2 {
-                    a {
-                        color: black;
-                    }
-                }
-                p {
-                    margin: 0;
-                    padding: 10px 0 0 0;
-                }
-                .data-container {
-                    display: flex;
-                    padding: 10px 0 0 0;
-                    img {
-                        width: 40px;
-                        border-radius: 100%;
-                    }
-                    p {
-                        margin: 0 0 0 8px;
-                        padding: 10px 0;
-                    }
-                    a {
-                        color: black;
-                        margin: 0 0 0 8px;
-                        padding: 10px 0;
-                        font-size: 1.4em;
-                    }
-                }
-           
-            }
             .leaflet-popup-content-wrapper {
                 background: #E9F0FA;
             }
@@ -376,35 +346,6 @@
                 border-radius: 55px;
                 border: 4px solid white;
                 box-sizing: border-box;
-                .popup {
-                    width: 230px;
-                    .leaflet-popup-content {
-                        margin: 10px 0 10px 10px;
-                    }
-                    h2 {
-                        a {
-                            color: black;
-                        }
-                    }
-                    p {
-                        margin: 0;
-                        padding: 10px 0 0 0;
-                    }
-                    .data-container {
-                        display: flex;
-                        padding: 10px 0 0 0;
-                        img {
-                            width: 40px;
-                        }
-                        p {
-                            margin: 0 0 0 8px;
-                            padding: 10px 0;
-    
-                          
-                        }
-                    }
-               
-                }
             }
         }
     }

@@ -1,7 +1,8 @@
 import React from "react";
 import { Marker, Popup } from 'react-leaflet'
 import L from 'leaflet';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { Avatar, ListItemText, ListItem, List, Divider, ListItemAvatar } from "@mui/material";
 
 import see from '../../img/nav/see.png';
 import get from '../../img/nav/get.png';
@@ -13,15 +14,34 @@ let getIcon = L.icon({
 });
 
 function ServiceMarker(props) {
+
+    const history = useHistory();
+
     return (
         <Marker key={props.business.id} position={[props.business.lat, props.business.lng]} icon={getIcon}>
             <Popup className="popup">
-                <h2><Link to={"/get/handelaars/" + props.business.id + "/products"}>{props.business.name}</Link></h2>
-                <p>{props.business.description}</p>
-                <div className="data-container">
-                <img src={see} alt=""/>
-                <p>{props.business.location}</p>
-                </div>
+                <List>
+                    <ListItem button onClick={e => history.push("/get/handelaars/" +  props.business.id + "/products")}>
+                        <ListItemAvatar>
+                            <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "businesses/" + props.business.image} />
+                        </ListItemAvatar>
+                        <ListItemText primary={ props.business.name}/>
+                    </ListItem>
+                    <Divider />
+                    <ListItem>
+                        <ListItemAvatar>
+                            <Avatar alt="" src={get}/>
+                        </ListItemAvatar>
+                        <ListItemText primary={ props.business.description}/>
+                    </ListItem>
+                    <Divider />
+                    <ListItem>
+                        <ListItemAvatar>
+                            <Avatar alt="" src={see}/>
+                        </ListItemAvatar>
+                        <ListItemText primary={ props.business.location}/>
+                    </ListItem>
+                </List>
             </Popup>
         </Marker>
     );
