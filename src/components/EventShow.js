@@ -31,7 +31,7 @@ import credit from '../img/profile/credit.png';
 import like from '../img/eventshow/like.png';
 import credits from '../img/profile/credits.png';
 import add from '../img/eventshow/accept.png';
-import { Avatar, CardHeader } from "@mui/material";
+import { Avatar, CardHeader, Divider, List, ListItem, ListItemAvatar, ListItemText, Popover, Typography } from "@mui/material";
 
 let workIcon = L.icon({
   iconUrl: work,
@@ -47,8 +47,7 @@ function EventShow(props) {
   const notifyRegister = () => toast("Voor deze actie heb je een account nodig.");
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
-
-  const [areYouSure, setAreYouSure] = useState(1);
+  
   const [chosenSkill, setChosenSkill] = useState(null);
   const [teamClicked, setTeamClicked] = useState(false);
   const [budgetClicked, setBudgetClicked] = useState(false);
@@ -64,6 +63,18 @@ function EventShow(props) {
     setOpen(false);
   };
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const openLiked = Boolean(anchorEl);
+
   props.event.skills.forEach(skill => {
     skill.users.forEach(user => {
       if(loggedUser && user.id === loggedUser.id) {
@@ -78,7 +89,15 @@ function EventShow(props) {
       <p>{skill.amount} x {skill.skill.name} - {skill.hours}u  <span>{skill.credits}<img className='credits' src={credits}/></span></p>
       <div className="button">
         {
-          skill.users.filter(user => user.accepted).length < skill.amount ? skill.users.find(user => loggedUser && user.id === loggedUser.id) ? <button className="requested">Aangevraagd</button> : <button onClick={e =>  areYouSureBox(skill)}>Inschrijven</button> : <button className="full">Volzet</button>
+          skill.users.filter(user => user.accepted).length < skill.amount ? 
+            skill.users.find(user => loggedUser && user.id === loggedUser.id) ? 
+              skill.users.find(user => loggedUser && user.id === loggedUser.id && user.accepted) ? 
+                skill.users.find(user => loggedUser && user.id === loggedUser.id && user.accepted && user.present) ? 
+                <button className="paid">Uitbetaald</button>
+                : <button className="accepted">Goedgekeurd</button>
+              : <button className="requested">Aangevraagd</button>
+            : <button onClick={e => areYouSureBox(skill)}>Inschrijven</button>
+          : <button className="full">Volzet</button>
         }
       </div>
     </div> : null
@@ -90,7 +109,13 @@ function EventShow(props) {
       <p>{skill.amount} x {skill.skill.name} - {skill.hours}u</p>
       <div className="button">
         {
-          skill.users.filter(user => user.accepted).length < skill.amount ? skill.users.find(user => loggedUser && user.id === loggedUser.id) ? <button className="requested">Aangevraagd</button> : <button onClick={e => areYouSureBox(skill)}>Inschrijven</button> : <button className="full">Volzet</button>
+          skill.users.filter(user => user.accepted).length < skill.amount ? 
+            skill.users.find(user => loggedUser && user.id === loggedUser.id) ? 
+              skill.users.find(user => loggedUser && user.id === loggedUser.id && user.accepted) ? 
+              <button className="accepted">Goedgekeurd</button>
+              : <button className="requested">Aangevraagd</button>
+            : <button onClick={e => areYouSureBox(skill)}>Inschrijven</button>
+          : <button className="full">Volzet</button>
         }
       </div>
     </div> : null
@@ -180,11 +205,53 @@ function EventShow(props) {
             {props.event.completed_at ? <h2 className="completed-message">Dit event is afgerond.<img src={add}/></h2> : null}
             <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + props.event.image}/>
           </div>
-          <div className={props.event.users && props.event.users.find(user => loggedUser && user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => likeEvent()}>
+          <Typography 
+            className={props.event.users && props.event.users.find(user => loggedUser && user.id === loggedUser.id) || props.liked ? "like liked" : "like"} 
+            onClick={e => likeEvent()}
+            aria-owns={openLiked ? 'mouse-over-popover' : undefined}
+            aria-haspopup="true"
+            onMouseEnter={handlePopoverOpen}
+            onMouseLeave={handlePopoverClose}
+          >
             <span>{props.liked ? props.event.users.length + 1 : props.event.users.length}</span>
             <img src={like}/>
             <p>Interesse!</p>
-          </div>
+          </Typography>
+          <Popover
+            id="mouse-over-popover"
+            sx={{
+              pointerEvents: 'none',
+            }}
+            open={openLiked}
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            onClose={handlePopoverClose}
+            disableRestoreFocus
+          >
+              <List>
+                {
+                  props.event.users.map((user, i, row) =>
+                    <>
+                      <ListItem>
+                        <ListItemAvatar>
+                          <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + 'users/' + user.image} />
+                        </ListItemAvatar>
+                        <ListItemText primary={user.name} />
+                      </ListItem>
+                      { i + 1 !== row.length && <Divider /> }
+                    </>
+                  )
+                }
+              </List>
+          </Popover>
+          
         </div>
         <h2 className="event-title"><span>{props.event.name}</span></h2>
         
