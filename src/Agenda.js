@@ -212,7 +212,7 @@ export default function Agenda(props) {
       {
         enabled ?
           <Dialog
-            fullScreen
+            
             open={open2}
             onClose={handleClose2}
             TransitionComponent={Transition}
@@ -245,7 +245,7 @@ export default function Agenda(props) {
       {
         enabledEvents ?
           <Dialog
-            fullScreen
+            
             open={open}
             onClose={handleClose}
             TransitionComponent={Transition}

@@ -9,6 +9,7 @@ import location from './img/nav/see.png';
 import navGet from './img/nav/get.png';
 import decline from './img/eventshow/decline.png';
 import update from './img/eventshow/update.png';
+import werkkracht from './img/icons/beginner/werkkracht.png';
 import './css/ProjectShow.scss';
 import locprod, { profileIcon, skillIcon } from './Global';
 
@@ -153,6 +154,7 @@ function ProjectShow(props) {
                     <div className='flex-container'>
                       <img src={datum}/>
                       <img src={location}/>
+                      <img src={werkkracht}/>
                       <img src={navGet}/>
                     </div>
                     <div className='flex-container'>
@@ -160,6 +162,9 @@ function ProjectShow(props) {
                       <p>{event.location}</p>
                       <p>{
                         event.skills.reduce((acc, obj) => { return acc + obj.amount; }, 0)
+                      } plaatsen</p>
+                      <p>{
+                        event.skills.reduce((acc, obj) => { return acc + obj.credits; }, 0)
                       } cc</p>
                     </div>
                   </Link>

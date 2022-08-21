@@ -10,6 +10,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 import profile from '../img/eventshow/profile-purple.png';
 import team from '../img/profile/team.png';
 import location from '../img/nav/see.png';
@@ -18,6 +25,7 @@ import decline from '../img/eventshow/decline.png';
 import get from '../img/nav/get.png';
 import like from '../img/eventshow/like.png';
 import credits from '../img/profile/credits.png';
+import { Avatar, CardHeader } from "@mui/material";
 
 let icon = L.icon({
     iconUrl: get,
@@ -35,7 +43,16 @@ function BusinessShow(props) {
     const loggedUser = JSON.parse(localStorage.getItem("user"));
 
     const [product, setProduct] = useState(null);
-    const [areYouSure, setAreYouSure] = useState(1);
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+  
 
     let position = [props.business.lat, props.business.lng];
 
@@ -53,7 +70,7 @@ function BusinessShow(props) {
         if(loggedUser) {
             let user = props.users.find(user => user.id === loggedUser.id);
             if (parseInt(user.credits) >= product.price && (product.amount > 0 || props.business.type === 'service')) {
-                setAreYouSure(1);
+                handleClickOpen();
                 setProduct(product);
             } else {
                 if (product.amount > 0) {
@@ -174,11 +191,44 @@ function BusinessShow(props) {
                     {businessMarkers}
                 </MapContainer>
                 {
-                    areYouSure && product ? <div className="are-you-sure">
+                    product ? 
+                    <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">
+                        <CardHeader
+                            avatar={
+                            <Avatar
+                                alt="Remy Sharp"
+                                src={credits}
+                            />
+                            }
+                            title="Aankoop"
+                            titleTypographyProps={{variant:'h5' }}
+                        />
+                        </DialogTitle>
+                        <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Weet je zeker dat je een {product.name} wilt aankopen voor {product.price} credits
+                        </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+
+                        <Button onClick={handleClose}><Avatar src={decline}/></Button>
+                        <Button onClick={e => buy(product)} autoFocus>
+                            <Avatar src={accept}/>
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
+                   /* <div className="are-you-sure">
                         <p>Weet je zeker dat je een {product.name} wilt aankopen voor {product.price}<img className='credits' src={credits} /></p>
                         <img className="accept" src={accept} onClick={e => buy(product)} />
                         <img className="accept" src={decline} onClick={e => setAreYouSure(0)} />
-                    </div> : null
+                    </div> */
+                    : null
                 }
             </div>
             <ToastContainer />

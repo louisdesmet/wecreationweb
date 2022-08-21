@@ -29,6 +29,12 @@ import pro from './img/profile/pro.png';
 import legend from './img/profile/legend.png';
 import { badgeIcon, date, profileIcon, skillIcon } from './Global';
 import Axios from 'axios';
+import { AppBar, Avatar, Dialog, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText, Popover, Slide, Toolbar, Typography } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="down" ref={ref} {...props} />;
+});
 
 function Profiel(props) {
 
@@ -37,12 +43,40 @@ function Profiel(props) {
     const history = useHistory();
     const { id } = useParams();
 
-    const [leaderClicked, setLeaderClicked] = useState(false);
-    const [eventsClicked, setEventsClicked] = useState(false);
-    const [teamClicked, setTeamClicked] = useState(false);
     const [liked, setLiked] = useState(false);
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
+
+    const [open, setOpen] = React.useState(false);
+  
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+
+    const [openTeam, setOpenTeam] = React.useState(false);
+  
+    const handleClickOpenTeam = () => {
+      setOpenTeam(true);
+    };
+  
+    const handleCloseTeam = () => {
+      setOpenTeam(false);
+    };
+
+    
+    const [openEvents, setOpenEvents] = React.useState(false);
+  
+    const handleClickOpenEvents = () => {
+      setOpen(true);
+    };
+  
+    const handleCloseEvents = () => {
+      setOpen(false);
+    };
 
     let updatedLoggedUser = null;
     if(id && props.users.data) {
@@ -219,23 +253,130 @@ function Profiel(props) {
                             <img src={see} alt=""/>
                             <h2>Geen adres ingesteld</h2>
                         </div>
-                        <div onClick={e => setEventsClicked(!eventsClicked)}>
+                        <div onClick={handleClickOpenEvents}>
                             <img src={navAgenda} alt=""/>
                             <h2>Lopende events</h2>
-                            {eventsClicked ? eventsList : null}
                         </div>
-                        <div onClick={e => setTeamClicked(!teamClicked)}>
-                        <img src={team} alt=""/>
+                        <Dialog
+                            open={openEvents}
+                            onClose={handleCloseEvents}
+                            TransitionComponent={Transition}
+                        >
+                            <AppBar sx={{ position: 'relative' }}>
+                            <Toolbar>
+                                <IconButton
+                                edge="start"
+                                color="inherit"
+                                onClick={handleCloseEvents}
+                                aria-label="close"
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                                <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                                    <p>Lopende events</p>
+                                </Typography>
+                            </Toolbar>
+                            </AppBar>
+                            <List>
+                                {
+                                    eventsList.map((event, i, row) =>
+                                        <>
+                                            <ListItem button onClick={e => history.push("/events/" + event.id)}>
+                                                <ListItemAvatar>
+                                                    <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image} />
+                                                </ListItemAvatar>
+                                                <ListItemText primary={event.name} />
+                                            </ListItem>
+                                            { i + 1 !== row.length && <Divider /> }
+                                           
+                                        </>
+                                    )
+                                }
+                            </List>
+                        </Dialog>
+                        <div onClick={handleClickOpenTeam}>
+                            <img src={team} alt=""/>
                             <h2>Bekende teamgenoten</h2>
-                            {teamClicked ? teamList.map(user => 
-                                <Link className="projects" to={"/profiel/" + user.id}><FontAwesomeIcon className="teamIcon" icon={findIcon(user.icon)} color="white"/>{user.name}</Link>                      
-                            ) : null}
                         </div>
-                        <div onClick={e => setLeaderClicked(!leaderClicked)}>
+                        <Dialog
+                            open={openTeam}
+                            onClose={handleCloseTeam}
+                            TransitionComponent={Transition}
+                        >
+                            <AppBar sx={{ position: 'relative' }}>
+                            <Toolbar>
+                                <IconButton
+                                edge="start"
+                                color="inherit"
+                                onClick={handleCloseTeam}
+                                aria-label="close"
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                                <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                                    <p>Bekende teamgenoten</p>
+                                </Typography>
+                            </Toolbar>
+                            </AppBar>
+                            <List>
+                                {
+                                    teamList.map((user, i, row) =>
+                                        <>
+                                            <ListItem button onClick={e => history.push("/profiel/" + user.id)}>
+                                                <ListItemAvatar>
+                                                    <Avatar alt="" src={findIcon(user.icon)} />
+                                                </ListItemAvatar>
+                                                <ListItemText primary={user.name} />
+                                            </ListItem>
+                                            { i + 1 !== row.length && <Divider /> }
+                                           
+                                        </>
+                                    )
+                                }
+                            </List>
+                        </Dialog>
+                        <div onClick={handleClickOpen}>
                             <img src={leader} alt=""/>
-                            <h2>Projectleider van</h2>
-                            {leaderClicked ? leaderList : null}
+                            <h2>Project leider van</h2>
                         </div>
+                        <Dialog
+                                open={open}
+                                onClose={handleClose}
+                                TransitionComponent={Transition}
+                            >
+                                <AppBar sx={{ position: 'relative' }}>
+                                <Toolbar>
+                                    <IconButton
+                                    edge="start"
+                                    color="inherit"
+                                    onClick={handleClose}
+                                    aria-label="close"
+                                    >
+                                        <CloseIcon />
+                                    </IconButton>
+                                    <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                                        <p>Project leider van</p>
+                                    </Typography>
+                                </Toolbar>
+                                </AppBar>
+                                <List>
+                                    {
+                                        props.projects.data.map(project =>
+                                            updatedLoggedUser.id === project.leader.id ? 
+                                            <>
+                                                <ListItem button onClick={e => history.push("/projects/" + project.id)}>
+                                                    <ListItemAvatar>
+                                                        <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "projects/" + project.picture} />
+                                                    </ListItemAvatar>
+                                                    <ListItemText primary={project.name} />
+                                                </ListItem>
+                                                <Divider />
+                                            </>
+                                            : null
+                                        )
+                                    }
+                                </List>
+                            </Dialog>
                     </div>
                     <div className="right">
                         <h2><img src={desc} alt=""/>Profielbeschrijving</h2>
@@ -267,7 +408,7 @@ function Profiel(props) {
                                     </div>
                                     <p>{userHour.hours}u</p>
                                     <div className='progress'>
-                                        <img style={{ left: userHour.hours / 10 * 2 + '%' }} src={userHour.hours > 150 ? legend : userHour.hours > 75 ? pro : userHour.hours > 25 ? beginner : starter}/>
+                                        <img style={{ left: userHour.hours > 500 ? '98%' : userHour.hours / 10 * 2 + '%' }} src={userHour.hours > 150 ? legend : userHour.hours > 75 ? pro : userHour.hours > 25 ? beginner : starter}/>
                                     </div>
                                 </div>
                             ) : null
@@ -282,7 +423,7 @@ function Profiel(props) {
                                     </div>
                                     <p>{userHour.hours}u</p>
                                     <div className='progress'>
-                                        <img style={{ left: userHour.hours / 10 * 2 + '%' }} src={userHour.hours > 150 ? legend : userHour.hours > 75 ? pro : userHour.hours > 25 ? beginner : starter}/>
+                                        <img style={{ left: userHour.hours > 500 ? '98%' : userHour.hours / 10 * 2 + '%' }} src={userHour.hours > 150 ? legend : userHour.hours > 75 ? pro : userHour.hours > 25 ? beginner : starter}/>
                                     </div>
                                 </div>
                             ) : null

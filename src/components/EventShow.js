@@ -9,6 +9,13 @@ import { MapContainer, Marker, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
 
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 import see from '../img/nav/see.png';
 import work from '../img/nav/work.png';
 import get from '../img/nav/get.png';
@@ -24,6 +31,7 @@ import credit from '../img/profile/credit.png';
 import like from '../img/eventshow/like.png';
 import credits from '../img/profile/credits.png';
 import add from '../img/eventshow/accept.png';
+import { Avatar, CardHeader } from "@mui/material";
 
 let workIcon = L.icon({
   iconUrl: work,
@@ -45,6 +53,16 @@ function EventShow(props) {
   const [teamClicked, setTeamClicked] = useState(false);
   const [budgetClicked, setBudgetClicked] = useState(false);
   const [showDesc, setShowDesc] = useState(false);
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   props.event.skills.forEach(skill => {
     skill.users.forEach(user => {
@@ -103,7 +121,7 @@ function EventShow(props) {
 
   function areYouSureBox(skill) {
     if(loggedUser) {
-      setAreYouSure(1);
+      handleClickOpen();
       setChosenSkill(skill);
     } else {
       notifyRegister();
@@ -122,12 +140,13 @@ function EventShow(props) {
       }
     })
     .then((response) => {
-      setAreYouSure(false);
+      handleClose();
       notify(props.event, chosenSkill);
     })
     .catch((error) => {
   
     })
+
   }
 
   function likeEvent() {
@@ -234,11 +253,39 @@ function EventShow(props) {
           </MapContainer>
         </div>
         {
-          areYouSure && chosenSkill ? <div className="are-you-sure">
-            <p>Weet je zeker dat je je voor {chosenSkill.hours} uur in <img src={skillIcon(chosenSkill.skill.icon)}/>{chosenSkill.skill.name} wilt inschrijven?</p>
-            <img className="accept" src={accept} onClick={e => register(chosenSkill.id)}/>
-            <img className="accept" src={decline} onClick={e => setAreYouSure(0)}/>
-          </div> : null
+          chosenSkill ? 
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              <CardHeader
+                avatar={
+                  <Avatar
+                    alt="Remy Sharp"
+                    src={skillIcon(chosenSkill.skill.icon)}
+                  />
+                }
+                title={chosenSkill.skill.name}
+                titleTypographyProps={{variant:'h5' }}
+              />
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Weet je zeker dat je je voor {chosenSkill.hours} uur in {chosenSkill.skill.name} wilt inschrijven?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+
+              <Button onClick={handleClose}><Avatar src={decline}/></Button>
+              <Button onClick={e => register(chosenSkill.id)} autoFocus>
+                <Avatar src={accept}/>
+              </Button>
+            </DialogActions>
+          </Dialog>
+          : null
         }
       </div>
       <ToastContainer />
