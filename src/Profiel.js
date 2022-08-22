@@ -128,14 +128,6 @@ function Profiel(props) {
         history.push("/login");
     }
 
-    const leaderList = props.projects.data && updatedLoggedUser ? props.projects.data.map(project =>
-        updatedLoggedUser.id === project.leader.id ? <Link key={project.id} className="projects" to={"/projects/" + project.id}><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "projects/" + project.picture}/>{project.name}</Link> : null
-    ) : null
-
-    const eventsList = props.events.data && updatedLoggedUser ? props.events.data.map(event =>
-        updatedLoggedUser.id === event.project.leader.id ? <Link key={event.id} className="projects" to={"/events/" + event.id}><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image}/>{event.name}</Link> : null
-    ) : null;
-
     let teamList = [];
 
     if(props.events.data && updatedLoggedUser) {
@@ -279,7 +271,8 @@ function Profiel(props) {
                             </AppBar>
                             <List>
                                 {
-                                    eventsList.map((event, i, row) =>
+                                    props.events.data.map((event, i, row) =>
+                                        updatedLoggedUser.id === event.project.leader.id ?
                                         <>
                                             <ListItem button onClick={e => history.push("/events/" + event.id)}>
                                                 <ListItemAvatar>
@@ -288,8 +281,8 @@ function Profiel(props) {
                                                 <ListItemText primary={event.name} />
                                             </ListItem>
                                             { i + 1 !== row.length && <Divider /> }
-                                           
                                         </>
+                                        : null
                                     )
                                 }
                             </List>
