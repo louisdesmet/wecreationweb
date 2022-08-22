@@ -12,6 +12,7 @@ import { Link, useParams } from "react-router-dom";
 import add from './img/eventshow/accept.png';
 import decline from './img/eventshow/decline.png';
 import linkArrow from './img/eventshow/link.png';
+import { Divider } from "@mui/material";
 
 function Network(props) {
 
@@ -473,17 +474,20 @@ function Network(props) {
                         </div>
                         {
                             showLatestGroupchats && latestMessagesEventGroup.map(groupchat =>
-                                <div className="message" key={groupchat.group.id} onClick={e => switchViewGroupchat(groupchat)}>
-                                
-                                    <div className="netwerk-profile-icon"><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + groupchat.group.event.image}/></div>
-                                    <div>
-                                        <p className="message-name">{groupchat.group.event.name}</p>
-                                        <p>{groupchat.user ? groupchat.user.name : null}</p>
-                                        {
-                                            groupchat.created_at && groupchat.message && <p title={ datetime(groupchat.created_at) } dangerouslySetInnerHTML={{__html: urlify(groupchat.message)}}></p>
-                                        }
+                                <>
+                                    <div className="message" key={groupchat.group.id} onClick={e => switchViewGroupchat(groupchat)}>
+                                    
+                                        <div className="netwerk-profile-icon"><img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + groupchat.group.event.image}/></div>
+                                        <div>
+                                            <p className="message-name">{groupchat.group.event.name}</p>
+                                            <p>{groupchat.user ? groupchat.user.name : null}</p>
+                                            {
+                                                groupchat.created_at && groupchat.message && <p title={ datetime(groupchat.created_at) } dangerouslySetInnerHTML={{__html: urlify(groupchat.message)}}></p>
+                                            }
+                                        </div>
                                     </div>
-                                </div>
+                                    <Divider/>
+                                </>
                             )
                         }
                         {
@@ -492,8 +496,8 @@ function Network(props) {
                                     <div className="netwerk-profile-icon">
                                         {
                                             dm.user.id === loggedUser.id ?
-                                                dm.recipient.image ? <img className="profile-image"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "users/" + dm.recipient.image}/> : <FontAwesomeIcon icon={profileIcon(dm.recipient.icon)} color="#F7931E"/> 
-                                            : dm.user.image ? <img className="profile-image"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "users/" + dm.user.image}/> : <FontAwesomeIcon icon={profileIcon(dm.user.icon)} color="#F7931E"/>
+                                                dm.recipient.image ? <img className="profile-image"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "users/" + dm.recipient.image}/> : <FontAwesomeIcon icon={profileIcon(dm.recipient.icon)} color="white"/> 
+                                            : dm.user.image ? <img className="profile-image"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "users/" + dm.user.image}/> : <FontAwesomeIcon icon={profileIcon(dm.user.icon)} color="white"/>
                                         }
                                         
                                     </div>
@@ -542,14 +546,18 @@ function Network(props) {
                                 <h2>Threads</h2>
                                 {
                                     latestMessagesThreadGroup.map(message =>
-                                        <div className="message" key={message.group.id} onClick={e => switchViewThread(message)}>
-                                            <div>
-                                                <p className="message-name">#{message.group.name}</p>
-                                                {
-                                                    message.user && message.created_at && message.message && <p title={ datetime(message.created_at) }>{message.user.name + ': ' + message.message}</p>
-                                                }
+                                        <>
+                                            <div className="message" key={message.group.id} onClick={e => switchViewThread(message)}>
+                                                <div>
+                                                    <p className="message-name">#{message.group.name}</p>
+                                                    {
+                                                        message.user && message.created_at && message.message && <p title={ datetime(message.created_at) }>{message.user.name + ': ' + message.message}</p>
+                                                    }
+                                                </div>
                                             </div>
-                                        </div>
+                                            <Divider/>
+                                        </>
+                                  
                                     )
                                 }
                             </div> : null
@@ -560,13 +568,16 @@ function Network(props) {
                                 <h2>Notifications</h2>
                                 {
                                     notifications && notifications.length ? notifications.map(notification => 
-                                        <div className="message" key={notification.id}>
-                                            <div>
-                                                {
-                                                    notification.created_at && notification.message && <p title={ datetime(notification.created_at) }>{notification.message}</p>
-                                                }
+                                        <>
+                                            <div className="message" key={notification.id}>
+                                                <div>
+                                                    {
+                                                        notification.created_at && notification.message && <p title={ datetime(notification.created_at) }>{notification.message}</p>
+                                                    }
+                                                </div>
                                             </div>
-                                        </div>
+                                            <Divider/>
+                                         </>
                                     ) : null
                                 }
                             </div> : null
