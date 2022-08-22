@@ -50,32 +50,32 @@ function Profiel(props) {
     const [open, setOpen] = React.useState(false);
   
     const handleClickOpen = () => {
-      setOpen(true);
+        setOpen(true);
     };
   
     const handleClose = () => {
-      setOpen(false);
+        setOpen(false);
     };
 
     const [openTeam, setOpenTeam] = React.useState(false);
   
     const handleClickOpenTeam = () => {
-      setOpenTeam(true);
+        setOpenTeam(true);
     };
   
     const handleCloseTeam = () => {
-      setOpenTeam(false);
+        setOpenTeam(false);
     };
 
     
     const [openEvents, setOpenEvents] = React.useState(false);
   
     const handleClickOpenEvents = () => {
-      setOpen(true);
+        setOpenEvents(true);
     };
   
     const handleCloseEvents = () => {
-      setOpen(false);
+        setOpenEvents(false);
     };
 
     let updatedLoggedUser = null;
@@ -146,7 +146,7 @@ function Profiel(props) {
                 skill.users.forEach(user => {
                     if(!teamList.find(item => item.id === user.id)) {
                         if(user.id !== updatedLoggedUser.id) {
-                            teamList.push({id: user.id, name: user.name, icon: user.icon})
+                            teamList.push({id: user.id, name: user.name, icon: user.icon, image: user.image})
                         }
                     }
                 })
@@ -272,7 +272,7 @@ function Profiel(props) {
                             <List>
                                 {
                                     props.events.data.map((event, i, row) =>
-                                        updatedLoggedUser.id === event.project.leader.id ?
+                                    updatedLoggedUser && updatedLoggedUser.id === event.project.leader.id ?
                                         <>
                                             <ListItem button onClick={e => history.push("/events/" + event.id)}>
                                                 <ListItemAvatar>
@@ -317,7 +317,7 @@ function Profiel(props) {
                                         <>
                                             <ListItem button onClick={e => history.push("/profiel/" + user.id)}>
                                                 <ListItemAvatar>
-                                                    <Avatar alt="" src={findIcon(user.icon)} />
+                                                    <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "users/" + user.image} />
                                                 </ListItemAvatar>
                                                 <ListItemText primary={user.name} />
                                             </ListItem>
@@ -355,7 +355,7 @@ function Profiel(props) {
                                 <List>
                                     {
                                         props.projects.data.map(project =>
-                                            updatedLoggedUser.id === project.leader.id ? 
+                                            updatedLoggedUser && updatedLoggedUser.id === project.leader.id ? 
                                             <>
                                                 <ListItem button onClick={e => history.push("/projects/" + project.id)}>
                                                     <ListItemAvatar>
