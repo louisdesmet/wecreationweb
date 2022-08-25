@@ -31,6 +31,7 @@ import { badgeIcon, date, profileIcon, skillIcon } from './Global';
 import Axios from 'axios';
 import { AppBar, Avatar, Dialog, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText, Popover, Slide, Toolbar, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import netwerk from './img/nav/network.png';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="down" ref={ref} {...props} />;
@@ -76,6 +77,16 @@ function Profiel(props) {
   
     const handleCloseEvents = () => {
         setOpenEvents(false);
+    };
+
+    const [openLikes, setOpenLikes] = React.useState(false);
+  
+    const handleClickOpenLikes = () => {
+        setOpenLikes(true);
+    };
+  
+    const handleCloseLikes = () => {
+        setOpenLikes(false);
     };
 
     let updatedLoggedUser = null;
@@ -187,7 +198,9 @@ function Profiel(props) {
         .catch((error) => {
 
         })
-      }
+    }
+
+    console.log(updatedLoggedUser);
 
     return (
         <div className="height100">
@@ -203,6 +216,7 @@ function Profiel(props) {
                                     <Link to={updatedLoggedUser && updatedLoggedUser.roles.find(role => role.id === 4) ? "/dienst/create/" +  updatedLoggedUser.roles.find(role => role.id === 4).business_id : "/dienst/create"}><img src={handel} alt=""/>Mijn diensten</Link>
                                     <Link to={"/get/historiek"}><img src={kassa} alt=""/>Mijn kassatickets</Link>
                                     <Link to={"/my-events"}><img src={agenda} alt=""/>Mijn projecten</Link>
+                                    <Link to={"/my-activities"}><img src={agenda} alt=""/>Mijn activiteiten</Link>
                                     <Link to={"/my-interests"}><img src={like} alt=""/>Mijn interesses</Link>
                                     <a className="logout" onClick={() => logout()}><img src={logoutImg} alt=""/>Afmelden</a>
                                 </div> : null
@@ -241,10 +255,47 @@ function Profiel(props) {
                             <img src={master} alt=""/>
                             <h2>Master in</h2>
                         </div>
-                        <div>
-                            <img src={see} alt=""/>
-                            <h2>Geen adres ingesteld</h2>
+                        <div onClick={handleClickOpenLikes}>
+                            <img src={netwerk} alt=""/>
+                            <h2>Personen</h2>
                         </div>
+                        <Dialog
+                            open={openLikes}
+                            onClose={handleCloseLikes}
+                            TransitionComponent={Transition}
+                        >
+                            <AppBar sx={{ position: 'relative' }}>
+                            <Toolbar>
+                                <IconButton
+                                edge="start"
+                                color="inherit"
+                                onClick={handleCloseLikes}
+                                aria-label="close"
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                                <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                                    <p>Deze personen vinden jou interessant</p>
+                                </Typography>
+                            </Toolbar>
+                            </AppBar>
+                            <List>
+                                {
+                                    updatedLoggedUser.receivedLikes.map((user, i, row) =>
+                            
+                                        <>
+                                            <ListItem button onClick={e => history.push("/profiel/" + user.id)}>
+                                                <ListItemAvatar>
+                                                    <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "users/" + user.image} />
+                                                </ListItemAvatar>
+                                                <ListItemText primary={user.name} />
+                                            </ListItem>
+                                            { i + 1 !== row.length && <Divider /> }
+                                        </>
+                                    )
+                                }
+                            </List>
+                        </Dialog>
                         <div onClick={handleClickOpenEvents}>
                             <img src={navAgenda} alt=""/>
                             <h2>Lopende events</h2>
