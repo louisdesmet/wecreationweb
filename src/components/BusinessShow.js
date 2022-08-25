@@ -108,7 +108,9 @@ function BusinessShow(props) {
 
     function likeBusiness() {
         if(loggedUser) {
-            if(props.business.users && props.business.users.find(user => loggedUser && user.id === loggedUser.id)) {
+            console.log(props.business.users)
+            if(!props.business.users.find(user => loggedUser && user.id === loggedUser.id)) {
+                console.log("stap 2")
             props.likeBusiness(props.business.id);
             }
             
@@ -223,11 +225,6 @@ function BusinessShow(props) {
                         </Button>
                         </DialogActions>
                     </Dialog>
-                   /* <div className="are-you-sure">
-                        <p>Weet je zeker dat je een {product.name} wilt aankopen voor {product.price}<img className='credits' src={credits} /></p>
-                        <img className="accept" src={accept} onClick={e => buy(product)} />
-                        <img className="accept" src={decline} onClick={e => setAreYouSure(0)} />
-                    </div> */
                     : null
                 }
             </div>

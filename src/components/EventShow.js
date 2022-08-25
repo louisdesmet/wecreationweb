@@ -176,7 +176,7 @@ function EventShow(props) {
 
   function likeEvent() {
     if(loggedUser) {
-      if(props.event.users && !props.event.users.find(user => user.id === loggedUser.id)) {
+      if(!props.event.users.find(user => user.id === loggedUser.id)) {
         props.likeEvent(props.event.id);
       }
     } else {

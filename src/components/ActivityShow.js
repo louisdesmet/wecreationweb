@@ -38,7 +38,7 @@ function ActivityShow(props) {
 
   function likeActivity() {
     if(loggedUser) {
-      if(props.activity.users && props.activity.users.find(user => user.id === loggedUser.id)) {
+      if(!props.activity.users.find(user => user.id === loggedUser.id)) {
         props.likeActivity(props.activity.id);
       }
     } else {
