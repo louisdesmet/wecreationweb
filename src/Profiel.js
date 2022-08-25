@@ -281,7 +281,7 @@ function Profiel(props) {
                             </AppBar>
                             <List>
                                 {
-                                    updatedLoggedUser.receivedLikes.map((user, i, row) =>
+                                    updatedLoggedUser && updatedLoggedUser.receivedLikes.map((user, i, row) =>
                             
                                         <>
                                             <ListItem button onClick={e => history.push("/profiel/" + user.id)}>

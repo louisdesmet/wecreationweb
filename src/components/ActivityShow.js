@@ -13,6 +13,7 @@ import like from '../img/eventshow/like.png';
 import geelPuzzel from '../img/eventshow/geel-puzzel.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Popover, Typography } from "@mui/material";
 
 let evenementenIcon = L.icon({
   iconUrl: evenementen,
@@ -21,6 +22,8 @@ let evenementenIcon = L.icon({
 });
 
 function ActivityShow(props) {
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -35,6 +38,16 @@ function ActivityShow(props) {
   })*/
 
   let position = [props.activity.lat, props.activity.lng];
+
+  const handlePopoverOpen = (event) => {
+      setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+      setAnchorEl(null);
+  };
+
+  const openLiked = Boolean(anchorEl);
 
   function likeActivity() {
     if(loggedUser) {
@@ -58,11 +71,52 @@ function ActivityShow(props) {
           <div>
             <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "activities/" + props.activity.image}/>
           </div>
-          <div className={props.activity.users && props.activity.users.find(user => loggedUser && user.id === loggedUser.id) || props.liked ? "like liked" : "like"} onClick={e => likeActivity()}>
-            <span>{props.liked ? props.activity.users.length + 1 : props.activity.users.length}</span>
-            <img src={like}/>
-            <p>Interesse!</p>
-          </div>
+          <Typography 
+              className={props.activity.users && props.activity.users.find(user => loggedUser && user.id === loggedUser.id) || props.liked ? "like liked" : "like"} 
+              onClick={e => likeActivity()}
+              aria-owns={openLiked ? 'mouse-over-popover' : undefined}
+              aria-haspopup="true"
+              onMouseEnter={handlePopoverOpen}
+              onMouseLeave={handlePopoverClose}
+          >
+              <span>{props.liked ? props.activity.users.length + 1 : props.activity.users.length}</span>
+              <img className={props.activity.users && props.activity.users.find(user => loggedUser && user.id === loggedUser.id) || props.liked ? "liked" : ""} src={like}/>
+              <p className={props.activity.users && props.activity.users.find(user => loggedUser && user.id === loggedUser.id) || props.liked ? "liked" : ""}>Interesse!</p>
+          </Typography>
+          <Popover
+              id="mouse-over-popover"
+              sx={{
+                  pointerEvents: 'none',
+              }}
+              open={openLiked}
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+              }}
+              transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+              }}
+              onClose={handlePopoverClose}
+              disableRestoreFocus
+          >
+              <List>
+                  {
+                  props.activity.users.map((user, i, row) =>
+                      <>
+                      <ListItem>
+                          <ListItemAvatar>
+                              <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + 'users/' + user.image} />
+                          </ListItemAvatar>
+                          <ListItemText primary={user.name} />
+                      </ListItem>
+                      { i + 1 !== row.length && <Divider /> }
+                      </>
+                  )
+                  }
+              </List>
+          </Popover>
         </div>
         <h2 className="event-title"><span>{props.activity.name}</span></h2>
         

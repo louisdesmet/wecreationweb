@@ -25,7 +25,7 @@ import decline from '../img/eventshow/decline.png';
 import get from '../img/nav/get.png';
 import like from '../img/eventshow/like.png';
 import credits from '../img/profile/credits.png';
-import { Avatar, CardHeader } from "@mui/material";
+import { Avatar, CardHeader, Divider, List, ListItem, ListItemAvatar, ListItemText, Popover, Typography } from "@mui/material";
 
 let icon = L.icon({
     iconUrl: get,
@@ -33,6 +33,8 @@ let icon = L.icon({
     popupAnchor: [0, -20],
 });
 function BusinessShow(props) {
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
 
     const history = useHistory();
 
@@ -52,6 +54,16 @@ function BusinessShow(props) {
     const handleClose = () => {
       setOpen(false);
     };
+
+    const handlePopoverOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null);
+    };
+
+    const openLiked = Boolean(anchorEl);
   
 
     let position = [props.business.lat, props.business.lng];
@@ -108,12 +120,9 @@ function BusinessShow(props) {
 
     function likeBusiness() {
         if(loggedUser) {
-            console.log(props.business.users)
             if(!props.business.users.find(user => loggedUser && user.id === loggedUser.id)) {
-                console.log("stap 2")
             props.likeBusiness(props.business.id);
             }
-            
         } else {
             notifyRegister();
         }
@@ -135,11 +144,52 @@ function BusinessShow(props) {
                         props.business.image ? <img className="business-logo" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "businesses/" + props.business.image} /> : null
                     }
                 </div>
-                <div className="like" onClick={e => likeBusiness()}>
+                <Typography 
+                    className={props.business.users && props.business.users.find(user => loggedUser && user.id === loggedUser.id) || props.liked ? "like liked" : "like"} 
+                    onClick={e => likeBusiness()}
+                    aria-owns={openLiked ? 'mouse-over-popover' : undefined}
+                    aria-haspopup="true"
+                    onMouseEnter={handlePopoverOpen}
+                    onMouseLeave={handlePopoverClose}
+                >
                     <span>{props.liked ? props.business.users.length + 1 : props.business.users.length}</span>
-                    <img className={props.business.users && props.business.users.find(user => loggedUser && user.id === loggedUser.id) || props.liked ? "liked" : ""} src={like} />
+                    <img className={props.business.users && props.business.users.find(user => loggedUser && user.id === loggedUser.id) || props.liked ? "liked" : ""} src={like}/>
                     <p className={props.business.users && props.business.users.find(user => loggedUser && user.id === loggedUser.id) || props.liked ? "liked" : ""}>Interesse!</p>
-                </div>
+                </Typography>
+                <Popover
+                    id="mouse-over-popover"
+                    sx={{
+                        pointerEvents: 'none',
+                    }}
+                    open={openLiked}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    onClose={handlePopoverClose}
+                    disableRestoreFocus
+                >
+                    <List>
+                        {
+                        props.business.users.map((user, i, row) =>
+                            <>
+                            <ListItem>
+                                <ListItemAvatar>
+                                    <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + 'users/' + user.image} />
+                                </ListItemAvatar>
+                                <ListItemText primary={user.name} />
+                            </ListItem>
+                            { i + 1 !== row.length && <Divider /> }
+                            </>
+                        )
+                        }
+                    </List>
+                </Popover>
             </div>
             <h2><span>{props.business.name}</span></h2>
             <div className="business-info">
