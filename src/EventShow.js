@@ -35,10 +35,14 @@ function EventShow(props) {
     
   }
 
+  const reloadEvents = () => {
+    props.reloadEvents();
+  }
+
   return (
     <div className="height100">
         <Nav/>
-        {event ? <EventShowComp event={event} likeEvent={likeEvent} isPage={true}/> : null}
+        {event ? <EventShowComp event={event} likeEvent={likeEvent} reloadEvents={reloadEvents} isPage={true}/> : null}
     </div>
   );
 }

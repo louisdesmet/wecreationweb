@@ -121,28 +121,33 @@ function EventShow(props) {
     </div> : null
   ) : null;
 
-  const teamList = props.event && props.event.skills ? <div className="team">{props.event.skills.map(skill => 
-    <div key={skill.id}>
-        {
-          skill.users.length > 0  ? <div>
-            <h2>{skill.skill.name}</h2>
-            {
-              skill.users ? skill.users.map(user =>
-                <Link  key={user.id} to={"/profiel/" + user.id}>{user.name}</Link>
-              ) : null
-            }
-          </div> : null
-        }  
-    </div>
-  )}</div> : null;
+  const teamList = props.event && props.event.skills ? <List>{props.event.skills.map((skill, i, row) => 
+    skill.users ? skill.users.map(user =>
+      <>
+        <ListItem button onClick={e => history.push("/profiel/" + user.id)}>
+            <ListItemAvatar>
+                <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "users/" + user.image} />
+            </ListItemAvatar>
+            <ListItemText primary={user.name} />
+        </ListItem>
+        { i + 1 !== row.length && <Divider /> }
+      </>
+    ) : null
+  )}</List> : null;
 
-  const budget = props.event && props.event.skills ? <div className="team">{props.event.skills.map(skill =>
-    <div key={skill.id}>
-        {
-          skill.paid ? <p>{skill.skill.name}: {skill.amount * skill.credits}cc</p> : null
-        }
-    </div>
-  )}</div> : null;
+  const budget = props.event && props.event.skills ? <List>{props.event.skills.map((skill, i, row) =>
+    skill.paid ?
+      <div key={skill.id}>
+        <>
+          <ListItem button>
+       
+              <ListItemText primary={skill.skill.name + ": " + skill.amount * skill.credits + "cc"} />
+          </ListItem>
+          { i + 1 !== row.length && <Divider /> }
+        </>
+      </div>
+    : null
+  )}</List> : null;
 
   function areYouSureBox(skill) {
     if(loggedUser) {
@@ -165,8 +170,10 @@ function EventShow(props) {
       }
     })
     .then((response) => {
+      
       handleClose();
       notify(props.event, chosenSkill);
+      props.reloadEvents();
     })
     .catch((error) => {
   

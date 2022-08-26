@@ -58,7 +58,7 @@ function Home(props) {
   });
   console.log(props.events.data);
   const futureEvents = props.events.data.filter(event => {
-    return new Date(event.date) > new Date();
+    return new Date(event.date) > new Date() && !event.completed_at;
   });
 
   console.log(futureEvents);

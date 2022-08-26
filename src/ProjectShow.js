@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Nav from './Nav';
 import accept from './img/eventshow/accept.png';
@@ -15,6 +15,7 @@ import locprod, { profileIcon, skillIcon } from './Global';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useHistory } from 'react-router-dom';
+import { List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 
 function ProjectShow(props) {
 
@@ -23,6 +24,9 @@ function ProjectShow(props) {
   const history = useHistory();
 
   const { id } = useParams();
+
+  const [teamOpen, setTeamOpen] = useState(false);
+  const [skillOpen, setSkillOpen] = useState(false);
   const project = props.projects.data.find(project => project.id === parseInt(id));
 
   function date(date) {
@@ -118,24 +122,40 @@ function ProjectShow(props) {
               </div>
               
               <p>{"Er werden al " + (totalHoursPaid + totalHoursFree) + " uren gepresteerd waarvan " + totalHoursPaid + " betaald en " + totalHoursFree + " vrijwillig"}</p>
-
-              <div className='skillList'>
+              <h2 onClick={e =>  setSkillOpen(!skillOpen)} className='teamtitle'>Skills</h2>
+              {
+              skillOpen ? 
+              <List className='skillList'>
                 {
                   skillList.map(skill => 
-                    <div key={skill.icon}>
-                      <img src={skillIcon(skill.icon)}/>
-                      <p>{skill.hours} uren {skill.icon}</p>
-                    </div>
+                    <ListItem key={skill.icon}>
+                      <ListItemAvatar>
+                          <img src={skillIcon(skill.icon)}/>
+                      </ListItemAvatar>
+                      <ListItemText primary={skill.hours + " uren " + skill.icon} />
+                    </ListItem>
                   )
                 }
-              </div>
+              </List>
+              : null
+              }
+              <h2 onClick={e =>  setTeamOpen(!teamOpen)} className='teamtitle'>Team</h2>
+              {
+                teamOpen ? <List className='team'>
+                  {
+                    team.map(user => 
+                      <ListItem button onClick={e => history.push("/profiel/" + user.id)} key={user.id}>
+                        <ListItemAvatar>
+                          <FontAwesomeIcon className="teamIcon" icon={profileIcon(user.icon)} color="white"/>
+                        </ListItemAvatar>
+                        <ListItemText primary={user.name} />
+                      </ListItem>
+                    )
+                  }
+                </List>
+                : null
+              }
              
-
-
-              <h2 className='teamtitle'>Team</h2>
-              {team.map(user => 
-                <Link key={user.id} className="team" to={"/profiel/" + user.id}><FontAwesomeIcon className="teamIcon" icon={profileIcon(user.icon)} color="white"/>{user.name}</Link>
-              )}
               {loggedUser && loggedUser.id === project.leader.id ? <Link to={"/event/create/" + project.id} className='new-event'>Nieuw event</Link> : null}
             </div>
             <div className="column-2">
@@ -150,6 +170,7 @@ function ProjectShow(props) {
                     }
                     <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image}/>
                     <h2>{event.name}</h2>
+                    {event.completed_at ? <p className='completed'><img src={accept}/>Afgerond</p> : null}
                     <p className="mt-15">{event.description}</p>
                     <div className='flex-container'>
                       <img src={datum}/>
@@ -175,45 +196,6 @@ function ProjectShow(props) {
           :
           null
         }
-    </div>
-  );
-}
-
-
-function List({ event }) {
-
-  function Free({free}) {
-    if (free == 0) {
-      return (
-        <div className="free"><p>Project volzet</p></div>
-      );
-    }
-    return (
-      <div className="free"><p>{event.free} vrije uren</p></div>
-    );
-  }
-
-  if (event.credits == 0) {
-    return null;
-  }
- 
-  return (
-    <div className="event-details mt-70">
-      <div>
-        <h3>Participanten</h3>
-        {                             
-          event.users.map((user, index) =>
-            (user.accepted ? <div className="event-user-hours" key={String(user.id) + String(index)}>
-              <p>{user.name}</p>
-              <p>{user.hours} ingeschreven uren</p>
-            </div> : null)            
-          )
-        }
-      </div>
-      <div>
-        <Free free={event.free}/>
-        <div><p>Dit werk event heeft {event.credits} werkuren in totaal.</p></div>
-      </div>                     
     </div>
   );
 }
