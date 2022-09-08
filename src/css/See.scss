@@ -45,6 +45,28 @@
             overflow: scroll;
             div {
                 flex: 1;
+                .messageSwitch {
+                    display: flex;
+                    justify-content: space-between;
+                    width: 70%;
+                    div {
+                        width: 46%;
+                        background: white;
+                        text-align: center;
+                        font-family: 'Roboto', sans-serif;
+                        font-weight: 500;
+                        font-style: normal;
+                        padding: 5px 0;
+                        border-radius: 7px;
+                        box-sizing: border-box;
+                    }
+                    .active {
+                        background: black;
+                        color: white;
+                        border: 2px solid white;
+                        
+                    }
+                }
                 .thumbnail {
                     width: 50%;
                 }
@@ -109,7 +131,7 @@
             -ms-overflow-style: none;  /* Internet Explorer 10+ */
             scrollbar-width: none;  /* Firefox */
         }
-        .filters::-webkit-scrollbar { 
+        .filters::-webkit-scrollbar {
             display: none;  /* Safari and Chrome */
         }
         .filters {
@@ -132,8 +154,7 @@
                 display: block;
                 border-radius: 18px;
                 border: none;
-                font-size: 1.3em;
-                
+                font-size: 1.3em; 
             }
             .searchResults {
                 background: white;

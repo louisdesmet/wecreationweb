@@ -43,7 +43,6 @@ function GetHistoriek(props) {
     })
   });
 
-  console.log(userWorked)
   const combined = userOrders.concat(userTransfers, userWorked);
   const sortedCombined = combined.sort((a,b) => { return new Date(b.created_at) - new Date(a.created_at) });
 

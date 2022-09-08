@@ -29,6 +29,8 @@ function CreateActivity(props) {
     const [ticketlink, setTicketlink] = useState("");
     const [file, setFile] = useState(null);
 
+    const [activity, setActivity] = useState(true);
+
     const [imageId, setImageId] = useState("activityImage");
     const [imageURI, setImageURI] = useState(null);
   
@@ -46,7 +48,7 @@ function CreateActivity(props) {
 
     function sendActivity() {
         if(name && date && activityLocation && lat && lng) {
-
+            formData.append('activity', activity);
             formData.append('name', name);
             formData.append('desc', desc);
             formData.append('date', date);
@@ -115,16 +117,26 @@ function CreateActivity(props) {
     return (
         props.displayAddActivity ? <div className="add-activity-panel">
             <div>
+              <div className="messageSwitch">
+                <div className={activity ? "active" : ""} onClick={e => setActivity(true)}>Activiteit</div>
+                <div className={!activity ? "active" : ""} onClick={e => setActivity(false)}>Bezienswaardigheid</div>
+              </div>
               <label>Naam:</label>
               <input onChange={e => setName(e.target.value)} placeholder='Naam'/>
               <label>Beschrijving: (optioneel)</label>
               <textarea onChange={e => setDesc(e.target.value)} placeholder='Beschrijving'></textarea>
-              <label>Datum:</label>
-              <input className="date" type="date" onChange={e => setDate(e.target.value)}/>
-              <label>Tijdstip: (optioneel)</label>
-              <input type='time' onChange={e => setTime(e.target.value)} placeholder='Tijdstip'/>
-              <label>Link ticketverdeler (optioneel)</label>
-              <input onChange={e => setTicketlink(e.target.value)} placeholder='Link ticketverdeler'/>
+              {
+                activity && <>
+                  <label>Datum:</label>
+                  <input className="date" type="date" onChange={e => setDate(e.target.value)}/>
+                  <label>Tijdstip: (optioneel)</label>
+                  <input type='time' onChange={e => setTime(e.target.value)} placeholder='Tijdstip'/>
+                  <label>Link ticketverdeler (optioneel)</label>
+                  <input onChange={e => setTicketlink(e.target.value)} placeholder='Link ticketverdeler'/>
+                </>
+              }
+          
+   
             </div>
             <div>
               <label htmlFor={imageId}>Afbeelding: (optioneel)</label>
@@ -142,7 +154,7 @@ function CreateActivity(props) {
                   
                 </MapContainer> : null
               }
-              <div className="submit" onClick={e => sendActivity()}>Activiteit toevoegen<img src={add} alt=""/></div>
+              <div className="submit" onClick={e => sendActivity()}>Toevoegen<img src={add} alt=""/></div>
             </div>
           </div> : null
     );

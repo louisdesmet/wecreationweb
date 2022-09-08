@@ -76,20 +76,26 @@ function ActivityMarker(props) {
                     <ListItemText primary={activity.name}/>
                 </ListItem>
                 <Divider />
-                <ListItem>
-                    <ListItemAvatar>
-                        <Avatar alt="" src={datum}/>
-                    </ListItemAvatar>
-                    <ListItemText primary={date(activity.date)}/>
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemAvatar>
-                        <Avatar alt="" src={timeIcon}/>
-                    </ListItemAvatar>
-                    <ListItemText primary={activity.time}/>
-                </ListItem>
-                <Divider />
+                {
+                    activity.resourceType === "activity" ?
+                    <>
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar alt="" src={datum}/>
+                            </ListItemAvatar>
+                            <ListItemText primary={date(activity.date)}/>
+                        </ListItem>
+                        <Divider />
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar alt="" src={timeIcon}/>
+                            </ListItemAvatar>
+                            <ListItemText primary={activity.time}/>
+                        </ListItem>
+                        <Divider />
+                    </>
+                    : null
+                }
                 <ListItem>
                     <ListItemAvatar>
                         <Avatar alt="" src={see}/>
@@ -100,11 +106,13 @@ function ActivityMarker(props) {
         </Popup>
     </Marker>;
 
+    
+
     return (
         <>
             {
                 props.activities.data.map(activity =>
-                    filteredActivityMarkers(activity)
+                    (props.activity && activity.resourceType === "activity")  || (props.place && activity.resourceType === "place") ? filteredActivityMarkers(activity) : null
                 )
             }
         </>

@@ -122,7 +122,7 @@ function ActivityShow(props) {
         
         <div className="container">
           <div className="right">
-            <h2><img src={evenementen} alt=""/>Eventbeschrijving</h2>
+            <h2><img src={evenementen} alt=""/>Beschrijving</h2>
             <p className="desc">{props.activity.description}</p>
             <h2><img src={geelPuzzel} alt=""/>Ticketinfo</h2>
             <p className="desc"><a href={props.activity.ticketlink}>Koop hier je tickets</a></p>
@@ -135,14 +135,20 @@ function ActivityShow(props) {
             </MapContainer>
           </div>
           <div className="left">
-            <div className="left-item">
-              <img src={agenda}/>
-              <p>{date(props.activity.date)}</p>
-            </div>
-            <div className="left-item">
-              <img src={time}/>
-              <p>{props.activity.time}</p>
-            </div>
+            {
+              props.activity.resourceType === "activity" ?
+              <>
+                <div className="left-item">
+                  <img src={agenda}/>
+                  <p>{date(props.activity.date)}</p>
+                </div>
+                <div className="left-item">
+                  <img src={time}/>
+                  <p>{props.activity.time}</p>
+                </div>
+              </>
+              : null
+            }
             <div className="left-item">
               <Link to={"/see"}>
                   <img src={see}/>

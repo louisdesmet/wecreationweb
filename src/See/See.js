@@ -26,6 +26,7 @@ function See(props) {
   const [business, setBusiness] = useState(true);
   const [service, setService] = useState(true);
   const [activity, setActivity] = useState(true);
+  const [place, setPlace] = useState(true);
   const [freeWork, setFreeWork] = useState(true);
   const [paidWork, setPaidWork] = useState(true);
 
@@ -120,7 +121,7 @@ function See(props) {
     <div className="map-container">
       <Nav/>
       <div className="container">
-        <div className="add-activity" onClick={e => addActivity()}>{displayAddActivity ? "Annuleren" : "Activiteit toevoegen" }<img src={displayAddActivity ? decline : add} alt=""/></div>
+        <div className="add-activity" onClick={e => addActivity()}>{displayAddActivity ? "Annuleren" : "Locatie toevoegen" }<img src={displayAddActivity ? decline : add} alt=""/></div>
         { !displayFilters && !displayAddActivity ? <img onClick={() => {showFilters()}} className="map-filter" src={mapFilter} alt=""/> : null }
         <Filters
           displayFilters={displayFilters}
@@ -129,6 +130,7 @@ function See(props) {
           activities={props.activities} businesses={props.businesses} events={props.events}
 
           activity={activity} setActivity={(param) => setActivity(param)}
+          place={place} setPlace={(param) => setPlace(param)}
           business={business} setBusiness={(param) => setBusiness(param)}
           service={service} setService={(param) => setService(param)}
           freeWork={freeWork} setFreeWork={(param) => setFreeWork(param)}
@@ -150,7 +152,7 @@ function See(props) {
             <MarkerClusterGroup>
               { business ? businessMarkers : null }
               { service ? serviceMarkers : null }
-              { activity ? <ActivityMarker activities={props.activities} activity={activity} today={today} week={week} state={state}/> : null }
+              { activity || place ? <ActivityMarker activities={props.activities} activity={activity} place={place} today={today} week={week} state={state}/> : null }
               { freeWork ? <EventMarker events={props.events} paid={false} event={freeWork} today={today} week={week} state={state}/> : null }
               { paidWork ? <EventMarker events={props.events} paid={true} event={paidWork} today={today} week={week} state={state}/> : null }
             </MarkerClusterGroup>

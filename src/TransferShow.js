@@ -33,7 +33,7 @@ function TransferShow(props) {
                 <p>{transfer.user.email}</p>
               </div>
               <div>
-                <p>{transfer.accepted ? 'Je aanvraag werd aanvaard.' : 'Je aanvraag is in behandeling.'}</p>
+                <p>{transfer.accepted ? 'Je aanvraag werd aanvaard door collectief verhalen.' : 'Je aanvraag is in behandeling door collectief verhalen.'}</p>
               </div>
             </div>
           </div>

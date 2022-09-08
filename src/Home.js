@@ -56,12 +56,10 @@ function Home(props) {
     element.urlText = "/get/handelaars/";
     element.urlText2 = "/products";
   });
-  console.log(props.events.data);
+
   const futureEvents = props.events.data.filter(event => {
     return new Date(event.date) > new Date() && !event.completed_at;
   });
-
-  console.log(futureEvents);
   
   if(oneTime) {
     let rndInt = Math.floor(Math.random() * 5) + 1;

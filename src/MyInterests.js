@@ -12,66 +12,55 @@ function MyInterests(props) {
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
 
-    const user = props.users.data.find(user => user.id === loggedUser.id)
-    
-    const eventList = user ? (
+    const user = props.users.data.find(user => user.id === loggedUser.id);
+
+    if(user) {
+        user.activities.forEach(function (element) {
+            element.type = "activity";
+        });
+        user.events.forEach(function (element) {
+            element.type = "event";
+        });
+        user.givenLikes.forEach(function (element) {
+            element.type = "user";
+        });
+    }
+
+    const allItems = user.events.concat(user.activities).concat(user.businesses).concat(user.givenLikes);
+ 
+    const sortedAllItems = allItems.sort((a,b) => { return new Date(b.liked_at) - new Date(a.liked_at) });
+
+    const eventList = sortedAllItems ? (
         <div className='list'>
             {
-                user.events.map(event =>
-                    <Link to={"events/" + event.id} className='item' key={event.id}>
+                sortedAllItems.map(event =>
+                    <Link to={
+                        event.type === "event" ?
+                            "events/" + event.id :
+                        event.type === "activity" ?
+                            "activities/" + event.id :
+                        event.type === "business" ?
+                            "get/handelaars/" + event.id + "/products" :
+                        event.type === "user" ?
+                            "profiel/" + event.id :
+                        null
+                    } 
+                    className='item'
+                    key={event.type + event.id}
+                    >
                         <div>
-                            <img src={work}/>
+                            <img src={event.type === "event" ?
+                                work :
+                            event.type === "activity" ?
+                                evenementen :
+                            event.type === "business" ?
+                                get :
+                            event.type === "user" ?
+                                profile :
+                            null}/>
                             <p>{event.name}</p>
                         </div>
                         <p>{datetime(event.liked_at)}</p>
-                    </Link>
-                )
-            }
-        </div>
-    ) : null;
-
-    const activityList = user ? (
-        <div className='list'>
-            {
-                user.activities.map(activity =>
-                    <Link to={"activities/" + activity.id} className='item' key={activity.id}>
-                        <div>
-                            <img src={evenementen}/>
-                            <p>{activity.name}</p>
-                        </div>
-                        <p>{datetime(activity.liked_at)}</p>
-                    </Link>
-                )
-            }
-        </div>
-    ) : null;
-
-    const businessList = user ? (
-        <div className='list'>
-            {
-                user.businesses.map(business =>
-                    <Link to={"get/handelaars/" + business.id + "/products"} className='item' key={business.id}>
-                        <div>
-                            <img src={get}/>
-                            <p>{business.name}</p>
-                        </div>
-                        <p>{datetime(business.liked_at)}</p>
-                    </Link>
-                )
-            }
-        </div>
-    ) : null;
-
-    const userList = user ? (
-        <div className='list'>
-            {
-                user.givenLikes.map(user =>
-                    <Link to={"profiel/" + user.id} className='item' key={user.id}>
-                        <div>
-                            <img src={profile}/>
-                            <p>{user.name}</p>
-                        </div>
-                        <p>{datetime(user.liked_at)}</p>
                     </Link>
                 )
             }
@@ -84,9 +73,7 @@ function MyInterests(props) {
             <div className='interest-container'>
                 <h2>Mijn interesses</h2>
                 {eventList}
-                {activityList}
-                {businessList}
-                {userList}
+            
             </div>
         </div>
     );

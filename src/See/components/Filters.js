@@ -21,7 +21,6 @@ function Filters(props) {
     function searchItem(query) {
         const foundActivities = props.activities.data.filter((activity) => {
           const name = activity.name.toLowerCase();
-          activity.type = "activity";
           return name.includes(query) && query !== "";
         });
         const foundBusinesses = props.businesses.data.filter((business) => {
@@ -118,6 +117,13 @@ function Filters(props) {
                             <p>Activiteiten</p>
                         </div>
                         <img onClick={() => props.setActivity(!props.activity)} className="switch" src={props.activity ? active : nonactive} alt=""/>
+                    </div>
+                    <div className="categories">
+                        <div>
+                            <img src={evenementen} alt=""/>
+                            <p>Bezienswaardigheden</p>
+                        </div>
+                        <img onClick={() => props.setPlace(!props.place)} className="switch" src={props.place ? active : nonactive} alt=""/>
                     </div>
                     <div className="categories">
                         <div>

@@ -200,8 +200,6 @@ function Profiel(props) {
         })
     }
 
-    console.log(updatedLoggedUser);
-
     return (
         <div className="height100">
             <Nav/>

@@ -28,7 +28,6 @@ function Login(props) {
       email,
       password
     }).then(result => {
-      console.log(result);
       if(result.data.token.access_token) {
         localStorage.setItem('token', result.data.token.access_token);
         localStorage.setItem('user', JSON.stringify(result.data.user[0]));
