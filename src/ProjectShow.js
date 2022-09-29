@@ -14,14 +14,14 @@ import './css/ProjectShow.scss';
 import locprod, { profileIcon, skillIcon } from './Global';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 
 function ProjectShow(props) {
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
-  const history = useHistory();
+  const history = useNavigate();
 
   const { id } = useParams();
 
@@ -103,7 +103,7 @@ function ProjectShow(props) {
         {project ?
           <div className='project-panel'>
             <div className="column-1">
-              <div className='back' onClick={e =>  history.goBack()}>
+              <div className='back' onClick={e =>  history(-1)}>
                 <span>&#10508;</span>
                 <b>BACK</b>
               </div>
@@ -127,7 +127,9 @@ function ProjectShow(props) {
               skillOpen ? 
               <List className='skillList'>
                 {
-                  skillList.map(skill => 
+                  skillList.sort(function(a, b) {
+                    return b.hours - a.hours;
+                  }).map(skill => 
                     <ListItem key={skill.icon}>
                       <ListItemAvatar>
                           <img src={skillIcon(skill.icon)}/>
@@ -144,7 +146,7 @@ function ProjectShow(props) {
                 teamOpen ? <List className='team'>
                   {
                     team.map(user => 
-                      <ListItem button onClick={e => history.push("/profiel/" + user.id)} key={user.id}>
+                      <ListItem button onClick={e => history("/profiel/" + user.id)} key={user.id}>
                         <ListItemAvatar>
                           <FontAwesomeIcon className="teamIcon" icon={profileIcon(user.icon)} color="white"/>
                         </ListItemAvatar>

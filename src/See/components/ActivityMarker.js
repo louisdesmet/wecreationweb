@@ -1,7 +1,7 @@
 import React from "react";
 import { Marker, Popup } from 'react-leaflet'
 import L from 'leaflet';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { date } from '../../Global';
 import { Avatar, ListItemText, ListItem, List, Divider, ListItemAvatar } from "@mui/material";
 
@@ -19,7 +19,7 @@ let evenementenIcon = L.icon({
 
 function ActivityMarker(props) {
     
-    const history = useHistory();
+    const history = useNavigate();
 
     const isToday = (someDate) => {
         const today = new Date()
@@ -69,7 +69,7 @@ function ActivityMarker(props) {
     const marker = (activity) => <Marker key={activity.id} position={[activity.lat, activity.lng]} icon={evenementenIcon}>
         <Popup className="popup">
             <List>
-                <ListItem button onClick={e => history.push("/activities/" + activity.id)}>
+                <ListItem button onClick={e => history("/activities/" + activity.id)}>
                     <ListItemAvatar>
                         <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "activities/" + activity.image} />
                     </ListItemAvatar>

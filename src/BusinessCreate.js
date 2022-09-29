@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { useLocation, useParams, useHistory, Link } from 'react-router-dom';
+import { useLocation, useParams, useNavigate, Link } from 'react-router-dom';
 import locprod from './Global';
 import './css/EventCreate.scss';
 import { MapContainer, TileLayer } from 'react-leaflet'
@@ -16,7 +16,7 @@ import add from './img/eventshow/add.png';
 function BusinessCreate(props) {
 
     const routerLocation = useLocation();
-    const history = useHistory();
+    const history = useNavigate();
   
     const loggedUser = JSON.parse(localStorage.getItem("user"));
 

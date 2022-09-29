@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import axios from 'axios';
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import locprod from './Global';
 
 import './css/Login.scss';
@@ -16,7 +16,7 @@ axios.defaults.headers.common['Accept'] = 'application/json';
 
 function Login(props) {
 
-  const history = useHistory();
+  const history = useNavigate();
 
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -31,7 +31,7 @@ function Login(props) {
       if(result.data.token.access_token) {
         localStorage.setItem('token', result.data.token.access_token);
         localStorage.setItem('user', JSON.stringify(result.data.user[0]));
-        history.push("/home");
+        history("/home");
       }
     }).catch(e => {
       setError("Email en paswoord combinatie niet gevonden.")

@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import Nav from "./Nav";
 import './css/Profiel.scss';
 import locprod from './Global';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function ProfielEdit(props) {
 
-    const history = useHistory();
+    const history = useNavigate();
 
     const loggedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -36,7 +36,7 @@ function ProfielEdit(props) {
             'Authorization': 'Bearer ' + localStorage.getItem("token")
           },
         }).then(response => {
-            history.goBack();
+            history(-1);
         })
         .catch(error => {
         

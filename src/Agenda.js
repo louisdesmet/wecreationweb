@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -34,8 +34,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function Agenda(props) {
-
-  const history = useHistory();
 
   const { id } = useParams();
 
@@ -269,7 +267,7 @@ export default function Agenda(props) {
               {
                 dateEvents.map(event =>
                   <>
-                    <ListItem button onClick={e => history.push(event.project ? "/events/" + event.id : "/activities/" + event.id)}>
+                    <ListItem button onClick={e => <Navigate to={event.project ? "/events/" + event.id : "/activities/" + event.id}/>}>
                       <ListItemAvatar>
                         <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + (event.type === "event" ? "events/" : "activities/") + event.image} />
                       </ListItemAvatar>

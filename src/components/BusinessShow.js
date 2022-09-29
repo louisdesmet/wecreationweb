@@ -7,7 +7,7 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import Button from '@mui/material/Button';
@@ -36,7 +36,7 @@ function BusinessShow(props) {
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
-    const history = useHistory();
+    const history = useNavigate();
 
     const notifyCredits = (user, product) => toast("Je hebt " + user.credits + " credits en  het product " + product.name + " kost " + product.price + " credits");
     const notifyStock = (product) => toast("Het product " + product.name + " is uitverkocht.");
@@ -133,7 +133,7 @@ function BusinessShow(props) {
             <div className="top-items">
                 <div className="groupchat">
                     {
-                        props.isPage ? <div className='back' onClick={e => history.goBack()}>
+                        props.isPage ? <div className='back' onClick={e => history(-1)}>
                             <span>&#10508;</span>
                             <b>BACK</b>
                         </div> : null

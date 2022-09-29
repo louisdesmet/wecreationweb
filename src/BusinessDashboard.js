@@ -1,12 +1,12 @@
 import React from "react";
 import Nav from "./Nav";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import './css/BusinessDashboard.scss';
 
 function BusinessDashboard(props) {
 
-  const history = useHistory();
+  const history = useNavigate();
 
   const user = props.users.data.find(user => user.id === JSON.parse(localStorage.getItem("user")).id);
 

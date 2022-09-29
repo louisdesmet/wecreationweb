@@ -9,13 +9,13 @@ import rightTop from './img/nav/right-top.png';
 import rightBottom from './img/nav/right-bottom.png';
 
 import terms from './img/nav/ledencontract.pdf';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 axios.defaults.baseURL = locprod;
 axios.defaults.headers.common['Accept'] = 'application/json';
 
 function Register(props) {
-    const history = useHistory();
+    const history = useNavigate();
     const [error, setError] = useState("");
 
     const [email, setEmail] = useState("");
@@ -41,7 +41,7 @@ function Register(props) {
               localStorage.setItem('user', JSON.stringify(result.data.user[0]));
               localStorage.setItem("firstLogin", 1);
               props.reloadUsers();
-              history.push("/profiel");
+              history("/profiel");
               
             })
           } else {

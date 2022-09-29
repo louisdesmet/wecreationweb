@@ -3,7 +3,7 @@ import Nav from "./Nav";
 import './css/Profiel.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ToastContainer, toast } from 'react-toastify';
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import agenda from './img/profile/agenda.png';
 import handel from './img/profile/handel.png';
@@ -41,7 +41,7 @@ function Profiel(props) {
 
     const notify = () => toast("Welkom op wecreation, je bent nu op je profiel.");
 
-    const history = useHistory();
+    const history = useNavigate();
     const { id } = useParams();
 
     const [liked, setLiked] = useState(false);
@@ -136,7 +136,7 @@ function Profiel(props) {
     function logout() {
         localStorage.setItem('token', null);
         localStorage.setItem('user', null);
-        history.push("/login");
+        history("/login");
     }
 
     let teamList = [];
@@ -282,7 +282,7 @@ function Profiel(props) {
                                     updatedLoggedUser && updatedLoggedUser.receivedLikes.map((user, i, row) =>
                             
                                         <>
-                                            <ListItem button onClick={e => history.push("/profiel/" + user.id)}>
+                                            <ListItem button onClick={e => history("/profiel/" + user.id)}>
                                                 <ListItemAvatar>
                                                     <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "users/" + user.image} />
                                                 </ListItemAvatar>
@@ -323,7 +323,7 @@ function Profiel(props) {
                                     props.events.data.map((event, i, row) =>
                                     updatedLoggedUser && updatedLoggedUser.id === event.project.leader.id ?
                                         <>
-                                            <ListItem button onClick={e => history.push("/events/" + event.id)}>
+                                            <ListItem button onClick={e => history("/events/" + event.id)}>
                                                 <ListItemAvatar>
                                                     <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "events/" + event.image} />
                                                 </ListItemAvatar>
@@ -364,7 +364,7 @@ function Profiel(props) {
                                 {
                                     teamList.map((user, i, row) =>
                                         <>
-                                            <ListItem button onClick={e => history.push("/profiel/" + user.id)}>
+                                            <ListItem button onClick={e => history("/profiel/" + user.id)}>
                                                 <ListItemAvatar>
                                                     <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "users/" + user.image} />
                                                 </ListItemAvatar>
@@ -406,7 +406,7 @@ function Profiel(props) {
                                         props.projects.data.map(project =>
                                             updatedLoggedUser && updatedLoggedUser.id === project.leader.id ? 
                                             <>
-                                                <ListItem button onClick={e => history.push("/projects/" + project.id)}>
+                                                <ListItem button onClick={e => history("/projects/" + project.id)}>
                                                     <ListItemAvatar>
                                                         <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "projects/" + project.picture} />
                                                     </ListItemAvatar>

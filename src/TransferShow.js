@@ -5,11 +5,11 @@ import './css/OrderShow.scss';
 
 import profile from './img/eventshow/profile-purple.png';
 
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function TransferShow(props) {
 
-  const history = useHistory();
+  const history = useNavigate();
 
   const { id } = useParams();
   const transfer = props.transfers.data.find(transfer => transfer.id === parseInt(id));
@@ -19,7 +19,7 @@ function TransferShow(props) {
       <Nav/>
       {
         transfer ? <div className="order-details">
-          <div className='back' onClick={e =>  history.goBack()}>
+          <div className='back' onClick={e =>  history(-1)}>
             <span>&#10508;</span>
             <b>BACK</b>
           </div>

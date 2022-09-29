@@ -3,14 +3,14 @@ import { useParams } from 'react-router-dom';
 import locprod from './Global';
 import './css/EventCreate.scss';
 import Nav from './Nav';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import work from './img/nav/work.png';
 
 
 function ProjectCreate(props) {
 
-  const routerHistory = useHistory();
+  const routerHistory = useNavigate();
 
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
@@ -51,7 +51,7 @@ function ProjectCreate(props) {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ' + localStorage.getItem("token")
           },
-        }).then(response => routerHistory.push('/work'))
+        }).then(response => routerHistory('/work'))
         .catch(error => {
         
         });
@@ -63,7 +63,7 @@ function ProjectCreate(props) {
               'Accept': 'multipart/form-data',
               'Authorization': 'Bearer ' + localStorage.getItem("token")
           },
-        }).then(response => routerHistory.push('/work'))
+        }).then(response => routerHistory('/work'))
         .catch(error => {
         
         });

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import locprod from './Global';
 import './css/EventCreate.scss';
 import { MapContainer, TileLayer } from 'react-leaflet'
@@ -13,6 +13,8 @@ import agenda from './img/nav/agenda.png';
 import timeIcon from './img/eventshow/time.png';
 import see from './img/nav/see.png';
 function ActivityUpdate(props) {
+
+  const routerHistory = useNavigate();
 
   // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
   Geocode.setApiKey("AIzaSyB3hu-a1Gnzog5zG63fnQ8ZaMLghPGUPwI");
@@ -54,54 +56,65 @@ function ActivityUpdate(props) {
     setFile(event.target.files[0]);
   }
 
+  function updateActivity() {
+    fetch(locprod + '/activities/' + activity.id, {
+      method: 'PUT',
+      body: JSON.stringify({
+        name: name,
+        desc: desc,
+        date: date,
+        time: time,
+        location: location,
+        lat: lat,
+        lng: lng,
+        user: JSON.parse(localStorage.getItem("user")).id
+      }),
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem("token")
+      },
+    }).then(response => {
+      fetch(locprod + '/activities/image', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'multipart/form-data',
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        },
+      }).then(response => routerHistory('/activities/' + activity.id))
+      .catch(error => {
+        
+      });
+    })
+    .catch(error => {
+    
+    });
+  }
+
   function submit(e) {
     e.preventDefault();
-    if(name && desc && date && time && location && lat && lng) {
+    if(name && desc && location && lat && lng) {
       if(file) {
         formData.append('image', file);
       }
       if(activity) {
         formData.append('activityid', activity.id);
-        fetch(locprod + '/activities/' + activity.id, {
-          method: 'PUT',
-          body: JSON.stringify({
-            name: name,
-            desc: desc,
-            date: date,
-            time: time,
-            location: location,
-            lat: lat,
-            lng: lng,
-            user: JSON.parse(localStorage.getItem("user")).id
-          }),
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + localStorage.getItem("token")
-          },
-        }).then(response => {
-          fetch(locprod + '/activities/image', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'multipart/form-data',
-                'Authorization': 'Bearer ' + localStorage.getItem("token")
-            },
-          }).then(response => window.location.href = '/activities/' + activity.id)
-          .catch(error => {
-          
-          });
-        })
-        .catch(error => {
-        
-        });
+        if(activity.resourceType === "activity") {
+          if(date && time) {
+            updateActivity();
+          } else {
+            notify();
+          }
+        } else {
+          updateActivity();
+        }
       }
     } else {
-      notify();
+   
     }
   }
 
-  
   function searchAddress(address) {
     Geocode.fromAddress(address).then(
       (response) => {
@@ -134,14 +147,20 @@ function ActivityUpdate(props) {
           activity && activity.image ? <img className="event-logo"  src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "activities/" + activity.image}/> : null
         }
         <input type="file" name="image" accept="application/image" multiple={false} onChange={imageHandler}/>
-        <div className='input-image'>
-          <img src={agenda} alt=""/>
-          <input defaultValue={activity && activity.date ?  new Date(activity.date).toISOString().substr(0,10) : ""} type="date" onChange={e => setDate(e.target.value)}/>
-        </div>
-        <div className='input-image'>
-          <img src={timeIcon} alt=""/>
-          <input defaultValue={activity && activity.time ?  activity.time : ""} type='time' onChange={e => setTime(e.target.value)} placeholder='Tijdstip'/>
-        </div>
+        {
+          activity.resourceType === "activity" ? 
+          <>
+            <div className='input-image'>
+              <img src={agenda} alt=""/>
+              <input defaultValue={activity && activity.date ?  new Date(activity.date).toISOString().substr(0,10) : ""} type="date" onChange={e => setDate(e.target.value)}/>
+            </div>
+            <div className='input-image'>
+              <img src={timeIcon} alt=""/>
+              <input defaultValue={activity && activity.time ?  activity.time : ""} type='time' onChange={e => setTime(e.target.value)} placeholder='Tijdstip'/>
+            </div>
+          </>
+          : null
+        }
         <div className='input-image'>
           <img src={see} alt=""/>
           <input defaultValue={activity && activity.location ?  activity.location : ""} onChange={e => setLocationFunction(e.target.value)} placeholder='Locatie'/>

@@ -4,8 +4,8 @@ import {getAllEvents, getActivities, getBusinesses, getProjects, getUsers, getMe
 import {
   BrowserRouter as Router,
   Route,
-  Redirect,
-  Switch
+  Navigate,
+  Routes,
 } from "react-router-dom";
 
 import './App.scss';
@@ -60,6 +60,7 @@ import GetVergoedingenVerkopen from "./GetVergoedingenVerkopen";
 import ActivityUpdate from "./ActivityUpdate";
 import MyActivities from "./MyActivities";
 import EventSkillUser from "./EventSkillUser";
+import { Outlet } from "react-router";
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   return (
@@ -67,20 +68,8 @@ const PrivateRoute = ({component: Component, ...rest}) => {
         localStorage.getItem('token') !== 'null' &&
         localStorage.getItem('token') !== null &&
         typeof localStorage.getItem('token') !== 'undefined'
-        ? <Component {...props} /> : <Redirect to="/login" />
+        ? <Component {...props} /> : <Navigate to="/login" />
       )} />
-  );
-};
-
-const AdminRoute = ({component: Component, ...rest}) => {
-  return (
-    <Route {...rest} render={props => (
-      localStorage.getItem('token') !== 'null' &&
-      localStorage.getItem('token') !== null &&
-      typeof localStorage.getItem('token') !== 'undefined' &&
-      JSON.parse(localStorage.getItem("user")).roles.find(role => role.name === 'admin')
-      ? <Component {...props} /> : <Redirect to="/login" />
-    )} />
   );
 };
 
@@ -92,10 +81,16 @@ const BusinessRoute = ({component: Component, ...rest}) => {
       typeof localStorage.getItem('token') !== 'undefined' &&
       JSON.parse(localStorage.getItem("user")).roles.find(role => role.name === 'business') ?
       <Component {...props} /> :
-      <Redirect to="/login" />
+      <Navigate to="/login" />
     )} />
   );
 };
+
+const AuthLayout = () => {
+  return JSON.parse(localStorage.getItem("user")).roles.find(role => role.name === 'admin')
+    ? <Outlet />
+    : <Navigate to="/login" />
+}
 
 export const App = ({getBusinesses, getActivities, getAllEvents, getProjects, getUsers, getMessages, getGroups, getOrders, getTransfers, getSkills}) => {
 
@@ -131,239 +126,210 @@ export const App = ({getBusinesses, getActivities, getAllEvents, getProjects, ge
   return (
       <Router>
         
-        <Switch>
-          <Route exact path="/login">
-            <Login />
-          </Route>
-          <Route exact path="/forgot">
-            <Forgot />
-          </Route>
-          <Route exact path="/password/reset/:token/:email">
-            <ResetPassword />
-          </Route>
-          <Route exact path="/register">
-            <Register reloadUsers={e => getUsers()}/>
-          </Route>
+        <Routes>
+          <Route exact path="/login" element={<Login />}></Route>
+          <Route exact path="/forgot" element={ <Forgot />}></Route>
+          <Route exact path="/password/reset/:token/:email" element={<ResetPassword />}></Route>
+          <Route exact path="/register" element={<Register reloadUsers={e => getUsers()}/>}></Route>
   
           {
               events.data && activities.data && businesses.data && projects.data && users.data && messages.data && groups.data && orders.data && transfers.data ?
             <>
-              <Route exact path="/see">
-                <See events={events} activities={activities} businesses={businesses} reloadActivities={() => getActivities()}/>
+              <Route exact path="/see" element={<See events={events} activities={activities} businesses={businesses} reloadActivities={() => getActivities()}/>}>
+                
               </Route>
-              <Route exact path="/agenda/:id">
-                <Agenda events={events} activities={activities} reloadEvents={e => getAllEvents()} reloadActivities={() => getActivities()}/>
+              <Route exact path="/agenda/:id" element={<Agenda events={events} activities={activities} reloadEvents={e => getAllEvents()} reloadActivities={() => getActivities()}/>}>
+                
               </Route>    
-              <Route exact path="/agenda">
-                <Agenda events={events} activities={activities} reloadEvents={e => getAllEvents()} reloadActivities={() => getActivities()}/>
+              <Route exact path="/agenda" element={<Agenda events={events} activities={activities} reloadEvents={e => getAllEvents()} reloadActivities={() => getActivities()}/>}>
+               
               </Route>
 
-              <Route exact path="/home">
-                <Home 
-                  activities={activities} events={events} businesses={businesses} users={users} projects={projects} messages={messages}
-                  reloadEvents={e => getAllEvents()} reloadBusinesses={e => getBusinesses()} reloadActivities={e => getActivities()}
-                />
+              <Route exact path="/home" element={<Home 
+                activities={activities} events={events} businesses={businesses} users={users} projects={projects} messages={messages}
+                reloadEvents={e => getAllEvents()} reloadBusinesses={e => getBusinesses()} reloadActivities={e => getActivities()}
+              />}></Route>
+              <Route exact path="/work" element={<Work projects={projects} events={events} users={users}/>}></Route>
+  
+  
+              <Route exact path="/get/handelaars/:id/products" element={<GetProducts businesses={businesses} users={users} reloadBusinesses={e => getBusinesses()}/>}>
+              
               </Route>
-              <Route exact path="/work">
-                <Work projects={projects} events={events} users={users}/>
+              <Route exact path="/get/handelaars" element={<GetHandelaars businesses={businesses}/>}>
+             
+              </Route>
+              <Route exact path="/get/diensten" element={<GetDiensten businesses={businesses}/>}>
+              
+              </Route>
+              <Route exact path="/get/vergoedingen/aankopen" element={<GetVergoedingenAankopen />}>
+              </Route>
+              <Route exact path="/get/vergoedingen/verkopen" element={<GetVergoedingenVerkopen />}>
+                
+              </Route>
+              <Route exact path="/get/vergoedingen" element={<GetVergoedingen />}>
+               
               </Route>
   
   
-              <Route exact path="/get/handelaars/:id/products">
-                <GetProducts businesses={businesses} users={users} reloadBusinesses={e => getBusinesses()}/>
+              <Route exact path="/get/historiek" element={<GetHistoriek transfers={transfers} orders={orders} events={events}/>}>
+                
               </Route>
-              <Route exact path="/get/handelaars">
-                <GetHandelaars businesses={businesses}/>
-              </Route>
-              <Route exact path="/get/diensten">
-                <GetDiensten businesses={businesses}/>
-              </Route>
-              <Route exact path="/get/vergoedingen/aankopen">
-                <GetVergoedingenAankopen />
-              </Route>
-              <Route exact path="/get/vergoedingen/verkopen">
-                <GetVergoedingenVerkopen />
-              </Route>
-              <Route exact path="/get/vergoedingen">
-                <GetVergoedingen />
+              <Route exact path="/get" element={<Get />}>
+                
               </Route>
   
   
-              <Route exact path="/get/historiek">
-                <GetHistoriek transfers={transfers} orders={orders} events={events}/>
+              <Route exact path="/profiel/edit" element={<ProfielEdit users={users}/>}>
+                
               </Route>
-              <Route exact path="/get">
-                <Get />
+              <Route exact path="/profiel/:id" element={<Profiel users={users} projects={projects} events={events} reloadUsers={e => getUsers()}/>}>
+                
               </Route>
-  
-  
-              <Route exact path="/profiel/edit">
-                <ProfielEdit users={users}/>
+              <Route exact path="/profiel" element={<Profiel users={users} projects={projects} events={events}/>}>
+                
               </Route>
-              <Route exact path="/profiel/:id">
-                <Profiel users={users} projects={projects} events={events} reloadUsers={e => getUsers()}/>
+              <Route exact path="/my-events" element={<MyEvents events={events}/>}>
+                
               </Route>
-              <Route exact path="/profiel">
-                <Profiel users={users} projects={projects} events={events}/>
+              <Route exact path="/my-activities" element={<MyActivities activities={activities}/>}>
+                
               </Route>
-              <Route exact path="/my-events">
-                <MyEvents events={events}/>
+              <Route exact path="/my-interests" element={<MyInterests users={users}/>}>
+                
               </Route>
-              <Route exact path="/my-activities">
-                <MyActivities activities={activities}/>
-              </Route>
-              <Route exact path="/my-interests">
-                <MyInterests users={users}/>
-              </Route>
-              <Route exact path="/event-leader-board/:id">
-                <EventLeaderBoard events={events} users={users} reloadEvents={e => getAllEvents()}/>
+              <Route exact path="/event-leader-board/:id" element={<EventLeaderBoard events={events} users={users} reloadEvents={e => getAllEvents()}/>}>
+               
               </Route>
 
 
-              <Route exact path="/netwerk/dm/:dmId">
-                <Netwerk 
+              <Route exact path="/netwerk/dm/:dmId" element={<Netwerk 
                   groups={groups} messages={messages} events={events} users={users} 
                   reloadMessages={e => getMessages()} reloadGroups={e => getGroups()}
-                />
+              />}>
+             
               </Route>
-              <Route exact path="/netwerk/:groupchatId">
-                <Netwerk 
+              <Route exact path="/netwerk/:groupchatId" element={<Netwerk 
                   groups={groups} messages={messages} events={events} users={users} 
                   reloadMessages={e => getMessages()} reloadGroups={e => getGroups()}
-                />
+                />}>
+              
               </Route>
-              <Route exact path="/netwerk">
-                <Netwerk 
+              <Route exact path="/netwerk" element={<Netwerk 
                   groups={groups} messages={messages} events={events} users={users} 
                   reloadMessages={e => getMessages()} reloadGroups={e => getGroups()}
-                /> 
+                /> }>
+              
               </Route>
   
   
-              <Route exact path="/project/create/:id">
-                <ProjectCreate />
+              <Route exact path="/project/create/:id" element={<ProjectCreate />}>
+                
               </Route>
-              <Route exact path="/project/create">
-                <ProjectCreate />
-              </Route>
-  
-  
-              <Route exact path="/event/create/:id/:eventId">
-                <EventCreate projects={projects} skills={skills}/>
-              </Route>
-              <Route exact path="/event/create/:id">
-                <EventCreate projects={projects} skills={skills}/>
-              </Route>
-              <Route exact path="/activity/update/:id">
-                <ActivityUpdate activities={activities}/>
-              </Route>
-              <Route exact path="/handelaar/create/:id">
-                <BusinessCreate businesses={businesses}/>
-              </Route>
-              <Route exact path="/handelaar/create">
-                <BusinessCreate businesses={businesses}/>
-              </Route>
-              <Route exact path="/dienst/create/:id">
-                <BusinessCreate businesses={businesses}/>
-              </Route>
-              <Route exact path="/dienst/create">
-                <BusinessCreate businesses={businesses}/>
-              </Route>
-              <BusinessRoute exact path="/handelaar-dashboard">
-                <BusinessDashboard orders={orders} businesses={businesses} users={users}/>
-              </BusinessRoute>
-  
-  
-              <Route exact path="/events/:id">
-                <EventShow events={events} reloadEvents={e => getAllEvents()}/>
-              </Route>
-              <Route exact path="/projects/:id">
-                <ProjectShow projects={projects}/>
-              </Route>
-              <Route exact path="/orders/:id">
-                <OrderShow orders={orders} users={users}/>
-              </Route>
-              <Route exact path="/transfers/:id">
-                <TransferShow users={users} transfers={transfers}/>
-              </Route>
-              <Route exact path="/activities/:id">
-                <ActivityShow activities={activities} reloadActivities={e => getActivities()}/>
+              <Route exact path="/project/create" element={<ProjectCreate />}>
+                
               </Route>
   
   
-              <AdminRoute exact path="/admin">
-                <AdminProjects />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-projects/create">
-                <AdminProjectsCreate />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-projects/edit/:id">
-                <AdminProjectsEdit />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-projects">
-                <AdminProjects />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-projects-events/create">
-                <AdminProjectsEventsCreate />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-projects-events/edit/:id">
-                <AdminProjectsEventsEdit />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-projects-events">
-                <AdminProjectsEvents />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-projects-events-skills">
-                <AdminProjectsEventsSkills />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-businesses/create">
-                <AdminBusinessesCreate />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-businesses/edit/:id">
-                <AdminBusinessesEdit />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-businesses">
-                <AdminBusinesses />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-products/create">
-                <AdminProductsCreate />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-activities/edit/:id">
-                <AdminProductsEdit />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-products">
-                <AdminProducts />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-activities/create">
-                <AdminActivitiesCreate />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-activities/edit/:id">
-                <AdminActivitiesEdit />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-activities">
-                <AdminActivities />
-              </AdminRoute>
-              <AdminRoute exact path="/admin-user-verification">
-                <AdminUserVerification />
-              </AdminRoute>
+              <Route exact path="/event/create/:id/:eventId" element={<EventCreate projects={projects} skills={skills}/>}>
+                
+              </Route>
+              <Route exact path="/event/create/:id" element={<EventCreate projects={projects} skills={skills}/>}>
+                
+              </Route>
+              <Route exact path="/activity/update/:id" element={<ActivityUpdate activities={activities}/>}>
+                
+              </Route>
+              <Route exact path="/handelaar/create/:id" element={<BusinessCreate businesses={businesses}/>}>
+                
+              </Route>
+              <Route exact path="/handelaar/create" element={<BusinessCreate businesses={businesses}/>}>
+                
+              </Route>
+              <Route exact path="/dienst/create/:id" element={<BusinessCreate businesses={businesses}/>}>
+               
+              </Route>
+              <Route exact path="/dienst/create" element={<BusinessCreate businesses={businesses}/>}>
+                
+              </Route>
+              <Route exact path="/handelaar-dashboard" element={<BusinessDashboard orders={orders} businesses={businesses} users={users}/>}>
+               
+              </Route>
+  
+  
+              <Route exact path="/events/:id" element={<EventShow events={events} reloadEvents={e => getAllEvents()}/>}>
+               
+              </Route>
+              <Route exact path="/projects/:id" element={<ProjectShow projects={projects}/>}>
+              
+              </Route>
+              <Route exact path="/orders/:id" element={<OrderShow orders={orders} users={users}/>}>
+                
+              </Route>
+              <Route exact path="/transfers/:id" element={<TransferShow users={users} transfers={transfers}/>}>
+                
+              </Route>
+              <Route exact path="/activities/:id" element={<ActivityShow activities={activities} reloadActivities={e => getActivities()}/>}>
+                
+              </Route>
+  
 
-              <Route exact path="/event/:eventId/skill/:skillId">
-                <EventSkillUser events={events}/>
+              <Route element={<AuthLayout />}>
+                <Route exact path="/admin" element={AdminProjects}></Route>
+                <Route exact path="/admin-projects/create" element={AdminProjectsCreate}>
+                </Route>
+                <Route exact path="/admin-projects/edit/:id" element={AdminProjectsEdit}>
+                </Route>
+                <Route exact path="/admin-projects" element={AdminProjects}>
+                </Route>
+                <Route exact path="/admin-projects-events/create" element={AdminProjectsEventsCreate}>
+                </Route>
+                <Route exact path="/admin-projects-events/edit/:id" element={AdminProjectsEventsEdit}>
+                </Route>
+                <Route exact path="/admin-projects-events" element={AdminProjectsEvents}>
+                </Route>
+                <Route exact path="/admin-projects-events-skills" element={AdminProjectsEventsSkills}>
+                </Route>
+                <Route exact path="/admin-businesses/create" element={AdminBusinessesCreate}>
+                </Route>
+                <Route exact path="/admin-businesses/edit/:id" element={AdminBusinessesEdit}>
+                </Route>
+                <Route exact path="/admin-businesses" element={AdminBusinesses}>
+                </Route>
+                <Route exact path="/admin-products/create" element={AdminProductsCreate}>
+                </Route>
+                <Route exact path="/admin-activities/edit/:id" element={AdminProductsEdit}>
+                </Route>
+                <Route exact path="/admin-products" element={AdminProducts}>
+                </Route>
+                <Route exact path="/admin-activities/create" element={AdminActivitiesCreate}>
+                </Route>
+                <Route exact path="/admin-activities/edit/:id" element={AdminActivitiesEdit}>
+                </Route>
+                <Route exact path="/admin-activities" element={AdminActivities}>
+                </Route>
+                <Route exact path="/admin-user-verification" element={AdminUserVerification}>
+                </Route>
+              </Route>
+              
+
+              <Route exact path="/event/:eventId/skill/:skillId" element={<EventSkillUser events={events}/>}>
+                
               </Route>
               {
                 isUserLoggedIn ?
-                <Route exact path="/">
-                  <Home
-                    activities={activities} events={events} businesses={businesses} users={users} projects={projects} messages={messages}
-                    reloadEvents={e => getAllEvents()} reloadBusinesses={e => getBusinesses()} reloadActivities={e => getActivities()}
-                  />
+                <Route exact path="/" element={<Home
+                  activities={activities} events={events} businesses={businesses} users={users} projects={projects} messages={messages}
+                  reloadEvents={e => getAllEvents()} reloadBusinesses={e => getBusinesses()} reloadActivities={e => getActivities()}
+                />}>
+                 
                 </Route>
-                : <Route exact path="/"><See events={events} activities={activities} businesses={businesses} reloadActivities={() => getActivities()}/></Route>
+                : <Route exact path="/"  element={<See events={events} activities={activities} businesses={businesses} reloadActivities={() => getActivities()}/>}></Route>
               }
             </>
             : null
           }
            
-        </Switch>
+        </Routes>
       </Router>
   );
 }

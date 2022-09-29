@@ -5,14 +5,14 @@ import kassa from './img/profile/kassa.png';
 import credit from './img/profile/credit.png';
 import { Link } from "react-router-dom";
 import Nav from "./Nav";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import work from './img/nav/work.png';
 
 function GetHistoriek(props) {
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
-  const history = useHistory();
+  const history = useNavigate();
 
   const userOrders = props.orders.data.filter(order => {
     return loggedUser && order.user.id === loggedUser.id
@@ -50,7 +50,7 @@ function GetHistoriek(props) {
     <div className="height100">
       <Nav/>
       <div className="historiek">
-        <div className='back' onClick={e =>  history.goBack()}>
+        <div className='back' onClick={e =>  history(-1)}>
             <span>&#10508;</span>
             <b>BACK</b>
         </div>

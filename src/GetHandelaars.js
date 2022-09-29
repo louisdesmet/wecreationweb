@@ -6,11 +6,11 @@ import {getBusinesses} from "./redux/actions";
 import Nav from "./Nav";
 import get from './img/nav/get.png';
 import location from './img/nav/see.png';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function GetHandelaars(props) {
 
-  const history = useHistory();
+  const history = useNavigate();
 
   const businessFiltered = ( Object.values(props.businesses.data).filter(function(item) {
     return item.type === 'business';
@@ -39,7 +39,7 @@ function GetHandelaars(props) {
     <div className="height100">
       <Nav/>
       <div className="business-container">
-        <div className='back' onClick={e =>  history.goBack()}>
+        <div className='back' onClick={e =>  history(-1)}>
             <span>&#10508;</span>
             <b>BACK</b>
         </div>

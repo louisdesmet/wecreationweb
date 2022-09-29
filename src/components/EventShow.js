@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Axios from 'axios';
 import { date, skillIcon } from "../Global";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet'
@@ -41,7 +41,7 @@ let workIcon = L.icon({
 
 function EventShow(props) {
 
-  const history = useHistory();
+  const history = useNavigate();
 
   const notify = (event, skill) => toast("Je bent ingeschreven om te werken op " + event.name + " voor " + skill.hours + " uur " + skill.skill.name + ". De projectleider moet je nu eerst aanvaarden");
   const notifyRegister = () => toast("Voor deze actie heb je een account nodig.");
@@ -124,7 +124,7 @@ function EventShow(props) {
   const teamList = props.event && props.event.skills ? <List>{props.event.skills.map((skill, i, row) => 
     skill.users ? skill.users.map(user =>
       <>
-        <ListItem button onClick={e => history.push("/profiel/" + user.id)}>
+        <ListItem button onClick={e => history("/profiel/" + user.id)}>
             <ListItemAvatar>
                 <Avatar alt="" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "users/" + user.image} />
             </ListItemAvatar>
@@ -202,7 +202,7 @@ function EventShow(props) {
               props.event.allowedInGroupchat || (loggedUser && props.event.project.leader.id === loggedUser.id) ? <p onClick={e => window.location.href = "/netwerk/" + props.event.id}>Groupchat</p> : null
             }
             {
-              props.isPage ? <div className='back' onClick={e =>  history.goBack()}>
+              props.isPage ? <div className='back' onClick={e =>  history(-1)}>
                 <span>&#10508;</span>
                 <b>BACK</b>
               </div> : null

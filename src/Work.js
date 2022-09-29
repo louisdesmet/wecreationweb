@@ -1,6 +1,6 @@
 import React from "react";
 import Nav from "./Nav";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { date } from './Global.js';
 import upEvent from './img/eventshow/future.png';
 import downEvent from './img/eventshow/past.png';
@@ -14,10 +14,10 @@ function Work(props) {
   
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
-  const history = useHistory();
+  const history = useNavigate();
 
   function events(id) {
-    history.push("/projects/" + id);
+    history("/projects/" + id);
   }
 
   if(props.projects.data) {

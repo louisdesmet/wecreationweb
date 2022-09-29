@@ -11,11 +11,11 @@ import profile from './img/eventshow/profile-purple.png';
 import location from './img/nav/see.png';
 import get from './img/nav/get.png';
 import credit from './img/profile/credit.png';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function OrderShow(props) {
 
-  const history = useHistory();
+  const history = useNavigate();
 
   const { id } = useParams();
   const order = props.orders.data.find(order => order.id === parseInt(id));
@@ -35,7 +35,7 @@ function OrderShow(props) {
       <Nav/>
       {
         order ? <div className="order-details">
-          <div className='back' onClick={e =>  history.goBack()}>
+          <div className='back' onClick={e =>  history(-1)}>
             <span>&#10508;</span>
             <b>BACK</b>
           </div>
