@@ -4,13 +4,13 @@
     border-radius: 35px;
     margin: 0 auto;
     padding: 10px;
-    width: 80%;
+    width: 100%;
     box-sizing: border-box;
     .top-items {
         display: flex;
         justify-content: space-between;
         .groupchat {
-            margin: 50px 0 0 10px;
+            margin: 0 0 0 10px;
             flex-grow: 1;
             flex-basis: 0;
             .back {
@@ -65,7 +65,7 @@
             flex-basis: 0;
             display: flex;
             justify-content: right;
-            margin: 50px 10px 0 0;
+            margin: 0 10px 0 0;
             opacity: 0.3;
             cursor: pointer;
             position: relative;
@@ -142,7 +142,7 @@
     .container {
         display: flex;
         justify-content: space-between;
-        width: 90%;
+        width: 100%;
         margin: 0 auto;
         .left {
             width: 17%;
@@ -168,6 +168,8 @@
         }
         .right {
             width: 78%;
+            padding-left: 30px; 
+            box-sizing: border-box;
             .contract-text {
                 padding: 20px;
                 text-align: center;
@@ -175,6 +177,7 @@
                 margin: 50px 0 0 0;
             }
             h2 {
+                margin: 15px 0 35px 0;
                 img {
                     width: 43px;
                     position: relative;
@@ -187,7 +190,7 @@
             }
             .skills {
                 display: flex;
-                margin: 5px 0 0 55px;
+                margin: 10px 0 0 55px;
                 p {  
                     span {
                         margin: 0 0 0 30px;

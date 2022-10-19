@@ -163,7 +163,7 @@ function ProjectShow(props) {
             <div className="column-2">
               {
                 reversed.map(event =>
-                  <Link to={"/events/" + event.id} className={"project-panel-event" + (new Date(event.date) < new Date() ? " project-panel-event-past" : "")} key={event.id}>
+                  <Link to={"/events/" + event.id} className="project-panel-event" key={event.id}>
                     {
                       loggedUser && loggedUser.id === project.leader.id ? <div className='leader-buttons'>
                       <img className="delete" onClick={e => deleteEvent(e, event.id)} src={decline} alt=""/>

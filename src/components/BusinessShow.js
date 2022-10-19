@@ -196,12 +196,12 @@ function BusinessShow(props) {
                 <div className="left">
                     <h3><img src={get} alt="" />Beschrijving</h3>
                     <p className="desc">{props.business.description}</p>
-                    <h2><span>Producten</span></h2>
+                    { props.business.products.length > 0 && <h2><span>Producten</span></h2>}
                     <div className="products">
                         {
                             props.business.products.map(product =>
                                 <div className="product" key={product.id}>
-                                    <img src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "products/" + product.picture} />
+                                    <img className="logo" src={(process.env.NODE_ENV === 'production' ? 'https://api.wecreation.be/' : 'http://wecreationapi.test/') + "products/" + product.picture} />
                                     <h4>{product.name}</h4>
                                     <p className="product-desc">{product.description}</p>
                                     <p>{product.price}<img className='credits' src={credits} /></p>

@@ -2,7 +2,7 @@
     padding: 25px;
     display: flex;
 
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
     box-sizing: border-box;
     border-radius: 35px;
@@ -118,9 +118,8 @@
         flex-wrap: wrap;
         .project-panel-event {
             width: 48%;
-            padding: 0 1%;
             margin: 70px 1% 20px 1%;
-            background: #EBB1C4;
+            background: white;
             text-decoration: none;
             color: black;
             padding: 15px;
@@ -185,11 +184,9 @@
                     width: 33.3%;
                     margin-top: 5px;
                     text-align: center;
+                    font-size: 0.9em;
                 }
             }
-        }
-        .project-panel-event-past {
-            background: #f1e1e7;
         }
     }
 }

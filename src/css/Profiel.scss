@@ -2,7 +2,7 @@
 .profile {
 
     border-radius: 70px;
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
     padding: 30px 0 50px 0;
     .noaccount {
@@ -142,7 +142,7 @@
     }
     .profile-container {
         display: flex;
-        width: 90%;
+        width: 100%;
         margin: 70px auto 0 auto;
         .left {
             display: flex;
@@ -154,15 +154,16 @@
                 margin: 0 0 30px 0;
                 
                 img {
-                    width: 34%;
-                    margin: 0 auto;
+                    width: 26%;
+                    margin: 0 64% 0 10%;
                     display: block;
                     cursor: pointer;
                 }
                 h2 {
                     text-align: center;
-                    margin: 15px 0 0 0;
                     font-size: 1em;
+                    width: 36%;
+                    margin: 15px 59% 0 5%;
                 }
                 .projects {
                     margin: 15px 0 0 0;
@@ -211,7 +212,7 @@
     }
     .profile-below-container {
         display: flex;
-        width: 90%;
+        width: 95%;
         margin: 70px auto 0 auto;
         .left {
             flex: 1;
