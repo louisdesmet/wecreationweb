@@ -5,11 +5,9 @@
     height: 100%;
     .container {
         display: flex;
-        background: #E9F6FC;
         height: 83%;
         width: 90%;
         padding: 45px;
-        border-radius: 65px;
         margin: 0 auto;
         box-sizing: border-box;
         position: relative;
@@ -139,8 +137,8 @@
             background: #A9DDF3;  
             padding: 25px;
             box-sizing: border-box;
-            border-bottom-left-radius: 55px;
-            border-top-left-radius: 55px;  
+            border-bottom-left-radius:20px;
+            border-top-left-radius: 20px;  
             overflow: scroll;
             border-right: 2px solid #E9F6FC;
             .close {
@@ -269,8 +267,8 @@
         .map {
             width: 70%;
             height: 100%;
-            border-bottom-right-radius: 55px;
-            border-top-right-radius: 55px;
+            border-bottom-right-radius: 20px;
+            border-top-right-radius: 20px;
             .leaflet-popup-content-wrapper {
                 background: #E9F0FA;
             }

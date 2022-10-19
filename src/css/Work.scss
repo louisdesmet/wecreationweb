@@ -1,5 +1,4 @@
 .projects-container {
-    background: #FAEAEF;
     border-radius: 35px;
     margin: 0 auto;
     padding-bottom: 30px;
@@ -38,11 +37,13 @@
         display: flex;
         flex-wrap: wrap;
         .project {
-            flex: 1 0 29.3%;
+            flex: 1 0 46%;
             margin: 110px 2% 0 2%;
-            background: #F1C8D5;
-            border-radius: 35px;
+            padding: 25px;
+            background: #A9DDF3;
+            border-radius: 20px;
             position: relative;
+            box-sizing: border-box;
             .project-logo {
                 width: 130px;
                 height: 130px;

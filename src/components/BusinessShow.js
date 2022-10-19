@@ -210,13 +210,6 @@ function BusinessShow(props) {
                             )
                         }
                     </div>
-                    <MapContainer className="map map-desktop" center={position} zoom={13}>
-                        <TileLayer
-                            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        />
-                        {businessMarkers}
-                    </MapContainer>
                 </div>
                 <div className="right">
                     <div>
@@ -235,13 +228,7 @@ function BusinessShow(props) {
                     </div>
 
                 </div>
-                <MapContainer className="map map-mobile" center={position} zoom={13}>
-                    <TileLayer
-                        attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    {businessMarkers}
-                </MapContainer>
+                
                 {
                     product ? 
                     <Dialog
@@ -278,6 +265,13 @@ function BusinessShow(props) {
                     : null
                 }
             </div>
+            <MapContainer className="map" center={position} zoom={13}>
+                <TileLayer
+                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {businessMarkers}
+            </MapContainer>
             <ToastContainer />
         </div>
     );
